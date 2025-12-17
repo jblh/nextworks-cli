@@ -1,0 +1,1 @@
+{"version":3,"file":"switch.d.ts","sourceRoot":"","sources":["../../src/ui/switch.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAG/B,MAAM,MAAM,WAAW,GAAG,KAAK,CAAC,mBAAmB,CAAC,gBAAgB,CAAC,GAAG;IACtE,SAAS,CAAC,EAAE,OAAO,CAAC;CACrB,CAAC;AAEF,QAAA,MAAM,MAAM;gBAHE,OAAO;0CAqEpB,CAAC;AAIF,OAAO,EAAE,MAAM,EAAE,CAAC"}

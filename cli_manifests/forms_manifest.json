@@ -1,0 +1,64 @@
+{
+  "name": "forms",
+  "description": "React Hook Form + zod patterns, form primitives, Select/Checkbox/Switch and wizard example",
+  "files": [
+    "LICENSE",
+    "components/ui/form/context.ts",
+    "components/ui/form/form.tsx",
+    "components/ui/form/form-field.tsx",
+    "components/ui/form/form-item.tsx",
+    "components/ui/form/form-control.tsx",
+    "components/ui/form/form-description.tsx",
+    "components/ui/form/form-label.tsx",
+    "components/ui/form/form-message.tsx",
+    "components/ui/label.tsx",
+    "components/ui/button.tsx",
+    "components/ui/checkbox.tsx",
+    "components/ui/input.tsx",
+    "components/ui/select.tsx",
+    "components/ui/switch.tsx",
+    "components/ui/textarea.tsx",
+    "components/examples/wizard-client.tsx",
+    "components/hooks/useCheckUnique.ts",
+    "lib/utils.ts",
+    "lib/validation/forms.ts",
+    "lib/validation/wizard.ts",
+    "lib/forms/map-errors.ts",
+    "lib/prisma.ts",
+    "app/examples/forms/basic/page.tsx",
+    "app/examples/forms/wizard/wizard-client.tsx",
+    "app/examples/forms/wizard/page.tsx",
+    "app/examples/forms/server-action/form-client.tsx",
+    "app/examples/forms/server-action/page.tsx",
+    "app/api/wizard/route.ts",
+    ".nextworks/docs/FORMS_README.md",
+    ".nextworks/docs/FORMS_QUICKSTART.md"
+  ],
+  "apiRoutes": [],
+  "optionalExamples": {
+    "server-action": {
+      "files": [
+        "app/examples/forms/server-action/page.tsx",
+        "app/examples/forms/server-action/form-client.tsx"
+      ],
+      "requires": [],
+      "notes": "Server-action demo uses Prisma directly via lib/prisma.ts. Forms kit installs @prisma/client and prisma; run `npx prisma generate` and `npx prisma migrate dev` in your app. The data kit is optional if you want richer demo models."
+    },
+    "wizard": {
+      "files": [
+        "app/examples/forms/wizard/page.tsx",
+        "app/api/wizard/route.ts",
+        "components/examples/wizard-client.tsx"
+      ],
+      "requires": ["data", "auth-core"],
+      "notes": "Wizard demo requires the data and auth-core kits (Prisma + NextAuth). Run: npx nextworks add data && npx nextworks add auth-core"
+    }
+  },
+  "prisma": [],
+  "scripts": [
+    "npm run dev",
+    "npx prisma generate (optional - only if schema changes)"
+  ],
+  "env": [],
+  "notes": "Forms primitives are UI-only and do not require Prisma or NextAuth. When packaging, consider copying components/ui/form/* and select/checkbox/switch plus example pages if you want demo pages included. Optional server examples are listed under \"optionalExamples\" and require additional kits."
+}

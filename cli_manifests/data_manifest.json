@@ -1,0 +1,53 @@
+{
+  "name": "data",
+  "description": "Example Posts + Users CRUD with API routes, admin panels, Prisma schema and seed scripts",
+  "files": [
+    "LICENSE",
+    "app/api/posts/route.ts",
+    "app/api/posts/[id]/route.ts",
+    "app/api/users/route.ts",
+    "app/api/users/[id]/route.ts",
+    "app/api/users/check-unique/route.ts",
+    "app/api/users/check-email/route.ts",
+    "app/api/seed-demo/route.ts",
+    "components/admin/admin-header.tsx",
+    "components/admin/posts-manager.tsx",
+    "components/admin/users-manager.tsx",
+    "app/(protected)/admin/users/page.tsx",
+    "app/(protected)/admin/posts/page.tsx",
+    "app/examples/demo/create-post-form.tsx",
+    "app/examples/demo/page.tsx",
+    "app/examples/demo/seed-demo-button.tsx",
+    "lib/prisma.ts",
+    "lib/server/result.ts",
+    "scripts/seed-demo.mjs",
+    ".nextworks/docs/DATA_README.md",
+    ".nextworks/docs/DATA_QUICKSTART.md"
+  ],
+  "apiRoutes": [
+    "/api/posts",
+    "/api/posts/:id",
+    "/api/users",
+    "/api/users/:id",
+    "/api/users/check-unique",
+    "/api/users/check-email",
+    "/api/seed-demo"
+  ],
+  "prisma": [
+    "prisma/schema.prisma",
+    "prisma/migrations/*",
+    "prisma/auth-models.prisma"
+  ],
+  "scripts": [
+    "npx prisma generate",
+    "npx prisma migrate dev",
+    "SEED_ADMIN_EMAIL=admin@example.com SEED_ADMIN_PASSWORD=password123 node ./scripts/seed-demo.mjs",
+    "npm run dev"
+  ],
+  "env": [
+    "DATABASE_URL",
+    "NEXTAUTH_URL (if auth is used)",
+    "NEXTAUTH_SECRET (if auth is used)"
+  ],
+  "notes": "Data kit depends on Auth for RBAC and session handling. See lib/auth-helpers.ts for server-side checks."
+}

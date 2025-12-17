@@ -1,0 +1,23 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# CLI build artifacts
+cli/dist/
+cli/*.tgz
+
+packages/*/dist/
+packages/*/*.tgz
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# TypeScript build info (already present in packages)
+**/*.tsbuildinfo

@@ -1,0 +1,9 @@
+The `nextworks` CLI packages published on npm are distributed under the MIT License (see LICENSE-MIT.txt), unless otherwise noted.
+
+Some additional features or companion packages may in the future be proprietary and distributed
+under separate commercial terms. When applicable, a LICENSE-COMMERCIAL.txt file
+will be included to describe those terms.
+
+If you are distributing a commercial package that includes MIT-licensed code from
+this project, you must comply with the terms of the MIT license for the portions
+covered by it.
