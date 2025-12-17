@@ -6,13 +6,8 @@
   "bin": {
     "nextworks": "dist/index.js"
   },
-  "repository": {
-  "type": "git",
-  "url": "https://github.com/jblh/nextworks-cli.git"
-},
-"bugs": {
-  "url": "https://github.com/jblh/nextworks-cli/issues"
-},
+  "repository": "github:jblh/nextworks-cli",
+"bugs": "https://github.com/jblh/nextworks-cli/issues",
 "homepage": "https://github.com/jblh/nextworks-cli#readme",
   "scripts": {
     "build": "tsc",
