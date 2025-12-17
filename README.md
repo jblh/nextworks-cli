@@ -47,3 +47,12 @@ During alpha, the most useful feedback is:
 3. Confusing or missing documentation / CLI output.
 
 Please open issues using the templates in `.github/ISSUE_TEMPLATE/`.
+
+## Branding
+
+"nextworks" is the name of this project.
+
+You're very welcome to say that your project "uses nextworks" or "is built with nextworks". Please just avoid:
+
+- presenting your project as if it were the official nextworks project, or
+- using the name or any future logos in a way that suggests official endorsement or affiliation.
