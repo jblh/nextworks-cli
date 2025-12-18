@@ -8,8 +8,10 @@ pnpm-lock.yaml
 cli/dist/
 cli/*.tgz
 
-packages/*/dist/
-packages/*/*.tgz
+# Package build artifacts
+packages/**/dist
+packages/**/dist-types
+packages/**/*.tgz
 
 # Logs
 *.log
