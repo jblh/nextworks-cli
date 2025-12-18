@@ -215,6 +215,17 @@ You can add a short “Nextworks setup” section to your app README:
 
 ---
 
+## License
+
+The code in this CLI and the generated files is licensed under the MIT License (see `LICENSE`).
+
+The placeholder images in the templates are sourced from Pexels and are
+subject to the [Pexels License](https://www.pexels.com/license/).
+They are included for demonstration purposes only and are **not** covered by
+the MIT License.
+
+---
+
 ## Troubleshooting
 
 - **Prisma errors or missing migrations**

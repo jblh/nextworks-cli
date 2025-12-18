@@ -23,3 +23,7 @@ packages/**/*.tgz
 
 # TypeScript build info (already present in packages)
 **/*.tsbuildinfo
+
+# Workspace
+nextworks-cli.code-workspace
+*.code-workspace
