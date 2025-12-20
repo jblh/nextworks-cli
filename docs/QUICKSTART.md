@@ -8,6 +8,16 @@ For more details on the CLI and available kits, see `cli/README.md`.
 >
 > In current alphas, Nextworks configures Google fonts in your app’s `app/layout.tsx` (patched by the CLI).
 > This is intentional: it keeps `@nextworks/blocks-core/server` Turbopack-safe by avoiding `next/font/*` imports.
+>
+> **Troubleshooting:** If `app/layout.tsx` gets into a bad state (e.g. a broken `next/font/google` import), rerun:
+>
+> ```bash
+> npx nextworks add blocks --sections --templates
+> ```
+>
+> Or manually ensure:
+> - you have a valid `import { ... } from "next/font/google";`
+> - font instances exist for every `${font.variable}` referenced in your `<body className=...>`
 
 Note: The script below is interactive and safe — it will prompt before doing the Auth + Prisma steps.
 

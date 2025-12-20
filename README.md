@@ -2,19 +2,17 @@
 
 This repository contains the source for the **nextworks** CLI and its MIT-licensed core building blocks.
 
-> Current alpha: `0.1.0-alpha.10`  
+> Current alpha: `0.1.0-alpha.11`  
 > See the [GitHub Releases](https://github.com/jblh/nextworks-cli/releases) page for notes on each alpha.  
 > Install from npm with:
 >
 > ```bash
 > npm install \
->   nextworks@0.1.0-alpha.10 \
->   @nextworks/blocks-core@0.1.0-alpha.8 \
->   @nextworks/blocks-sections@0.1.0-alpha.8 \
->   @nextworks/blocks-templates@0.1.0-alpha.8
+>   nextworks@0.1.0-alpha.11 \
+>   @nextworks/blocks-core@0.1.0-alpha.11 \
+>   @nextworks/blocks-sections@0.1.0-alpha.11 \
+>   @nextworks/blocks-templates@0.1.0-alpha.11
 > ```
->
-> The CLI is currently `0.1.0-alpha.10`; the `@nextworks/blocks-*` packages are `0.1.0-alpha.8`.
 
 - `cli/` – the CLI that powers `npx nextworks ...` and the install commands for Blocks, Auth Core, Forms, and Data.
 - `cli/kits/` – the code that nextworks installs into your Next.js app (blocks, auth, forms, data examples, docs).
