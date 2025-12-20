@@ -44,6 +44,7 @@ export * from "./lib/themes";
 export * from "./lib/utils";
 export * from "./components/enhanced-theme-provider";
 export * from "./components/theme-provider";
+export * from "./providers/BlocksAppProviders";
 export * from "./ui/alert-dialog";
 export * from "./ui/brand-node";
 export * from "./ui/button";

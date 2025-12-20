@@ -163,16 +163,24 @@ export async function updateLayoutWithAppProviders(): Promise<void> {
 
   let content = await fs.readFile(layoutPath, "utf-8");
 
-  // Collect existing import statements
-  const importRegex = /import\s+.*?from\s+["'].*?["'];?\s*$/gm;
-  const imports = content.match(importRegex) ?? [];
+  // Collect existing import statements.
+  // This must handle multi-line imports and semicolon-less style (common in Next starter templates).
+  // We'll match from `import` until either a semicolon OR a newline that looks like the start of
+  // another statement.
+  const importStatementsRegex =
+    /^import[\s\S]*?(?:;\s*|\r?\n(?=(?:import\s|export\s|const\s|let\s|var\s|function\s|class\s|\/\/|\/\*|$)))/gm;
+  const imports = content.match(importStatementsRegex) ?? [];
   const lastImport = imports[imports.length - 1] ?? "";
   const lastImportIndex = lastImport
     ? content.lastIndexOf(lastImport) + lastImport.length
     : 0;
 
   const ensureImport = (importLine: string) => {
-    if (!content.includes(importLine)) {
+    // Normalize whitespace for a safer containment check.
+    const normalizedContent = content.replace(/\s+/g, " ");
+    const normalizedImportLine = importLine.replace(/\s+/g, " ");
+
+    if (!normalizedContent.includes(normalizedImportLine)) {
       content =
         content.slice(0, lastImportIndex) +
         (lastImportIndex ? "\n" : "") +
@@ -185,10 +193,186 @@ export async function updateLayoutWithAppProviders(): Promise<void> {
   ensureImport('import AppProviders from "@/components/app-providers";');
   ensureImport('import AppToaster from "@/components/ui/toaster";');
 
+  // Turbopack-safe: fonts should be owned by the consuming app/layout.tsx,
+  // not by @nextworks/blocks-core/server.
+  //
+  // Avoid duplicate imports if the user's layout already imports next/font/google.
+  // Must handle multi-line imports (common with formatters), semicolon-less style, and avoid producing
+  // partial/broken imports.
+  const googleFontImportRegex =
+    /import\s*\{([\s\S]*?)\}\s*from\s*["']next\/font\/google["']\s*;?/m;
+
+  // If a previous buggy patch run left a broken `import { ... }` with no `from`,
+  // remove it so we can re-add a correct one.
+  const brokenGoogleFontImportRegex =
+    /import\s*\{[\s\S]*?\}\s*(?:\r?\n)+\s*(?=const\s)/m;
+
+  const desiredFontNames = [
+    "Geist",
+    "Geist_Mono",
+    "Outfit",
+    "Inter",
+    "Poppins",
+  ];
+
+  // Clean up any broken import (best-effort)
+  if (brokenGoogleFontImportRegex.test(content)) {
+    content = content.replace(brokenGoogleFontImportRegex, "");
+  }
+
+  const existingGoogleFontImport = content.match(googleFontImportRegex);
+
+  // We'll insert font instances immediately after the google font import if it exists.
+  // This avoids splitting the import block even when imports are semicolon-less or multi-line.
+  let afterGoogleImportIndex: number | null = null;
+
+  if (existingGoogleFontImport) {
+    const existingList = existingGoogleFontImport[1]
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    const merged = Array.from(
+      new Set([...existingList, ...desiredFontNames]),
+    ).sort();
+
+    const mergedImportLine = `import { ${merged.join(", ")} } from "next/font/google";`;
+
+    // Replace exactly the matched import (which may be multi-line).
+    const matchText = existingGoogleFontImport[0];
+    const matchStart = existingGoogleFontImport.index ?? content.indexOf(matchText);
+    const matchEnd = matchStart + matchText.length;
+
+    content =
+      content.slice(0, matchStart) +
+      mergedImportLine +
+      content.slice(matchEnd);
+
+    afterGoogleImportIndex = matchStart + mergedImportLine.length;
+  } else {
+    const fontImportLine =
+      'import { Geist, Geist_Mono, Outfit, Inter, Poppins } from "next/font/google";';
+    ensureImport(fontImportLine);
+
+    // If we just inserted it, prefer inserting font instances immediately after it.
+    const insertedIdx = content.indexOf(fontImportLine);
+    if (insertedIdx !== -1) {
+      afterGoogleImportIndex = insertedIdx + fontImportLine.length;
+    }
+  }
+
+  // Ensure font instances exist (idempotent).
+  // These must exist if we reference geistSans/geistMono/outfit/inter/poppins in <body className>.
+  // We add missing blocks individually so we don't depend on a specific starter layout template.
+  const ensureFontInstance = (marker: string, block: string) => {
+    if (content.includes(marker)) return;
+
+    // Prefer inserting right after the `next/font/google` import (most stable),
+    // otherwise fall back to after the last import.
+    const insertAt = afterGoogleImportIndex ?? lastImportIndex;
+    content =
+      content.slice(0, insertAt) +
+      "\n" +
+      block.trim() +
+      "\n\n" +
+      content.slice(insertAt);
+
+    // Keep the insertion point stable for subsequent font blocks in this run.
+    if (afterGoogleImportIndex != null) {
+      afterGoogleImportIndex =
+        insertAt + 1 + block.trim().length + 2; // \n + block + \n\n
+    }
+  };
+
+  // Geist starter template uses subsets, no weight.
+  ensureFontInstance(
+    "const geistSans = Geist(",
+    `
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+`,
+  );
+
+  ensureFontInstance(
+    "const geistMono = Geist_Mono(",
+    `
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+`,
+  );
+
+  // Extra fonts used by Nextworks kits/templates
+  ensureFontInstance(
+    "const outfit = Outfit(",
+    `
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
+`,
+  );
+
+  ensureFontInstance(
+    "const inter = Inter(",
+    `
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+`,
+  );
+
+  ensureFontInstance(
+    "const poppins = Poppins(",
+    `
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+`,
+  );
+
   // Add suppressHydrationWarning to <html> tag if not present
   content = content.replace(/<html([^>]*)>/, (match: string, attrs: string) => {
     if (attrs.includes("suppressHydrationWarning")) return match;
     return `<html${attrs} suppressHydrationWarning>`;
+  });
+
+  // Ensure <body> has the font variable classes + antialiased.
+  // We prefer setting these on <body> so they affect the whole app.
+  content = content.replace(/<body([^>]*)>/, (match: string, attrs: string) => {
+    const fontExpr =
+      "${geistSans.variable} ${geistMono.variable} ${outfit.variable} ${inter.variable} ${poppins.variable} antialiased";
+
+    // If body already has a className, append our font classes.
+    if (attrs.includes("className=")) {
+      // Try template literal style: className={`...`}
+      if (attrs.includes("className={`")) {
+        return match.replace(
+          /className=\{`([\s\S]*?)`\}/,
+          (_m, existing) => `className={\`${existing} ${fontExpr}\`}`,
+        );
+      }
+
+      // Try string literal style: className="..."
+      if (attrs.includes('className="')) {
+        return match.replace(
+          /className="([^"]*)"/,
+          (_m, existing) => `className="${existing} ${fontExpr}"`,
+        );
+      }
+
+      // Unknown className shape; leave it unchanged.
+      return match;
+    }
+
+    // No className: add a template literal className.
+    return `<body${attrs} className={\`${fontExpr}\`}>`;
   });
 
   // Wrap the entire body content with AppProviders and ensure AppToaster is rendered

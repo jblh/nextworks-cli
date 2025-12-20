@@ -59,6 +59,21 @@ From your app root:
 
 ### 1) Install Blocks (UI kit)
 
+> **Turbopack / Next 16 note (fonts + AppProviders)**
+>
+> As of the current alpha, `@nextworks/blocks-core/server` intentionally **does not** import `next/font/*`.
+> Fonts are instead configured directly in your app’s `app/layout.tsx` (the CLI patches this for you).
+> This avoids Turbopack dev issues related to internal Next font modules.
+>
+> If you ever see a font-related Turbopack error after upgrades or manual edits, re-run:
+>
+> ```bash
+> npx nextworks add blocks --sections --templates
+> ```
+>
+> to re-apply the layout patch, and ensure `app/layout.tsx` contains a valid
+> `import { ... } from "next/font/google";` plus the corresponding `const geistSans = ...` etc.
+
 ```bash
 npx nextworks add blocks --sections --templates
 ```

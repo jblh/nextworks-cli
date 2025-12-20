@@ -4,6 +4,11 @@ This snippet is an easy, copy‑paste quickstart you can add to your README or r
 
 For more details on the CLI and available kits, see `cli/README.md`.
 
+> **Next 16 / Turbopack note**
+>
+> In current alphas, Nextworks configures Google fonts in your app’s `app/layout.tsx` (patched by the CLI).
+> This is intentional: it keeps `@nextworks/blocks-core/server` Turbopack-safe by avoiding `next/font/*` imports.
+
 Note: The script below is interactive and safe — it will prompt before doing the Auth + Prisma steps.
 
 Create a file named setup-nextworks.sh, paste the content, make it executable, then run it.

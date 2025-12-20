@@ -12,6 +12,14 @@ Environment
 
 Quick sanity checks
 
+0. Turbopack canary (Blocks theme + fonts):
+   - Start dev server with Turbopack (default in Next 16): `npm run dev`
+   - Visit: http://localhost:3000/templates/gallery
+   - Expect:
+     - No Turbopack font/module parse errors
+     - ThemeSelector renders and switching variants updates the UI
+     - Theme tokens (e.g. `--primary`) are present in computed styles
+
 1. Home renders:
    - Visit: http://localhost:3000/
 2. Auth:

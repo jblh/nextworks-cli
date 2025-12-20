@@ -14,7 +14,12 @@ This project now includes a comprehensive theming system that allows you to easi
 
 ### 1. Basic Setup
 
-Your app is already configured with the enhanced theme provider in `app/layout.tsx`. The default theme is set to "monochrome".
+Your app is configured with the enhanced theme provider via `AppProviders` in `app/layout.tsx`.
+
+**Important:** In current alphas, the server `AppProviders` (`@nextworks/blocks-core/server`) does **not** import `next/font/*`.
+Fonts are configured in your app’s `app/layout.tsx` (the CLI patches this) so Turbopack dev works reliably.
+
+The default theme variant is set to "monochrome".
 
 ### 2. Available Themes
 

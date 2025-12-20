@@ -6,6 +6,9 @@ export * from "./lib/utils";
 export * from "./components/enhanced-theme-provider";
 export * from "./components/theme-provider";
 
+// Provider composition (no next/* imports)
+export * from "./providers/BlocksAppProviders";
+
 // UI primitives
 export * from "./ui/alert-dialog";
 export * from "./ui/brand-node";
