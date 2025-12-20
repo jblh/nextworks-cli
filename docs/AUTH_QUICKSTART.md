@@ -64,6 +64,20 @@ This applies the Prisma schema and generates the Prisma client.
 npm run dev
 ```
 
+### Windows + Prisma + Next 16 (Turbopack) note
+
+If you are on **Windows** and have installed the **Auth Core** kit (which uses Prisma under the hood) on **Next 16+**, the Next dev server may need permission to create symlinks for the Prisma client. On Windows, this can cause errors like:
+
+> `create symlink to ../../../../node_modules/@prisma/client`  
+> `Caused by: A required privilege is not held by the client. (os error 1314)`
+
+If you see this (often surfaced as a 500 on `/api/auth/session` or a NextAuth `CLIENT_FETCH_ERROR`), do one of the following:
+
+- **Recommended**: Enable **Developer Mode** in Windows (Settings → For developers → Developer mode). This allows symlinks in normal terminals.
+- Or: Run your dev server from an **elevated PowerShell/terminal** ("Run as administrator").
+
+After doing one of these, restart `npm run dev` and reload your app.
+
 Visit:
 
 - http://localhost:3000/auth/signup to create a user
