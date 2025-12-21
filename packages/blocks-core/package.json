@@ -1,6 +1,6 @@
 {
   "name": "@nextworks/blocks-core",
-  "version": "0.1.0-alpha.11",
+  "version": "0.1.0-alpha.12",
   "private": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,8 @@
   },
   "scripts": {
     "build:types": "npx tsc -p tsconfig.build.json --emitDeclarationOnly --declaration --declarationMap --outDir dist-types",
-    "build": "npx tsc -p tsconfig.build.json && npm run build:types && node scripts/postbuild.js"
+    "build": "npx tsc -p tsconfig.build.json && npm run build:types && node scripts/postbuild.js",
+    "test:types": "npx tsc -p tsconfig.build.json --noEmit --pretty false"
   },
   "dependencies": {
     "next-themes": "^0.4.6",

@@ -1,3 +1,4 @@
+export type { ThemeConfig, ThemeVariant } from "@nextworks/blocks-core";
 import { type ThemeConfig, type ThemeVariant } from "@nextworks/blocks-core";
 
 export const themes: Record<ThemeVariant, ThemeConfig> = {

@@ -6,6 +6,8 @@ This project is currently **early-access alpha**; expect breaking changes.
 
 ## Unreleased
 
+- Fix: `@nextworks/blocks-core/server` now correctly type-exports `AppProviders` as a **named export** (matching runtime), so `import { AppProviders } from "@nextworks/blocks-core/server";` typechecks in Next.js production builds (Vercel/Turbopack).
+
 - Turbopack-safe refactor for Blocks theme/font bootstrapping:
   - `@nextworks/blocks-core/server` `AppProviders` no longer imports `next/font/*`.
   - Fonts are configured in the consuming app’s `app/layout.tsx` (the CLI patches this).

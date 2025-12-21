@@ -7,7 +7,7 @@ import { useThemeVariant } from "@/components/enhanced-theme-provider";
 import {
   themes,
   darkThemes,
-  ThemeVariant,
+  type ThemeVariant,
   type ThemeConfig,
 } from "@/lib/themes";
 
