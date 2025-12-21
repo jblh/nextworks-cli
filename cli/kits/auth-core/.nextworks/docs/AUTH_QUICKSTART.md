@@ -30,8 +30,8 @@ Optional / password reset / email provider vars:
 - GITHUB_ID — (optional) GitHub OAuth client id
 - GITHUB_SECRET — (optional) GitHub OAuth client secret
 - NEXTWORKS_ENABLE_PASSWORD_RESET — set to `1` to enable the dev password reset scaffold (default: disabled)
-- NEXTWORKS_USE_DEV_EMAIL — set to `1` to enable Ethereal dev email transport (for local testing only)
-- SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOREPLY_EMAIL — when using a real SMTP provider (required in production if enable password reset)
+- NEXTWORKS_USE_DEV_EMAIL — set to `1` to enable Ethereal dev email transport (for local testing only). **Works in `next dev` only.**
+- SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOREPLY_EMAIL — when using a real SMTP provider (**required in production** when password reset is enabled). If not configured, `/api/auth/forgot-password` returns **404 by design**.
 - NODE_ENV — (production/dev) used to guard password-reset behavior
 
 Notes:

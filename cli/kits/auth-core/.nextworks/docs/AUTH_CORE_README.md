@@ -109,7 +109,7 @@ Post-install steps (recommended)
 Notes & security
 
 - Password reset is intentionally opt-in. Do not enable NEXTWORKS_ENABLE_PASSWORD_RESET in production unless you have configured a real mail provider and replaced the in-memory rate limiter.
-- NEXTWORKS_USE_DEV_EMAIL=1 uses Ethereal (nodemailer) and prints a preview URL to server logs for development testing.
+- NEXTWORKS_USE_DEV_EMAIL=1 uses Ethereal (nodemailer) and prints a preview URL to server logs for development testing. **This is intended for `next dev` only**. In production (`next start` / `NODE_ENV=production`), password reset requires a real mail provider (SMTP); otherwise `/api/auth/forgot-password` returns **404 by design**.
 - Email verification on signup is **not yet implemented**. Stub endpoints and UI are in place at `/api/auth/send-verify-email` and `/auth/verify-email`. The Prisma `VerificationToken` model is already included so a future implementation can be added as a non-breaking enhancement.
 
 CLI behavior (for maintainers)
