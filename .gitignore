@@ -4,11 +4,10 @@ npm-debug.log*
 yarn.lock
 pnpm-lock.yaml
 
-# CLI build artifacts
+# Build artifacts
+*.tgz
 cli/dist/
 cli/*.tgz
-
-# Package build artifacts
 packages/**/dist
 packages/**/dist-types
 packages/**/*.tgz
