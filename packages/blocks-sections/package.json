@@ -1,11 +1,12 @@
 {
   "name": "@nextworks/blocks-sections",
-  "version": "0.1.0-alpha.12",
+  "version": "0.1.0-alpha.13",
   "private": false,
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist-types/index.d.ts",
   "files": [
     "dist",
+    "dist-types",
     "package.json",
     "README.md"
   ],
@@ -16,10 +17,11 @@
     "access": "public"
   },
   "scripts": {
-    "build": "npx tsc -p tsconfig.json"
+    "clean": "powershell.exe -NoProfile -Command \"Remove-Item -Recurse -Force dist -ErrorAction SilentlyContinue; Remove-Item -Recurse -Force dist-types -ErrorAction SilentlyContinue\"",
+    "build": "npx tsc -p tsconfig.json && npx tsc -p tsconfig.json --emitDeclarationOnly --declaration --outDir dist-types"
   },
   "dependencies": {
-    "@nextworks/blocks-core": "0.1.0-alpha.12",
+    "@nextworks/blocks-core": "0.1.0-alpha.13",
     "lucide-react": "^0.542.0",
     "motion": "^12.23.12"
   },
