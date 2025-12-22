@@ -53,6 +53,10 @@ As of the current alpha, `nextworks` has been developed and tested primarily wit
 Other 16.x versions will likely work; older versions are **best effort**. If you hit an issue, please include your Next.js version, Node version, package manager, OS, and relevant logs when reporting it.
 
 ## Getting started
+ Install from npm (recommended):
+> ```bash
+> npm install nextworks@latest
+> ```
 
 To use the CLI in a Next.js app (from npm):
 
