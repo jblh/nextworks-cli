@@ -9,13 +9,24 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 
 > **Status:** early‑access alpha. Expect rough edges and breaking changes between alpha releases.
 >
-> In this alpha, the most reliable setup is to install **Blocks** first using:
+> In this alpha, the most reliable setup is:
 >
-> ```bash
-> npx nextworks add blocks --sections --templates
-> ```
+> 1. Install the CLI (as a dev dependency) and install dependencies:
 >
-> and then add **Auth Core**, **Forms**, and **Data** on top. Partial setups (e.g. Auth/Data without Blocks) may require manual tweaks and are not yet fully supported.
+>    ```bash
+>    npm install -D nextworks
+>    npm install
+>    ```
+>
+> 2. Install **Blocks** first:
+>
+>    ```bash
+>    npx nextworks add blocks --sections --templates
+>    ```
+>
+> 3. Then add **Auth Core**, **Forms**, and **Data** on top.
+>
+> Partial setups (e.g. Auth/Data without Blocks) may require manual tweaks and are not yet fully supported.
 
 ---
 

@@ -1,122 +1,13 @@
-# nextworks — Data kit quickstart
+# Data Quickstart (moved)
 
-This document explains how to use the Data (crud) kit in the nextworks starter project.
+The canonical Data kit documentation is shipped *into installed apps* under:
 
-Prerequisites
+- `.nextworks/docs/DATA_QUICKSTART.md`
 
-- A running PostgreSQL database and `DATABASE_URL` set in `.env`.
-- Auth kit installed and configured (NextAuth + Prisma). The Data kit relies on NextAuth session for access control.
-  - In the monorepo, this is already wired up.
-  - In your own app via the CLI, run:
+In this repo, the canonical source is:
 
-    ```bash
-    npx nextworks add auth-core
-    npx nextworks add data
-    ```
+- `cli/kits/data/.nextworks/docs/DATA_QUICKSTART.md`
 
-    then follow the Prisma and `.env` steps below.
+Direct link:
 
-- Forms kit (optional but recommended) for form primitives.
-
-Setup
-
-1. Install dependencies and generate Prisma client:
-
-   npm install
-   npx prisma generate
-
-2. Run migrations (creates User/Post tables):
-
-   npx prisma migrate dev
-
-3. Seed a demo admin user and posts locally (optional):
-
-   # Set env vars or use defaults
-
-   SEED_ADMIN_EMAIL=admin@example.com SEED_ADMIN_PASSWORD=password123 node ./scripts/seed-demo.mjs
-
-4. Run the dev server:
-
-   npm run dev
-
-### Windows + Prisma + Next 16 (Turbopack) note
-
-If you are on **Windows** and have installed the **Auth Core** or **Data** kits (which use Prisma under the hood) on **Next 16+**, the Next dev server may need permission to create symlinks for the Prisma client. On Windows, this can cause errors like:
-
-> `create symlink to ../../../../node_modules/@prisma/client`  
-> `Caused by: A required privilege is not held by the client. (os error 1314)`
-
-If you see this (often surfaced as a 500 on `/api/auth/session` or a NextAuth `CLIENT_FETCH_ERROR`), do one of the following:
-
-- **Recommended**: Enable **Developer Mode** in Windows (Settings → For developers → Developer mode). This allows symlinks in normal terminals.
-- Or: Run your dev server from an **elevated PowerShell/terminal** ("Run as administrator").
-
-After doing one of these, restart `npm run dev` and reload your app.
-
-Usage & testing
-
-- Sign in at /auth/login using the seeded admin credentials (admin@example.com / password123).
-- Visit /admin/posts to create/edit/delete posts. The UI supports pagination, search (title contains), and sort by createdAt.
-- Visit /admin/users to view users (admin-only).
-
-Notes
-
-- Server-side RBAC: all modifying APIs (POST/PUT/DELETE) require a valid session, and user-level checks ensure only authors or admins can modify posts. The users list API requires admin access.
-- Published flag: posts have a `published` boolean in Prisma. The admin UI exposes the published checkbox when creating or editing posts.
-
-Troubleshooting
-
-- If users list returns 403, ensure your signed-in user has role = 'admin'. You can promote a user with Prisma Studio or by running:
-
-  npx prisma db executeRaw "UPDATE \"User\" SET role = 'admin' WHERE email = 'admin@example.com';"
-
-- If migrations fail, try:
-
-  npx prisma migrate reset
-
-Files & kit manifest
-
-If you plan to package a Data kit, here are the primary files, API routes and components used by the Data example flows. This manifest is intended to help packaging and documentation — adjust paths if you extract the kit into another project.
-
-Files
-
-- app/api/posts/route.ts
-- app/api/posts/[id]/route.ts
-- app/api/users/route.ts
-- app/api/users/[id]/route.ts
-- app/api/users/check-unique/route.ts
-- app/api/users/check-email/route.ts
-- app/api/seed-demo/route.ts
-- app/api/signup/route.ts
-- components/admin/admin-header.tsx
-- components/admin/posts-manager.tsx
-- components/admin/users-manager.tsx
-- app/(protected)/admin/users/page.tsx
-- app/(protected)/admin/posts/page.tsx
-- app/examples/demo/create-post-form.tsx
-- app/examples/demo/page.tsx
-- lib/prisma.ts
-- lib/server/result.ts
-- lib/utils.ts
-- lib/validation/forms.ts
-- scripts/seed-demo.mjs
-
-API routes (list)
-
-- /api/posts (GET/POST) -> app/api/posts/route.ts
-- /api/posts/:id (GET/PUT/DELETE) -> app/api/posts/[id]/route.ts
-- /api/users (GET/POST) -> app/api/users/route.ts
-- /api/users/:id (GET/PUT/DELETE) -> app/api/users/[id]/route.ts
-- /api/users/check-unique -> app/api/users/check-unique/route.ts
-- /api/users/check-email -> app/api/users/check-email/route.ts
-- /api/seed-demo -> app/api/seed-demo/route.ts
-- /api/signup -> app/api/signup/route.ts
-
-Notes
-
-- The Data kit relies on NextAuth sessions for access control — see lib/auth-helpers.ts and lib/auth.ts for server-side helpers and RBAC checks.
-- The API routes return ApiResult envelope objects (see lib/server/result.ts) and the client uses lib/forms/map-errors.ts to map server validation errors into react-hook-form where appropriate.
-
-Feedback
-
-- File issues in the repo; note that CLI packaging for the Data kit is not yet implemented — this quickstart is for the repository as-is.
+- https://github.com/jblh/nextworks-cli/blob/main/cli/kits/data/.nextworks/docs/DATA_QUICKSTART.md

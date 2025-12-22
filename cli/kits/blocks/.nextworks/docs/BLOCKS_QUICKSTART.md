@@ -3,7 +3,8 @@
 This document explains the Blocks kit: prebuilt UI sections, templates and core UI primitives included in this repository. The Blocks kit is intended to be a non-invasive copyable kit (shadCN-style) you can install into any Next.js App Router + TypeScript + Tailwind project.
 
 > **Alpha note**
-> Other kits (Auth Core, Forms, Data) are currently tested and supported on top of a default Blocks install. For the smoothest experience, install Blocks first in your app before adding other kits.
+> Other kits (Auth Core, Forms, Data) are currently tested and supported on top of a default Blocks install.
+> For the smoothest experience, install **Blocks first** in your app before adding other kits.
 
 > If you are using the `nextworks` CLI in your own app, you can install this Blocks kit by running:
 >
@@ -12,13 +13,6 @@ This document explains the Blocks kit: prebuilt UI sections, templates and core 
 > ```
 >
 > This installs **core UI primitives, sections, and page templates**, so the example templates work out of the box. The CLI will copy files into your project under `components/`, `app/templates/`, `lib/`, and `public/` as described below.
->
-> Advanced:
->
-> - `npx nextworks add blocks --ui-only` → install core UI primitives only (no sections/templates).
-> - `npx nextworks add blocks --sections` → install core + sections only.
-> - `npx nextworks add blocks --templates` → install core + templates only.
-> - `npx nextworks add blocks --sections --templates` → install core + sections + templates.
 
 What’s included
 

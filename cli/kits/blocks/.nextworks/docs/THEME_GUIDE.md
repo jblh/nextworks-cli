@@ -14,7 +14,24 @@ This project now includes a comprehensive theming system that allows you to easi
 
 ### 1. Basic Setup
 
-Your app is already configured with the enhanced theme provider in `app/layout.tsx`. The default theme is set to "monochrome".
+Your app is configured with the enhanced theme provider via `AppProviders` in `app/layout.tsx`.
+
+**Turbopack / Next 16 note (fonts + AppProviders)**
+
+As of the current alpha, `@nextworks/blocks-core/server` intentionally **does not** import `next/font/*`.
+Fonts are instead configured directly in your app’s `app/layout.tsx` (the CLI patches this for you).
+This avoids Turbopack dev issues related to internal Next font modules.
+
+If you ever see a font-related Turbopack error after upgrades or manual edits, re-run:
+
+```bash
+npx nextworks add blocks --sections --templates
+```
+
+to re-apply the layout patch, and ensure `app/layout.tsx` contains a valid
+`import { ... } from "next/font/google";` plus the corresponding `const geistSans = ...` etc.
+
+The default theme variant is set to "monochrome".
 
 ### 2. Available Themes
 
