@@ -84,7 +84,15 @@ During alpha, the most useful feedback is:
 2. Broken generated code or runtime errors after running `nextworks` commands.
 3. Confusing or missing documentation / CLI output.
 
-Please open issues using the templates in `.github/ISSUE_TEMPLATE/`.
+### Where to post feedback
+
+- **Start here (how to give feedback):** https://github.com/jblh/nextworks-cli/discussions/1
+- **Alpha feedback thread (what broke / what’s missing):** https://github.com/jblh/nextworks-cli/discussions/2
+
+### Bug reports
+
+For reproducible bugs / errors (especially install/runtime issues), please open a GitHub Issue using the templates in `.github/ISSUE_TEMPLATE/`.
+
 
 ## Branding
 
