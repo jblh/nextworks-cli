@@ -58,6 +58,12 @@ Other 16.x versions will likely work; older versions are **best effort**. If you
 > npm install nextworks@latest
 > ```
 
+> Install from npm (recommended):
+>
+> ```bash
+> npm install nextworks@latest
+> ```
+
 To use the CLI in a Next.js app (from npm):
 
 ```bash
