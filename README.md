@@ -1,17 +1,32 @@
 # nextworks
 
+**nextworks** is a CLI that installs Nextworks kits into your Next.js project — including the Blocks kit (core, sections, templates) and optional Auth Core, Forms, and Data (CRUD) kits.
+
 This repository contains the source for the **nextworks** CLI and its MIT-licensed core building blocks.
 
-> Current alpha: `0.1.0-alpha.11`  
-> See the [GitHub Releases](https://github.com/jblh/nextworks-cli/releases) page for notes on each alpha.  
-> Install from npm with:
+## Links
+
+- **Blocks live demo (nextworks-demo):** https://nextworks-demo.vercel.app/
+- **Demo source (nextworks-demo repo):** https://github.com/jblh/nextworks-demo
+- **npm (CLI):** https://www.npmjs.com/package/nextworks
+
+> Status: **alpha**  
+> See the [GitHub Releases](https://github.com/jblh/nextworks-cli/releases) page for notes on each release.
+>
+> Install from npm (recommended):
+>
+> ```bash
+> npm install nextworks@latest
+> ```
+>
+> If you want/need to install the underlying packages directly, prefer `@latest` to avoid stale pins:
 >
 > ```bash
 > npm install \
->   nextworks@0.1.0-alpha.11 \
->   @nextworks/blocks-core@0.1.0-alpha.11 \
->   @nextworks/blocks-sections@0.1.0-alpha.11 \
->   @nextworks/blocks-templates@0.1.0-alpha.11
+>   nextworks@latest \
+>   @nextworks/blocks-core@latest \
+>   @nextworks/blocks-sections@latest \
+>   @nextworks/blocks-templates@latest
 > ```
 
 - `cli/` – the CLI that powers `npx nextworks ...` and the install commands for Blocks, Auth Core, Forms, and Data.
