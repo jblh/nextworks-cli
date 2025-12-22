@@ -6,7 +6,7 @@ This repository contains the source for the **nextworks** CLI and its MIT-licens
 
 ## Links
 
-- **Blocks live demo (nextworks-demo):** https://nextworks-demo.vercel.app/
+- **Blocks kit live demo (nextworks-demo):** https://nextworks-demo.vercel.app/
 - **Demo source (nextworks-demo repo):** https://github.com/jblh/nextworks-demo
 - **npm (CLI):** https://www.npmjs.com/package/nextworks
 
