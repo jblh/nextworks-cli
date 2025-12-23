@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { forgotPasswordSchema } from "@/lib/validation/forms";
 import { randomBytes, createHash } from "crypto";
@@ -77,7 +76,7 @@ export async function POST(req: Request) {
               html: `<p>Reset your password: <a href="${resetUrl}">Reset password</a></p>`,
             });
             console.info(`Password reset email queued for ${email}`);
-          } catch (e) {
+          } catch {
             console.error("Failed to send password reset email");
           }
         } else if (process.env.NEXTWORKS_USE_DEV_EMAIL === "1") {
@@ -93,21 +92,24 @@ export async function POST(req: Request) {
             } else {
               console.info(`Password reset email queued for ${email}`);
             }
-          } catch (e) {
+          } catch {
             console.error("Failed to send dev password reset email");
           }
         } else {
           console.info(`Password reset requested for ${email}`);
         }
-      } catch (e) {
+      } catch {
         console.error("Failed to handle password reset email");
       }
     }
 
     return NextResponse.json({ message: "If an account exists, a reset link was sent." });
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (err instanceof z.ZodError) {
-      return NextResponse.json({ message: "Validation failed", errors: (err as z.ZodError).issues }, { status: 400 });
+      return NextResponse.json(
+        { message: "Validation failed", errors: err.issues },
+        { status: 400 },
+      );
     }
     return NextResponse.json({ message: "Failed" }, { status: 400 });
   }

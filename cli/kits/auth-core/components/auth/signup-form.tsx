@@ -23,7 +23,6 @@ import { FormItem } from "@/components/ui/form/form-item";
 import { FormLabel } from "@/components/ui/form/form-label";
 import { FormMessage } from "@/components/ui/form/form-message";
 import { FormControl } from "@/components/ui/form/form-control";
-import { toast } from "sonner";
 import { mapApiErrorsToForm } from "@/lib/forms/map-errors";
 import useCheckUnique from "@/components/hooks/useCheckUnique";
 
@@ -163,7 +162,6 @@ export default function SignupForm({
   const { data: session, status } = useSession();
   const redirectTo = searchParams.get("callbackUrl") || defaultRedirect;
   const [formError, setFormError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const [isGithubLoading, setIsGithubLoading] = useState(false);
   const [githubAvailable, setGithubAvailable] = useState(false);
 
@@ -178,24 +176,23 @@ export default function SignupForm({
   const {
     control,
     handleSubmit,
-    setError: setFieldError,
     formState: { isSubmitting },
   } = formMethods;
 
   const emailValue = formMethods.watch("email");
-  const {
-    loading: checkingEmail,
-    unique: emailUnique,
-    error: emailUniqueError,
-  } = useCheckUnique("email", emailValue, 500);
+  const { loading: checkingEmail, unique: emailUnique } = useCheckUnique(
+    "email",
+    emailValue,
+    500,
+  );
 
-  const useDebouncedValidator = (
-    fn: (v: any) => Promise<boolean | string | undefined>,
+  const useDebouncedValidator = <T,>(
+    fn: (v: T) => Promise<boolean | string | undefined>,
     delay = 500,
   ) => {
     const timer = useRef<number | undefined>(undefined);
     return useCallback(
-      (value: any): Promise<boolean | string | undefined> => {
+      (value: T): Promise<boolean | string | undefined> => {
         if (timer.current) window.clearTimeout(timer.current);
         return new Promise((resolve) => {
           timer.current = window.setTimeout(async () => {
@@ -250,7 +247,6 @@ export default function SignupForm({
 
   const onSubmit = async (data: SignupFormValues) => {
     setFormError(null);
-    setSuccess(false);
     try {
       const res = await fetch("/api/signup", {
         method: "POST",
@@ -258,12 +254,25 @@ export default function SignupForm({
         body: JSON.stringify(data),
       });
 
-      const payload = await res.json().catch(() => null);
-      if (!res.ok || !payload?.success) {
-        const msg = payload
-          ? mapApiErrorsToForm(formMethods, payload)
-          : undefined;
-        setFormError(msg || payload?.message || "Signup failed");
+      const payload: unknown = await res.json().catch(() => null);
+      if (
+        !res.ok ||
+        !(
+          payload &&
+          typeof payload === "object" &&
+          "success" in payload &&
+          payload.success === true
+        )
+      ) {
+        const msg = payload ? mapApiErrorsToForm(formMethods, payload as never) : undefined;
+        const payloadMessage =
+          payload &&
+          typeof payload === "object" &&
+          "message" in payload &&
+          typeof payload.message === "string"
+            ? payload.message
+            : null;
+        setFormError(msg || payloadMessage || "Signup failed");
         return;
       }
 
@@ -271,8 +280,7 @@ export default function SignupForm({
         `/auth/login?signup=1&callbackUrl=${encodeURIComponent(redirectTo)}`,
       );
     } catch (e: unknown) {
-      const err = e as Error;
-      setFormError(err.message || "Unknown error");
+      setFormError(e instanceof Error ? e.message : "Unknown error");
     }
   };
 
@@ -317,15 +325,6 @@ export default function SignupForm({
           aria-live="polite"
         >
           {formError}
-        </div>
-      )}
-      {success && (
-        <div
-          className={cn(alerts.successClassName)}
-          role="status"
-          aria-live="polite"
-        >
-          {labels.success}
         </div>
       )}
 

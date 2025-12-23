@@ -38,7 +38,7 @@ export async function PUT(req: Request, { params }: RouteContext) {
     const data = updateSchema.parse(body);
 
     // Build Prisma update object only with provided fields to avoid overwriting with undefined
-    const updateData: any = {};
+    const updateData: Parameters<typeof prisma.post.update>[0]["data"] = {};
     if (data.title !== undefined) updateData.title = data.title;
     if (data.content !== undefined) updateData.content = data.content ?? null;
     if (data.published !== undefined) updateData.published = data.published;
@@ -76,7 +76,7 @@ export async function DELETE(_req: Request, { params }: RouteContext) {
 
     await prisma.post.delete({ where: { id } }); // If Int: id: Number(id)
     return jsonOk({ ok: true }, { status: 200, message: "Post deleted" });
-  } catch (e) {
+  } catch (e: unknown) {
     console.error("DELETE /api/posts/[id] error:", e);
     return jsonFail("Failed to delete post", { status: 500 });
   }

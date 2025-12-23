@@ -19,7 +19,7 @@ import { toast } from "sonner";
 
 export default function ForgotPasswordForm() {
   const methods = useForm<ForgotPasswordFormValues>({
-    resolver: zodResolver(forgotPasswordSchema) as any,
+    resolver: zodResolver(forgotPasswordSchema),
     defaultValues: { email: "" },
   });
   const {
@@ -28,7 +28,7 @@ export default function ForgotPasswordForm() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: ForgotPasswordFormValues) => {
     try {
       const res = await fetch("/api/auth/forgot-password", {
         method: "POST",
@@ -42,7 +42,7 @@ export default function ForgotPasswordForm() {
       } else {
         toast.error("Failed to request password reset");
       }
-    } catch (e) {
+    } catch {
       toast.error("Failed to request password reset");
     }
   };

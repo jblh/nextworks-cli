@@ -35,7 +35,9 @@ export default function CreatePostForm() {
   const session = useSession();
   const router = useRouter();
 
-  const onSubmit = async (values: any) => {
+  type CreatePostFormValues = z.infer<typeof postFormSchema>;
+
+  const onSubmit = async (values: CreatePostFormValues) => {
     if (session.status !== "authenticated") {
       toast.error(
         "You must be signed in to create a post. Use the Sign up / Log in links above.",
@@ -58,7 +60,7 @@ export default function CreatePostForm() {
       toast.success("Post created");
       // Refresh the server-rendered list below
       router.refresh();
-    } catch (e) {
+    } catch {
       toast.error("Create failed");
     }
   };

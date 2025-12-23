@@ -7,7 +7,7 @@ export type SwitchProps = React.InputHTMLAttributes<HTMLInputElement> & {
 
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
   ({ className, isLoading, disabled, ...props }, ref) => {
-    const checked = !!(props as any).checked;
+    const checked = typeof props.checked === "boolean" ? props.checked : false;
     const isDisabled = !!disabled || !!isLoading;
     return (
       <label
@@ -24,7 +24,7 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           className="sr-only"
           disabled={isDisabled}
           aria-busy={isLoading ? "true" : undefined}
-          {...(props as any)}
+          {...props}
         />
         <span
           aria-hidden

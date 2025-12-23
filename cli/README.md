@@ -123,10 +123,10 @@ Then:
    NEXTAUTH_SECRET=your-strong-secret
    ```
 
-2. Install Prisma (if you haven’t already):
+2. Install dependencies:
 
    ```bash
-   npm install @prisma/client prisma
+   npm install
    ```
 
 3. Run Prisma:
@@ -229,9 +229,9 @@ You can add a short “Nextworks setup” section to your app README:
 
    Set DATABASE_URL, NEXTAUTH_URL, NEXTAUTH_SECRET (and any OAuth or email provider vars you need).
 
-3. Install Prisma (if not present) and run migrations:
+3. Install dependencies and run migrations:
 
-   npm install @prisma/client prisma
+   npm install
    npx prisma generate
    npx prisma migrate dev -n init
 

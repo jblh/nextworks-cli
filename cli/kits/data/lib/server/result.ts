@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { ZodError } from "zod";
-import type { Prisma } from "@prisma/client";
 import { zodErrorToFieldErrors, type FieldErrors } from "@/lib/api/errors";
 
 export type ApiResult<T = unknown> = {
@@ -65,7 +64,11 @@ function isPrismaKnownRequestError(
 function extractUniqueField(
   err: PrismaKnownRequestErrorLike,
 ): string | undefined {
-  const target = (err.meta as any)?.target;
+  const meta = err.meta;
+  const target =
+    meta && typeof meta === "object" && "target" in meta
+      ? (meta as { target?: unknown }).target
+      : undefined;
   if (Array.isArray(target) && target.length) return String(target[0]);
   if (typeof target === "string") return String(target.split("_")[0]);
   return undefined;

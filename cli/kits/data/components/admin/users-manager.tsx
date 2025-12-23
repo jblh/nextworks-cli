@@ -97,7 +97,6 @@ export function UsersManager({
     handleSubmit,
     reset,
     setValue,
-    setError: setFieldError,
     formState: { isSubmitting },
   } = formMethods;
 
@@ -121,23 +120,27 @@ export function UsersManager({
 
       let data: unknown = payload ?? [];
       if (payload && typeof payload === "object" && "success" in payload) {
-        data = (payload as any).data;
+        data = (payload as { data?: unknown }).data;
       }
 
       const items = Array.isArray(data)
         ? data
-        : data && typeof data === "object" && "items" in (data as any)
-          ? (data as any).items
+        : data && typeof data === "object" && "items" in data
+          ? (data as { items?: unknown }).items
           : [];
 
-      setUsers(items as User[]);
+      setUsers(Array.isArray(items) ? (items as User[]) : []);
 
       if (data && typeof data === "object") {
-        const d = data as any;
+        const d = data as {
+          total?: unknown;
+          page?: unknown;
+          perPage?: unknown;
+        };
         if (typeof d.total === "number") setTotal(d.total);
         if (typeof d.page === "number") setPage(d.page);
         if (typeof d.perPage === "number") setPerPage(d.perPage);
-      } else if (Array.isArray(data)) {
+      } else if (Array.isArray(items)) {
         setTotal(items.length);
       } else {
         setTotal(0);
@@ -175,7 +178,7 @@ export function UsersManager({
       setSelectedId(null);
       await fetchUsers();
       toast.success("User created");
-    } catch (_e) {
+    } catch {
       toast.error("Create failed");
     } finally {
       setLoading(false);
@@ -203,7 +206,7 @@ export function UsersManager({
       setSelectedId(null);
       await fetchUsers();
       toast.success("User updated");
-    } catch (_e) {
+    } catch {
       toast.error("Update failed");
     } finally {
       setLoading(false);
@@ -228,7 +231,7 @@ export function UsersManager({
       if (!res.ok) throw new Error("Delete failed");
       toast.success("User deleted");
       await fetchUsers();
-    } catch (_e) {
+    } catch {
       toast.error("Delete failed");
     } finally {
       setLoading(false);

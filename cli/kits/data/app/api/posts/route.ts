@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { ZodError, z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { postSchema } from "@/lib/validation/forms";
@@ -18,14 +17,13 @@ export async function GET(req: Request) {
       Math.max(1, Number(url.searchParams.get("perPage") ?? "8")),
     );
     const q = url.searchParams.get("q") ?? undefined;
-    const sort = url.searchParams.get("sort") ?? "createdAt_desc";
     const sortField = url.searchParams.get("sortField") ?? "createdAt";
     const sortDir =
       (url.searchParams.get("sortDir") as "asc" | "desc") ?? "desc";
 
     const skip = (page - 1) * perPage;
 
-    const where: any = {};
+    const where: NonNullable<Parameters<typeof prisma.post.count>[0]>["where"] = {};
     if (q) {
       where.title = { contains: q, mode: "insensitive" };
     }
@@ -38,7 +36,7 @@ export async function GET(req: Request) {
       where.published = false;
     }
 
-    const orderBy: any = {};
+    const orderBy: NonNullable<Parameters<typeof prisma.post.findMany>[0]>["orderBy"] = {};
     // Allow server to order by title or createdAt for now. Defaults to createdAt
     if (sortField === "title") {
       orderBy.title = sortDir === "asc" ? "asc" : "desc";

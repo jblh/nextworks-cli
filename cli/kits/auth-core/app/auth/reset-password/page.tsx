@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPasswordSchema } from "@/lib/validation/forms";
@@ -22,12 +22,13 @@ export default function ResetPasswordPage() {
   // already enforce the feature guard (returning 404) so we let the client
   // always render and surface the API's response.
   const searchParams = useSearchParams();
-  const router = useRouter();
   const token = searchParams.get("token") || "";
   const [valid, setValid] = useState<boolean | null>(null);
 
-  const methods = useForm({
-    resolver: zodResolver(resetPasswordSchema) as any,
+  type ResetPasswordValues = typeof resetPasswordSchema._type;
+
+  const methods = useForm<ResetPasswordValues>({
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: { token, password: "", confirmPassword: "" },
   });
   const {
@@ -55,7 +56,7 @@ export default function ResetPasswordPage() {
     })();
   }, [token]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: ResetPasswordValues) => {
     try {
       const res = await fetch("/api/auth/reset-password", {
         method: "POST",
@@ -68,9 +69,8 @@ export default function ResetPasswordPage() {
           // Ensure any existing session is cleared so the login page doesn't
           // immediately redirect away. This also avoids confusion during testing.
           await signOut({ redirect: false });
-        } catch (e) {
+        } catch (e: unknown) {
           // ignore signOut failures but log for debugging
-          // eslint-disable-next-line no-console
           console.error("signOut failed:", e);
         }
         // Poll /api/auth/session until it returns null, or timeout after 2s.
@@ -89,10 +89,9 @@ export default function ResetPasswordPage() {
                   return;
                 }
               }
-            } catch (e) {
+            } catch {
               // ignore transient fetch errors
             }
-            // eslint-disable-next-line no-await-in-loop
             await new Promise((res) => setTimeout(res, interval));
           }
           // Timeout: navigate anyway to ensure user sees login
@@ -103,7 +102,7 @@ export default function ResetPasswordPage() {
         const json = await res.json();
         toast.error(json?.message || "Failed to reset password");
       }
-    } catch (e) {
+    } catch {
       toast.error("Failed to reset password");
     }
   };

@@ -9,7 +9,11 @@ const schema = z.object({
   content: z.string().optional(),
 });
 
-export default async function Page({ searchParams }: any) {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   async function createPost(formData: FormData) {
     "use server";
     const title = formData.get("title")?.toString() ?? "";
@@ -48,8 +52,11 @@ export default async function Page({ searchParams }: any) {
     redirect("/examples/forms/server-action?created=1");
   }
 
-  const params = await searchParams;
-  const created = (params && (params as any).created) || false;
+  const params = (await searchParams) ?? {};
+  const createdRaw = params.created;
+  const created = Array.isArray(createdRaw)
+    ? createdRaw[0] === "1"
+    : createdRaw === "1";
 
   return (
     <div className="mx-auto max-w-xl p-6">
@@ -58,9 +65,9 @@ export default async function Page({ searchParams }: any) {
         This demo shows a simple server action that validates with zod and
         creates a Post via prisma (uses a demo fallback authorId).
       </p>
-      {/* Pass the server action down to the client form */}
-      {/* @ts-ignore server action passed to client */}
+            {/* Pass the server action down to the client form */}
       <ServerActionForm action={createPost} />
+
       {created && (
         <p className="mt-4 text-sm text-green-600">
           Post created successfully.

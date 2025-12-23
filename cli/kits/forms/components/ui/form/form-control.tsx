@@ -4,8 +4,8 @@ import * as React from "react";
 import { useFormField } from "./context";
 import { Slot } from "@radix-ui/react-slot";
 
-export interface FormControlProps
-  extends React.ComponentPropsWithoutRef<typeof Slot> {}
+export type FormControlProps = React.ComponentPropsWithoutRef<typeof Slot>;
+
 
 export const FormControl = React.forwardRef<
   React.ElementRef<typeof Slot>,

@@ -22,7 +22,7 @@ export default function SeedDemoButton() {
       toast.success("Demo data seeded");
       // Refresh to show new posts if the page lists them
       router.refresh();
-    } catch (e) {
+    } catch {
       toast.error("Failed to seed demo data");
     } finally {
       setLoading(false);

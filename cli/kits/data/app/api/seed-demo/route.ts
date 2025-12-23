@@ -1,4 +1,3 @@
-import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { jsonOk, jsonFail } from "@/lib/server/result";
 import { getServerSession } from "next-auth";
@@ -6,7 +5,7 @@ import { authOptions } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {

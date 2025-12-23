@@ -4,8 +4,9 @@ import * as React from "react";
 import { useFormField } from "./context";
 import { cn } from "@/lib/utils";
 
-export interface FormDescriptionProps
-  extends React.HTMLAttributes<HTMLParagraphElement> {}
+export type FormDescriptionProps =
+  React.HTMLAttributes<HTMLParagraphElement>;
+
 
 export const FormDescription = ({
   className,

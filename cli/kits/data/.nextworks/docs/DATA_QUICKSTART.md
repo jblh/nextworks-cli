@@ -4,8 +4,10 @@ This document explains how to use the Data (crud) kit in the nextworks starter p
 
 Prerequisites
 
+- Prisma is required (this kit is Prisma-coupled by design).
 - A running PostgreSQL database and `DATABASE_URL` set in `.env`.
 - Auth kit installed and configured (NextAuth + Prisma). The Data kit relies on NextAuth session for access control.
+
   - In the monorepo, this is already wired up.
   - In your own app via the CLI, the recommended alpha setup is to install Blocks (with sections + templates) + Auth Core + Forms first, then Data:
 

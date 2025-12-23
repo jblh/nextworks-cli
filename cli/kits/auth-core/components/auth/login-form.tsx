@@ -156,6 +156,7 @@ export default function LoginForm({
 
   const [error, setError] = useState<string | null | undefined>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
   const [isGithubLoading, setIsGithubLoading] = useState(false);
   const [githubAvailable, setGithubAvailable] = useState(false);
   const [githubConfigured, setGithubConfigured] = useState(false);
@@ -167,7 +168,6 @@ export default function LoginForm({
   const {
     control,
     handleSubmit,
-    setError: setFieldError,
     formState: { isSubmitting },
   } = formMethods;
 
@@ -245,8 +245,10 @@ export default function LoginForm({
     }
   }, [status, session, router, searchParams, defaultRedirect]);
 
-  const onSubmit = async (data: LoginFormValues) => {
+    const onSubmit = async (data: LoginFormValues) => {
     setError(null);
+    setSuccess(null);
+
     const callbackUrl = searchParams.get("callbackUrl") || defaultRedirect;
 
     try {
@@ -270,17 +272,24 @@ export default function LoginForm({
       });
 
       const text = await res.text().catch(() => null);
-      let parsed: any = null;
+      let parsed: unknown = null;
       try {
         parsed = text ? JSON.parse(text) : null;
       } catch {}
 
       if (!res.ok) {
-        if (parsed && typeof parsed === "object") {
-          const msg = mapApiErrorsToForm(formMethods, parsed);
+                        if (parsed && typeof parsed === "object") {
+          const msg = mapApiErrorsToForm(formMethods, parsed as never);
+
+
+          const parsedMessage =
+            "message" in parsed && typeof parsed.message === "string"
+              ? parsed.message
+              : null;
+
           setError(
             msg ||
-              parsed.message ||
+              parsedMessage ||
               (labels.errorGeneric ?? "Login failed. Please try again."),
           );
         } else {
@@ -289,8 +298,13 @@ export default function LoginForm({
         return;
       }
 
+            setSuccess("Logged in successfully");
       toast.success("Logged in successfully");
-      const dest = (parsed && parsed.url) || callbackUrl;
+
+      const dest =
+        parsed && typeof parsed === "object" && "url" in parsed
+          ? String(parsed.url)
+          : callbackUrl;
       const resolve = (cb: string) => {
         try {
           const u = new URL(cb);
@@ -301,7 +315,7 @@ export default function LoginForm({
       };
 
       window.location.assign(resolve(dest));
-    } catch (err) {
+    } catch {
       setError(labels.errorGeneric ?? "Login failed. Please try again.");
     }
   };
@@ -347,7 +361,7 @@ export default function LoginForm({
         </div>
       )}
 
-      {error && (
+            {error && (
         <div
           className={cn(alerts.errorClassName)}
           role="alert"
@@ -356,6 +370,17 @@ export default function LoginForm({
           {error}
         </div>
       )}
+
+      {success && (
+        <div
+          className={cn(alerts.successClassName)}
+          role="status"
+          aria-live="polite"
+        >
+          {success}
+        </div>
+      )}
+
 
       {showGithub && githubAvailable && (
         <>

@@ -115,7 +115,6 @@ export function PostsManager({
     handleSubmit,
     reset,
     setValue,
-    setError: setFieldError,
     formState: { isSubmitting },
   } = formMethods;
 
@@ -128,8 +127,9 @@ export function PostsManager({
   const [publishFilter, setPublishFilter] = useState<
     "all" | "published" | "draft"
   >("all");
-  const [publishingId, setPublishingId] = useState<string | null>(null);
-  const [rowLoading, setRowLoading] = useState<Record<string, boolean>>({});
+    const [rowLoading, setRowLoading] = useState<Record<string, boolean>>({});
+
+
   const [total, setTotal] = useState<number>(0);
 
   const fetchPosts = async (opts?: { page?: number; perPage?: number }) => {
@@ -161,10 +161,11 @@ export function PostsManager({
 
       // Handle paginated shape { items, total, page, perPage }
       if (data && typeof data === "object" && "items" in data) {
-        setPosts((data as any).items as Post[]);
-        setTotal((data as any).total ?? 0);
-        if ((data as any).page) setPage((data as any).page);
-        if ((data as any).perPage) setPerPage((data as any).perPage);
+        const d = data as { items: unknown; total?: unknown; page?: unknown; perPage?: unknown };
+        setPosts(Array.isArray(d.items) ? (d.items as Post[]) : []);
+        setTotal(typeof d.total === "number" ? d.total : 0);
+        if (typeof d.page === "number") setPage(d.page);
+        if (typeof d.perPage === "number") setPerPage(d.perPage);
       } else if (Array.isArray(data)) {
         setPosts(data as Post[]);
         setTotal(data.length);
@@ -190,9 +191,12 @@ export function PostsManager({
     setLoading(true);
     try {
       // Do not send authorId when the user is not an admin; server will infer from session
-      const payloadBody: any = sessionIsAdmin
+      const payloadBody = sessionIsAdmin
         ? values
-        : { title: values.title, content: values.content };
+        : {
+            title: values.title,
+            content: values.content,
+          };
 
       const res = await fetch("/api/posts", {
         method: "POST",
@@ -212,7 +216,7 @@ export function PostsManager({
       reset(defaultValues);
       await fetchPosts();
       toast.success("Post created");
-    } catch (_e) {
+    } catch {
       toast.error("Author ID not found or create failed");
     } finally {
       setLoading(false);
@@ -244,7 +248,7 @@ export function PostsManager({
       setSelectedId(null);
       await fetchPosts();
       toast.success("Post updated");
-    } catch (_e) {
+    } catch {
       toast.error("Update failed");
     } finally {
       setLoading(false);
@@ -263,7 +267,7 @@ export function PostsManager({
       if (!res.ok) throw new Error("Delete failed");
       await fetchPosts();
       toast.success("Post deleted");
-    } catch (_e) {
+    } catch {
       toast.error("Delete failed");
     } finally {
       setLoading(false);
@@ -292,9 +296,11 @@ export function PostsManager({
       return;
     }
 
-    // show row-level loading state
-    setPublishingId(id);
+            // show row-level loading state
     setRowLoading((r) => ({ ...r, [id]: true }));
+
+
+
 
     // Do NOT optimistically remove or flip the row state; show spinner and refetch after success
     try {
@@ -312,11 +318,11 @@ export function PostsManager({
       await fetchPosts();
 
       toast.success("Updated");
-    } catch (e) {
+    } catch {
       toast.error("Failed to update published");
-    } finally {
-      setPublishingId(null);
+        } finally {
       setRowLoading((r) => {
+
         const copy = { ...r };
         delete copy[id];
         return copy;
@@ -497,7 +503,9 @@ export function PostsManager({
               <select
                 value={publishFilter}
                 onChange={(e) => {
-                  setPublishFilter(e.target.value as any);
+                  setPublishFilter(
+                    e.target.value as "all" | "published" | "draft",
+                  );
                   setPage(1);
                 }}
                 className="rounded-md border px-2 py-1"

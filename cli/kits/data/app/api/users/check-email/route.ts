@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     const user = await prisma.user.findUnique({ where: { email } });
     return jsonOk({ exists: !!user });
-  } catch (e) {
+  } catch {
     return jsonFail("Failed to check email", { status: 500 });
   }
 }

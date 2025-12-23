@@ -3,7 +3,7 @@ import type { ApiResult } from "@/lib/server/result";
 
 export function mapApiErrorsToForm<TFieldValues extends FieldValues>(
   form: UseFormReturn<TFieldValues>,
-  result: ApiResult<any>,
+  result: ApiResult<unknown>,
   options?: { formKey?: string },
 ): string | undefined {
   if (!result || result.success) return undefined;

@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { userSchema } from "@/lib/validation/forms";
+
 import { Form } from "@/components/ui/form/form";
 import { FormField } from "@/components/ui/form/form-field";
 import { FormItem } from "@/components/ui/form/form-item";
@@ -19,10 +21,13 @@ import { toast } from "sonner";
 export default function ProfileForm() {
   const { data: session, update } = useSession();
 
-  const methods = useForm({
+    const methods = useForm({
     resolver: zodResolver(userSchema),
     defaultValues: { name: "", email: "" },
   });
+
+  type ProfileFormValues = z.infer<typeof userSchema>;
+
   const { control, handleSubmit, reset } = methods;
   const [isSaving, setIsSaving] = useState(false);
 
@@ -32,7 +37,8 @@ export default function ProfileForm() {
     }
   }, [session, reset]);
 
-  const onSubmit = async (values: any) => {
+    const onSubmit = async (values: ProfileFormValues) => {
+
     if (!session?.user?.id) {
       toast.error("You must be signed in to update your profile");
       return;

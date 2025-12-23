@@ -60,8 +60,7 @@ export const userUpdateSchema = z.object({
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
-    .optional()
-    .or(z.literal("")),
+    .optional(),
   emailVerified: z
     .union([z.date(), z.string().transform((s) => new Date(s)), z.null()])
     .optional(),

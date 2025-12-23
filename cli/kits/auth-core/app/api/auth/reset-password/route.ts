@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     if (!pr) {
       return NextResponse.json({ message: "Invalid or expired token" }, { status: 400 });
     }
-    if ((pr as any).used) {
+    if (pr.used) {
       return NextResponse.json({ message: "Token already used" }, { status: 400 });
     }
     if (pr.expires < new Date()) {
@@ -37,9 +37,12 @@ export async function POST(req: Request) {
     await prisma.passwordReset.update({ where: { id: pr.id }, data: { used: true } });
 
     return NextResponse.json({ message: "Password updated" });
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (err instanceof z.ZodError) {
-      return NextResponse.json({ message: "Validation failed", errors: (err as z.ZodError).issues }, { status: 400 });
+      return NextResponse.json(
+        { message: "Validation failed", errors: err.issues },
+        { status: 400 },
+      );
     }
     return NextResponse.json({ message: "Failed" }, { status: 400 });
   }
@@ -56,7 +59,7 @@ export async function GET(req: Request) {
   const tokenHash = createHash("sha256").update(token).digest("hex");
   const pr = await prisma.passwordReset.findFirst({ where: { tokenHash } });
   if (!pr) return NextResponse.json({ valid: false });
-  if ((pr as any).used) return NextResponse.json({ valid: false });
+  if (pr.used) return NextResponse.json({ valid: false });
   if (pr.expires < new Date()) return NextResponse.json({ valid: false });
 
   return NextResponse.json({ valid: true });

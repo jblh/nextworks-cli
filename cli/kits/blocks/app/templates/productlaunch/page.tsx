@@ -11,8 +11,6 @@ import { Testimonials } from "./components/Testimonials";
 import { TrustBadges } from "./components/TrustBadges";
 import { Features } from "./components/Features";
 
-import { PresetThemeVars } from "./PresetThemeVars";
-
 export default function ProductLaunchPage() {
   return (
     // <PresetThemeVars>

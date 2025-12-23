@@ -56,11 +56,11 @@ If you choose a different database provider, update the `provider` field in your
 
 Environment variables
 
-The kit relies on the following environment variables. Document these in post-install output or in your project's README:
+The kit relies on the following environment variables. Document these in post-install output or in your project's README.
 
 Required (for core auth):
 
-- DATABASE_URL
+- DATABASE_URL (required by Prisma)
 - NEXTAUTH_URL (e.g. http://localhost:3000)
 - NEXTAUTH_SECRET
 

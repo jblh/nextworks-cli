@@ -75,7 +75,8 @@ If you choose a different database provider, update the `provider` field in your
 Notes and important behavior
 
 - Kit dependencies:
-  - Data depends on Auth (for RBAC/session) and Forms (for form primitives/validation). The CLI currently auto-installs `auth-core` and `forms` when you run `nextworks add data` to ensure the required pieces are present. If you prefer an interactive prompt instead of auto-install, the CLI can be adjusted to prompt (ask the maintainers).
+  - Data requires Prisma (this kit is Prisma-coupled by design) and depends on Auth (for RBAC/session) and Forms (for form primitives/validation).
+  - The CLI currently auto-installs `auth-core` and `forms` when you run `nextworks add data` to ensure the required pieces are present. If you prefer an interactive prompt instead of auto-install, the CLI can be adjusted to prompt (ask the maintainers).
   - The kit's package-deps.json lists runtime and dev dependencies that the CLI will merge into the project's package.json; after installation you must run npm install in the project.
 
 - Standalone admin components:

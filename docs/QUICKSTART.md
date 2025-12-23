@@ -40,7 +40,7 @@ if [[ "${ADD_AUTH,,}" =~ ^y ]]; then
   cp .env.example .env || true
 
   echo "⟶ Run the following Prisma steps next:"
-  echo "   npm install @prisma/client prisma"
+  echo "   npm install"
   echo "   npx prisma generate"
   echo "   npx prisma migrate dev -n init"
 fi
@@ -67,7 +67,7 @@ Paste a short README section (example):
 1. Run the setup script from your app root:
    bash docs/setup-nextworks.sh
 2. If you installed Auth Core, initialize Prisma:
-   npm install @prisma/client prisma
+   npm install
    npx prisma generate
    npx prisma migrate dev -n init
 3. (Optional) Add Forms and Data kits:

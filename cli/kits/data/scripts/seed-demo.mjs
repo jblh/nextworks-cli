@@ -4,10 +4,9 @@ const prisma = new PrismaClient();
 
 async function main() {
   const adminEmail = process.env.SEED_ADMIN_EMAIL || "admin@example.com";
-  const adminPassword = process.env.SEED_ADMIN_PASSWORD || "password123";
 
   // Upsert admin user
-  const user = await prisma.user.upsert({
+  await prisma.user.upsert({
     where: { email: adminEmail },
     update: {},
     create: {

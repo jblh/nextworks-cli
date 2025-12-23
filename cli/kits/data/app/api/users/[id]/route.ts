@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import type { Prisma } from "@prisma/client";
 import { jsonOk, jsonFail } from "@/lib/server/result";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -59,20 +58,28 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
     try {
       const parsed = userUpdateSchema.parse(body);
 
-      // Build Prisma-compatible update object
-      const data: Prisma.UserUpdateInput = {};
-      if (parsed.name !== undefined)
-        data.name = parsed.name === "" ? null : parsed.name;
-      if (parsed.email !== undefined) data.email = parsed.email;
-      if (parsed.image !== undefined)
-        data.image = parsed.image === "" ? null : parsed.image;
-      if (parsed.password !== undefined) {
-        // Hash password before saving
-        const { hashPassword } = await import("@/lib/hash");
-        data.password = await hashPassword(parsed.password as string);
-      }
-      if (parsed.emailVerified !== undefined)
-        data.emailVerified = parsed.emailVerified as any;
+      // Build Prisma-compatible update object (avoid mutating `{}` with `satisfies`)
+      const data = {
+        ...(parsed.name !== undefined
+          ? { name: parsed.name === "" ? null : parsed.name }
+          : {}),
+        ...(parsed.email !== undefined ? { email: parsed.email } : {}),
+        ...(parsed.image !== undefined
+          ? { image: parsed.image === "" ? null : parsed.image }
+          : {}),
+        ...(parsed.password !== undefined
+          ? {
+              password: await (async () => {
+                const { hashPassword } = await import("@/lib/hash");
+                // `password` is present in this branch; help TS narrow from `string | undefined`.
+                return hashPassword(parsed.password!);
+              })(),
+            }
+          : {}),
+        ...(parsed.emailVerified !== undefined
+          ? { emailVerified: parsed.emailVerified }
+          : {}),
+      } satisfies Parameters<typeof prisma.user.update>[0]["data"];
 
       const updated = await prisma.user.update({
         where: { id },
@@ -82,9 +89,14 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
       return jsonOk(updated, { status: 200, message: "User updated" });
     } catch (err) {
       // Zod errors
-      if (err && typeof err === "object" && "issues" in (err as any)) {
+      if (
+        err &&
+        typeof err === "object" &&
+        "issues" in err &&
+        Array.isArray((err as { issues?: unknown }).issues)
+      ) {
         const { jsonFromZod } = await import("@/lib/server/result");
-        return jsonFromZod(err as any, {
+        return jsonFromZod(err as never, {
           status: 400,
           message: "Validation failed",
         });

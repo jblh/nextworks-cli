@@ -4,8 +4,7 @@ import * as React from "react";
 import { useFormField } from "./context";
 import { cn } from "@/lib/utils";
 
-export interface FormMessageProps
-  extends React.HTMLAttributes<HTMLParagraphElement> {}
+export type FormMessageProps = React.HTMLAttributes<HTMLParagraphElement>;
 
 export const FormMessage = ({
   className,

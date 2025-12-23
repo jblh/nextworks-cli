@@ -8,6 +8,12 @@ import { compare } from "bcryptjs";
 import { z } from "zod";
 import { zodErrorToFieldErrors } from "@/lib/api/errors";
 
+type JwtTokenWithAppClaims = {
+  id?: string;
+  role?: string;
+  image?: string | null;
+};
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -66,8 +72,8 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             email: user.email,
             role: user.role,
-          } as any;
-        } catch (err: any) {
+          } as unknown as import("next-auth").User;
+        } catch (err: unknown) {
           if (err instanceof z.ZodError) {
             throw new Error(
               JSON.stringify({
@@ -77,8 +83,10 @@ export const authOptions: NextAuthOptions = {
             );
           }
           try {
-            JSON.parse(err?.message);
-            throw err; // already structured
+            if (err instanceof Error) {
+              JSON.parse(err.message);
+              throw err; // already structured
+            }
           } catch {
             throw new Error(
               JSON.stringify({
@@ -88,6 +96,8 @@ export const authOptions: NextAuthOptions = {
             );
           }
         }
+
+        return null;
       },
     }),
     ...(process.env.GITHUB_ID && process.env.GITHUB_SECRET
@@ -102,29 +112,50 @@ export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
+      const t = token as typeof token & JwtTokenWithAppClaims;
+
       if (user) {
-        (token as any).id = (user as any).id;
+        // NextAuth's `user` type doesn't include custom properties like `role`.
+        // Narrow via runtime checks instead of `any`.
+        const u = user as unknown as Record<string, unknown>;
+
+        if (typeof u.id === "string") t.id = u.id;
+
         token.name = user.name ?? "";
         token.email = user.email ?? "";
-        (token as any).role =
-          (user as any).role ?? (token as any).role ?? "user";
+
+        if (typeof u.role === "string") {
+          t.role = u.role;
+        } else {
+          t.role = t.role ?? "user";
+        }
       }
+
       if (trigger === "update" && session) {
-        const s = session as any;
-        if (typeof s.name === "string") token.name = s.name;
-        if (typeof s.email === "string") token.email = s.email;
-        if (typeof s.role === "string") (token as any).role = s.role;
-        if (s.image === null || typeof s.image === "string")
-          (token as any).image = s.image ?? null;
+        if (typeof session.name === "string") token.name = session.name;
+        if (typeof session.email === "string") token.email = session.email;
+
+        const s = session as unknown as Record<string, unknown>;
+        if (typeof s.role === "string") t.role = s.role;
+
+        if (s.image === null || typeof s.image === "string") {
+          t.image = (s.image as string | null) ?? null;
+        }
       }
+
       return token;
     },
     async session({ session, token }) {
+      const t = token as typeof token & JwtTokenWithAppClaims;
+
       if (session.user) {
-        (session.user as any).id = (token as any).id as string;
+        if (typeof t.id === "string") session.user.id = t.id;
         session.user.name = token.name ?? null;
         session.user.email = token.email ?? "";
-        (session.user as any).role = (token as any).role ?? "user";
+
+        if (typeof t.role === "string") {
+          (session.user as unknown as Record<string, unknown>).role = t.role;
+        }
       }
       return session;
     },

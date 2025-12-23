@@ -134,8 +134,31 @@ export default function Dashboard({
     .join("")
     .toUpperCase();
 
-  const createdAtRaw =
-    (session as any)?.user?.createdAt ?? (session as any)?.createdAt;
+  const createdAtRaw = (() => {
+    const s = session as unknown;
+    if (!s || typeof s !== "object") return null;
+
+    const sessionCreatedAt =
+      "createdAt" in s &&
+      (typeof (s as { createdAt?: unknown }).createdAt === "string" ||
+        (s as { createdAt?: unknown }).createdAt instanceof Date)
+        ? (s as { createdAt?: string | Date }).createdAt
+        : null;
+
+    const user = "user" in s && (s as { user?: unknown }).user && typeof (s as { user?: unknown }).user === "object"
+      ? (s as { user: Record<string, unknown> }).user
+      : null;
+
+    const userCreatedAt =
+      user &&
+      "createdAt" in user &&
+      (typeof (user as { createdAt?: unknown }).createdAt === "string" ||
+        (user as { createdAt?: unknown }).createdAt instanceof Date)
+        ? (user as { createdAt?: string | Date }).createdAt
+        : null;
+
+    return userCreatedAt ?? sessionCreatedAt;
+  })();
   const createdAt = createdAtRaw ? new Date(createdAtRaw) : null;
 
   return (

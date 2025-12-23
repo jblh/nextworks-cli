@@ -39,7 +39,9 @@ Notes:
 - The Auth kit will only enable the GitHub provider when both GITHUB_ID and GITHUB_SECRET are present.
 - Password reset remains disabled by default; enable cautiously and only after configuring a real mail provider in production.
 
-## 2) Install and generate Prisma
+## 2) Install and generate Prisma (required)
+
+Auth Core requires Prisma (this kit is Prisma-coupled by design).
 
 If you are using the monorepo directly:
 
@@ -49,15 +51,19 @@ npx prisma generate
 npx prisma migrate dev -n init
 ```
 
-If you installed Auth via the CLI (`npx nextworks add auth-core`), the schema and scripts are already in place in your app — you still need to run:
+If you installed Auth via the CLI (`npx nextworks add auth-core`):
+
+- Prisma dependencies are added to your app via the kit's `package-deps.json` (so a plain `npm install` should be enough).
+- You still must ensure `DATABASE_URL` is set, and you must run Prisma generate + migrations.
 
 ```bash
-npm install @prisma/client prisma
+npm install
 npx prisma generate
 npx prisma migrate dev -n init
 ```
 
 This applies the Prisma schema and generates the Prisma client.
+
 
 ## 3) Start the dev server
 

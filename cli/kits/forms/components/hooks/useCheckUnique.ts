@@ -59,7 +59,13 @@ export default function useCheckUnique(
             setUnique(null);
           }
         } catch (e: unknown) {
-          if ((e as any)?.name === "AbortError") return;
+          if (
+            e &&
+            typeof e === "object" &&
+            "name" in e &&
+            (e as { name?: unknown }).name === "AbortError"
+          )
+            return;
           setError("Validation failed");
           setUnique(null);
         } finally {

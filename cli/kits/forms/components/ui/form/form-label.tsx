@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { useFormField } from "./context";
 import { cn } from "@/lib/utils";
 
-export interface FormLabelProps extends React.ComponentProps<typeof Label> {}
+export type FormLabelProps = React.ComponentProps<typeof Label>;
 
 export const FormLabel = React.forwardRef<
   React.ElementRef<typeof Label>,

@@ -33,8 +33,8 @@ export interface NewsletterProps {
   input?: { className?: string };
   button?: {
     className?: string;
-    variant?: any;
-    size?: any;
+    variant?: React.ComponentProps<typeof Button>["variant"];
+    size?: React.ComponentProps<typeof Button>["size"];
     unstyled?: boolean;
   };
 

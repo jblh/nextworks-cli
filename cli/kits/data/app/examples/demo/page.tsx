@@ -79,7 +79,8 @@ export default async function DemoPage() {
         <h2 className="mb-3 text-lg font-semibold">Your posts</h2>
         {posts.length === 0 ? (
           <p className="text-muted-foreground text-sm">
-            No posts yet. Use the form above or click "Seed demo data" to create
+                        No posts yet. Use the form above or click &quot;Seed demo data&quot; to create
+
             sample posts.
           </p>
         ) : (
