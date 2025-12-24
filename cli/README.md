@@ -101,6 +101,18 @@ After this step you should be able to start your dev server and visit:
 - `/` (if wired as the home page), or
 - `/templates/productlaunch`, `/templates/saasdashboard`, `/templates/digitalagency`
 
+> **Prisma requirement for Auth Core, Data, and Prisma-based examples**
+>
+> If you install **Auth Core**, **Data**, or copy any **Forms** examples that use Prisma (e.g. server-action or wizard demos), you **must**:
+>
+> - Configure a PostgreSQL `DATABASE_URL` in your app `.env` / `.env.local`.
+> - Merge the kit Prisma models into your `prisma/schema.prisma` as directed.
+> - Run:
+>   - `npx prisma generate`
+>   - `npx prisma migrate dev -n init` (and any subsequent migrations)
+>
+> Do this **before** running `npm run build` or `npm run dev`. Skipping these steps will usually result in build/runtime errors because the generated Prisma client, tables, or types are missing.
+
 ### 2) Add Auth Core
 
 ```bash
@@ -278,6 +290,8 @@ the MIT License.
   ```
 
   and that `DATABASE_URL` in `.env` points to a reachable PostgreSQL instance.
+
+  If you see build errors in `lib/prisma.ts` or Prisma types during `npm run build`, you almost certainly still need to run `npx prisma generate` and `npx prisma migrate dev`.
 
 - **Auth routes 404**
 

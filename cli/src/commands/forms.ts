@@ -94,6 +94,12 @@ export async function addForms(options?: AddFormsOptions): Promise<void> {
     console.log(
       "2. Import/Use the form primitives in your pages/components as needed",
     );
+    console.log(
+      "\nNote: The optional server-action and wizard examples use Prisma if you install them.",
+    );
+    console.log(
+      "      If you copy those examples, you must also run 'npx prisma generate' and 'npx prisma migrate dev' before 'npm run build'.",
+    );
 
     // Print optional examples (if declared in manifest)
     const optionalExamples =

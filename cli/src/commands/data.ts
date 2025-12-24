@@ -99,9 +99,15 @@ export async function addData(): Promise<void> {
 
     console.log("\n📋 Next steps:");
     console.log(
-      "1. Merge prisma models into your prisma/schema.prisma and run npx prisma generate && npx prisma migrate dev",
+      "1. Merge prisma models into your prisma/schema.prisma and run npx prisma generate && npx prisma migrate dev (required before build/dev)",
     );
     console.log("2. Install dependencies: npm install");
+    console.log(
+      "\n⚠️  Important: Your app may fail to build or run until Prisma is set up.",
+    );
+    console.log(
+      "   Make sure DATABASE_URL is set and you have run the Prisma commands above before 'npm run build'.",
+    );
   } catch (error) {
     console.log("❌ Failed to install data kit");
     throw error;

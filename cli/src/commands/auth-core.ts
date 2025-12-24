@@ -89,12 +89,15 @@ export async function addAuthCore(): Promise<void> {
     console.log("   Check prisma/auth-models.prisma (copied to your project)");
     console.log("   Copy the models to your prisma/schema.prisma file");
 
-    console.log("\n3. Run Prisma commands:");
+    console.log("\n3. Run Prisma commands (required before build/dev):");
     console.log("   npx prisma generate");
     console.log("   npx prisma migrate dev -n init");
 
     console.log("\n4. Install dependencies:");
     console.log("   npm install");
+
+    console.log("\n⚠️  Important: Your app may fail to build or run until Prisma is set up.");
+    console.log("   Make sure DATABASE_URL is set and you have run the Prisma commands above before 'npm run build'.");
 
     console.log("\n✨ Auth core is ready! You now have:");
     console.log("   • Login page: /auth/login");

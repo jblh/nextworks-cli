@@ -70,7 +70,20 @@ npx nextworks add forms
 npx nextworks add data
 ```
 
+> **Prisma requirement for Auth Core, Data, and Prisma-based examples**
+>
+> If you install **Auth Core**, **Data**, or copy any **Forms** examples that use Prisma (e.g. server-action or wizard demos), you **must**:
+>
+> - Configure a PostgreSQL `DATABASE_URL` in your app `.env` / `.env.local`.
+> - Merge the kit Prisma models into your `prisma/schema.prisma` as directed.
+> - Run:
+>   - `npx prisma generate`
+>   - `npx prisma migrate dev -n init` (and any subsequent migrations)
+>
+> Do this **before** running `npm run build` or `npm run dev`. Skipping these steps will usually result in build/runtime errors because the generated Prisma client, tables, or types are missing.
+
 See `docs/QUICKSTART.md` and the module-specific quickstarts in `docs/` for more detail.
+
 
 ## Feedback & issues
 
@@ -88,6 +101,16 @@ During alpha, the most useful feedback is:
 ### Bug reports
 
 For reproducible bugs / errors (especially install/runtime issues), please open a GitHub Issue using the templates in `.github/ISSUE_TEMPLATE/`.
+
+### Common Prisma build errors
+
+If you see build errors in `lib/prisma.ts` or Prisma types during `npm run build`, you almost certainly still need to:
+
+- Set a valid `DATABASE_URL` in your app `.env` / `.env.local`, and
+- Run:
+  - `npx prisma generate`
+  - `npx prisma migrate dev` (or `npx prisma migrate dev -n init` in a fresh app).
+
 
 
 ## Branding
