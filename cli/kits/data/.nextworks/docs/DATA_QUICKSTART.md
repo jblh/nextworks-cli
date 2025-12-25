@@ -12,10 +12,10 @@ Prerequisites
   - In your own app via the CLI, the recommended alpha setup is to install Blocks (with sections + templates) + Auth Core + Forms first, then Data:
 
     ```bash
-    npx nextworks add blocks --sections --templates
-    npx nextworks add auth-core
-    npx nextworks add forms
-    npx nextworks add data
+        npx nextworks@latest add blocks --sections --templates
+    npx nextworks@latest add auth-core
+    npx nextworks@latest add forms
+    npx nextworks@latest add data
     ```
 
     then follow the Prisma and `.env` steps below.

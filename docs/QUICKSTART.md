@@ -12,7 +12,7 @@ For more details on the CLI and available kits, see `cli/README.md`.
 > **Troubleshooting:** If `app/layout.tsx` gets into a bad state (e.g. a broken `next/font/google` import), rerun:
 >
 > ```bash
-> npx nextworks add blocks --sections --templates
+> npx nextworks@latest add blocks --sections --templates
 > ```
 >
 > Or manually ensure:
@@ -29,12 +29,12 @@ Create a file named setup-nextworks.sh, paste the content, make it executable, t
 set -euo pipefail
 
 echo "⟶ Installing Blocks kit (UI sections + templates)"
-npx nextworks add blocks --sections --templates
+npx nextworks@latest add blocks --sections --templates
 
 read -p "⟶ Do you want to add Auth kit now? (recommended for Data testing) [y/N] " ADD_AUTH
 if [[ "${ADD_AUTH,,}" =~ ^y ]]; then
   echo "⟶ Installing Auth Core kit..."
-  npx nextworks add auth-core
+  npx nextworks@latest add auth-core
 
   echo "⟶ Copying .env.example to .env (edit DB and NEXTAUTH secrets as needed)"
   cp .env.example .env || true
@@ -48,7 +48,7 @@ fi
 echo "⟶ Optional: Install Forms kit? (provides form primitives and wizard example)"
 read -p "Install Forms kit? [y/N] " ADD_FORMS
 if [[ "${ADD_FORMS,,}" =~ ^y ]]; then
-  npx nextworks add forms
+  npx nextworks@latest add forms
 fi
 
 echo "Done. Next steps:"
@@ -71,8 +71,8 @@ Paste a short README section (example):
    npx prisma generate
    npx prisma migrate dev -n init
 3. (Optional) Add Forms and Data kits:
-   npx nextworks add forms
-   npx nextworks add data
+   npx nextworks@latest add forms
+   npx nextworks@latest add data
    npx prisma generate
    npx prisma migrate dev -n init_data
 4. Start dev server:

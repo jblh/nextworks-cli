@@ -13,11 +13,16 @@ This repository contains the source for the **nextworks** CLI and its MIT-licens
 > Status: **alpha**  
 > See the [GitHub Releases](https://github.com/jblh/nextworks-cli/releases) page for notes on each release.
 >
-> Install from npm (recommended):
+> Install / try it (alpha quickstart):
 >
 > ```bash
-> npm install nextworks@latest
+> npx create-next-app@latest
+> cd <your-app>
+> npx nextworks@latest add blocks --sections --templates
 > ```
+>
+> For the canonical CLI README (install steps, kits, and troubleshooting), see:
+> https://github.com/jblh/nextworks-cli/tree/main/cli
 >
 > If you want/need to install the underlying packages directly, prefer `@latest` to avoid stale pins:
 >
@@ -29,7 +34,7 @@ This repository contains the source for the **nextworks** CLI and its MIT-licens
 >   @nextworks/blocks-templates@latest
 > ```
 
-- `cli/` – the CLI that powers `npx nextworks ...` and the install commands for Blocks, Auth Core, Forms, and Data.
+- `cli/` – the CLI that powers `npx nextworks@latest ...` and the install commands for Blocks, Auth Core, Forms, and Data.
 - `cli/kits/` – the code that nextworks installs into your Next.js app (blocks, auth, forms, data examples, docs).
 - `cli_manifests/` – manifests that describe what each CLI command installs.
 - `packages/blocks-*` – reusable UI/component packages used by the kits.
@@ -54,20 +59,21 @@ Other 16.x versions will likely work; older versions are **best effort**. If you
 
 ## Getting started
 
-Install from npm (recommended):
+Install / try it (alpha quickstart):
 
 ```bash
-npm install nextworks@latest
+npx create-next-app@latest
+cd <your-app>
+# Nextworks assumes TypeScript + Tailwind CSS (required for Blocks/templates)
+npx nextworks@latest add blocks --sections --templates
 ```
 
-To use the CLI in a Next.js app (from npm):
+Then, optionally:
 
 ```bash
-npx nextworks add blocks --sections --templates
-# then, optionally
-npx nextworks add auth-core
-npx nextworks add forms
-npx nextworks add data
+npx nextworks@latest add auth-core
+npx nextworks@latest add forms
+npx nextworks@latest add data
 ```
 
 > **Prisma requirement for Auth Core, Data, and Prisma-based examples**
@@ -95,7 +101,7 @@ During alpha, the most useful feedback is:
 
 ### Where to post feedback
 
-- **Start here (how to give feedback):** https://github.com/jblh/nextworks-cli/discussions/1
+- **Alpha testers — Start here (installation + where to post feedback):** https://github.com/jblh/nextworks-cli/discussions/1
 - **Alpha feedback thread (what broke / what’s missing):** https://github.com/jblh/nextworks-cli/discussions/2
 
 ### Bug reports

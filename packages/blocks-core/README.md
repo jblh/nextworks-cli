@@ -8,22 +8,22 @@ This package provides:
 - Theme helpers and providers
 - Types and helpers shared by other `@nextworks/blocks-*` packages
 
-## Installation
+## Recommended: install via the nextworks CLI
+
+Most developers should install Blocks via the **nextworks** CLI (copy-in / shadcn-style) rather than consuming this package directly.
+
+```bash
+npx nextworks@latest add blocks --sections --templates
+```
+
+- npm (CLI): https://www.npmjs.com/package/nextworks
+
+## Direct installation (advanced)
+
+If you’re building on top of the compiled `@nextworks/blocks-*` packages, you can install this package directly:
 
 ```bash
 npm install @nextworks/blocks-core
-# or
-pnpm add @nextworks/blocks-core
-# or
-yarn add @nextworks/blocks-core
 ```
 
 You will typically not use this package directly unless you are composing your own blocks or building on top of `@nextworks/blocks-sections` or `@nextworks/blocks-templates`.
-
-For a higher-level experience with copyable files and Next.js app wiring, consider using the `nextworks` CLI:
-
-```bash
-npx nextworks add blocks
-```
-
-which copies a curated set of components and templates into your app.

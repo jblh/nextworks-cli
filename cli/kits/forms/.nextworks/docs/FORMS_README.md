@@ -3,7 +3,7 @@ Forms kit (cli/kits/forms)
 This folder contains the files that the `nextworks` CLI copies into a target Next.js project when you run:
 
 ```bash
-npx nextworks add forms
+npx nextworks@latest add forms
 ```
 
 What the kit includes
@@ -30,8 +30,8 @@ Notes
 > In this early alpha, Forms is tested on top of a **Blocks** install that includes sections and templates. For the smoothest experience, install Blocks first:
 >
 > ```bash
-> npx nextworks add blocks --sections --templates
-> npx nextworks add forms
+> npx nextworks@latest add blocks --sections --templates
+> npx nextworks@latest add forms
 > ```
 >
 > Using Forms without Blocks may work but can require manual tweaks (for example around shared UI primitives).

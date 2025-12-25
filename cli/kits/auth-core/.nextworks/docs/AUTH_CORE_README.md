@@ -3,7 +3,7 @@ Auth core kit (cli/kits/auth-core)
 This folder contains the files that the `nextworks` CLI copies into a target Next.js project when you run:
 
 ```bash
-npx nextworks add auth-core
+npx nextworks@latest add auth-core
 ```
 
 > **Alpha note**
@@ -11,8 +11,8 @@ npx nextworks add auth-core
 > In this early alpha, the Auth Core kit is tested and supported on top of a **Blocks** install that includes sections and templates. For the smoothest experience, run:
 >
 > ```bash
-> npx nextworks add blocks --sections --templates
-> npx nextworks add auth-core
+> npx nextworks@latest add blocks --sections --templates
+> npx nextworks@latest add auth-core
 > ```
 >
 > before wiring up Prisma and env variables. Using Auth Core without Blocks may work but can require manual tweaks.

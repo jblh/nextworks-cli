@@ -9,14 +9,22 @@ Included templates (subject to change):
 - Digital agency
 - Gallery
 
-## Installation
+## Recommended: install via the nextworks CLI
+
+Most developers should install Blocks via the **nextworks** CLI (copy-in / shadcn-style) rather than consuming this package directly.
+
+```bash
+npx nextworks@latest add blocks --sections --templates
+```
+
+- npm (CLI): https://www.npmjs.com/package/nextworks
+
+## Direct installation (advanced)
+
+If you want to consume the compiled templates as a package:
 
 ```bash
 npm install @nextworks/blocks-templates @nextworks/blocks-sections @nextworks/blocks-core
-# or
-pnpm add @nextworks/blocks-templates @nextworks/blocks-sections @nextworks/blocks-core
-# or
-yarn add @nextworks/blocks-templates @nextworks/blocks-sections @nextworks/blocks-core
 ```
 
 ## Usage
@@ -34,9 +42,3 @@ These templates assume:
 - Next.js App Router
 - Tailwind CSS
 - The theme provider and global styles from `@nextworks/blocks-core` are set up.
-
-If you prefer working with source files copied into your app (instead of consuming compiled templates), use the `nextworks` CLI:
-
-```bash
-npx nextworks add blocks
-```

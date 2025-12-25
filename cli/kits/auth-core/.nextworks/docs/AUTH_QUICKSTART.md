@@ -5,8 +5,8 @@ Follow these steps to get email/password auth (and optional GitHub OAuth) runnin
 If you are using the `nextworks` CLI in your own app, the recommended alpha setup is to install Blocks with sections and templates first, then Auth Core:
 
 ```bash
-npx nextworks add blocks --sections --templates
-npx nextworks add auth-core
+npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add auth-core
 ```
 
 Then follow the steps below inside your app.
@@ -51,7 +51,7 @@ npx prisma generate
 npx prisma migrate dev -n init
 ```
 
-If you installed Auth via the CLI (`npx nextworks add auth-core`):
+If you installed Auth via the CLI (`npx nextworks@latest add auth-core`):
 
 - Prisma dependencies are added to your app via the kit's `package-deps.json` (so a plain `npm install` should be enough).
 - You still must ensure `DATABASE_URL` is set, and you must run Prisma generate + migrations.

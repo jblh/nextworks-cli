@@ -3,7 +3,7 @@ Data kit (cli/kits/data)
 This kit provides a standalone example Data layer with Posts + Users CRUD: API routes, admin UI, Prisma helpers and a seed script. The kit is designed to be installed via the `nextworks` CLI:
 
 ```bash
-npx nextworks add data
+npx nextworks@latest add data
 ```
 
 and is packaged with its own kit dependencies metadata.
@@ -13,10 +13,10 @@ and is packaged with its own kit dependencies metadata.
 > In this early alpha, the Data kit is tested and supported on top of **Blocks** (with sections + templates), **Auth Core**, and **Forms**. For the smoothest experience, run:
 >
 > ```bash
-> npx nextworks add blocks --sections --templates
-> npx nextworks add auth-core
-> npx nextworks add forms
-> npx nextworks add data
+> npx nextworks@latest add blocks --sections --templates
+> npx nextworks@latest add auth-core
+> npx nextworks@latest add forms
+> npx nextworks@latest add data
 > ```
 >
 > Using Data without Blocks/Auth/Forms may work but is not yet a supported path and can require manual Prisma/schema and UI tweaks.

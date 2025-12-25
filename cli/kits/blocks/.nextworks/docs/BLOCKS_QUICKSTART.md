@@ -9,7 +9,7 @@ This document explains the Blocks kit: prebuilt UI sections, templates and core 
 > If you are using the `nextworks` CLI in your own app, you can install this Blocks kit by running:
 >
 > ```bash
-> npx nextworks add blocks --sections --templates
+> npx nextworks@latest add blocks --sections --templates
 > ```
 >
 > This installs **core UI primitives, sections, and page templates**, so the example templates work out of the box. The CLI will copy files into your project under `components/`, `app/templates/`, `lib/`, and `public/` as described below.

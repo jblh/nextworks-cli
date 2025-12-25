@@ -5,8 +5,8 @@ This short doc points to the minimal example that demonstrates how to use the Fo
 > To add these examples and primitives to your own app via the CLI, the recommended alpha setup is to install Blocks with sections and templates first, then Forms:
 >
 > ```bash
-> npx nextworks add blocks --sections --templates
-> npx nextworks add forms
+> npx nextworks@latest add blocks --sections --templates
+> npx nextworks@latest add forms
 > ```
 >
 > The CLI will copy the Forms primitives and example pages into your `components/ui/form/*`, `components/hooks/`, `lib/validation/*`, and `app/examples/forms/*` directories.

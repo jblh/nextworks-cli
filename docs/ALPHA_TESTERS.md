@@ -12,17 +12,17 @@ This repo includes a CLI (`nextworks`) that installs modular Next.js building bl
 From your Next.js app root:
 
 ```bash
-npx nextworks --help
+npx nextworks@latest --help
 ```
 
 Most reliable alpha install path:
 
 ```bash
-npx nextworks add blocks --sections --templates
+npx nextworks@latest add blocks --sections --templates
 # then (optional)
-npx nextworks add auth-core
-npx nextworks add forms
-npx nextworks add data
+npx nextworks@latest add auth-core
+npx nextworks@latest add forms
+npx nextworks@latest add data
 ```
 
 For full setup steps (env vars, Prisma, routes to try), see: `cli/README.md`.
@@ -71,8 +71,8 @@ What happened (paste error output + screenshots if possible):
 - Re-run the command with `--help` to confirm flags:
 
   ```bash
-  npx nextworks --help
-  ```
+npx nextworks@latest --help
+```
 
 - If Prisma is involved (Auth Core / Data), try:
 

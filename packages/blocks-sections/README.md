@@ -8,14 +8,22 @@ Examples include:
 - FAQ, Contact, Newsletter
 - Portfolio, Services, Team, Trust badges
 
-## Installation
+## Recommended: install via the nextworks CLI
+
+Most developers should install Blocks via the **nextworks** CLI (copy-in / shadcn-style) rather than consuming this package directly.
+
+```bash
+npx nextworks@latest add blocks --sections --templates
+```
+
+- npm (CLI): https://www.npmjs.com/package/nextworks
+
+## Direct installation (advanced)
+
+If you want to consume the compiled sections as a package:
 
 ```bash
 npm install @nextworks/blocks-sections @nextworks/blocks-core
-# or
-pnpm add @nextworks/blocks-sections @nextworks/blocks-core
-# or
-yarn add @nextworks/blocks-sections @nextworks/blocks-core
 ```
 
 ## Usage
@@ -35,10 +43,4 @@ export default function Page() {
 }
 ```
 
-These components assume you have a Tailwind + React + Next.js setup and that you wrap your app with the appropriate theme provider from `@nextworks/blocks-core`.
-
-For a copy-based workflow (files under `components/` and `app/` in your own app), use the CLI:
-
-```bash
-npx nextworks add blocks
-```
+These components assume you have Tailwind + React + Next.js configured and that you wrap your app with the appropriate theme provider from `@nextworks/blocks-core`.

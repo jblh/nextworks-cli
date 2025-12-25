@@ -12,14 +12,14 @@ What the kit includes
 Install behavior
 
 > **Alpha note**
-> Other kits (Auth Core, Forms, Data) are currently tested and supported on top of a Blocks install that includes sections and templates. For the smoothest experience, run `npx nextworks add blocks --sections --templates` before adding additional kits.
+> Other kits (Auth Core, Forms, Data) are currently tested and supported on top of a Blocks install that includes sections and templates. For the smoothest experience, run `npx nextworks@latest add blocks --sections --templates` before adding additional kits.
 
-- For a full UI kit, run `npx nextworks add blocks --sections --templates` to install **core UI primitives, sections, and templates** so the example templates work out of the box.
+- For a full UI kit, run `npx nextworks@latest add blocks --sections --templates` to install **core UI primitives, sections, and templates** so the example templates work out of the box.
 - You can pass flags to control what gets installed:
-  - `npx nextworks add blocks --ui-only` → core UI primitives only (no sections/templates).
-  - `npx nextworks add blocks --sections` → core + sections only.
-  - `npx nextworks add blocks --templates` → core + templates only.
-  - `npx nextworks add blocks --sections --templates` → same as the default (core + sections + templates).
+  - `npx nextworks@latest add blocks --ui-only` → core UI primitives only (no sections/templates).
+  - `npx nextworks@latest add blocks --sections` → core + sections only.
+  - `npx nextworks@latest add blocks --templates` → core + templates only.
+  - `npx nextworks@latest add blocks --sections --templates` → same as the default (core + sections + templates).
 
 Files included are defined in `cli/cli_manifests/blocks_manifest.json` in the Nextworks repository. When updating this kit inside the repo, keep that manifest and this kit folder in sync.
 

@@ -25,7 +25,7 @@ This avoids Turbopack dev issues related to internal Next font modules.
 If you ever see a font-related Turbopack error after upgrades or manual edits, re-run:
 
 ```bash
-npx nextworks add blocks --sections --templates
+npx nextworks@latest add blocks --sections --templates
 ```
 
 to re-apply the layout patch, and ensure `app/layout.tsx` contains a valid

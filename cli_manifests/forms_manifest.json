@@ -51,7 +51,7 @@
         "components/examples/wizard-client.tsx"
       ],
       "requires": ["data", "auth-core"],
-      "notes": "Wizard demo requires the data and auth-core kits (Prisma + NextAuth). Run: npx nextworks add data && npx nextworks add auth-core"
+      "notes": "Wizard demo requires the data and auth-core kits (Prisma + NextAuth). Run: npx nextworks@latest add data && npx nextworks@latest add auth-core"
     }
   },
   "prisma": [],

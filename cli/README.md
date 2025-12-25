@@ -9,19 +9,20 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 
 > **Status:** early‑access alpha. Expect rough edges and breaking changes between alpha releases.
 >
+> **Package manager:** npm only (for now).
+>
 > In this alpha, the most reliable setup is:
 >
-> 1. Install the CLI (as a dev dependency) and install dependencies:
+> 1. Create a new Next.js App Router project:
 >
 >    ```bash
->    npm install -D nextworks
->    npm install
+>    npx create-next-app@latest
 >    ```
 >
-> 2. Install **Blocks** first:
+> 2. From your app root, install **Blocks** first:
 >
 >    ```bash
->    npx nextworks add blocks --sections --templates
+>    npx nextworks@latest add blocks --sections --templates
 >    ```
 >
 > 3. Then add **Auth Core**, **Forms**, and **Data** on top.
@@ -30,11 +31,22 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 
 ---
 
-## Feedback / Contact
+## Feedback
 
-Nextworks is early‑access alpha and I’m actively looking for feedback from early testers. If you run into issues, have questions, or want to suggest improvements or pro‑level features, I’m happy to help and would really appreciate hearing from you:
+Nextworks is early‑access alpha and I’m actively looking for feedback from early testers.
 
-- Email: nextjsworks@gmail.com
+### Where to post feedback
+
+- **Start here (installation + where to post feedback):** https://github.com/jblh/nextworks-cli/discussions/1
+- **Alpha feedback thread (what broke / what’s missing):** https://github.com/jblh/nextworks-cli/discussions/2
+
+### Bug reports
+
+For reproducible bugs / errors (especially install/runtime issues), please open a GitHub Issue using the templates in `.github/ISSUE_TEMPLATE/`.
+
+### Private contact (optional)
+
+If you need to share something privately (e.g. security-related), email: nextjsworks@gmail.com
 
 ---
 
@@ -43,16 +55,16 @@ Nextworks is early‑access alpha and I’m actively looking for feedback from e
 From your Next.js app root, use `npx`:
 
 ```bash
-npx nextworks --help
+npx nextworks@latest --help
 ```
 
 Example commands:
 
 ```bash
-npx nextworks add blocks --sections --templates
-npx nextworks add auth-core
-npx nextworks add forms
-npx nextworks add data
+npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add auth-core
+npx nextworks@latest add forms
+npx nextworks@latest add data
 ```
 
 ---
@@ -62,7 +74,8 @@ npx nextworks add data
 Prerequisites:
 
 - A Next.js App Router project (e.g. from `create-next-app`).
-- TypeScript + Tailwind recommended.
+- TypeScript required.
+- Tailwind CSS required (the Blocks kit and templates rely on Tailwind classes).
 - A **PostgreSQL database** if you plan to use **Auth Core** and **Data**.
   - The kits are designed and tested with Postgres using a database hosted on [Neon](https://neon.tech/).
 
@@ -79,14 +92,14 @@ From your app root:
 > If you ever see a font-related Turbopack error after upgrades or manual edits, re-run:
 >
 > ```bash
-> npx nextworks add blocks --sections --templates
+> npx nextworks@latest add blocks --sections --templates
 > ```
 >
 > to re-apply the layout patch, and ensure `app/layout.tsx` contains a valid
 > `import { ... } from "next/font/google";` plus the corresponding `const geistSans = ...` etc.
 
 ```bash
-npx nextworks add blocks --sections --templates
+npx nextworks@latest add blocks --sections --templates
 ```
 
 This copies:
@@ -116,7 +129,7 @@ After this step you should be able to start your dev server and visit:
 ### 2) Add Auth Core
 
 ```bash
-npx nextworks add auth-core
+npx nextworks@latest add auth-core
 ```
 
 Then:
@@ -177,7 +190,7 @@ Visit:
 ### 3) Add Forms (optional)
 
 ```bash
-npx nextworks add forms
+npx nextworks@latest add forms
 ```
 
 This adds form primitives and example pages:
@@ -189,7 +202,7 @@ This adds form primitives and example pages:
 ### 4) Add Data (optional, requires Auth Core)
 
 ```bash
-npx nextworks add data
+npx nextworks@latest add data
 ```
 
 Make sure your Prisma migrations are up to date:
@@ -211,15 +224,15 @@ Then visit:
 For a full UI kit including core primitives, sections, and templates, use:
 
 ```bash
-npx nextworks add blocks --sections --templates
+npx nextworks@latest add blocks --sections --templates
 ```
 
 If you want finer control:
 
-- `npx nextworks add blocks --ui-only` – install core UI primitives only (no sections/templates).
-- `npx nextworks add blocks --sections` – install core + sections only.
-- `npx nextworks add blocks --templates` – install core + templates only.
-- `npx nextworks add blocks --sections --templates` – install core + sections + templates.
+- `npx nextworks@latest add blocks --ui-only` – install core UI primitives only (no sections/templates).
+- `npx nextworks@latest add blocks --sections` – install core + sections only.
+- `npx nextworks@latest add blocks --templates` – install core + templates only.
+- `npx nextworks@latest add blocks --sections --templates` – install core + sections + templates.
 
 ---
 
@@ -232,8 +245,8 @@ You can add a short “Nextworks setup” section to your app README:
 
 1. Install and run the CLI from your Next.js app root:
 
-   npx nextworks add blocks --sections --templates
-   npx nextworks add auth-core
+   npx nextworks@latest add blocks --sections --templates
+   npx nextworks@latest add auth-core
 
 2. Copy environment variables:
 
@@ -249,8 +262,8 @@ You can add a short “Nextworks setup” section to your app README:
 
 4. (Optional) Add Forms and Data kits:
 
-   npx nextworks add forms
-   npx nextworks add data
+   npx nextworks@latest add forms
+   npx nextworks@latest add data
    npx prisma generate
    npx prisma migrate dev -n init_data
 
@@ -261,8 +274,8 @@ You can add a short “Nextworks setup” section to your app README:
 6. Try these routes:
    - `/` or `/templates/productlaunch` (Blocks template)
    - `/auth/signup`, `/auth/login`, `/dashboard` (Auth)
-   - `/examples/forms/basic` (if you ran `npx nextworks add forms`)
-   - `/admin/posts`, `/admin/users` (if you ran `npx nextworks add data`)
+   - `/examples/forms/basic` (if you ran `npx nextworks@latest add forms`)
+   - `/admin/posts`, `/admin/users` (if you ran `npx nextworks@latest add data`)
 ```
 
 ---
@@ -298,7 +311,7 @@ the MIT License.
   Make sure you ran:
 
   ```bash
-  npx nextworks add auth-core
+  npx nextworks@latest add auth-core
   ```
 
   from your app root, and restart your dev server.
