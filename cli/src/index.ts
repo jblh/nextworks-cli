@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Copyright (c) 2025 Jakob Bro Liebe Hansen
+// Copyright (c) 2025 Jakob Hansen
 // SPDX-License-Identifier: MIT
 
 import { Command } from "commander";
