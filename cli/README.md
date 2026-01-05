@@ -25,6 +25,12 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 >    npx nextworks@latest add blocks --sections --templates
 >    ```
 >
+>    Non-interactive / CI-friendly:
+>
+>    ```bash
+>    npx nextworks@latest add blocks --sections --templates --yes
+>    ```
+>
 > 3. Then add **Auth Core**, **Forms**, and **Data** on top.
 >
 > Partial setups (e.g. Auth/Data without Blocks) may require manual tweaks and are not yet fully supported.
@@ -62,6 +68,7 @@ Example commands:
 
 ```bash
 npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks --sections --templates --yes  # non-interactive / CI
 npx nextworks@latest add auth-core
 npx nextworks@latest add forms
 npx nextworks@latest add data
@@ -82,6 +89,12 @@ Prerequisites:
 From your app root:
 
 ### 1) Install Blocks (UI kit)
+
+Non-interactive / CI-friendly (auto-accept defaults where possible):
+
+```bash
+npx nextworks@latest add blocks --sections --templates --yes
+```
 
 > **Turbopack / Next 16 note (fonts + AppProviders)**
 >
@@ -227,6 +240,12 @@ For a full UI kit including core primitives, sections, and templates, use:
 npx nextworks@latest add blocks --sections --templates
 ```
 
+Non-interactive / CI-friendly:
+
+```bash
+npx nextworks@latest add blocks --sections --templates --yes
+```
+
 If you want finer control:
 
 - `npx nextworks@latest add blocks --ui-only` – install core UI primitives only (no sections/templates).
@@ -246,6 +265,8 @@ You can add a short “Nextworks setup” section to your app README:
 1. Install and run the CLI from your Next.js app root:
 
    npx nextworks@latest add blocks --sections --templates
+   # CI / non-interactive:
+   npx nextworks@latest add blocks --sections --templates --yes
    npx nextworks@latest add auth-core
 
 2. Copy environment variables:

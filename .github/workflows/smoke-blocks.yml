@@ -1,0 +1,51 @@
+name: Smoke Test (Blocks install)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  blocks-smoke:
+    name: blocks-smoke (node ${{ matrix.node }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [20]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install repo dependencies (workspaces)
+        run: npm install
+
+      - name: Build all packages (including CLI)
+        run: npm run build
+
+      - name: Create fresh Next.js app (App Router)
+        run: |
+          npx --yes create-next-app@latest sandbox-next --ts --eslint --app --no-src-dir --no-tailwind --use-npm
+
+      - name: Install blocks into fresh app
+        working-directory: sandbox-next
+        run: |
+          node ../cli/dist/index.js add blocks --sections --templates --yes
+
+      - name: Install app dependencies
+        working-directory: sandbox-next
+        run: npm install
+
+      - name: Build app
+        working-directory: sandbox-next
+        run: npm run build

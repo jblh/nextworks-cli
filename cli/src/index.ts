@@ -36,6 +36,10 @@ program
     "--ui-only",
     "Install core UI primitives only (no sections/templates)",
   )
+  .option(
+    "-y, --yes",
+    "Skip interactive prompts and accept defaults where possible",
+  )
   .action(
     async (
       kit: string,
@@ -44,6 +48,7 @@ program
         templates?: boolean;
         gallery?: boolean;
         uiOnly?: boolean;
+        yes?: boolean;
       },
     ) => {
       try {
@@ -63,6 +68,7 @@ program
               templates: options.templates,
               gallery: options.gallery,
               uiOnly: options.uiOnly,
+              yes: options.yes,
             });
             break;
           default:

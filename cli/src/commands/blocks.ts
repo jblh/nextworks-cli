@@ -28,6 +28,8 @@ export interface AddBlocksOptions {
   templates?: boolean;
   gallery?: boolean;
   uiOnly?: boolean;
+  /** Skip interactive prompts and accept defaults. */
+  yes?: boolean;
 }
 
 export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
@@ -229,7 +231,15 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
         promptFn = null;
       }
 
-      if (promptFn) {
+      if (options.yes) {
+        // Non-interactive mode: accept defaults
+        try {
+          await updateLayoutWithAppProviders();
+          layoutUpgraded = true;
+        } catch (err) {
+          console.log("⚠️  Failed to update app/layout.tsx automatically:", err);
+        }
+      } else if (promptFn) {
         const { upgradeLayout } = await promptFn([
           {
             type: "confirm",
@@ -245,10 +255,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
             await updateLayoutWithAppProviders();
             layoutUpgraded = true;
           } catch (err) {
-            console.log(
-              "⚠️  Failed to update app/layout.tsx automatically:",
-              err,
-            );
+            console.log("⚠️  Failed to update app/layout.tsx automatically:", err);
           }
         }
       }
