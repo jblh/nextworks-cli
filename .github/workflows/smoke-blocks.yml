@@ -60,7 +60,7 @@ jobs:
 
       - name: "Verify globals.css imports vendored tw-animate.css"
         working-directory: ../sandbox-next
-        run: node -e "const fs=require('fs'); const css=fs.readFileSync('app/globals.css','utf8'); const ok=css.includes('@import \"./tw-animate.css\"') || css.includes(\"@import './tw-animate.css'\"); console.log('globals.css imports ./tw-animate.css:', ok); process.exit(ok?0:1)"
+        run: node -e "const fs=require('fs'); const css=fs.readFileSync('app/globals.css','utf8'); const ok=/@import\s+[\"\']\.\/tw-animate\.css[\"\']/.test(css); console.log('globals.css imports ./tw-animate.css:', ok); process.exit(ok?0:1)"
 
       - name: Build app
         working-directory: ../sandbox-next
