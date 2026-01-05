@@ -50,6 +50,11 @@ jobs:
         working-directory: ../sandbox-next
         run: npm install
 
+      - name: "Debug: list node_modules entries for tw-*"
+        working-directory: ../sandbox-next
+        run: >-
+          node -e "console.log(require('fs').readdirSync('node_modules').filter(n=>n.startsWith('tw-')).join('\n'))"
+
       - name: "Debug: confirm tw-animate-css installed"
         working-directory: ../sandbox-next
         run: >-
