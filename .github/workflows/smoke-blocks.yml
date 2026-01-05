@@ -42,6 +42,10 @@ jobs:
         run: |
           node "${{ github.workspace }}/cli/dist/index.js" add blocks --sections --templates --yes
 
+      - name: "Debug: verify motion dependency was added"
+        working-directory: ../sandbox-next
+        run: node -e "const p=require('./package.json'); console.log('motion:', (p.dependencies&&p.dependencies.motion) || (p.devDependencies&&p.devDependencies.motion) || null)"
+
       - name: "Debug: show sandbox package.json deps"
         working-directory: ../sandbox-next
         run: node -p "JSON.stringify(require('./package.json').dependencies, null, 2)"

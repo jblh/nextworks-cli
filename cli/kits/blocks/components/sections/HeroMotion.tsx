@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import type { Transition } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +16,8 @@ import { cn } from "@/lib/utils";
  * - Accessibility: rendered as a semantic <section> with aria-label.
  * - CTA: primary/secondary CTA can be links (href provided) or buttons.
  */
+type MotionTransition = React.ComponentProps<typeof motion.div>["transition"];
+
 export interface HeroMotionProps {
   /** Optional id to attach to the section root */
   id?: string;
@@ -86,11 +87,11 @@ export interface HeroMotionProps {
     headingDelay?: number;
     descriptionDelay?: number;
     actionsDelay?: number;
-    transition: Transition;
+    transition: MotionTransition;
   };
 }
 
-const defaultChildTransition: Transition = {
+const defaultChildTransition: MotionTransition = {
   type: "tween",
   duration: 0.5,
   ease: [0.22, 1, 0.36, 1], // smooth easeOut
@@ -162,7 +163,7 @@ export function HeroMotion({
       }
     : { once: true, amount: 0 };
 
-  const transition: Transition = {
+  const transition: MotionTransition = {
     ...defaultChildTransition,
     ...(motionOptions?.transition ?? {}),
   };

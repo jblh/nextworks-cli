@@ -2,7 +2,6 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import type { Transition } from "motion/react";
 import { cn } from "@/lib/utils";
 import { FeatureCard } from "@/components/ui/feature-card";
 
@@ -27,6 +26,8 @@ export interface FeatureCardData {
  *
  * @public
  */
+type MotionTransition = React.ComponentProps<typeof motion.div>["transition"];
+
 export interface FeaturesProps {
   /**
    * Optional id to attach to the root section element.
@@ -68,7 +69,7 @@ export interface FeaturesProps {
     initial?: { opacity?: number; y?: number };
     whileInView?: { opacity?: number; y?: number };
     viewport?: { once?: boolean; amount?: number };
-    transition?: Transition;
+    transition?: MotionTransition;
   };
 
   /** ARIA label for the features section */
@@ -205,15 +206,15 @@ export function Features({
                     transition: {
                       type: "tween",
                       duration: 0,
-                    } as const satisfies Transition,
+                    } as const satisfies MotionTransition,
                   };
 
             // Ensure we always spread a defined object into transition
-            const baseTransition: Transition = (mConfig.transition ??
+            const baseTransition: MotionTransition = mConfig.transition ??
               ({
                 type: "tween",
                 duration: 0,
-              } as const)) as Transition;
+              } as const);
 
             const noMotionCard =
               "transition-none hover:!translate-y-0 hover:shadow-none motion-reduce:transition-none motion-reduce:transform-none";
