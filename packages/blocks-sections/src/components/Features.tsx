@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import type { Transition } from "motion";
+import type { Transition } from "motion/react";
 import { cn } from "@nextworks/blocks-core";
 import { FeatureCard } from "@nextworks/blocks-core";
 

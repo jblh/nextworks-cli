@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import type { Transition } from "motion";
+import type { Transition } from "motion/react";
 import { cn } from "@/lib/utils";
 import { FeatureCard } from "@/components/ui/feature-card";
 

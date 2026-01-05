@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import type { Transition } from "motion";
+import type { Transition } from "motion/react";
 import { Button } from "@nextworks/blocks-core";
 import { cn } from "@nextworks/blocks-core";
 
