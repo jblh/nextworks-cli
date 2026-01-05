@@ -42,7 +42,7 @@ jobs:
         run: |
           node ../cli/dist/index.js add blocks --sections --templates --yes
 
-      - name: Debug: show sandbox package.json deps
+      - name: "Debug: show sandbox package.json deps"
         working-directory: sandbox-next
         run: node -p "JSON.stringify(require('./package.json').dependencies, null, 2)"
 
@@ -50,7 +50,7 @@ jobs:
         working-directory: sandbox-next
         run: npm install
 
-      - name: Debug: confirm tw-animate-css installed
+      - name: "Debug: confirm tw-animate-css installed"
         working-directory: sandbox-next
         run: node -p "require.resolve('tw-animate-css/package.json')"
 
