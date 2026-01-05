@@ -52,7 +52,8 @@ jobs:
 
       - name: "Debug: confirm tw-animate-css installed"
         working-directory: sandbox-next
-        run: node -p "require.resolve('tw-animate-css')"
+        run: >-
+          node -e "process.exit(require('fs').existsSync('node_modules/tw-animate-css') ? 0 : 1)"
 
       - name: Build app
         working-directory: sandbox-next
