@@ -35,26 +35,26 @@ jobs:
 
       - name: Create fresh Next.js app (App Router)
         run: |
-          npx --yes create-next-app@latest sandbox-next --ts --eslint --app --no-src-dir --no-tailwind --use-npm
+          npx --yes create-next-app@latest ../sandbox-next --ts --eslint --app --no-src-dir --no-tailwind --use-npm
 
       - name: Install blocks into fresh app
-        working-directory: sandbox-next
+        working-directory: ../sandbox-next
         run: |
-          node ../cli/dist/index.js add blocks --sections --templates --yes
+          node "$GITHUB_WORKSPACE/cli/dist/index.js" add blocks --sections --templates --yes
 
       - name: "Debug: show sandbox package.json deps"
-        working-directory: sandbox-next
+        working-directory: ../sandbox-next
         run: node -p "JSON.stringify(require('./package.json').dependencies, null, 2)"
 
       - name: Install app dependencies
-        working-directory: sandbox-next
+        working-directory: ../sandbox-next
         run: npm install
 
       - name: "Debug: confirm tw-animate-css installed"
-        working-directory: sandbox-next
+        working-directory: ../sandbox-next
         run: >-
           node -e "process.exit(require('fs').existsSync('node_modules/tw-animate-css') ? 0 : 1)"
 
       - name: Build app
-        working-directory: sandbox-next
+        working-directory: ../sandbox-next
         run: npm run build
