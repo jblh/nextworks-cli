@@ -54,23 +54,13 @@ jobs:
         working-directory: ../sandbox-next
         run: npm install
 
-      - name: "Debug: list node_modules entries for tw-*"
+      - name: "Verify vendored tw-animate CSS copied"
         working-directory: ../sandbox-next
-        run: >-
-          node -e "console.log(require('fs').readdirSync('node_modules').filter(n=>n.startsWith('tw-')).join('\n'))"
+        run: node -e "const fs=require('fs'); const ok=fs.existsSync('app/tw-animate.css'); console.log('app/tw-animate.css exists:', ok); process.exit(ok?0:1)"
 
-      - name: "Debug: confirm tw-animate-css installed"
+      - name: "Verify globals.css imports vendored tw-animate.css"
         working-directory: ../sandbox-next
-        run: >-
-          node -e "process.exit(require('fs').existsSync('node_modules/tw-animate-css') ? 0 : 1)"
-
-      - name: "Debug: tw-animate-css package.json (read from node_modules)"
-        working-directory: ../sandbox-next
-        run: node -p "require('fs').readFileSync(require('path').join(process.cwd(), 'node_modules', 'tw-animate-css', 'package.json'), 'utf8')"
-
-      - name: "Debug: tw-animate-css exports (parsed, read from node_modules)"
-        working-directory: ../sandbox-next
-        run: node -p "(()=>{const p=require('path').join(process.cwd(),'node_modules','tw-animate-css','package.json');const j=JSON.parse(require('fs').readFileSync(p,'utf8'));const {name,version,exports,main,style}=j;return {name,version,exports,main,style};})()"
+        run: node -e "const fs=require('fs'); const css=fs.readFileSync('app/globals.css','utf8'); const ok=css.includes('@import \"./tw-animate.css\"') || css.includes(\"@import './tw-animate.css'\"); console.log('globals.css imports ./tw-animate.css:', ok); process.exit(ok?0:1)"
 
       - name: Build app
         working-directory: ../sandbox-next
