@@ -60,6 +60,14 @@ jobs:
         run: >-
           node -e "process.exit(require('fs').existsSync('node_modules/tw-animate-css') ? 0 : 1)"
 
+      - name: "Debug: tw-animate-css package.json"
+        working-directory: ../sandbox-next
+        run: node -p "require('fs').readFileSync(require.resolve('tw-animate-css/package.json'), 'utf8')"
+
+      - name: "Debug: tw-animate-css exports (parsed)"
+        working-directory: ../sandbox-next
+        run: node -p "(({name,version,exports,main,style})=>({name,version,exports,main,style}))(require('tw-animate-css/package.json'))"
+
       - name: Build app
         working-directory: ../sandbox-next
         run: npm run build
