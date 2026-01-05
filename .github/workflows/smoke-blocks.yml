@@ -54,13 +54,9 @@ jobs:
         working-directory: ../sandbox-next
         run: npm install
 
-      - name: "Verify vendored tw-animate CSS copied"
+      - name: Verify vendored tw-animate CSS copied + imported
         working-directory: ../sandbox-next
-        run: node -e "const fs=require('fs'); const ok=fs.existsSync('app/tw-animate.css'); console.log('app/tw-animate.css exists:', ok); process.exit(ok?0:1)"
-
-      - name: "Verify globals.css imports vendored tw-animate.css"
-        working-directory: ../sandbox-next
-        run: node -e "const fs=require('fs'); const css=fs.readFileSync('app/globals.css','utf8'); const ok=/@import\s+[\"\']\.\/tw-animate\.css[\"\']/.test(css); console.log('globals.css imports ./tw-animate.css:', ok); process.exit(ok?0:1)"
+        run: node "${{ github.workspace }}/cli/scripts/verify-sandbox-blocks.mjs"
 
       - name: Build app
         working-directory: ../sandbox-next
