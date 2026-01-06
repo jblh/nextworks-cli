@@ -87,11 +87,11 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
       });
 
       return jsonOk(updated, { status: 200, message: "User updated" });
-    } catch (err) {
+        } catch (err) {
       // Zod errors
-      if (err && typeof err === "object" && "issues" in (err as any)) {
+      if (err && typeof err === "object" && "issues" in err) {
         const { jsonFromZod } = await import("@/lib/server/result");
-        return jsonFromZod(err as any, {
+        return jsonFromZod(err as import("zod").ZodError, {
           status: 400,
           message: "Validation failed",
         });

@@ -1,45 +1,94 @@
-export function jsonOk(data?: any, opts?: { status?: number; message?: string }) {
-  return Response.json({ success: true, data: data ?? null, message: opts?.message ?? null }, { status: opts?.status ?? 200 });
+import { NextResponse } from "next/server";
+import type { ZodError } from "zod";
+
+export type FieldErrors = Record<string, string>;
+
+export type ApiResult<T = unknown> = {
+  success: boolean;
+  data?: T;
+  message?: string;
+  errors?: FieldErrors;
+  code?: string;
+};
+
+export function ok<T>(data?: T, message?: string): ApiResult<T> {
+  return { success: true, data, message };
+}
+
+export function fail(
+  message: string,
+  errors?: FieldErrors,
+  code?: string,
+): ApiResult<never> {
+  return { success: false, message, errors, code };
+}
+
+export function jsonOk<T>(
+  data?: T,
+  options?: { status?: number; message?: string },
+) {
+  const { status = 200, message } = options || {};
+  return NextResponse.json(ok(data, message), { status });
 }
 
 export function jsonFail(
   message: string,
-  opts?: { status?: number; code?: string | number; errors?: Record<string, string> | null },
+  options?: { status?: number; errors?: FieldErrors; code?: string },
 ) {
-  return Response.json(
-    { success: false, data: null, message, code: opts?.code ?? null, errors: opts?.errors ?? null },
-    { status: opts?.status ?? 400 },
-  );
+  const { status = 400, errors, code } = options || {};
+  return NextResponse.json(fail(message, errors, code), { status });
 }
 
-export function jsonFromZod(err: any, opts?: { status?: number; message?: string }) {
-  const fieldErrors: Record<string, string> = {};
-  if (err?.issues && Array.isArray(err.issues)) {
-    for (const issue of err.issues) {
-      if (issue.path && issue.path.length > 0) {
-        fieldErrors[String(issue.path[0])] = issue.message;
-      }
+export function jsonFromZod(
+  error: ZodError,
+  options?: { status?: number; message?: string },
+) {
+  const fieldErrors: FieldErrors = {};
+  for (const issue of error.issues) {
+    if (issue.path.length > 0) {
+      fieldErrors[String(issue.path[0])] = issue.message;
     }
   }
-  return jsonFail(opts?.message || "Validation failed", {
-    status: opts?.status ?? 400,
-    errors: Object.keys(fieldErrors).length > 0 ? fieldErrors : null,
-    code: "VALIDATION_ERROR",
+
+  return jsonFail(options?.message ?? "Validation failed", {
+    status: options?.status ?? 400,
+    errors: Object.keys(fieldErrors).length > 0 ? fieldErrors : undefined,
+    code: "ZOD_VALIDATION_ERROR",
   });
 }
 
-export function jsonFromPrisma(err: any) {
-  // Basic unique violation mapping (P2002)
-  const code = (err && err.code) || "PRISMA_ERROR";
-  if (code === "P2002") {
-    const meta = err.meta || {};
-    const target = Array.isArray(meta.target) ? meta.target[0] : meta.target;
-    const field = typeof target === "string" ? target : "field";
+type PrismaKnownRequestErrorLike = { code: string; meta?: unknown };
+
+function isPrismaKnownRequestError(
+  e: unknown,
+): e is PrismaKnownRequestErrorLike {
+  return !!e && typeof e === "object" && "code" in e;
+}
+
+function extractUniqueField(
+  err: PrismaKnownRequestErrorLike,
+): string | undefined {
+  const meta = err.meta;
+  const target =
+    meta && typeof meta === "object" && "target" in meta
+      ? (meta as { target?: unknown }).target
+      : undefined;
+  if (Array.isArray(target) && target.length) return String(target[0]);
+  if (typeof target === "string") return String(target.split("_")[0]);
+  return undefined;
+}
+
+export function jsonFromPrisma(error: unknown) {
+  if (isPrismaKnownRequestError(error) && error.code === "P2002") {
+    const field = extractUniqueField(error) ?? "field";
     return jsonFail("Unique constraint violation", {
       status: 409,
       errors: { [field]: `${field} already in use` },
-      code: "UNIQUE_CONSTRAINT",
+      code: "P2002",
     });
   }
+
+  const code = isPrismaKnownRequestError(error) ? error.code : "PRISMA_ERROR";
   return jsonFail("Database error", { status: 500, code });
 }
+
