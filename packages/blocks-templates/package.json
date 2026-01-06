@@ -1,6 +1,6 @@
 {
   "name": "@nextworks/blocks-templates",
-  "version": "0.1.0-alpha.17",
+  "version": "0.1.0-alpha.18",
   "private": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,8 +16,8 @@
     "build": "npx tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@nextworks/blocks-core": "0.1.0-alpha.17",
-    "@nextworks/blocks-sections": "0.1.0-alpha.17",
+    "@nextworks/blocks-core": "0.1.0-alpha.18",
+    "@nextworks/blocks-sections": "0.1.0-alpha.18",
     "lucide-react": "^0.542.0"
   },
   "devDependencies": {
