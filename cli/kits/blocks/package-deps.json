@@ -21,6 +21,6 @@
     "tailwindcss": "^4.1.12"
   },
   "overrides": {
-    "motion-dom": "12.24.9"
+    "motion-dom": "12.24.10"
   }
 }
