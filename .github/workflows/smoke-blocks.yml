@@ -54,6 +54,10 @@ jobs:
         working-directory: ../sandbox-next
         run: npm install
 
+      - name: "Debug: resolved versions for framer-motion + motion-dom"
+        working-directory: ../sandbox-next
+        run: npm ls framer-motion motion-dom
+
       - name: Verify vendored tw-animate CSS copied + imported
         working-directory: ../sandbox-next
         run: node "${{ github.workspace }}/cli/scripts/verify-sandbox-blocks.mjs"
