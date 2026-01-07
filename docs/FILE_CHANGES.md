@@ -23,7 +23,7 @@ Regardless of kit:
 - Creates/updates **`.nextworks/config.json`** to track installed kits.
 
 > Notes on overwrites:
-> - Overwrite behavior is kit-dependent, but you should treat kit installs as **potential overwrites**.
+> - Kits are not isolated: a later kit may update files installed by an earlier kit (commonly under `components/**`, `lib/**`, and `app/**`).
 > - If you have important customizations under the same paths, commit first.
 
 ---
@@ -83,7 +83,7 @@ Regardless of kit:
 
 ### Edits in-place
 
-- None
+- None (but it may still overwrite existing files under the paths listed above)
 
 ### Updates
 
@@ -150,7 +150,7 @@ Regardless of kit:
 - `app/api/posts/**`
 - `app/api/users/**` (CRUD + helper endpoints)
 - `app/api/seed-demo/**`
-- `app/(protected)/admin/**`
+- `app/(protected)/admin/**` (replaces the auth-core placeholder admin pages)
 - `components/admin/**`
 - `app/examples/demo/**`
 - `lib/prisma.ts`
