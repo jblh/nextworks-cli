@@ -91,6 +91,14 @@ export async function updatePackageJson(deps: any): Promise<void> {
     };
   }
 
+  // Merge npm overrides (for pinning transitive deps safely)
+  if (deps.overrides) {
+    packageJson.overrides = {
+      ...packageJson.overrides,
+      ...deps.overrides,
+    };
+  }
+
   await writeJsonFile(packageJsonPath, packageJson);
   console.log("✓ Updated package.json");
 }
