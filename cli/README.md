@@ -37,6 +37,31 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 
 ---
 
+## Safety (read this first)
+
+`nextworks` installs kits by copying files into your Next.js project. If a destination path already exists, kit installs may **overwrite** your files.
+
+Before running installs, strongly consider:
+
+- **Commit first**, then install:
+  - `git add -A && git commit -m "baseline"`
+- Review changes after install:
+  - `git diff --name-status`
+- To undo everything quickly:
+  - `git reset --hard`
+  - (optional) remove untracked files created by installs: `git clean -fd`
+
+Kits may also:
+
+- **merge dependencies** into `package.json`
+- **edit `app/layout.tsx`** (Blocks and Auth Core)
+- create/update `.nextworks/config.json`
+
+For a transparent breakdown of what each kit writes/edits, see:
+- https://github.com/jblh/nextworks-cli/blob/main/docs/FILE_CHANGES.md
+
+---
+
 ## Feedback
 
 Nextworks is early‑access alpha and I’m actively looking for feedback from early testers.

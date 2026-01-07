@@ -69,6 +69,13 @@ Before running installs, strongly consider:
   - `git diff --name-status`
 - To undo everything quickly:
   - `git reset --hard`
+  - (optional) remove untracked files created by installs: `git clean -fd`
+
+If you’ve customized any of these paths, expect manual merge work:
+- `app/layout.tsx`
+- `lib/utils.ts`
+- `components/ui/**`
+
 
 Kits may also:
 

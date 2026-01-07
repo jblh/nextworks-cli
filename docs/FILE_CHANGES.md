@@ -13,6 +13,7 @@ If you’re installing into anything other than a fresh project, you should assu
   - `git diff --name-status`
 - To undo everything quickly in a git repo:
   - `git reset --hard`
+  - (optional) remove untracked files created by installs: `git clean -fd`
 
 ## Global behavior (all kits)
 
@@ -24,6 +25,7 @@ Regardless of kit:
 
 > Notes on overwrites:
 > - Kits are not isolated: a later kit may update files installed by an earlier kit (commonly under `components/**`, `lib/**`, and `app/**`).
+> - During alpha, uninstall/remove is best-effort. The safest way to undo an install is reverting via git.
 > - If you have important customizations under the same paths, commit first.
 
 ---
@@ -45,6 +47,7 @@ Regardless of kit:
 ### Edits in-place
 
 - **`app/layout.tsx`** (optional, but enabled by default and auto-applied when using `--yes`)
+  - modifies your existing layout by inserting provider/toaster/font changes (it does not intentionally replace the entire file)
   - wraps the app with `AppProviders`
   - injects `AppToaster`
   - ensures `next/font/google` import and font instances exist
@@ -124,6 +127,9 @@ Regardless of kit:
 - **`app/layout.tsx`** (always)
   - adds `AppSessionProvider` import
   - wraps `<body>` content with `<AppSessionProvider>`
+
+> If Blocks already modified `app/layout.tsx`, Auth Core will further wrap the body with `AppSessionProvider`.
+> If you have custom layout logic or other providers, you may need to reconcile provider order manually.
 
 ### Updates
 
