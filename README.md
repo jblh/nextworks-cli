@@ -57,7 +57,30 @@ As of the current alpha, `nextworks` has been developed and tested primarily wit
 
 Other 16.x versions will likely work; older versions are **best effort**. If you hit an issue, please include your Next.js version, Node version, package manager, OS, and relevant logs when reporting it.
 
+## Safety (read this first)
+
+`nextworks` installs kits by copying files into your Next.js project. If a destination path already exists, kit installs may **overwrite** your files.
+
+Before running installs, strongly consider:
+
+- **Commit first**, then install:
+  - `git add -A && git commit -m "baseline"`
+- Review changes after install:
+  - `git diff --name-status`
+- To undo everything quickly:
+  - `git reset --hard`
+
+Kits may also:
+
+- **merge dependencies** into `package.json`
+- **edit `app/layout.tsx`** (Blocks and Auth Core)
+- create/update `.nextworks/config.json`
+
+For a transparent breakdown of what each kit writes/edits, see:
+- `docs/FILE_CHANGES.md`
+
 ## Getting started
+
 
 Install / try it (alpha quickstart):
 
