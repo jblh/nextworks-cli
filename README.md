@@ -82,8 +82,9 @@ If you’ve customized any of these paths, expect manual merge work:
 Kits may also:
 
 - **merge dependencies** into `package.json`
-- **edit `app/layout.tsx`** (Blocks and Auth Core)
+- **edit `app/layout.tsx`** (Blocks)
 - create/update `.nextworks/config.json`
+
 
 For a transparent breakdown of what each kit writes/edits, see:
 - `docs/FILE_CHANGES.md`
