@@ -1,0 +1,209 @@
+# nextworks
+
+Nextworks is a CLI that installs **modular Next.js building blocks** into your app:
+
+- **Blocks** – UI sections, templates, and core UI primitives.
+
+> **Status:** early‑access alpha. Expect rough edges and breaking changes between alpha releases.
+>
+> **Package manager:** npm only (for now).
+>
+> In this alpha, the most reliable setup is:
+>
+> 1. Create a new Next.js App Router project:
+>
+>    ```bash
+>    npx create-next-app@latest
+>    ```
+>
+> 2. From your app root, install **Blocks** first:
+>
+>    ```bash
+>    npx nextworks@latest add blocks --sections --templates
+>    ```
+>
+>    Non-interactive / CI-friendly:
+>
+>    ```bash
+>    npx nextworks@latest add blocks --sections --templates --yes
+>    ```
+>
+> 3. Optionally, adjust flags to install only what you want (UI-only, sections, templates).
+
+---
+
+## Safety (read this first)
+
+`nextworks` installs kits by copying files into your Next.js project. If a destination path already exists, kit installs may **overwrite** your files.
+
+Before running installs, strongly consider:
+
+- **Commit first**, then install:
+  - `git add -A && git commit -m "baseline"`
+- Review changes after install:
+  - `git diff --name-status`
+- To undo everything quickly:
+  - `git reset --hard`
+  - (optional) remove untracked files created by installs: `git clean -fd`
+
+Kits may also:
+
+- **merge dependencies** into `package.json`
+- **edit `app/layout.tsx`** (Blocks)
+- create/update `.nextworks/config.json`
+
+For a transparent breakdown of what each kit writes/edits, see:
+- https://github.com/jblh/nextworks-cli/blob/main/docs/FILE_CHANGES.md
+
+---
+
+## Feedback
+
+Nextworks is early‑access alpha and I’m actively looking for feedback from early testers.
+
+### Where to post feedback
+
+- **Start here (installation + where to post feedback):** https://github.com/jblh/nextworks-cli/discussions/1
+- **Alpha feedback thread (what broke / what’s missing):** https://github.com/jblh/nextworks-cli/discussions/2
+
+### Bug reports
+
+For reproducible bugs / errors (especially install/runtime issues), please open a GitHub Issue using the templates in `.github/ISSUE_TEMPLATE/`.
+
+### Private contact (optional)
+
+If you need to share something privately (e.g. security-related), email: nextjsworks@gmail.com
+
+---
+
+## Install and run the CLI
+
+From your Next.js app root, use `npx`:
+
+```bash
+npx nextworks@latest --help
+```
+
+Example commands:
+
+```bash
+npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks --sections --templates --yes  # non-interactive / CI
+```
+
+---
+
+## Getting started in an existing Next.js app
+
+Prerequisites:
+
+- A Next.js App Router project (e.g. from `create-next-app`).
+- TypeScript required.
+- Tailwind CSS required (the Blocks kit and templates rely on Tailwind classes).
+
+From your app root:
+
+### 1) Install Blocks (UI kit)
+
+Non-interactive / CI-friendly (auto-accept defaults where possible):
+
+```bash
+npx nextworks@latest add blocks --sections --templates --yes
+```
+
+> **Turbopack / Next 16 note (fonts + AppProviders)**
+>
+> As of the current alpha, `@nextworks/blocks-core/server` intentionally **does not** import `next/font/*`.
+> Fonts are instead configured directly in your app’s `app/layout.tsx` (the CLI patches this for you).
+> This avoids Turbopack dev issues related to internal Next font modules.
+>
+> If you ever see a font-related Turbopack error after upgrades or manual edits, re-run:
+>
+> ```bash
+> npx nextworks@latest add blocks --sections --templates
+> ```
+>
+> to re-apply the layout patch, and ensure `app/layout.tsx` contains a valid
+> `import { ... } from "next/font/google";` plus the corresponding `const geistSans = ...` etc.
+
+```bash
+npx nextworks@latest add blocks --sections --templates
+```
+
+This copies:
+
+- `components/ui/*` (core UI primitives)
+- `components/sections/*` (reusable sections)
+- Page templates under `app/templates/*`
+- Theme helpers and `app/globals.css` (if not already present)
+
+After this step you should be able to start your dev server and visit:
+
+- `/` (if wired as the home page), or
+- `/templates/productlaunch`, `/templates/saasdashboard`, `/templates/digitalagency`
+
+
+---
+
+## Advanced Blocks installs
+
+For a full UI kit including core primitives, sections, and templates, use:
+
+```bash
+npx nextworks@latest add blocks --sections --templates
+```
+
+Non-interactive / CI-friendly:
+
+```bash
+npx nextworks@latest add blocks --sections --templates --yes
+```
+
+If you want finer control:
+
+- `npx nextworks@latest add blocks --ui-only` – install core UI primitives only (no sections/templates).
+- `npx nextworks@latest add blocks --sections` – install core + sections only.
+- `npx nextworks@latest add blocks --templates` – install core + templates only.
+- `npx nextworks@latest add blocks --sections --templates` – install core + sections + templates.
+
+---
+
+## Copy‑paste quickstart for your app README
+
+You can add a short “Nextworks setup” section to your app README:
+
+```md
+### Nextworks setup (Blocks)
+
+1. Install and run the CLI from your Next.js app root:
+
+   npx nextworks@latest add blocks --sections --templates
+   # CI / non-interactive:
+   npx nextworks@latest add blocks --sections --templates --yes
+
+2. Start dev server:
+
+   npm run dev
+
+3. Try these routes:
+   - `/` or `/templates/productlaunch` (Blocks template)
+```
+
+---
+
+## License
+
+The code in this CLI and the generated files is licensed under the MIT License (see `LICENSE`).
+
+The placeholder images in the templates are sourced from Pexels and are
+subject to the [Pexels License](https://www.pexels.com/license/).
+They are included for demonstration purposes only and are **not** covered by
+the MIT License.
+
+---
+
+## Troubleshooting
+
+- **Type errors from imported components**
+
+  Confirm your project is using TypeScript and that your TypeScript config picks up the new `components/` and `lib/` paths.

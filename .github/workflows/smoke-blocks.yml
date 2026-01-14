@@ -1,0 +1,67 @@
+name: Smoke Test (Blocks install)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  blocks-smoke:
+    name: blocks-smoke (node ${{ matrix.node }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [20]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install repo dependencies (workspaces)
+        run: npm install
+
+      - name: Build all packages (including CLI)
+        run: npm run build
+
+      - name: Create fresh Next.js app (App Router)
+        run: |
+          npx --yes create-next-app@16.1.0 ../sandbox-next --ts --eslint --app --no-src-dir --no-tailwind --use-npm
+
+      - name: Install blocks into fresh app
+        working-directory: ../sandbox-next
+        run: |
+          node "${{ github.workspace }}/cli/dist/index.js" add blocks --sections --templates --yes
+
+      - name: "Debug: verify motion dependency was added"
+        working-directory: ../sandbox-next
+        run: node -e "const p=require('./package.json'); console.log('motion:', (p.dependencies&&p.dependencies.motion) || (p.devDependencies&&p.devDependencies.motion) || null)"
+
+      - name: "Debug: show sandbox package.json deps"
+        working-directory: ../sandbox-next
+        run: node -p "JSON.stringify(require('./package.json').dependencies, null, 2)"
+
+      - name: Install app dependencies
+        working-directory: ../sandbox-next
+        run: npm install
+
+      - name: "Debug: resolved versions for framer-motion + motion-dom"
+        working-directory: ../sandbox-next
+        run: npm ls framer-motion motion-dom
+
+      - name: Verify vendored tw-animate CSS copied + imported
+        working-directory: ../sandbox-next
+        run: node "${{ github.workspace }}/cli/scripts/verify-sandbox-blocks.mjs"
+
+      - name: Build app
+        working-directory: ../sandbox-next
+        run: npm run build

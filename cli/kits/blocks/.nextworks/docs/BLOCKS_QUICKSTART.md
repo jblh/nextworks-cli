@@ -1,0 +1,187 @@
+# Blocks Quickstart
+
+This document explains the Blocks kit: prebuilt UI sections, templates and core UI primitives included in this repository. The Blocks kit is intended to be a non-invasive copyable kit (shadCN-style) you can install into any Next.js App Router + TypeScript + Tailwind project.
+
+> **Alpha note**
+> Other kits (Auth Core, Forms, Data) are currently tested and supported on top of a default Blocks install.
+> For the smoothest experience, install **Blocks first** in your app before adding other kits.
+
+> If you are using the `nextworks` CLI in your own app, you can install this Blocks kit by running:
+>
+> ```bash
+> npx nextworks@latest add blocks --sections --templates
+> ```
+>
+> This installs **core UI primitives, sections, and page templates**, so the example templates work out of the box. The CLI will copy files into your project under `components/`, `app/templates/`, `lib/`, and `public/` as described below.
+
+What’s included
+
+- Page templates (composed from sections):
+  - app/templates/productlaunch
+  - app/templates/saasdashboard
+  - app/templates/digitalagency
+- Reusable UI sections: components/sections/\* (Navbar, Hero, Features, Pricing, Testimonials, FAQ, Contact, Footer, etc.)
+- Core UI primitives: components/ui/\* (Button, Input, Card, Select, Checkbox, Switch, Theme toggle/selector, Form primitives)
+- Theme helpers and presets: components/PresetThemeVars in each template and lib/themes.ts
+- Global styles: app/globals.css and optional theme variables in each template's PresetThemeVars file
+- Sample placeholder assets: public/placeholders/\*
+
+Where to look
+
+- Templates:
+  - app/templates/productlaunch/page.tsx (productlaunch template)
+  - app/templates/saasdashboard/page.tsx (saasdashboard template)
+  - app/templates/digitalagency/page.tsx (digital agency template)
+- Sections:
+  - components/sections/\*.tsx
+- UI primitives and form building blocks:
+  - components/ui/button.tsx
+  - components/ui/input.tsx
+  - components/ui/label.tsx
+  - components/ui/card.tsx
+  - components/ui/textarea.tsx
+  - components/ui/select.tsx
+  - components/ui/checkbox.tsx
+  - components/ui/switch.tsx
+  - components/ui/form/\* (Form, FormField, FormItem, FormControl, FormLabel, FormMessage, FormDescription)
+- Theme and providers:
+  - components/theme-provider.tsx
+  - components/enhanced-theme-provider.tsx
+  - lib/themes.ts
+
+Minimal steps to render a template locally
+
+1. Install dependencies and run the dev server:
+
+   npm install
+   npm run dev
+
+2. Open the productlaunch template in your browser:
+
+   http://localhost:3000/templates/productlaunch
+
+3. The templates use global styles (app/globals.css). No environment variables are required for Blocks-only usage.
+
+How to adopt / override template pieces
+
+- Slots & component overrides
+  - Each template composes small sections from components/sections/\*.tsx. To override a section, copy the desired section file into your project (or replace the import) and update props or classNames.
+  - Example: to override the Navbar, copy components/sections/Navbar.tsx into your app and update the markup or styles. The template imports Navbar from the components directory.
+
+- Styling and utility classes
+  - Tailwind is used across components. Prefer adding or modifying Tailwind utility classes on the exported component or pass className props (many components accept className).
+
+- Theme variables and PresetThemeVars
+  - Each template has a PresetThemeVars component/file (e.g., app/templates/productlaunch/PresetThemeVars.tsx) that injects CSS variables for theme presets.
+  - To change default palette or add presets, edit the template PresetThemeVars and lib/themes.ts.
+  - Theme providers are implemented in components/theme-provider.tsx and components/enhanced-theme-provider.tsx — wrap your app with these if you extract blocks into another project.
+
+Import examples
+
+- Import a primitive in your code:
+
+  import Button from "@/components/ui/button";
+  import { Form, FormField } from "@/components/ui/form/form"; // path depends on your project alias
+
+- Use a section in a page:
+
+  import Navbar from "@/components/sections/Navbar";
+
+  export default function Page() {
+  return (
+  <>
+  <Navbar />
+  <main>{/_ ... _/}</main>
+  </>
+  );
+  }
+
+Public assets and placeholders
+
+- The templates reference placeholder images in public/placeholders/. If you copy templates to another project, copy the referenced assets (public/placeholders/gallery/\*) or replace with your own images.
+
+Simple Blocks kit manifest (for internal CLI packaging)
+
+> This section is for maintainers of the `nextworks` CLI. You don’t need this if you’re just installing Blocks into your own app.
+
+Use this manifest to drive a CLI copy step: it enumerates the primary files that make up the Blocks kit. Adjust paths if your CLI uses a different base.
+
+- Suggested internal path: cli/kits/blocks/manifest.json
+
+Contents:
+
+{
+"name": "blocks",
+"description": "Frontend UI sections, templates and core UI primitives",
+"files": [
+"components/sections/About.tsx",
+"components/sections/Contact.tsx",
+"components/sections/CTA.tsx",
+"components/sections/FAQ.tsx",
+"components/sections/Features.tsx",
+"components/sections/Footer.tsx",
+"components/sections/HeroMotion.tsx",
+"components/sections/HeroOverlay.tsx",
+"components/sections/HeroSplit.tsx",
+"components/sections/Navbar.tsx",
+"components/sections/Newsletter.tsx",
+"components/sections/PortfolioSimple.tsx",
+"components/sections/Pricing.tsx",
+"components/sections/ProcessTimeline.tsx",
+"components/sections/ServicesGrid.tsx",
+"components/sections/Team.tsx",
+"components/sections/Testimonials.tsx",
+"components/sections/TrustBadges.tsx",
+"components/ui/button.tsx",
+"components/ui/card.tsx",
+"components/ui/checkbox.tsx",
+"components/ui/cta-button.tsx",
+"components/ui/dropdown-menu.tsx",
+"components/ui/feature-card.tsx",
+"components/ui/input.tsx",
+"components/ui/label.tsx",
+"components/ui/pricing-card.tsx",
+"components/ui/skeleton.tsx",
+"components/ui/switch.tsx",
+"components/ui/table.tsx",
+"components/ui/textarea.tsx",
+"components/ui/theme-selector.tsx",
+"components/ui/theme-toggle.tsx",
+"components/ui/toaster.tsx",
+"components/ui/form/form.tsx",
+"components/ui/form/form-field.tsx",
+"components/ui/form/form-item.tsx",
+"components/ui/form/form-control.tsx",
+"components/ui/form/form-description.tsx",
+"components/ui/form/form-label.tsx",
+"components/ui/form/form-message.tsx",
+"components/enhanced-theme-provider.tsx",
+"components/theme-provider.tsx",
+"lib/themes.ts",
+"app/globals.css",
+"app/templates/productlaunch/page.tsx",
+"app/templates/productlaunch/PresetThemeVars.tsx",
+"app/templates/productlaunch/README.md",
+"app/templates/saasdashboard/page.tsx",
+"app/templates/saasdashboard/PresetThemeVars.tsx",
+"app/templates/saasdashboard/README.md",
+"app/templates/digitalagency/page.tsx",
+"app/templates/digitalagency/PresetThemeVars.tsx",
+"app/templates/digitalagency/README.md",
+"public/placeholders/gallery/hero-pexels-broken-9945014.avif"
+]
+}
+
+Notes & recommendations
+
+- Blocks are self-contained and do not require Prisma or NextAuth. If your user only needs Blocks, the CLI should copy these files and add a brief README instructing the user to import the theme provider in app/layout.tsx and ensure app/globals.css is present.
+- Consider adding an examples folder demonstrating how to swap PresetThemeVars and override a section component.
+
+---
+
+If you'd like, I can:
+
+- Create the CLI manifest file at cli/kits/blocks/manifest.json using the JSON above, or
+- Create a short example that demonstrates overriding Navbar and changing PresetThemeVars.
+
+Tell me which of the above to create next.
