@@ -1,0 +1,54 @@
+{
+  "name": "nextworks",
+  "version": "0.1.0-alpha.19",
+    "description": "Nextworks CLI - Blocks installer for Next.js apps",
+
+  "main": "dist/index.js",
+  "bin": {
+    "nextworks": "dist/index.js"
+  },
+    "repository": "github:jblh/nextworks-cli",
+  "bugs": "https://github.com/jblh/nextworks-cli/issues",
+  "homepage": "https://github.com/jblh/nextworks-cli#readme",
+
+  "scripts": {
+    "build": "tsc",
+    "postbuild": "node ./scripts/copy-assets.js",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+    "keywords": [
+    "nextjs",
+    "app-router",
+    "blocks",
+
+    "frontend-blocks",
+    "kits",
+    "feature-kits",
+    "scaffold",
+    "starter",
+    "shadcn",
+    "cli",
+    "nextworks",
+    "generator"
+  ],
+  "author": "JBLH",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "fs-extra": "^11.3.2",
+    "graceful-fs": "^4.2.0",
+    "inquirer": "^9.3.8",
+    "ora": "^8.2.0",
+    "universalify": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.9",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "nextworks-cli",
+  "private": true,
+  "workspaces": [
+    "cli",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm -ws run build",
+    "clean": "npm -ws run clean || exit 0"
+  }
+}

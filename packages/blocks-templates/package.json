@@ -1,0 +1,34 @@
+{
+  "name": "@nextworks/blocks-templates",
+  "version": "0.1.0-alpha.19",
+  "private": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "repository": "github:jblh/nextworks-cli",
+  "bugs": "https://github.com/jblh/nextworks-cli/issues",
+  "homepage": "https://github.com/jblh/nextworks-cli#readme",
+  "scripts": {
+    "build": "npx tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@nextworks/blocks-core": "0.1.0-alpha.19",
+    "@nextworks/blocks-sections": "0.1.0-alpha.19",
+    "lucide-react": "^0.542.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "^15.0.0 || ^16.0.0"
+  }
+}
