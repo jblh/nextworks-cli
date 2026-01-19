@@ -470,6 +470,91 @@ const poppins = Poppins({
   );
 }
 
+export async function updatePagesAppWithAppProviders(): Promise<void> {
+  const mode = await detectProjectRootMode(process.cwd());
+  const appPath = mode === "src" ? "src/pages/_app.tsx" : "pages/_app.tsx";
+
+  if (!(await fileExists(appPath))) {
+    console.log(
+      "⚠️  pages/_app.tsx not found. You may need to manually wrap your app with AppProviders.",
+    );
+    return;
+  }
+
+  let content = await fs.readFile(appPath, "utf-8");
+
+  // Idempotency: if it's already wrapped, bail.
+  if (content.includes("<AppProviders") || content.includes("</AppProviders>")) {
+    console.log("⚠️  AppProviders wrapper already exists in pages/_app.tsx");
+    return;
+  }
+
+  // Collect existing import statements (multi-line + semicolon-less safe).
+  const importStatementsRegex =
+    /^import[\s\S]*?(?:;\s*|\r?\n(?=(?:import\s|export\s|const\s|let\s|var\s|function\s|class\s|\/\/|\/\*|$)))/gm;
+  const imports = content.match(importStatementsRegex) ?? [];
+  const lastImport = imports[imports.length - 1] ?? "";
+  const lastImportIndex = lastImport
+    ? content.lastIndexOf(lastImport) + lastImport.length
+    : 0;
+
+  const ensureImport = (importLine: string) => {
+    const normalizedContent = content.replace(/\s+/g, " ");
+    const normalizedImportLine = importLine.replace(/\s+/g, " ");
+    if (normalizedContent.includes(normalizedImportLine)) return;
+
+    const prefix = content.slice(0, lastImportIndex);
+    const suffix = content.slice(lastImportIndex);
+
+    const needsLeadingNewline = lastImportIndex > 0 && !prefix.endsWith("\n");
+    const needsTrailingNewline = suffix.length > 0 && !suffix.startsWith("\n");
+
+    content =
+      prefix +
+      (needsLeadingNewline ? "\n" : "") +
+      importLine +
+      "\n" +
+      (needsTrailingNewline ? "\n" : "") +
+      suffix;
+  };
+
+  // Ensure imports. (We intentionally don't patch next/font in Pages Router.)
+  ensureImport('import AppProviders from "@/components/app-providers";');
+  ensureImport('import AppToaster from "@/components/ui/toaster";');
+
+  // Wrap <Component {...pageProps} />.
+  // Handle the common patterns (Next.js default TS template).
+  const patterns: Array<{ from: RegExp; to: string }> = [
+    {
+      from: /return\s*\(\s*<Component\s*\{\.\.\.pageProps\}\s*\/?>\s*\)\s*;?/m,
+      to: `return (\n    <AppProviders>\n      <Component {...pageProps} />\n      <AppToaster />\n    </AppProviders>\n  );`,
+    },
+    {
+      from: /return\s*<Component\s*\{\.\.\.pageProps\}\s*\/?>\s*;?/m,
+      to: `return (\n    <AppProviders>\n      <Component {...pageProps} />\n      <AppToaster />\n    </AppProviders>\n  );`,
+    },
+  ];
+
+  let replaced = false;
+  for (const p of patterns) {
+    if (p.from.test(content)) {
+      content = content.replace(p.from, p.to);
+      replaced = true;
+      break;
+    }
+  }
+
+  if (!replaced) {
+    console.log(
+      "⚠️  Could not automatically wrap pages/_app.tsx. Please wrap <Component {...pageProps} /> with <AppProviders> manually.",
+    );
+    return;
+  }
+
+  await fs.writeFile(appPath, content);
+  console.log("✓ Updated pages/_app.tsx with AppProviders and AppToaster");
+}
+
 export async function removeFiles(files: string[]): Promise<void> {
   for (const file of files) {
     const filePath = path.join(process.cwd(), file);
