@@ -6,6 +6,7 @@ import {
   fileExists,
   resolveAssetPath,
   updateLayoutWithAppProviders,
+  updatePagesAppWithAppProviders,
   detectProjectRootMode,
 } from "../utils/file-operations";
 import { addInstalledKit } from "../utils/installation-tracker";
@@ -210,35 +211,36 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
     console.log("✓ blocks kit installed successfully!");
 
     let layoutUpgraded = false;
+    let pagesAppUpgraded = false;
 
-    // Offer to auto-upgrade the root layout to use AppProviders
+    // Offer to auto-upgrade the root layout to use AppProviders (App Router)
     // (supports both root app/layout.tsx and src/app/layout.tsx)
     const mode = await detectProjectRootMode(process.cwd());
     const detectedLayoutPath =
       mode === "src" ? "src/app/layout.tsx" : "app/layout.tsx";
 
-    if (await fileExists(detectedLayoutPath)) {
-      // Dynamically load inquirer to avoid ESM/CJS interop issues when
-      // the CLI is compiled to CommonJS but inquirer is ESM-only.
-      let promptFn: any;
-      try {
-        // Use a runtime dynamic import via the Function constructor to ensure
-        // we call the native import() at runtime and avoid TypeScript
-        // transpilation turning this into a require() call.
-        const inquirerModule = await new Function(
-          'return import("inquirer")',
-        )();
-        // inquirer exports a default object with prompt; support both shapes
-        promptFn = inquirerModule?.default?.prompt ?? inquirerModule?.prompt;
-      } catch (err) {
-        console.log(
-          "⚠️  Could not load optional interactive prompt (inquirer). Skipping layout upgrade.",
-        );
-        promptFn = null;
-      }
+    const detectedPagesAppPath =
+      mode === "src" ? "src/pages/_app.tsx" : "pages/_app.tsx";
 
+    // Dynamically load inquirer to avoid ESM/CJS interop issues when
+    // the CLI is compiled to CommonJS but inquirer is ESM-only.
+    let promptFn: any;
+    try {
+      // Use a runtime dynamic import via the Function constructor to ensure
+      // we call the native import() at runtime and avoid TypeScript
+      // transpilation turning this into a require() call.
+      const inquirerModule = await new Function('return import("inquirer")')();
+      // inquirer exports a default object with prompt; support both shapes
+      promptFn = inquirerModule?.default?.prompt ?? inquirerModule?.prompt;
+    } catch (err) {
+      console.log(
+        "⚠️  Could not load optional interactive prompt (inquirer). Skipping optional layout/_app upgrades.",
+      );
+      promptFn = null;
+    }
+
+    if (await fileExists(detectedLayoutPath)) {
       if (options.yes) {
-        // Non-interactive mode: accept defaults
         try {
           await updateLayoutWithAppProviders();
           layoutUpgraded = true;
@@ -264,6 +266,34 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
           }
         }
       }
+    } else if (await fileExists(detectedPagesAppPath)) {
+      // Pages Router support: patch pages/_app.tsx
+      if (options.yes) {
+        try {
+          await updatePagesAppWithAppProviders();
+          pagesAppUpgraded = true;
+        } catch (err) {
+          console.log("⚠️  Failed to update pages/_app.tsx automatically:", err);
+        }
+      } else if (promptFn) {
+        const { upgradePagesApp } = await promptFn([
+          {
+            type: "confirm",
+            name: "upgradePagesApp",
+            message: `Would you like the CLI to automatically wrap your ${detectedPagesAppPath} with AppProviders?`,
+            default: true,
+          },
+        ]);
+
+        if (upgradePagesApp) {
+          try {
+            await updatePagesAppWithAppProviders();
+            pagesAppUpgraded = true;
+          } catch (err) {
+            console.log("⚠️  Failed to update pages/_app.tsx automatically:", err);
+          }
+        }
+      }
     }
 
     console.log("\n📋 Next steps:");
@@ -274,21 +304,29 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
     console.log("    /templates/digitalagency");
     console.log("    /templates/gallery  (blocks gallery)");
 
-    if (!layoutUpgraded) {
+    if (layoutUpgraded) {
       console.log(
-        `1. Wrap your app with the AppProviders wrapper in ${detectedLayoutPath} (or your root layout):`,
-      );
-      console.log('   import AppProviders from "@/components/app-providers";');
-      console.log(
-        "   Wrap your application with <AppProviders> to enable fonts, presets, CSS variable injection, session provider, and the app toaster.",
+        `1. ${detectedLayoutPath} was updated to wrap the app with AppProviders and add suppressHydrationWarning.`,
       );
       console.log(
         "2. Ensure Tailwind is configured and app/globals.css is present (copied if available).",
       );
       console.log("3. Install new dependencies: npm install");
+    } else if (pagesAppUpgraded) {
+      console.log(
+        `1. ${detectedPagesAppPath} was updated to wrap the app with AppProviders.`,
+      );
+      console.log(
+        "2. Ensure Tailwind is configured and global styles are present.",
+      );
+      console.log("3. Install new dependencies: npm install");
     } else {
       console.log(
-        `1. ${detectedLayoutPath} was updated to wrap the app with AppProviders and add suppressHydrationWarning.`,
+        `1. Wrap your app with the AppProviders wrapper in ${detectedLayoutPath} (App Router) or ${detectedPagesAppPath} (Pages Router):`,
+      );
+      console.log('   import AppProviders from "@/components/app-providers";');
+      console.log(
+        "   Wrap your application with <AppProviders> to enable fonts, presets, CSS variable injection, session provider, and the app toaster.",
       );
       console.log(
         "2. Ensure Tailwind is configured and app/globals.css is present (copied if available).",
