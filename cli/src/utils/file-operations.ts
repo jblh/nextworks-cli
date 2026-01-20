@@ -1,5 +1,9 @@
 import fs from "fs-extra";
 import path from "path";
+import {
+  buildDefaultPagesDocument,
+  patchPagesDocumentFile,
+} from "./next-pages-document";
 
 /**
  * Resolve a runtime asset path. Prefer the compiled dist folder (which is
@@ -518,9 +522,132 @@ export async function updatePagesAppWithAppProviders(): Promise<void> {
       suffix;
   };
 
-  // Ensure imports. (We intentionally don't patch next/font in Pages Router.)
+  // Ensure imports.
   ensureImport('import AppProviders from "@/components/app-providers";');
   ensureImport('import AppToaster from "@/components/ui/toaster";');
+
+  // Pages Router: inject fonts via next/font/google so the kit's CSS vars (e.g. --font-geist-sans)
+  // are actually defined. This mirrors the App Router layout patch, but targets _app.tsx.
+  const googleFontImportRegex =
+    /import\s*\{([\s\S]*?)\}\s*from\s*["']next\/font\/google["']\s*;?/m;
+
+  const brokenGoogleFontImportRegex =
+    /import\s*\{[\s\S]*?\}\s*(?:\r?\n)+\s*(?=const\s)/m;
+
+  const desiredFontNames = [
+    "Geist",
+    "Geist_Mono",
+    "Outfit",
+    "Inter",
+    "Poppins",
+  ];
+
+  if (brokenGoogleFontImportRegex.test(content)) {
+    content = content.replace(brokenGoogleFontImportRegex, "");
+  }
+
+  const existingGoogleFontImport = content.match(googleFontImportRegex);
+  let afterGoogleImportIndex: number | null = null;
+
+  if (existingGoogleFontImport) {
+    const existingList = existingGoogleFontImport[1]
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    const merged = Array.from(
+      new Set([...existingList, ...desiredFontNames]),
+    ).sort();
+
+    const mergedImportLine = `import { ${merged.join(", ")} } from "next/font/google";`;
+
+    const matchText = existingGoogleFontImport[0];
+    const matchStart = existingGoogleFontImport.index ?? content.indexOf(matchText);
+    const matchEnd = matchStart + matchText.length;
+
+    content =
+      content.slice(0, matchStart) +
+      mergedImportLine +
+      content.slice(matchEnd);
+
+    afterGoogleImportIndex = matchStart + mergedImportLine.length;
+  } else {
+    const fontImportLine =
+      'import { Geist, Geist_Mono, Outfit, Inter, Poppins } from "next/font/google";';
+    ensureImport(fontImportLine);
+
+    const insertedIdx = content.indexOf(fontImportLine);
+    if (insertedIdx !== -1) {
+      afterGoogleImportIndex = insertedIdx + fontImportLine.length;
+    }
+  }
+
+  const ensureFontInstance = (marker: string, block: string) => {
+    if (content.includes(marker)) return;
+
+    const insertAt = afterGoogleImportIndex ?? lastImportIndex;
+    content =
+      content.slice(0, insertAt) +
+      "\n" +
+      block.trim() +
+      "\n\n" +
+      content.slice(insertAt);
+
+    if (afterGoogleImportIndex != null) {
+      afterGoogleImportIndex = insertAt + 1 + block.trim().length + 2;
+    }
+  };
+
+  ensureFontInstance(
+    "const geistSans = Geist(",
+    `
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+`,
+  );
+
+  ensureFontInstance(
+    "const geistMono = Geist_Mono(",
+    `
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+`,
+  );
+
+  ensureFontInstance(
+    "const outfit = Outfit(",
+    `
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
+`,
+  );
+
+  ensureFontInstance(
+    "const inter = Inter(",
+    `
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+`,
+  );
+
+  ensureFontInstance(
+    "const poppins = Poppins(",
+    `
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+`,
+  );
 
   // Wrap <Component {...pageProps} />.
   // Handle the common patterns (Next.js default TS template).
@@ -552,7 +679,31 @@ export async function updatePagesAppWithAppProviders(): Promise<void> {
   }
 
   await fs.writeFile(appPath, content);
-  console.log("✓ Updated pages/_app.tsx with AppProviders and AppToaster");
+  console.log("✓ Updated pages/_app.tsx with AppProviders, AppToaster, and fonts");
+}
+
+export async function ensurePagesDocumentSuppressHydrationWarning(): Promise<void> {
+  const mode = await detectProjectRootMode(process.cwd());
+  const documentPath = mode === "src" ? "src/pages/_document.tsx" : "pages/_document.tsx";
+
+  // If there's no _document.tsx, creating one is safe in Pages Router and keeps behavior consistent.
+  if (!(await fileExists(documentPath))) {
+    await fs.ensureDir(path.dirname(documentPath));
+    await fs.writeFile(documentPath, buildDefaultPagesDocument());
+    console.log("✓ Created pages/_document.tsx with suppressHydrationWarning");
+    return;
+  }
+
+  const result = await patchPagesDocumentFile(documentPath);
+  if (result === "patched") {
+    console.log("✓ Updated pages/_document.tsx to add suppressHydrationWarning");
+  } else if (result === "already") {
+    console.log("ℹ️  pages/_document.tsx already has suppressHydrationWarning");
+  } else {
+    console.log(
+      "⚠️  Could not safely update pages/_document.tsx to add suppressHydrationWarning. Please add it to <Html> manually.",
+    );
+  }
 }
 
 export async function removeFiles(files: string[]): Promise<void> {

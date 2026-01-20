@@ -46,7 +46,9 @@ Regardless of blocks options:
 
 ### Edits in-place
 
-- **`app/layout.tsx`** (optional, but enabled by default and auto-applied when using `--yes`)
+Depending on whether you use the **App Router** or **Pages Router**, the CLI will patch a different file.
+
+- **App Router:** **`app/layout.tsx`** (optional, but enabled by default and auto-applied when using `--yes`)
   - modifies your existing layout by inserting provider/toaster/font changes (it does not intentionally replace the entire file)
   - wraps the app with `AppProviders`
   - injects `AppToaster`
@@ -54,13 +56,24 @@ Regardless of blocks options:
   - adds `suppressHydrationWarning` to `<html>`
   - updates `<body className>` to include font variables + `antialiased`
 
+- **Pages Router:** **`pages/_app.tsx`** (optional, enabled by default and auto-applied when using `--yes`)
+  - wraps `<Component {...pageProps} />` with `AppProviders`
+  - injects `AppToaster`
+  - ensures `next/font/google` import and font instances exist
+
+- **Pages Router:** **`pages/_document.tsx`** (optional, enabled by default and auto-applied when using `--yes`)
+  - adds `suppressHydrationWarning` to `<Html>`
+  - if `pages/_document.tsx` does not exist, the CLI may create a minimal one
+
 ### Updates
 
 - `package.json` (merges deps/devDeps)
 
 ### High-conflict files to watch
 
-- `app/layout.tsx`
+- `app/layout.tsx` (App Router)
+- `pages/_app.tsx` (Pages Router)
+- `pages/_document.tsx` (Pages Router)
 - `app/globals.css`
 - `next.config.ts`
 - `lib/utils.ts`

@@ -7,6 +7,7 @@ import {
   resolveAssetPath,
   updateLayoutWithAppProviders,
   updatePagesAppWithAppProviders,
+  ensurePagesDocumentSuppressHydrationWarning,
   detectProjectRootMode,
 } from "../utils/file-operations";
 import { addInstalledKit } from "../utils/installation-tracker";
@@ -267,10 +268,11 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
         }
       }
     } else if (await fileExists(detectedPagesAppPath)) {
-      // Pages Router support: patch pages/_app.tsx
+      // Pages Router support: patch pages/_app.tsx (+ ensure _document.tsx hydration safety)
       if (options.yes) {
         try {
           await updatePagesAppWithAppProviders();
+          await ensurePagesDocumentSuppressHydrationWarning();
           pagesAppUpgraded = true;
         } catch (err) {
           console.log("⚠️  Failed to update pages/_app.tsx automatically:", err);
@@ -280,7 +282,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
           {
             type: "confirm",
             name: "upgradePagesApp",
-            message: `Would you like the CLI to automatically wrap your ${detectedPagesAppPath} with AppProviders?`,
+            message: `Would you like the CLI to automatically wrap your ${detectedPagesAppPath} with AppProviders (and ensure suppressHydrationWarning in pages/_document.tsx)?`,
             default: true,
           },
         ]);
@@ -288,6 +290,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
         if (upgradePagesApp) {
           try {
             await updatePagesAppWithAppProviders();
+            await ensurePagesDocumentSuppressHydrationWarning();
             pagesAppUpgraded = true;
           } catch (err) {
             console.log("⚠️  Failed to update pages/_app.tsx automatically:", err);
@@ -314,10 +317,10 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
       console.log("3. Install new dependencies: npm install");
     } else if (pagesAppUpgraded) {
       console.log(
-        `1. ${detectedPagesAppPath} was updated to wrap the app with AppProviders.`,
+        `1. ${detectedPagesAppPath} was updated to wrap the app with AppProviders (and fonts).`,
       );
       console.log(
-        "2. Ensure Tailwind is configured and global styles are present.",
+        "2. pages/_document.tsx was ensured/updated to include suppressHydrationWarning.",
       );
       console.log("3. Install new dependencies: npm install");
     } else {
