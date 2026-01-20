@@ -49,7 +49,9 @@ Before running installs, strongly consider:
 Kits may also:
 
 - **merge dependencies** into `package.json`
-- **edit `app/layout.tsx`** (Blocks)
+- **edit your router entrypoint** (Blocks):
+  - App Router: `app/layout.tsx`
+  - Pages Router: `pages/_app.tsx` (and may create/update `pages/_document.tsx`)
 - create/update `.nextworks/config.json`
 
 For a transparent breakdown of what each kit writes/edits, see:
@@ -97,7 +99,7 @@ npx nextworks@latest add blocks --sections --templates --yes  # non-interactive 
 
 Prerequisites:
 
-- A Next.js App Router project (e.g. from `create-next-app`).
+- A Next.js project (App Router **or** Pages Router).
 - TypeScript required.
 - Tailwind CSS required (the Blocks kit and templates rely on Tailwind classes).
 
@@ -114,7 +116,9 @@ npx nextworks@latest add blocks --sections --templates --yes
 > **Turbopack / Next 16 note (fonts + AppProviders)**
 >
 > As of the current alpha, `@nextworks/blocks-core/server` intentionally **does not** import `next/font/*`.
-> Fonts are instead configured directly in your app’s `app/layout.tsx` (the CLI patches this for you).
+> Fonts are instead configured directly in your app’s router entrypoint (the CLI patches this for you):
+> - App Router: `app/layout.tsx`
+> - Pages Router: `pages/_app.tsx`
 > This avoids Turbopack dev issues related to internal Next font modules.
 >
 > If you ever see a font-related Turbopack error after upgrades or manual edits, re-run:
@@ -123,8 +127,11 @@ npx nextworks@latest add blocks --sections --templates --yes
 > npx nextworks@latest add blocks --sections --templates
 > ```
 >
-> to re-apply the layout patch, and ensure `app/layout.tsx` contains a valid
+> to re-apply the patch, and ensure your router entrypoint contains a valid
 > `import { ... } from "next/font/google";` plus the corresponding `const geistSans = ...` etc.
+>
+> - App Router: `app/layout.tsx`
+> - Pages Router: `pages/_app.tsx`
 
 ```bash
 npx nextworks@latest add blocks --sections --templates
@@ -134,7 +141,7 @@ This copies:
 
 - `components/ui/*` (core UI primitives)
 - `components/sections/*` (reusable sections)
-- Page templates under `app/templates/*`
+- Page templates under `app/templates/*` (App Router projects)
 - Theme helpers and `app/globals.css` (if not already present)
 
 After this step you should be able to start your dev server and visit:
