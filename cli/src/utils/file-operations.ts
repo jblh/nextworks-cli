@@ -43,6 +43,7 @@ export async function detectProjectRootMode(targetDir: string): Promise<
 export function mapKitPathToProject(
   relativeFile: string,
   mode: "src" | "root",
+  routerTarget: "app" | "pages" = "app",
 ): string {
   const file = normalizeToPosix(relativeFile);
 
@@ -52,21 +53,44 @@ export function mapKitPathToProject(
   const rootOnlyPrefixes = ["public/", ".nextworks/"];
   const rootOnlyFiles = new Set(["next.config.ts", "next.config.js"]);
 
-  if (mode === "src") {
-    if (rootOnlyFiles.has(file)) return file;
-    if (rootOnlyPrefixes.some((p) => file.startsWith(p))) return file;
+  // Router-specific mapping:
+  // - In App Router installs, templates live under app/templates/*.
+  // - In Pages Router installs, templates should live under pages/templates/*.
+  //   (This prevents hybrid installs when a project has an app/ folder but no layout.)
+  const rewriteTemplatesForPagesRouter = (p: string) => {
+    if (routerTarget !== "pages") return p;
+    if (!p.startsWith("app/templates/")) return p;
 
-    if (srcMappedPrefixes.some((p) => file.startsWith(p))) {
-      return `src/${file}`;
+    // app/templates/x/page.tsx -> pages/templates/x.tsx
+    const rest = p.slice("app/templates/".length);
+    const pageMatch = rest.match(/^([^/]+)\/page\.(tsx|ts|jsx|js)$/);
+    if (pageMatch) {
+      const slug = pageMatch[1];
+      const ext = pageMatch[2];
+      return `pages/templates/${slug}.${ext}`;
     }
 
-    // app/ is ambiguous: in src-dir apps it should be src/app.
-    if (file.startsWith("app/")) {
-      return `src/${file}`;
+    // app/templates/x/* -> pages/templates/x/* (README, components, PresetThemeVars, etc.)
+    return `pages/templates/${rest}`;
+  };
+
+  const rewritten = rewriteTemplatesForPagesRouter(file);
+
+  if (mode === "src") {
+    if (rootOnlyFiles.has(rewritten)) return rewritten;
+    if (rootOnlyPrefixes.some((p) => rewritten.startsWith(p))) return rewritten;
+
+    if (srcMappedPrefixes.some((p) => rewritten.startsWith(p))) {
+      return `src/${rewritten}`;
+    }
+
+    // app/ and pages/ are ambiguous: in src-dir apps they should be src/app and src/pages.
+    if (rewritten.startsWith("app/") || rewritten.startsWith("pages/")) {
+      return `src/${rewritten}`;
     }
   }
 
-  return file;
+  return rewritten;
 }
 
 export async function copyFiles(
@@ -76,9 +100,45 @@ export async function copyFiles(
 ): Promise<void> {
   const mode = await detectProjectRootMode(targetDir);
 
+  // Router detection (for correct template placement)
+  const appRouterLayout = mode === "src" ? "src/app/layout.tsx" : "app/layout.tsx";
+  const pagesRouterApp = mode === "src" ? "src/pages/_app.tsx" : "pages/_app.tsx";
+
+  const hasAppRouter = await fs.pathExists(path.join(targetDir, appRouterLayout));
+  const hasPagesRouter = await fs.pathExists(path.join(targetDir, pagesRouterApp));
+
+  // If layout exists, treat as App Router. Otherwise if pages/_app exists, treat as Pages Router.
+  // (In hybrid repos with both, we keep templates under app/ since App Router exists.)
+  const routerTarget: "app" | "pages" = hasAppRouter ? "app" : hasPagesRouter ? "pages" : "app";
+
   for (const file of files) {
+    // Special case: router-specific app-providers implementation.
+    // We always install components/app-providers.tsx (the shim), but only install
+    // one of the router variants:
+    // - App Router: components/app-providers.app.tsx
+    // - Pages Router: components/app-providers.pages.tsx
+    const normalized = normalizeToPosix(file);
+    if (
+      normalized === "components/app-providers.app.tsx" ||
+      normalized === "components/app-providers.pages.tsx"
+    ) {
+      // If the project clearly uses Pages Router (no app/layout.tsx but has pages/_app.tsx),
+      // skip copying the App Router variant.
+      if (hasPagesRouter && !hasAppRouter && normalized.endsWith(".app.tsx")) {
+        continue;
+      }
+
+      // If the project clearly uses App Router (has app/layout.tsx),
+      // skip copying the Pages Router variant.
+      if (hasAppRouter && normalized.endsWith(".pages.tsx")) {
+        continue;
+      }
+
+      // If both routers exist (hybrid repo), copy both.
+    }
+
     const sourcePath = path.join(sourceDir, file);
-    const mapped = mapKitPathToProject(file, mode);
+    const mapped = mapKitPathToProject(file, mode, routerTarget);
     const targetPath = path.join(targetDir, mapped);
 
     // Ensure target directory exists

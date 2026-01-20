@@ -240,7 +240,62 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
       promptFn = null;
     }
 
-    if (await fileExists(detectedLayoutPath)) {
+    const appRouterLayoutExists = await fileExists(detectedLayoutPath);
+    const pagesRouterAppExists = await fileExists(detectedPagesAppPath);
+
+    // Hybrid projects (common with create-next-app) may have both /app and /pages.
+    // In that case we should patch BOTH entrypoints so routes in either router
+    // are wrapped with providers.
+    if (appRouterLayoutExists && pagesRouterAppExists) {
+      try {
+        await updateLayoutWithAppProviders();
+        layoutUpgraded = true;
+      } catch (err) {
+        console.log("⚠️  Failed to update app/layout.tsx automatically:", err);
+      }
+
+      try {
+        await updatePagesAppWithAppProviders();
+        await ensurePagesDocumentSuppressHydrationWarning();
+
+        // Ensure pages/_app.tsx uses the Pages-safe AppProviders implementation.
+        const candidatePagesAppProvidersPaths = [
+          "components/app-providers.pages.tsx",
+          "src/components/app-providers.pages.tsx",
+        ];
+
+        for (const appProvidersPath of candidatePagesAppProvidersPaths) {
+          if (await fileExists(appProvidersPath)) {
+            const fsExtraModule = await import("fs-extra");
+            await fsExtraModule.default.writeFile(
+              appProvidersPath,
+              "\"use client\";\n\nimport * as React from \"react\";\n\nimport { BlocksAppProviders } from \"./providers/BlocksAppProviders\";\n\nexport default function AppProviders({ children }: { children: React.ReactNode }) {\n  return (\n    <div className=\"antialiased\">\n      <BlocksAppProviders>{children}</BlocksAppProviders>\n    </div>\n  );\n}\n",
+            );
+          }
+        }
+
+        // Ensure root components/app-providers.tsx points to the App Router variant
+        // so app/layout.tsx imports the correct implementation.
+        const candidateRootAppProvidersPaths = [
+          "components/app-providers.tsx",
+          "src/components/app-providers.tsx",
+        ];
+
+        for (const appProvidersPath of candidateRootAppProvidersPaths) {
+          if (await fileExists(appProvidersPath)) {
+            const fsExtraModule = await import("fs-extra");
+            await fsExtraModule.default.writeFile(
+              appProvidersPath,
+              'export { default } from "./app-providers.app";\n',
+            );
+          }
+        }
+
+        pagesAppUpgraded = true;
+      } catch (err) {
+        console.log("⚠️  Failed to update pages/_app.tsx automatically:", err);
+      }
+    } else if (appRouterLayoutExists) {
       if (options.yes) {
         try {
           await updateLayoutWithAppProviders();
@@ -268,11 +323,33 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
         }
       }
     } else if (await fileExists(detectedPagesAppPath)) {
-      // Pages Router support: patch pages/_app.tsx (+ ensure _document.tsx hydration safety)
+      // Pages Router support:
+      // - patch pages/_app.tsx (+ ensure _document.tsx hydration safety)
+      // - switch the kit-provided app-providers entrypoint to the Pages-safe variant
       if (options.yes) {
         try {
           await updatePagesAppWithAppProviders();
           await ensurePagesDocumentSuppressHydrationWarning();
+
+          // Make app-providers.tsx point at the Pages-safe implementation.
+          // (The kit defaults to App Router; Pages Router can't import @nextworks/blocks-core/server.)
+          //
+          // Patch whichever path exists (some repos have src/pages but root-level components/).
+          const candidateAppProvidersPaths = [
+            "components/app-providers.tsx",
+            "src/components/app-providers.tsx",
+          ];
+
+          for (const appProvidersPath of candidateAppProvidersPaths) {
+            if (await fileExists(appProvidersPath)) {
+              const fsExtraModule = await import("fs-extra");
+              await fsExtraModule.default.writeFile(
+                appProvidersPath,
+                'export { default } from "./app-providers.pages";\n',
+              );
+            }
+          }
+
           pagesAppUpgraded = true;
         } catch (err) {
           console.log("⚠️  Failed to update pages/_app.tsx automatically:", err);
@@ -291,6 +368,27 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
           try {
             await updatePagesAppWithAppProviders();
             await ensurePagesDocumentSuppressHydrationWarning();
+
+                      // Make app-providers.tsx point at the Pages-safe implementation.
+          // (The kit defaults to App Router; Pages Router can't import @nextworks/blocks-core/server.)
+          //
+          // Patch whichever path exists (some repos have src/pages but root-level components/).
+          const candidateAppProvidersPaths = [
+            "components/app-providers.tsx",
+            "src/components/app-providers.tsx",
+          ];
+
+          for (const appProvidersPath of candidateAppProvidersPaths) {
+            if (await fileExists(appProvidersPath)) {
+              const fsExtraModule = await import("fs-extra");
+              await fsExtraModule.default.writeFile(
+                appProvidersPath,
+                'export { default } from "./app-providers.pages";\n',
+              );
+            }
+          }
+
+
             pagesAppUpgraded = true;
           } catch (err) {
             console.log("⚠️  Failed to update pages/_app.tsx automatically:", err);
@@ -306,6 +404,18 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
     console.log("    /templates/saasdashboard");
     console.log("    /templates/digitalagency");
     console.log("    /templates/gallery  (blocks gallery)");
+
+    // Note: depending on router type, the templates are installed into different folders,
+    // but the URLs are the same.
+    if (pagesRouterAppExists && !appRouterLayoutExists) {
+      console.log(
+        `  (Pages Router install: files live under ${mode === "src" ? "src/pages/templates" : "pages/templates"})`,
+      );
+    } else {
+      console.log(
+        `  (App Router install: files live under ${mode === "src" ? "src/app/templates" : "app/templates"})`,
+      );
+    }
 
     if (layoutUpgraded) {
       console.log(

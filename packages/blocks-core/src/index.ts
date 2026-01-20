@@ -5,6 +5,7 @@ export * from "./lib/utils";
 // Client-safe providers/hooks
 export * from "./components/enhanced-theme-provider";
 export * from "./components/theme-provider";
+export { default as AppProvidersClient } from "./components/AppProviders.client";
 
 // Provider composition (no next/* imports)
 export * from "./providers/BlocksAppProviders";
