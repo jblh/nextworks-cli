@@ -1,1 +1,1 @@
-export { AppProviders as default } from "@nextworks/blocks-core/server";
+export { default } from "./app-providers.app";

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Check, Palette, Wrench } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useThemeVariant } from "@/components/enhanced-theme-provider";
+import { useThemeVariant } from "../enhanced-theme-provider";
 import {
   themes,
   darkThemes,
