@@ -29,7 +29,11 @@ Post-install notes
 
    npm install
 
-2. Wrap your app with the AppProviders wrapper in app/layout.tsx to enable fonts, presets, CSS variable injection, session provider, and the app toaster. Example:
+2. Wrap your app with the AppProviders wrapper (the CLI patches this automatically).
+   - App Router: `app/layout.tsx`
+   - Pages Router: `pages/_app.tsx`
+
+   Example (App Router):
 
    // at the top of app/layout.tsx
    import "./globals.css"; // optional if you already import it elsewhere in your project
@@ -48,12 +52,18 @@ Post-install notes
    }
 
    Notes:
-   - AppProviders imports globals.css for you, so you don't strictly need to import it separately, but ensure you have the file copied into your project (app/globals.css).
-   - If you prefer to only use the EnhancedThemeProvider, you can still import it directly from "@/components/enhanced-theme-provider".
+   - The kit’s `components/app-providers.*` files are **local kit providers** (they wrap with the kit-local `BlocksAppProviders`), so templates/hooks and providers resolve to the same React context instance under Turbopack/HMR.
+   - On Pages Router installs, the CLI also ensures kit CSS imports are present in `pages/_app.tsx`:
+     - `../app/globals.css`
+     - `../app/tw-animate.css`
 
-3. Ensure `app/globals.css` exists in your project and that Tailwind is configured.
+3. Ensure `app/globals.css` exists in your project and that Tailwind is configured (the Blocks kit expects Tailwind).
 
-4. Placeholder assets are located under `public/placeholders`. These should already have been copied by the CLI; if you move files around, keep the paths aligned or update the template image references.
+4. Templates are installed in a router-native location:
+   - App Router: `app/templates/...`
+   - Pages Router: `pages/templates/<template>/index.tsx`
+
+5. Placeholder assets are located under `public/placeholders`. These should already have been copied by the CLI; if you move files around, keep the paths aligned or update the template image references.
 
 Publishing notes (for maintainers)
 

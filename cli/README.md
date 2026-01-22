@@ -10,7 +10,7 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 >
 > In this alpha, the most reliable setup is:
 >
-> 1. Create a new Next.js App Router project:
+> 1. Create a new Next.js project (App Router **or** Pages Router):
 >
 >    ```bash
 >    npx create-next-app@latest
@@ -55,6 +55,7 @@ Kits may also:
 - create/update `.nextworks/config.json`
 
 For a transparent breakdown of what each kit writes/edits, see:
+
 - https://github.com/jblh/nextworks-cli/blob/main/docs/FILE_CHANGES.md
 
 ---
@@ -115,11 +116,12 @@ npx nextworks@latest add blocks --sections --templates --yes
 
 > **Turbopack / Next 16 note (fonts + AppProviders)**
 >
-> As of the current alpha, `@nextworks/blocks-core/server` intentionally **does not** import `next/font/*`.
-> Fonts are instead configured directly in your app’s router entrypoint (the CLI patches this for you):
+> Shared packages intentionally avoid importing `next/font/*`.
+> Fonts are configured directly in your app’s router entrypoint (the CLI patches this for you):
+>
 > - App Router: `app/layout.tsx`
 > - Pages Router: `pages/_app.tsx`
-> This avoids Turbopack dev issues related to internal Next font modules.
+>   This avoids Turbopack dev issues related to internal Next font modules.
 >
 > If you ever see a font-related Turbopack error after upgrades or manual edits, re-run:
 >
@@ -141,14 +143,15 @@ This copies:
 
 - `components/ui/*` (core UI primitives)
 - `components/sections/*` (reusable sections)
-- Page templates under `app/templates/*` (App Router projects)
+- Templates (router-native):
+  - App Router projects: `app/templates/*`
+  - Pages Router projects: `pages/templates/<template>/index.tsx`
 - Theme helpers and `app/globals.css` (if not already present)
 
 After this step you should be able to start your dev server and visit:
 
 - `/` (if wired as the home page), or
 - `/templates/productlaunch`, `/templates/saasdashboard`, `/templates/digitalagency`
-
 
 ---
 
@@ -185,7 +188,9 @@ You can add a short “Nextworks setup” section to your app README:
 1. Install and run the CLI from your Next.js app root:
 
    npx nextworks@latest add blocks --sections --templates
+
    # CI / non-interactive:
+
    npx nextworks@latest add blocks --sections --templates --yes
 
 2. Start dev server:
@@ -193,7 +198,14 @@ You can add a short “Nextworks setup” section to your app README:
    npm run dev
 
 3. Try these routes:
-   - `/` or `/templates/productlaunch` (Blocks template)
+   - `/templates/productlaunch`
+   - `/templates/saasdashboard`
+   - `/templates/digitalagency`
+   - `/templates/gallery`
+
+   Template files live at:
+   - App Router: `app/templates/...`
+   - Pages Router: `pages/templates/<template>/index.tsx`
 ```
 
 ---

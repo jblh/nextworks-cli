@@ -26,9 +26,9 @@ function normalizeToPosix(p: string): string {
   return p.replace(/\\/g, "/");
 }
 
-export async function detectProjectRootMode(targetDir: string): Promise<
-  "src" | "root"
-> {
+export async function detectProjectRootMode(
+  targetDir: string,
+): Promise<"src" | "root"> {
   // create-next-app --src-dir typically creates src/app and src/*
   const srcApp = path.join(targetDir, "src", "app");
   if (await fs.pathExists(srcApp)) return "src";
@@ -61,13 +61,14 @@ export function mapKitPathToProject(
     if (routerTarget !== "pages") return p;
     if (!p.startsWith("app/templates/")) return p;
 
-    // app/templates/x/page.tsx -> pages/templates/x.tsx
+    // app/templates/x/page.tsx -> pages/templates/x/index.tsx
+    // (Pages Router: keep the per-template folder structure so template-local relative imports work.)
     const rest = p.slice("app/templates/".length);
     const pageMatch = rest.match(/^([^/]+)\/page\.(tsx|ts|jsx|js)$/);
     if (pageMatch) {
       const slug = pageMatch[1];
       const ext = pageMatch[2];
-      return `pages/templates/${slug}.${ext}`;
+      return `pages/templates/${slug}/index.${ext}`;
     }
 
     // app/templates/x/* -> pages/templates/x/* (README, components, PresetThemeVars, etc.)
@@ -101,15 +102,25 @@ export async function copyFiles(
   const mode = await detectProjectRootMode(targetDir);
 
   // Router detection (for correct template placement)
-  const appRouterLayout = mode === "src" ? "src/app/layout.tsx" : "app/layout.tsx";
-  const pagesRouterApp = mode === "src" ? "src/pages/_app.tsx" : "pages/_app.tsx";
+  const appRouterLayout =
+    mode === "src" ? "src/app/layout.tsx" : "app/layout.tsx";
+  const pagesRouterApp =
+    mode === "src" ? "src/pages/_app.tsx" : "pages/_app.tsx";
 
-  const hasAppRouter = await fs.pathExists(path.join(targetDir, appRouterLayout));
-  const hasPagesRouter = await fs.pathExists(path.join(targetDir, pagesRouterApp));
+  const hasAppRouter = await fs.pathExists(
+    path.join(targetDir, appRouterLayout),
+  );
+  const hasPagesRouter = await fs.pathExists(
+    path.join(targetDir, pagesRouterApp),
+  );
 
   // If layout exists, treat as App Router. Otherwise if pages/_app exists, treat as Pages Router.
   // (In hybrid repos with both, we keep templates under app/ since App Router exists.)
-  const routerTarget: "app" | "pages" = hasAppRouter ? "app" : hasPagesRouter ? "pages" : "app";
+  const routerTarget: "app" | "pages" = hasAppRouter
+    ? "app"
+    : hasPagesRouter
+      ? "pages"
+      : "app";
 
   for (const file of files) {
     // Special case: router-specific app-providers implementation.
@@ -373,13 +384,12 @@ export async function updateLayoutWithAppProviders(): Promise<void> {
 
     // Replace exactly the matched import (which may be multi-line).
     const matchText = existingGoogleFontImport[0];
-    const matchStart = existingGoogleFontImport.index ?? content.indexOf(matchText);
+    const matchStart =
+      existingGoogleFontImport.index ?? content.indexOf(matchText);
     const matchEnd = matchStart + matchText.length;
 
     content =
-      content.slice(0, matchStart) +
-      mergedImportLine +
-      content.slice(matchEnd);
+      content.slice(0, matchStart) + mergedImportLine + content.slice(matchEnd);
 
     afterGoogleImportIndex = matchStart + mergedImportLine.length;
   } else {
@@ -412,8 +422,7 @@ export async function updateLayoutWithAppProviders(): Promise<void> {
 
     // Keep the insertion point stable for subsequent font blocks in this run.
     if (afterGoogleImportIndex != null) {
-      afterGoogleImportIndex =
-        insertAt + 1 + block.trim().length + 2; // \n + block + \n\n
+      afterGoogleImportIndex = insertAt + 1 + block.trim().length + 2; // \n + block + \n\n
     }
   };
 
@@ -548,7 +557,10 @@ export async function updatePagesAppWithAppProviders(): Promise<void> {
   let content = await fs.readFile(appPath, "utf-8");
 
   // Idempotency: if it's already wrapped, bail.
-  if (content.includes("<AppProviders") || content.includes("</AppProviders>")) {
+  if (
+    content.includes("<AppProviders") ||
+    content.includes("</AppProviders>")
+  ) {
     console.log("⚠️  AppProviders wrapper already exists in pages/_app.tsx");
     return;
   }
@@ -585,6 +597,8 @@ export async function updatePagesAppWithAppProviders(): Promise<void> {
   // Ensure imports.
   ensureImport('import AppProviders from "@/components/app-providers";');
   ensureImport('import AppToaster from "@/components/ui/toaster";');
+  ensureImport('import "../app/globals.css";');
+  ensureImport('import "../app/tw-animate.css";');
 
   // Pages Router: inject fonts via next/font/google so the kit's CSS vars (e.g. --font-geist-sans)
   // are actually defined. This mirrors the App Router layout patch, but targets _app.tsx.
@@ -622,13 +636,12 @@ export async function updatePagesAppWithAppProviders(): Promise<void> {
     const mergedImportLine = `import { ${merged.join(", ")} } from "next/font/google";`;
 
     const matchText = existingGoogleFontImport[0];
-    const matchStart = existingGoogleFontImport.index ?? content.indexOf(matchText);
+    const matchStart =
+      existingGoogleFontImport.index ?? content.indexOf(matchText);
     const matchEnd = matchStart + matchText.length;
 
     content =
-      content.slice(0, matchStart) +
-      mergedImportLine +
-      content.slice(matchEnd);
+      content.slice(0, matchStart) + mergedImportLine + content.slice(matchEnd);
 
     afterGoogleImportIndex = matchStart + mergedImportLine.length;
   } else {
@@ -739,12 +752,15 @@ const poppins = Poppins({
   }
 
   await fs.writeFile(appPath, content);
-  console.log("✓ Updated pages/_app.tsx with AppProviders, AppToaster, and fonts");
+  console.log(
+    "✓ Updated pages/_app.tsx with AppProviders, AppToaster, and fonts",
+  );
 }
 
 export async function ensurePagesDocumentSuppressHydrationWarning(): Promise<void> {
   const mode = await detectProjectRootMode(process.cwd());
-  const documentPath = mode === "src" ? "src/pages/_document.tsx" : "pages/_document.tsx";
+  const documentPath =
+    mode === "src" ? "src/pages/_document.tsx" : "pages/_document.tsx";
 
   // If there's no _document.tsx, creating one is safe in Pages Router and keeps behavior consistent.
   if (!(await fileExists(documentPath))) {
@@ -756,7 +772,9 @@ export async function ensurePagesDocumentSuppressHydrationWarning(): Promise<voi
 
   const result = await patchPagesDocumentFile(documentPath);
   if (result === "patched") {
-    console.log("✓ Updated pages/_document.tsx to add suppressHydrationWarning");
+    console.log(
+      "✓ Updated pages/_document.tsx to add suppressHydrationWarning",
+    );
   } else if (result === "already") {
     console.log("ℹ️  pages/_document.tsx already has suppressHydrationWarning");
   } else {
