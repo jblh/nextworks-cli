@@ -39,6 +39,16 @@ export default function Page() {
 
 These templates assume:
 
-- Next.js App Router
 - Tailwind CSS
-- The theme provider and global styles from `@nextworks/blocks-core` are set up.
+- Providers + global styles are set up
+
+If you installed via the `nextworks` CLI:
+
+- Templates are copied into your app (router-native):
+  - App Router: `app/templates/...`
+  - Pages Router: `pages/templates/<template>/index.tsx`
+- The CLI patches your router entrypoint to wire up providers, fonts, and CSS.
+
+If you consume packages directly (advanced):
+
+- These components are primarily authored for the Next.js App Router, and you must wrap your app with the appropriate provider(s) from `@nextworks/blocks-core` and ensure global CSS is loaded.

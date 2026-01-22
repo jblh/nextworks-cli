@@ -1,6 +1,6 @@
 # Blocks Quickstart
 
-This document explains the Blocks kit: prebuilt UI sections, templates and core UI primitives included in this repository. The Blocks kit is intended to be a non-invasive copyable kit (shadCN-style) you can install into any Next.js App Router + TypeScript + Tailwind project.
+This document explains the Blocks kit: prebuilt UI sections, templates and core UI primitives included in this repository. The Blocks kit is intended to be a non-invasive copyable kit (shadCN-style) you can install into any Next.js project (App Router **or** Pages Router) with TypeScript + Tailwind.
 
 > **Alpha note**
 > Other kits (Auth Core, Forms, Data) are currently tested and supported on top of a default Blocks install.
@@ -12,14 +12,20 @@ This document explains the Blocks kit: prebuilt UI sections, templates and core 
 > npx nextworks@latest add blocks --sections --templates
 > ```
 >
-> This installs **core UI primitives, sections, and page templates**, so the example templates work out of the box. The CLI will copy files into your project under `components/`, `app/templates/`, `lib/`, and `public/` as described below.
+> This installs **core UI primitives, sections, and page templates**, so the example templates work out of the box.
+
+The CLI will copy files into your project under `components/`, `lib/`, and `public/`. Template pages are installed in a router-native location:
+
+- **App Router projects:** `app/templates/...`
+- **Pages Router projects:** `pages/templates/<template>/index.tsx`
 
 What’s included
 
 - Page templates (composed from sections):
-  - app/templates/productlaunch
-  - app/templates/saasdashboard
-  - app/templates/digitalagency
+  - `/templates/productlaunch`
+  - `/templates/saasdashboard`
+  - `/templates/digitalagency`
+  - `/templates/gallery`
 - Reusable UI sections: components/sections/\* (Navbar, Hero, Features, Pricing, Testimonials, FAQ, Contact, Footer, etc.)
 - Core UI primitives: components/ui/\* (Button, Input, Card, Select, Checkbox, Switch, Theme toggle/selector, Form primitives)
 - Theme helpers and presets: components/PresetThemeVars in each template and lib/themes.ts
@@ -29,9 +35,8 @@ What’s included
 Where to look
 
 - Templates:
-  - app/templates/productlaunch/page.tsx (productlaunch template)
-  - app/templates/saasdashboard/page.tsx (saasdashboard template)
-  - app/templates/digitalagency/page.tsx (digital agency template)
+  - App Router: `app/templates/<template>/page.tsx`
+  - Pages Router: `pages/templates/<template>/index.tsx`
 - Sections:
   - components/sections/\*.tsx
 - UI primitives and form building blocks:
@@ -60,7 +65,9 @@ Minimal steps to render a template locally
 
    http://localhost:3000/templates/productlaunch
 
-3. The templates use global styles (app/globals.css). No environment variables are required for Blocks-only usage.
+3. The templates use global styles (`app/globals.css`). No environment variables are required for Blocks-only usage.
+   - App Router: `app/layout.tsx` imports `./globals.css`.
+   - Pages Router: the CLI patches `pages/_app.tsx` to import `../app/globals.css` and `../app/tw-animate.css` so styling matches the templates.
 
 How to adopt / override template pieces
 

@@ -43,4 +43,7 @@ export default function Page() {
 }
 ```
 
-These components assume you have Tailwind + React + Next.js configured and that you wrap your app with the appropriate theme provider from `@nextworks/blocks-core`.
+These components assume you have Tailwind + React + Next.js configured and that your app is wrapped with the appropriate provider(s).
+
+- If you installed via the `nextworks` CLI, this is handled for you (the CLI patches your router entrypoint to wrap with the kit-local `AppProviders`).
+- If you consume packages directly, you’ll need to wrap your app with the relevant providers from `@nextworks/blocks-core` in your router entrypoint (App Router `app/layout.tsx` or Pages Router `pages/_app.tsx`).

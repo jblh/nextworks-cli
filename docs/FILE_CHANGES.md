@@ -24,6 +24,7 @@ Regardless of blocks options:
 - Creates/updates **`.nextworks/config.json`** to track installed kits.
 
 > Notes on overwrites:
+>
 > - Kits are not isolated: a later kit may update files installed by an earlier kit (commonly under `components/**`, `lib/**`, and `app/**`).
 > - During alpha, uninstall/remove is best-effort. The safest way to undo an install is reverting via git.
 > - If you have important customizations under the same paths, commit first.
@@ -39,7 +40,9 @@ Regardless of blocks options:
 - `components/**` (theme providers like `app-providers.tsx`)
 - `lib/**` (e.g. `lib/utils.ts`, `lib/themes.ts`)
 - `app/globals.css` and `app/tw-animate.css`
-- `app/templates/**` (template pages)
+- Template pages (router-native):
+  - App Router projects: `app/templates/**`
+  - Pages Router projects: `pages/templates/**` (each template is a folder route with `index.tsx`)
 - `public/placeholders/**` (template placeholder images)
 - `next.config.ts`
 - `.nextworks/docs/**` (kit docs)
@@ -60,6 +63,7 @@ Depending on whether you use the **App Router** or **Pages Router**, the CLI wil
   - wraps `<Component {...pageProps} />` with `AppProviders`
   - injects `AppToaster`
   - ensures `next/font/google` import and font instances exist
+  - ensures kit CSS is imported (adds `../app/globals.css` and `../app/tw-animate.css`)
 
 - **Pages Router:** **`pages/_document.tsx`** (optional, enabled by default and auto-applied when using `--yes`)
   - adds `suppressHydrationWarning` to `<Html>`
@@ -84,4 +88,3 @@ Depending on whether you use the **App Router** or **Pages Router**, the CLI wil
 ## Removed kits (alpha cleanup)
 
 This repo is now **blocks-only**. The previous kits (**Forms**, **Auth Core**, **Data**) have been removed and are intentionally no longer documented or supported.
-

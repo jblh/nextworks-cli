@@ -2,7 +2,6 @@
 
 **nextworks** is a CLI that installs the Nextworks **Blocks kit** (core UI, sections, and page templates) into your Next.js project.
 
-
 This repository contains the source for the **nextworks** CLI and its MIT-licensed core building blocks.
 
 ## Links
@@ -74,23 +73,25 @@ Before running installs, strongly consider:
   - (optional) remove untracked files created by installs: `git clean -fd`
 
 If you’ve customized any of these paths, expect manual merge work:
-- `app/layout.tsx`
+
+- `app/layout.tsx` (App Router)
+- `pages/_app.tsx` and `pages/_document.tsx` (Pages Router)
 - `lib/utils.ts`
 - `components/ui/**`
-
 
 Kits may also:
 
 - **merge dependencies** into `package.json`
-- **edit `app/layout.tsx`** (Blocks)
+- **edit your router entrypoint** (Blocks)
+  - App Router: `app/layout.tsx`
+  - Pages Router: `pages/_app.tsx` (and may create/update `pages/_document.tsx`)
 - create/update `.nextworks/config.json`
 
-
 For a transparent breakdown of what each kit writes/edits, see:
+
 - `docs/FILE_CHANGES.md`
 
 ## Getting started
-
 
 Install / try it (alpha quickstart):
 
@@ -101,9 +102,12 @@ cd <your-app>
 npx nextworks@latest add blocks --sections --templates
 ```
 
+Templates are installed in a router-native location:
+
+- App Router: `app/templates/...`
+- Pages Router: `pages/templates/<template>/index.tsx`
+
 See `docs/QUICKSTART.md` and the Blocks quickstarts/guides in `docs/` for more detail.
-
-
 
 ## Feedback & issues
 
@@ -121,10 +125,6 @@ During alpha, the most useful feedback is:
 ### Bug reports
 
 For reproducible bugs / errors (especially install/runtime issues), please open a GitHub Issue using the templates in `.github/ISSUE_TEMPLATE/`.
-
-
-
-
 
 ## Branding
 

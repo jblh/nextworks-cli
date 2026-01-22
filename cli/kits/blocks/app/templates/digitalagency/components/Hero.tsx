@@ -2,7 +2,7 @@
 
 import React from "react";
 import { HeroSplit } from "@/components/sections/HeroSplit";
-import { NetworkPattern } from "@/app/templates/digitalagency/components/NetworkPattern";
+import { NetworkPattern } from "./NetworkPattern";
 
 /**
  * Upgraded HeroNew preset for the digital agency template,

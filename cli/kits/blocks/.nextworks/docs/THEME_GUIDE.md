@@ -14,13 +14,19 @@ This project now includes a comprehensive theming system that allows you to easi
 
 ### 1. Basic Setup
 
-Your app is configured with the enhanced theme provider via `AppProviders` in `app/layout.tsx`.
+Your app is configured with the enhanced theme provider via `AppProviders` in your router entrypoint:
+
+- App Router: `app/layout.tsx`
+- Pages Router: `pages/_app.tsx`
 
 **Turbopack / Next 16 note (fonts + AppProviders)**
 
-As of the current alpha, `@nextworks/blocks-core/server` intentionally **does not** import `next/font/*`.
-Fonts are instead configured directly in your app’s `app/layout.tsx` (the CLI patches this for you).
-This avoids Turbopack dev issues related to internal Next font modules.
+As of the current alpha, shared packages intentionally avoid importing `next/font/*`.
+Fonts are instead configured directly in your app’s router entrypoint (the CLI patches this for you):
+
+- App Router: `app/layout.tsx`
+- Pages Router: `pages/_app.tsx`
+  This avoids Turbopack dev issues related to internal Next font modules.
 
 If you ever see a font-related Turbopack error after upgrades or manual edits, re-run:
 
@@ -28,7 +34,7 @@ If you ever see a font-related Turbopack error after upgrades or manual edits, r
 npx nextworks@latest add blocks --sections --templates
 ```
 
-to re-apply the layout patch, and ensure `app/layout.tsx` contains a valid
+to re-apply the router entrypoint patch, and ensure your entrypoint contains a valid
 `import { ... } from "next/font/google";` plus the corresponding `const geistSans = ...` etc.
 
 The default theme variant is set to "monochrome".
@@ -126,7 +132,12 @@ export const themes: Record<ThemeVariant, ThemeConfig> = {
 
 ### 7. Example Usage
 
-See the templates under `app/templates/*` and `lib/themes.ts` for concrete examples of how themes are wired up.
+See the templates and `lib/themes.ts` for concrete examples of how themes are wired up.
+
+Template paths depend on your router:
+
+- App Router: `app/templates/*`
+- Pages Router: `pages/templates/*`
 
 ## Benefits
 

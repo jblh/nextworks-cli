@@ -409,7 +409,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
     // but the URLs are the same.
     if (pagesRouterAppExists && !appRouterLayoutExists) {
       console.log(
-        `  (Pages Router install: files live under ${mode === "src" ? "src/pages/templates" : "pages/templates"})`,
+        `  (Pages Router install: files live under ${mode === "src" ? "src/pages/templates/<template>/index.tsx" : "pages/templates/<template>/index.tsx"})`,
       );
     } else {
       console.log(
