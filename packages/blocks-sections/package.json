@@ -1,6 +1,6 @@
 {
   "name": "@nextworks/blocks-sections",
-  "version": "0.2.0-alpha.1",
+  "version": "0.2.0-alpha.2",
   "private": false,
   "main": "dist/index.js",
   "types": "dist-types/index.d.ts",
@@ -11,8 +11,8 @@
     "README.md"
   ],
   "repository": "github:jblh/nextworks-cli",
-"bugs": "https://github.com/jblh/nextworks-cli/issues",
-"homepage": "https://github.com/jblh/nextworks-cli#readme",
+  "bugs": "https://github.com/jblh/nextworks-cli/issues",
+  "homepage": "https://github.com/jblh/nextworks-cli#readme",
   "publishConfig": {
     "access": "public"
   },
@@ -21,7 +21,7 @@
     "build": "npx tsc -p tsconfig.json && npx tsc -p tsconfig.json --emitDeclarationOnly --declaration --outDir dist-types"
   },
   "dependencies": {
-    "@nextworks/blocks-core": "0.2.0-alpha.1",
+    "@nextworks/blocks-core": "0.2.0-alpha.2",
     "lucide-react": "^0.542.0",
     "motion": "^12.23.12"
   },

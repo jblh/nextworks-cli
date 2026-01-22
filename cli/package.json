@@ -1,16 +1,14 @@
 {
   "name": "nextworks",
-  "version": "0.2.0-alpha.1",
-    "description": "Nextworks CLI - Blocks installer for Next.js apps",
-
+  "version": "0.2.0-alpha.2",
+  "description": "Nextworks CLI - Blocks installer for Next.js apps",
   "main": "dist/index.js",
   "bin": {
     "nextworks": "dist/index.js"
   },
-    "repository": "github:jblh/nextworks-cli",
+  "repository": "github:jblh/nextworks-cli",
   "bugs": "https://github.com/jblh/nextworks-cli/issues",
   "homepage": "https://github.com/jblh/nextworks-cli#readme",
-
   "scripts": {
     "build": "tsc",
     "postbuild": "node ./scripts/copy-assets.js",
@@ -20,7 +18,7 @@
   "files": [
     "dist"
   ],
-    "keywords": [
+  "keywords": [
     "nextjs",
     "app-router",
     "blocks",

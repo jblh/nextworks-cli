@@ -82,9 +82,3 @@ Depending on whether you use the **App Router** or **Pages Router**, the CLI wil
 - `next.config.ts`
 - `lib/utils.ts`
 - `components/ui/*`
-
----
-
-## Removed kits (alpha cleanup)
-
-This repo is now **blocks-only**. The previous kits (**Forms**, **Auth Core**, **Data**) have been removed and are intentionally no longer documented or supported.
