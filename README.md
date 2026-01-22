@@ -104,8 +104,12 @@ npx nextworks@latest add blocks --sections --templates
 
 Templates are installed in a router-native location:
 
-- App Router: `app/templates/...`
-- Pages Router: `pages/templates/<template>/index.tsx`
+- App Router:
+  - `app/templates/<template>/page.tsx`
+  - supporting template files live alongside it: `app/templates/<template>/**`
+- Pages Router:
+  - route entry file: `pages/templates/<template>/index.tsx`
+  - supporting template files: `components/templates/<template>/**` (installed outside `pages/` so Next doesn’t treat helpers as routable pages)
 
 See `docs/QUICKSTART.md` and the Blocks quickstarts/guides in `docs/` for more detail.
 

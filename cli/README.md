@@ -144,8 +144,10 @@ This copies:
 - `components/ui/*` (core UI primitives)
 - `components/sections/*` (reusable sections)
 - Templates (router-native):
-  - App Router projects: `app/templates/*`
-  - Pages Router projects: `pages/templates/<template>/index.tsx`
+  - App Router projects: `app/templates/<template>/**`
+  - Pages Router projects:
+    - route entry file: `pages/templates/<template>/index.tsx`
+    - supporting template files: `components/templates/<template>/**`
 - Theme helpers and `app/globals.css` (if not already present)
 
 After this step you should be able to start your dev server and visit:
@@ -204,8 +206,10 @@ You can add a short “Nextworks setup” section to your app README:
    - `/templates/gallery`
 
    Template files live at:
-   - App Router: `app/templates/...`
-   - Pages Router: `pages/templates/<template>/index.tsx`
+   - App Router: `app/templates/<template>/**`
+   - Pages Router:
+     - route entry file: `pages/templates/<template>/index.tsx`
+     - supporting template files: `components/templates/<template>/**`
 ```
 
 ---

@@ -55,15 +55,17 @@ export function mapKitPathToProject(
 
   // Router-specific mapping:
   // - In App Router installs, templates live under app/templates/*.
-  // - In Pages Router installs, templates should live under pages/templates/*.
-  //   (This prevents hybrid installs when a project has an app/ folder but no layout.)
+  // - In Pages Router installs, ONLY the route entry file should live under pages/.
+  //   Everything else (components, helpers, README, etc.) must live outside pages/
+  //   to avoid Next.js treating those files as routable pages during type validation.
   const rewriteTemplatesForPagesRouter = (p: string) => {
     if (routerTarget !== "pages") return p;
     if (!p.startsWith("app/templates/")) return p;
 
-    // app/templates/x/page.tsx -> pages/templates/x/index.tsx
-    // (Pages Router: keep the per-template folder structure so template-local relative imports work.)
     const rest = p.slice("app/templates/".length);
+
+    // app/templates/<slug>/page.tsx -> pages/templates/<slug>/index.tsx
+    // Keep the template folder route so the URL remains /templates/<slug>
     const pageMatch = rest.match(/^([^/]+)\/page\.(tsx|ts|jsx|js)$/);
     if (pageMatch) {
       const slug = pageMatch[1];
@@ -71,8 +73,13 @@ export function mapKitPathToProject(
       return `pages/templates/${slug}/index.${ext}`;
     }
 
-    // app/templates/x/* -> pages/templates/x/* (README, components, PresetThemeVars, etc.)
-    return `pages/templates/${rest}`;
+    // Everything else under app/templates/<slug>/... must NOT go into pages/.
+    // Put it under components/templates/<slug>/... instead.
+    // Examples:
+    // - app/templates/<slug>/components/* -> components/templates/<slug>/components/*
+    // - app/templates/<slug>/PresetThemeVars.tsx -> components/templates/<slug>/PresetThemeVars.tsx
+    // - app/templates/<slug>/README.md -> components/templates/<slug>/README.md
+    return `components/templates/${rest}`;
   };
 
   const rewritten = rewriteTemplatesForPagesRouter(file);
@@ -157,6 +164,52 @@ export async function copyFiles(
 
     // Copy file
     await fs.copy(sourcePath, targetPath);
+
+    // Pages Router: when templates are installed, we place template helpers under
+    // components/templates/<slug>/... (outside pages/) to avoid Next treating them
+    // as routable pages. That means the copied page entrypoint needs its relative
+    // imports rewritten.
+    if (routerTarget === "pages") {
+      const normalizedMapped = normalizeToPosix(mapped);
+      const m = normalizedMapped.match(
+        /^pages\/templates\/([^/]+)\/index\.(tsx|ts|jsx|js)$/,
+      );
+
+      if (m) {
+        const slug = m[1];
+        const ext = m[2];
+
+        let pageContent = await fs.readFile(targetPath, "utf-8");
+
+        // Rewrite template-local imports like:
+        //   from "./components/X" -> from "../../../components/templates/<slug>/components/X"
+        //   from "./PresetThemeVars" -> from "../../../components/templates/<slug>/PresetThemeVars"
+        // Only applies to the template page entrypoints.
+        const helpersBase = `../../../components/templates/${slug}`;
+
+        pageContent = pageContent.replace(
+          /from\s+(["'])\.\/components\//g,
+          `from $1${helpersBase}/components/`,
+        );
+
+        pageContent = pageContent.replace(
+          /from\s+(["'])\.\/PresetThemeVars(["'])/g,
+          `from $1${helpersBase}/PresetThemeVars$2`,
+        );
+
+        // Optional: keep comment header accurate (gallery has one)
+        pageContent = pageContent.replace(
+          /^\/\/\s*-\s*\/app\/templates\//m,
+          "// - /pages/templates/",
+        );
+
+        await fs.writeFile(targetPath, pageContent);
+        console.log(
+          `✓ Patched template imports for Pages Router: pages/templates/${slug}/index.${ext}`,
+        );
+      }
+    }
+
     console.log(`✓ Created ${mapped}`);
   }
 }

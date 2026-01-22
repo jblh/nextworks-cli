@@ -48,8 +48,10 @@ Try these routes:
 
 > Note: `nextworks` installs templates in a router-native location:
 >
-> - App Router projects: `app/templates/...`
-> - Pages Router projects: `pages/templates/<template>/index.tsx`
+> - App Router projects: `app/templates/<template>/**`
+> - Pages Router projects:
+>   - route entry file: `pages/templates/<template>/index.tsx`
+>   - supporting template files: `components/templates/<template>/**`
 
 For more details on what gets installed/edited, see:
 

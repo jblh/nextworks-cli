@@ -42,7 +42,9 @@ Regardless of blocks options:
 - `app/globals.css` and `app/tw-animate.css`
 - Template pages (router-native):
   - App Router projects: `app/templates/**`
-  - Pages Router projects: `pages/templates/**` (each template is a folder route with `index.tsx`)
+  - Pages Router projects:
+    - Route entry files: `pages/templates/<template>/index.tsx`
+    - Supporting template files (components/helpers): `components/templates/<template>/**` (installed outside `pages/` to avoid Next treating them as routable pages)
 - `public/placeholders/**` (template placeholder images)
 - `next.config.ts`
 - `.nextworks/docs/**` (kit docs)

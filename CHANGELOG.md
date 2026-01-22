@@ -6,6 +6,11 @@ This project is currently **early-access alpha**; expect breaking changes.
 
 ## Unreleased
 
+- Pages Router templates install fix:
+  - Only the template route entry file is installed under `pages/` (`pages/templates/<template>/index.tsx`).
+  - Supporting template files (components/helpers like `PresetThemeVars`) are installed under `components/templates/<template>/**` to avoid Next.js treating them as routable pages during `next build` type validation.
+  - Docs updated to reflect the new installed paths.
+
 - Internal metadata updates (copyright notice). No functional change.
 
 - Fix: `@nextworks/blocks-core/server` now correctly type-exports `AppProviders` as a **named export** (matching runtime), so `import { AppProviders } from "@nextworks/blocks-core/server";` typechecks in Next.js production builds (Vercel/Turbopack).
