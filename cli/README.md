@@ -16,7 +16,7 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 >    npx create-next-app@latest
 >    ```
 >
-> 2. From your app root, install **Blocks** first:
+> 2. From your app root, install **Blocks**:
 >
 >    ```bash
 >    npx nextworks@latest add blocks --sections --templates
