@@ -6,8 +6,15 @@ Shared components read these variables with token fallbacks, so if a var is not 
 
 ## Where to look
 
-- Page: `app/templates/productlaunch/page.tsx` (PresetThemeVars is commented out)
-- Components: `app/templates/productlaunch/components/*` (slots use Tailwind arbitrary properties like `[--btn-bg:...]` to set vars locally)
+Template paths depend on your router:
+
+- App Router:
+  - Page: `app/templates/productlaunch/page.tsx` (PresetThemeVars is commented out)
+  - Components: `app/templates/productlaunch/components/*` (slots use Tailwind arbitrary properties like `[--btn-bg:...]` to set vars locally)
+
+- Pages Router:
+  - Page: `pages/templates/productlaunch/index.tsx` (PresetThemeVars is commented out)
+  - Components: `components/templates/productlaunch/components/*`
 
 ## Core variables
 

@@ -60,8 +60,10 @@ Post-install notes
 3. Ensure `app/globals.css` exists in your project and that Tailwind is configured (the Blocks kit expects Tailwind).
 
 4. Templates are installed in a router-native location:
-   - App Router: `app/templates/...`
-   - Pages Router: `pages/templates/<template>/index.tsx`
+   - App Router: `app/templates/<template>/**`
+   - Pages Router:
+     - route entry file: `pages/templates/<template>/index.tsx`
+     - supporting template files: `components/templates/<template>/**`
 
 5. Placeholder assets are located under `public/placeholders`. These should already have been copied by the CLI; if you move files around, keep the paths aligned or update the template image references.
 

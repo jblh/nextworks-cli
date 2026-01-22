@@ -4,8 +4,14 @@ This template is preset-first. It’s wrapped with `PresetThemeVars` to set a te
 
 ## Where it’s wired
 
-- Wrapper: `components/templates/digitalagency/PresetThemeVars.tsx`
-- Page: `app/templates/digitalagency/page.tsx`
+Template paths depend on your router:
+
+- App Router:
+  - Wrapper: `app/templates/digitalagency/PresetThemeVars.tsx`
+  - Page: `app/templates/digitalagency/page.tsx`
+- Pages Router:
+  - Wrapper: `components/templates/digitalagency/PresetThemeVars.tsx`
+  - Page: `pages/templates/digitalagency/index.tsx`
 
 ## Core variables
 

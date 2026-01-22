@@ -45,8 +45,10 @@ These templates assume:
 If you installed via the `nextworks` CLI:
 
 - Templates are copied into your app (router-native):
-  - App Router: `app/templates/...`
-  - Pages Router: `pages/templates/<template>/index.tsx`
+  - App Router: `app/templates/<template>/**`
+  - Pages Router:
+    - route entry file: `pages/templates/<template>/index.tsx`
+    - supporting template files: `components/templates/<template>/**`
 - The CLI patches your router entrypoint to wire up providers, fonts, and CSS.
 
 If you consume packages directly (advanced):

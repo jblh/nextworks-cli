@@ -136,8 +136,10 @@ See the templates and `lib/themes.ts` for concrete examples of how themes are wi
 
 Template paths depend on your router:
 
-- App Router: `app/templates/*`
-- Pages Router: `pages/templates/*`
+- App Router: `app/templates/<template>/**`
+- Pages Router:
+  - route entry file: `pages/templates/<template>/index.tsx`
+  - supporting template files: `components/templates/<template>/**`
 
 ## Benefits
 
@@ -165,7 +167,11 @@ Sometimes you want the speed and consistency of the Color Theme (tokens), but st
 Example: override only mobile link hover background in the shared Navbar from a preset, leaving everything else token-based.
 
 ```tsx
+// App Router install:
 // app/templates/productlaunch/components/Navbar.tsx
+//
+// Pages Router install:
+// components/templates/productlaunch/components/Navbar.tsx
 mobileLinks: {
   className: "hover:bg-purple-50 dark:hover:bg-purple-900/20",
 },
@@ -176,7 +182,11 @@ mobileLinks: {
 Links in Navbar apply a token focus ring (`focus:ring-ring`). You can override it per preset by placing your ring utilities in `links.className` (these are merged last):
 
 ```tsx
+// App Router install:
 // app/templates/productlaunch/components/Navbar.tsx
+//
+// Pages Router install:
+// components/templates/productlaunch/components/Navbar.tsx
 links: {
   className:
     "text-sm font-medium font-inter text-gray-800 dark:text-white hover:text-purple-700 dark:hover:text-purple-500 " +
@@ -189,7 +199,11 @@ links: {
 `ThemeToggle` accepts `buttonProps` that forward to the internal `Button`. For small tweaks, keep token variants and just add classes. For full control, use `unstyled: true` to bypass tokens:
 
 ```tsx
+// App Router install:
 // app/templates/productlaunch/components/Navbar.tsx
+//
+// Pages Router install:
+// components/templates/productlaunch/components/Navbar.tsx
 themeToggle: {
   buttonProps: {
     unstyled: true,
@@ -232,7 +246,11 @@ Suggested variables:
 Example in a preset:
 
 ```tsx
+// App Router install:
 // app/templates/productlaunch/components/Navbar.tsx
+//
+// Pages Router install:
+// components/templates/productlaunch/components/Navbar.tsx
 nav: {
   className:
     "bg-white dark:bg-gray-900 text-gray-800 dark:text-white border-b border-gray-200 dark:border-gray-800 " +

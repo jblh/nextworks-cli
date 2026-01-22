@@ -4,8 +4,14 @@ This template is preset-first. It’s wrapped with `PresetThemeVars` to apply a 
 
 ## Where it’s wired
 
-- Wrapper: `components/templates/saasdashboard/PresetThemeVars.tsx`
-- Page: `app/templates/saasdashboard/page.tsx`
+Template paths depend on your router:
+
+- App Router:
+  - Wrapper: `app/templates/saasdashboard/PresetThemeVars.tsx`
+  - Page: `app/templates/saasdashboard/page.tsx`
+- Pages Router:
+  - Wrapper: `components/templates/saasdashboard/PresetThemeVars.tsx`
+  - Page: `pages/templates/saasdashboard/index.tsx`
 
 ## Core variables
 

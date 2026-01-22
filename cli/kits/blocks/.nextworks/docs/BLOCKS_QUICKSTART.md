@@ -16,8 +16,10 @@ This document explains the Blocks kit: prebuilt UI sections, templates and core 
 
 The CLI will copy files into your project under `components/`, `lib/`, and `public/`. Template pages are installed in a router-native location:
 
-- **App Router projects:** `app/templates/...`
-- **Pages Router projects:** `pages/templates/<template>/index.tsx`
+- **App Router projects:** `app/templates/<template>/**`
+- **Pages Router projects:**
+  - route entry file: `pages/templates/<template>/index.tsx`
+  - supporting template files: `components/templates/<template>/**` (installed outside `pages/` so Next doesn’t treat helpers as routable pages)
 
 What’s included
 
@@ -35,8 +37,12 @@ What’s included
 Where to look
 
 - Templates:
-  - App Router: `app/templates/<template>/page.tsx`
-  - Pages Router: `pages/templates/<template>/index.tsx`
+  - App Router:
+    - page: `app/templates/<template>/page.tsx`
+    - supporting files: `app/templates/<template>/**`
+  - Pages Router:
+    - page: `pages/templates/<template>/index.tsx`
+    - supporting files: `components/templates/<template>/**`
 - Sections:
   - components/sections/\*.tsx
 - UI primitives and form building blocks:
@@ -79,7 +85,9 @@ How to adopt / override template pieces
   - Tailwind is used across components. Prefer adding or modifying Tailwind utility classes on the exported component or pass className props (many components accept className).
 
 - Theme variables and PresetThemeVars
-  - Each template has a PresetThemeVars component/file (e.g., app/templates/productlaunch/PresetThemeVars.tsx) that injects CSS variables for theme presets.
+  - Each template has a PresetThemeVars component/file that injects CSS variables for theme presets:
+    - App Router install: `app/templates/<template>/PresetThemeVars.tsx`
+    - Pages Router install: `components/templates/<template>/PresetThemeVars.tsx`
   - To change default palette or add presets, edit the template PresetThemeVars and lib/themes.ts.
   - Theme providers are implemented in components/theme-provider.tsx and components/enhanced-theme-provider.tsx — wrap your app with these if you extract blocks into another project.
 
