@@ -245,7 +245,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
       promptFn = inquirerModule?.default?.prompt ?? inquirerModule?.prompt;
     } catch (err) {
       console.log(
-        "⚠️  Could not load optional interactive prompt (inquirer). Skipping optional layout/_app upgrades.",
+        "⚠️  Could not load optional interactive prompt (inquirer). Skipping optional prompts.",
       );
       promptFn = null;
     }
