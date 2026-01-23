@@ -11,6 +11,10 @@ import {
   detectProjectRootMode,
 } from "../utils/file-operations";
 import { addInstalledKit } from "../utils/installation-tracker";
+import {
+  detectPackageManager,
+  getInstallCommand,
+} from "../utils/package-manager";
 import path from "path";
 
 interface BlocksManifestGroup {
@@ -33,6 +37,8 @@ export interface AddBlocksOptions {
   uiOnly?: boolean;
   /** Skip interactive prompts and accept defaults. */
   yes?: boolean;
+  /** Force package manager (overrides lockfile detection). */
+  pm?: import("../utils/package-manager").PackageManager;
 }
 
 export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
@@ -107,7 +113,9 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
       let deps: any = {};
       try {
         deps = await readJsonFile(depsPath);
-        await updatePackageJson(deps);
+        await updatePackageJson(deps, {
+          pm: options.pm ?? (await detectPackageManager(process.cwd())),
+        });
       } catch (err) {
         console.log(
           "⚠️  No package-deps.json found for blocks or failed to read it",
@@ -194,7 +202,9 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
     let deps: any = {};
     try {
       deps = await readJsonFile(depsPath);
-      await updatePackageJson(deps);
+      await updatePackageJson(deps, {
+        pm: options.pm ?? (await detectPackageManager(process.cwd())),
+      });
     } catch (err) {
       console.log(
         "⚠️  No package-deps.json found for blocks or failed to read it",
@@ -269,7 +279,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
             const fsExtraModule = await import("fs-extra");
             await fsExtraModule.default.writeFile(
               appProvidersPath,
-              "\"use client\";\n\nimport * as React from \"react\";\n\nimport { BlocksAppProviders } from \"./providers/BlocksAppProviders\";\n\nexport default function AppProviders({ children }: { children: React.ReactNode }) {\n  return (\n    <div className=\"antialiased\">\n      <BlocksAppProviders>{children}</BlocksAppProviders>\n    </div>\n  );\n}\n",
+              '"use client";\n\nimport * as React from "react";\n\nimport { BlocksAppProviders } from "./providers/BlocksAppProviders";\n\nexport default function AppProviders({ children }: { children: React.ReactNode }) {\n  return (\n    <div className="antialiased">\n      <BlocksAppProviders>{children}</BlocksAppProviders>\n    </div>\n  );\n}\n',
             );
           }
         }
@@ -301,7 +311,10 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
           await updateLayoutWithAppProviders();
           layoutUpgraded = true;
         } catch (err) {
-          console.log("⚠️  Failed to update app/layout.tsx automatically:", err);
+          console.log(
+            "⚠️  Failed to update app/layout.tsx automatically:",
+            err,
+          );
         }
       } else if (promptFn) {
         const { upgradeLayout } = await promptFn([
@@ -318,7 +331,10 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
             await updateLayoutWithAppProviders();
             layoutUpgraded = true;
           } catch (err) {
-            console.log("⚠️  Failed to update app/layout.tsx automatically:", err);
+            console.log(
+              "⚠️  Failed to update app/layout.tsx automatically:",
+              err,
+            );
           }
         }
       }
@@ -352,7 +368,10 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
 
           pagesAppUpgraded = true;
         } catch (err) {
-          console.log("⚠️  Failed to update pages/_app.tsx automatically:", err);
+          console.log(
+            "⚠️  Failed to update pages/_app.tsx automatically:",
+            err,
+          );
         }
       } else if (promptFn) {
         const { upgradePagesApp } = await promptFn([
@@ -369,29 +388,31 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
             await updatePagesAppWithAppProviders();
             await ensurePagesDocumentSuppressHydrationWarning();
 
-                      // Make app-providers.tsx point at the Pages-safe implementation.
-          // (The kit defaults to App Router; Pages Router can't import @nextworks/blocks-core/server.)
-          //
-          // Patch whichever path exists (some repos have src/pages but root-level components/).
-          const candidateAppProvidersPaths = [
-            "components/app-providers.tsx",
-            "src/components/app-providers.tsx",
-          ];
+            // Make app-providers.tsx point at the Pages-safe implementation.
+            // (The kit defaults to App Router; Pages Router can't import @nextworks/blocks-core/server.)
+            //
+            // Patch whichever path exists (some repos have src/pages but root-level components/).
+            const candidateAppProvidersPaths = [
+              "components/app-providers.tsx",
+              "src/components/app-providers.tsx",
+            ];
 
-          for (const appProvidersPath of candidateAppProvidersPaths) {
-            if (await fileExists(appProvidersPath)) {
-              const fsExtraModule = await import("fs-extra");
-              await fsExtraModule.default.writeFile(
-                appProvidersPath,
-                'export { default } from "./app-providers.pages";\n',
-              );
+            for (const appProvidersPath of candidateAppProvidersPaths) {
+              if (await fileExists(appProvidersPath)) {
+                const fsExtraModule = await import("fs-extra");
+                await fsExtraModule.default.writeFile(
+                  appProvidersPath,
+                  'export { default } from "./app-providers.pages";\n',
+                );
+              }
             }
-          }
-
 
             pagesAppUpgraded = true;
           } catch (err) {
-            console.log("⚠️  Failed to update pages/_app.tsx automatically:", err);
+            console.log(
+              "⚠️  Failed to update pages/_app.tsx automatically:",
+              err,
+            );
           }
         }
       }
@@ -417,6 +438,9 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
       );
     }
 
+    const pm = options.pm ?? (await detectPackageManager(process.cwd()));
+    const installCmd = getInstallCommand(pm);
+
     if (layoutUpgraded) {
       console.log(
         `1. ${detectedLayoutPath} was updated to wrap the app with AppProviders and add suppressHydrationWarning.`,
@@ -424,7 +448,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
       console.log(
         "2. Ensure Tailwind is configured and app/globals.css is present (copied if available).",
       );
-      console.log("3. Install new dependencies: npm install");
+      console.log(`3. Install new dependencies: ${installCmd}`);
     } else if (pagesAppUpgraded) {
       console.log(
         `1. ${detectedPagesAppPath} was updated to wrap the app with AppProviders (and fonts).`,
@@ -432,7 +456,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
       console.log(
         "2. pages/_document.tsx was ensured/updated to include suppressHydrationWarning.",
       );
-      console.log("3. Install new dependencies: npm install");
+      console.log(`3. Install new dependencies: ${installCmd}`);
     } else {
       console.log(
         `1. Wrap your app with the AppProviders wrapper in ${detectedLayoutPath} (App Router) or ${detectedPagesAppPath} (Pages Router):`,
@@ -444,7 +468,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
       console.log(
         "2. Ensure Tailwind is configured and app/globals.css is present (copied if available).",
       );
-      console.log("3. Install new dependencies: npm install");
+      console.log(`3. Install new dependencies: ${installCmd}`);
     }
 
     if (missingFiles.length > 0) {

@@ -243,7 +243,10 @@ export async function writeJsonFile(
   }
 }
 
-export async function updatePackageJson(deps: any): Promise<void> {
+export async function updatePackageJson(
+  deps: any,
+  options?: { pm?: import("./package-manager").PackageManager },
+): Promise<void> {
   const packageJsonPath = "package.json";
 
   if (!(await fileExists(packageJsonPath))) {
@@ -269,11 +272,49 @@ export async function updatePackageJson(deps: any): Promise<void> {
     };
   }
 
-  // Merge npm overrides (for pinning transitive deps safely)
+  // Dependency pinning across package managers:
+  // - npm: packageJson.overrides
+  // - pnpm: packageJson.pnpm.overrides
+  // - yarn: packageJson.resolutions
+  //
+  // We keep backward compatibility by still accepting `deps.overrides`, but we write it
+  // to the correct field depending on the active/forced package manager.
+  const pm = options?.pm;
+
   if (deps.overrides) {
-    packageJson.overrides = {
-      ...packageJson.overrides,
-      ...deps.overrides,
+    if (pm === "yarn") {
+      packageJson.resolutions = {
+        ...packageJson.resolutions,
+        ...deps.overrides,
+      };
+    } else if (pm === "pnpm") {
+      packageJson.pnpm = packageJson.pnpm ?? {};
+      packageJson.pnpm.overrides = {
+        ...(packageJson.pnpm.overrides ?? {}),
+        ...deps.overrides,
+      };
+    } else {
+      // default to npm semantics
+      packageJson.overrides = {
+        ...packageJson.overrides,
+        ...deps.overrides,
+      };
+    }
+  }
+
+  // Explicitly supported fields if kits want to specify them directly.
+  if (deps.resolutions) {
+    packageJson.resolutions = {
+      ...packageJson.resolutions,
+      ...deps.resolutions,
+    };
+  }
+
+  if (deps.pnpm?.overrides) {
+    packageJson.pnpm = packageJson.pnpm ?? {};
+    packageJson.pnpm.overrides = {
+      ...(packageJson.pnpm.overrides ?? {}),
+      ...deps.pnpm.overrides,
     };
   }
 

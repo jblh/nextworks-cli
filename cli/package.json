@@ -1,6 +1,6 @@
 {
   "name": "nextworks",
-  "version": "0.2.0-alpha.3",
+  "version": "0.2.0-alpha.4",
   "description": "Nextworks CLI - Blocks installer for Next.js apps",
   "main": "dist/index.js",
   "bin": {
@@ -47,5 +47,8 @@
     "@types/inquirer": "^9.0.9",
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

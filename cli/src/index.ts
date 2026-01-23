@@ -7,6 +7,7 @@ import { Command } from "commander";
 import { addBlocks } from "./commands/blocks";
 import { removeBlocks } from "./commands/remove-blocks";
 import { getInstalledKits } from "./utils/installation-tracker";
+import { isPackageManager, type PackageManager } from "./utils/package-manager";
 
 const program = new Command();
 
@@ -35,6 +36,10 @@ program
     "-y, --yes",
     "Skip interactive prompts and accept defaults where possible",
   )
+  .option(
+    "--pm <pm>",
+    "Force package manager (npm|pnpm|yarn). Overrides lockfile detection.",
+  )
   .action(
     async (
       kit: string,
@@ -44,17 +49,26 @@ program
         gallery?: boolean;
         uiOnly?: boolean;
         yes?: boolean;
+        pm?: string;
       },
     ) => {
       try {
         switch (kit) {
           case "blocks":
+            const forcedPm = options.pm;
+            if (forcedPm && !isPackageManager(forcedPm)) {
+              console.log(`❌ Invalid --pm value: ${forcedPm}`);
+              console.log("Valid values: npm | pnpm | yarn");
+              process.exit(1);
+            }
+
             await addBlocks({
               sections: options.sections,
               templates: options.templates,
               gallery: options.gallery,
               uiOnly: options.uiOnly,
               yes: options.yes,
+              pm: forcedPm as PackageManager | undefined,
             });
             break;
           default:
@@ -75,11 +89,22 @@ program
 program
   .command("remove <kit>")
   .description("Remove a feature kit from your project")
-  .action(async (kit: string) => {
+  .option(
+    "--pm <pm>",
+    "Force package manager (npm|pnpm|yarn). Overrides lockfile detection.",
+  )
+  .action(async (kit: string, options: { pm?: string }) => {
     try {
+      const forcedPm = options.pm;
+      if (forcedPm && !isPackageManager(forcedPm)) {
+        console.log(`❌ Invalid --pm value: ${forcedPm}`);
+        console.log("Valid values: npm | pnpm | yarn");
+        process.exit(1);
+      }
+
       switch (kit) {
         case "blocks":
-          await removeBlocks();
+          await removeBlocks({ pm: forcedPm as PackageManager | undefined });
           break;
         default:
           console.log(`❌ Unknown kit: ${kit}`);

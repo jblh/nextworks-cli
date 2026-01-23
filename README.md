@@ -55,7 +55,7 @@ This repository contains the source for the **nextworks** CLI and its MIT-licens
 
 As of the current alpha, `nextworks` has been developed and tested primarily with:
 
-- **Next.js**: 16.0.3, 16.1.0
+- **Next.js**: 16.0.3, 16.1.0, 16.1.3, 16.1.14
 - **Dev mode**: Turbopack (default in Next 16) and Webpack
 
 Other 16.x versions will likely work; older versions are **best effort**. If you hit an issue, please include your Next.js version, Node version, package manager, OS, and relevant logs when reporting it.

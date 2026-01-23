@@ -62,12 +62,14 @@ What happened (paste error output + screenshots if possible):
 
 ---
 
-## Quick sanity checks before posting
+## Quick checks before posting
 
 - Re-run the command with `--help` to confirm flags:
 
   ```bash
-npx nextworks@latest --help
+  npx nextworks@latest --help
+  ```
+
 ```
 
 - Re-run the command with `--help` to confirm flags and usage.
@@ -75,3 +77,4 @@ npx nextworks@latest --help
 - Restart your dev server after running `nextworks add ...`.
 
 Thanks for testing — your feedback directly shapes what gets built next.
+```
