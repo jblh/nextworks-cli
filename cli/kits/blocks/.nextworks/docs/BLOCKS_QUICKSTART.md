@@ -114,5 +114,3 @@ Import examples
 Public assets and placeholders
 
 - The templates reference placeholder images in public/placeholders/. If you copy templates to another project, copy the referenced assets (public/placeholders/gallery/\*) or replace with your own images.
-
-Simple Blocks kit manifest (for internal CLI packaging)
