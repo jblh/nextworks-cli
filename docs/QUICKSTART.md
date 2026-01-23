@@ -33,9 +33,16 @@ npx create-next-app@latest
 cd <your-app>
 
 # Nextworks assumes TypeScript + Tailwind CSS (required for Blocks/templates)
+# Run with your package manager:
 npx nextworks@latest add blocks --sections --templates
+# pnpm dlx nextworks@latest add blocks --sections --templates
+# yarn dlx nextworks@latest add blocks --sections --templates
 
+# Install deps (use the matching command)
 npm install
+# pnpm install
+# yarn install
+
 npm run dev
 ```
 
@@ -52,6 +59,14 @@ Try these routes:
 > - Pages Router projects:
 >   - route entry file: `pages/templates/<template>/index.tsx`
 >   - supporting template files: `components/templates/<template>/**`
+
+Tip: if you're in a repo with no lockfile yet (or you want to override detection), you can force it:
+
+```bash
+npx nextworks@latest add blocks --sections --templates --pm pnpm
+npx nextworks@latest add blocks --sections --templates --pm yarn
+npx nextworks@latest add blocks --sections --templates --pm npm
+```
 
 For more details on what gets installed/edited, see:
 

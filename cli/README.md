@@ -6,7 +6,7 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 
 > **Status:** early‑access alpha. Expect rough edges and breaking changes between alpha releases.
 >
-> **Package manager:** npm only (for now).
+> **Package managers:** npm, pnpm, and yarn are supported.
 >
 > In this alpha, the most reliable setup is:
 >
@@ -22,10 +22,25 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 >    npx nextworks@latest add blocks --sections --templates
 >    ```
 >
+>    pnpm / yarn equivalents:
+>
+>    ```bash
+>    pnpm dlx nextworks@latest add blocks --sections --templates
+>    yarn dlx nextworks@latest add blocks --sections --templates
+>    ```
+>
 >    Non-interactive / CI-friendly:
 >
 >    ```bash
 >    npx nextworks@latest add blocks --sections --templates --yes
+>    ```
+>
+>    Force a specific package manager (overrides lockfile detection):
+>
+>    ```bash
+>    npx nextworks@latest add blocks --sections --templates --pm pnpm
+>    npx nextworks@latest add blocks --sections --templates --pm yarn
+>    npx nextworks@latest add blocks --sections --templates --pm npm
 >    ```
 >
 > 3. Optionally, adjust flags to install only what you want (UI-only, sections, templates).
@@ -81,17 +96,25 @@ If you need to share something privately (e.g. security-related), email: nextjsw
 
 ## Install and run the CLI
 
-From your Next.js app root, use `npx`:
+From your Next.js app root, run the CLI with your preferred package manager:
 
 ```bash
 npx nextworks@latest --help
+pnpm dlx nextworks@latest --help
+yarn dlx nextworks@latest --help
 ```
 
 Example commands:
 
 ```bash
 npx nextworks@latest add blocks --sections --templates
+pnpm dlx nextworks@latest add blocks --sections --templates
+yarn dlx nextworks@latest add blocks --sections --templates
+
 npx nextworks@latest add blocks --sections --templates --yes  # non-interactive / CI
+
+# Force a specific package manager (overrides lockfile detection)
+npx nextworks@latest add blocks --sections --templates --pm pnpm
 ```
 
 ---

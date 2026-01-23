@@ -9,9 +9,16 @@ import {
   removeInstalledKit,
   getSafeToRemoveDependencies,
 } from "../utils/installation-tracker";
+import {
+  detectPackageManager,
+  getInstallCommand,
+} from "../utils/package-manager";
 import path from "path";
 
-export async function removeBlocks(): Promise<void> {
+export async function removeBlocks(options?: {
+  /** Force package manager (overrides lockfile detection). */
+  pm?: import("../utils/package-manager").PackageManager;
+}): Promise<void> {
   console.log("Removing blocks kit...");
 
   try {
@@ -48,8 +55,11 @@ export async function removeBlocks(): Promise<void> {
     await removeInstalledKit("blocks");
 
     console.log("✓ blocks kit removed successfully!");
+    const pm = options?.pm ?? (await detectPackageManager(process.cwd()));
+    const installCmd = getInstallCommand(pm);
+
     console.log(
-      "\n💡 You may want to run 'npm install' to clean up node_modules",
+      `\n💡 You may want to run '${installCmd}' to clean up node_modules`,
     );
   } catch (error) {
     console.log("❌ Failed to remove blocks kit");

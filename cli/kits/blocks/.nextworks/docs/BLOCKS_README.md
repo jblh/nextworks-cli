@@ -66,12 +66,3 @@ Post-install notes
      - supporting template files: `components/templates/<template>/**`
 
 5. Placeholder assets are located under `public/placeholders`. These should already have been copied by the CLI; if you move files around, keep the paths aligned or update the template image references.
-
-Publishing notes (for maintainers)
-
-- This kit is UI-only and has no server/api or prisma files.
-- The manifest file `cli/cli_manifests/blocks_manifest.json` is used by the CLI to determine which files to copy when you build and publish the `nextworks` CLI.
-
-CLI behavior (for maintainers)
-
-- The CLI copies the files listed in `cli/cli_manifests/blocks_manifest.json`. Keep that manifest and this kit folder in sync when editing the Nextworks repo.
