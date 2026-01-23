@@ -19,6 +19,8 @@ This repository contains the source for the **nextworks** CLI and its MIT-licens
 > npx create-next-app@latest
 > cd <your-app>
 > npx nextworks@latest add blocks --sections --templates
+> npm install
+> npm run dev
 > ```
 >
 > For the canonical CLI README (install steps, kits, and troubleshooting), see:
