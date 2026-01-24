@@ -53,12 +53,35 @@ This repository contains the source for the **nextworks** CLI and its MIT-licens
 
 ## Compatibility (alpha)
 
-As of the current alpha, `nextworks` has been developed and tested primarily with:
+### Support matrix
 
-- **Next.js**: 16.0.3, 16.1.0, 16.1.3, 16.1.14
-- **Dev mode**: Turbopack (default in Next 16) and Webpack
+**CI-tested:**
+
+- **OS:** Windows, macOS, Linux
+- **Node:** 20.x
+- **Next.js:** 16.1.0 (via create-next-app in smoke test)
+- **Router:** App Router
+- **Package manager:** npm
+
+**Also tested manually (periodically):**
+
+- **Node:** 22.x
+- **Router:** Pages Router
+- **Package managers:** pnpm, yarn
+
+**Repo build CI (not an install test):**
+
+- `npm run build` on Node 18.x and 20.x (Ubuntu)
+
+**Dev mode:** Turbopack (default in Next 16) and Webpack
 
 Other 16.x versions will likely work; older versions are **best effort**. If you hit an issue, please include your Next.js version, Node version, package manager, OS, and relevant logs when reporting it.
+
+## Known issues (alpha)
+
+- **Existing files may be overwritten** if they collide with kit paths (see Safety + `docs/FILE_CHANGES.md`).
+- **Router entrypoint patching can conflict** with heavily customized `app/layout.tsx` (App Router) or `pages/_app.tsx` (Pages Router).
+- **Fonts/providers wiring:** Blocks configures fonts in your router entrypoint (not inside shared packages) for Turbopack compatibility. If you manually edit fonts/providers and see errors, re-run the Blocks install to re-apply the patch.
 
 ## Safety (read this first)
 

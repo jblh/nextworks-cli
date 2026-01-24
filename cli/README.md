@@ -6,7 +6,20 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 
 > **Status:** early‑access alpha. Expect rough edges and breaking changes between alpha releases.
 >
-> **Package managers:** npm, pnpm, and yarn are supported.
+> **Support matrix:**
+>
+> **CI-tested:**
+>
+> - OS: Windows, macOS, Linux
+> - Node: 20.x
+> - Router: App Router
+> - Package manager: npm
+>
+> **Also tested manually (periodically):**
+>
+> - Node: 22.x
+> - Router: Pages Router
+> - Package managers: pnpm, yarn
 >
 > In this alpha, the most reliable setup is:
 >
@@ -47,6 +60,14 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 
 ---
 
+## Known issues (alpha)
+
+- **Existing files may be overwritten** if they collide with kit paths. Commit first.
+- **Router entrypoint patching can conflict** with heavily customized `app/layout.tsx` or `pages/_app.tsx`.
+- **Fonts/providers wiring:** Blocks configures fonts in your router entrypoint (not inside shared packages) for Turbopack compatibility. If you manually edit fonts/providers and see errors, re-run the Blocks install to re-apply the patch.
+
+---
+
 ## Safety (read this first)
 
 `nextworks` installs kits by copying files into your Next.js project. If a destination path already exists, kit installs may **overwrite** your files.
@@ -83,6 +104,8 @@ Nextworks is early‑access alpha and I’m actively looking for feedback from e
 
 - **Start here (installation + where to post feedback):** https://github.com/jblh/nextworks-cli/discussions/1
 - **Alpha feedback thread (what broke / what’s missing):** https://github.com/jblh/nextworks-cli/discussions/2
+
+If you’re reporting an install/runtime issue, please include OS, Node version, Next.js version, package manager, the exact command you ran, and the error output.
 
 ### Bug reports
 

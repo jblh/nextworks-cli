@@ -47,7 +47,7 @@ Regardless of blocks options:
     - Supporting template files (components/helpers): `components/templates/<template>/**` (installed outside `pages/` to avoid Next treating them as routable pages)
 - `public/placeholders/**` (template placeholder images)
 - `next.config.ts`
-- `.nextworks/docs/**` (kit docs)
+- `.nextworks/docs/**` (kit docs copied into your project for reference)
 
 ### Edits in-place
 
