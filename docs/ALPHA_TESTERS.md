@@ -70,11 +70,6 @@ What happened (paste error output + screenshots if possible):
   npx nextworks@latest --help
   ```
 
-```
-
-- Re-run the command with `--help` to confirm flags and usage.
-
 - Restart your dev server after running `nextworks add ...`.
 
 Thanks for testing — your feedback directly shapes what gets built next.
-```

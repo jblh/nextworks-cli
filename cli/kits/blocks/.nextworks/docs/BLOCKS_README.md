@@ -1,68 +1,119 @@
-Blocks kit (cli/kits/blocks)
+# Blocks kit
 
-This folder contains the files that the CLI copies into a target Next.js project when installing the "blocks" kit.
+This folder is the **Blocks kit** installed by the Nextworks CLI. It’s copied into your Next.js project so you can edit everything locally (shadcn-style): components, sections, templates, and theme utilities.
 
-What the kit includes
+If you’re reading this inside your app repo, you’ll also find companion docs at:
 
-- UI primitive components (Button, Input, Card, Form primitives, Checkbox, Switch, Toaster)
-- Sections and templates (About, CTA, Contact, Hero variants, Navbar, Pricing, Features, etc.)
-- Theme and provider utilities (theme-provider, enhanced-theme-provider, lib/themes)
-- app/globals.css and placeholder assets used by templates
+- `.nextworks/docs/BLOCKS_QUICKSTART.md` (start here)
+- `.nextworks/docs/THEME_GUIDE.md`
 
-Install behavior
+---
+
+## What this adds to your project
+
+Depending on install flags, Blocks adds:
+
+- **UI primitives** under `components/ui/**` (Button, Input, Card, Select, Checkbox, Switch, Toaster, etc.)
+- **Reusable marketing sections** under `components/sections/**` (Navbar, Hero variants, Features, Pricing, Testimonials, FAQ, Contact, Footer, …)
+- **Full page templates** under a router-native path (see below)
+- **Theme + provider utilities** under `components/**` and `lib/**`
+- **Global styles**: `app/globals.css` and `app/tw-animate.css`
+- **Placeholder images** under `public/placeholders/**`
+
+---
+
+## Install commands / options
 
 > **Alpha note**
-> Other kits (Auth Core, Forms, Data) are currently tested and supported on top of a Blocks install that includes sections and templates. For the smoothest experience, run `npx nextworks@latest add blocks --sections --templates` before adding additional kits.
+> Other kits (Auth Core, Forms, Data) are currently tested and supported on top of a Blocks install that includes sections and templates.
+> For the smoothest experience, install Blocks first:
+>
+> ```bash
+> npx nextworks@latest add blocks --sections --templates
+> ```
 
-- For a full UI kit, run `npx nextworks@latest add blocks --sections --templates` to install **core UI primitives, sections, and templates** so the example templates work out of the box.
-- You can pass flags to control what gets installed:
-  - `npx nextworks@latest add blocks --ui-only` → core UI primitives only (no sections/templates).
-  - `npx nextworks@latest add blocks --sections` → core + sections only.
-  - `npx nextworks@latest add blocks --templates` → core + templates only.
-  - `npx nextworks@latest add blocks --sections --templates` → same as the default (core + sections + templates).
+Blocks supports these install shapes:
 
-Files included are defined in `cli/cli_manifests/blocks_manifest.json` in the Nextworks repository. When updating this kit inside the repo, keep that manifest and this kit folder in sync.
+- `npx nextworks@latest add blocks --ui-only` → core UI primitives only
+- `npx nextworks@latest add blocks --sections` → core + sections
+- `npx nextworks@latest add blocks --templates` → core + templates
+- `npx nextworks@latest add blocks --sections --templates` → core + sections + templates (recommended)
 
-Post-install notes
+---
 
-1. Install dependencies copied by the kit (the CLI will merge package-deps.json into your package.json):
+## After install: what to run
 
+1. Install merged dependencies:
+
+   ```bash
    npm install
+   ```
 
-2. Wrap your app with the AppProviders wrapper (the CLI patches this automatically).
-   - App Router: `app/layout.tsx`
-   - Pages Router: `pages/_app.tsx`
+2. Start dev:
 
-   Example (App Router):
+   ```bash
+   npm run dev
+   ```
 
-   // at the top of app/layout.tsx
-   import "./globals.css"; // optional if you already import it elsewhere in your project
-   import AppProviders from "@/components/app-providers";
+3. Visit template routes (when templates are installed):
+   - `/templates/productlaunch`
+   - `/templates/saasdashboard`
+   - `/templates/digitalagency`
+   - `/templates/gallery`
 
-   export default function RootLayout({ children }) {
-   return (
-   <html lang="en">
-   <body>
-   <AppProviders>
-   {children}
-   </AppProviders>
-   </body>
-   </html>
-   );
-   }
+---
 
-   Notes:
-   - The kit’s `components/app-providers.*` files are **local kit providers** (they wrap with the kit-local `BlocksAppProviders`), so templates/hooks and providers resolve to the same React context instance under Turbopack/HMR.
-   - On Pages Router installs, the CLI also ensures kit CSS imports are present in `pages/_app.tsx`:
-     - `../app/globals.css`
-     - `../app/tw-animate.css`
+## Where templates live (App Router vs Pages Router)
 
-3. Ensure `app/globals.css` exists in your project and that Tailwind is configured (the Blocks kit expects Tailwind).
+Templates are installed in a router-native location:
 
-4. Templates are installed in a router-native location:
-   - App Router: `app/templates/<template>/**`
-   - Pages Router:
-     - route entry file: `pages/templates/<template>/index.tsx`
-     - supporting template files: `components/templates/<template>/**`
+- **App Router:**
+  - `app/templates/<template>/page.tsx`
+  - `app/templates/<template>/**`
 
-5. Placeholder assets are located under `public/placeholders`. These should already have been copied by the CLI; if you move files around, keep the paths aligned or update the template image references.
+- **Pages Router:**
+  - route entry file: `pages/templates/<template>/index.tsx`
+  - supporting template files: `components/templates/<template>/**` (kept outside `pages/` so helpers are not treated as routable pages)
+
+---
+
+## Required wiring (providers + CSS)
+
+Blocks expects your app to be wrapped in the kit’s local `AppProviders`.
+
+- **App Router:** patched in `app/layout.tsx`
+- **Pages Router:** patched in `pages/_app.tsx` (and may create/update `pages/_document.tsx`)
+
+The CLI normally patches this automatically.
+
+Notes:
+
+- Pages Router installs also ensure CSS imports exist in `pages/_app.tsx`:
+  - `../app/globals.css`
+  - `../app/tw-animate.css`
+- The kit’s `components/app-providers.*` wrappers are **local kit providers** (they wrap the kit-local `BlocksAppProviders`) so providers/hooks resolve to the same React context instance under Turbopack/HMR.
+
+---
+
+## What to edit first
+
+- Want to change the look/branding quickly? Start with:
+  - `.nextworks/docs/THEME_GUIDE.md`
+  - `lib/themes.ts`
+  - each template’s `PresetThemeVars` file
+
+- Want to customize a section (Navbar/Hero/etc.)?
+  - edit files directly under `components/sections/**`
+
+- Want to customize a template page?
+  - edit the template route file (see paths above) and its local components.
+
+---
+
+## Internal note (for maintainers of nextworks-cli)
+
+The files included in this kit are defined by the Blocks manifest in the Nextworks repo.
+
+- Manifest: `cli_manifests/blocks_manifest.json`
+
+When updating this kit inside the nextworks-cli repository, keep the manifest and kit folder in sync.
