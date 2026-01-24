@@ -11,15 +11,12 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 > **CI-tested:**
 >
 > - OS: Windows, macOS, Linux
-> - Node: 20.x
-> - Router: App Router
-> - Package manager: npm
+> - Node: 20.x and 22.x
+> - Next.js (sandbox pin): 16.0.7 and 16.1.4 (via create-next-app in CI)
+> - Router: App Router and Pages Router
+> - Package managers: npm, pnpm, yarn
 >
-> **Also tested manually (periodically):**
->
-> - Node: 22.x
-> - Router: Pages Router
-> - Package managers: pnpm, yarn
+> Note: CI uses pinned Next.js versions for stability and security (see CVE-2025-66478 / RSC protocol advisory).
 >
 > In this alpha, the most reliable setup is:
 >
