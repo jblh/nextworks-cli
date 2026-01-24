@@ -1,0 +1,105 @@
+name: Full Matrix (Blocks install)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Nightly (UTC)
+    - cron: "0 3 * * *"
+
+jobs:
+  blocks-install-matrix:
+    name: blocks-install (${{ matrix.os }}, node ${{ matrix.node }}, next ${{ matrix.next }}, ${{ matrix.router }}, ${{ matrix.pm }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [20.x, 22.x]
+        next: [16.0.7, 16.1.4]
+        router: [app, pages]
+        pm: [npm, pnpm, yarn]
+
+    env:
+      # Pin Next.js for CI stability and security.
+      # Keeping an explicit patched baseline (16.0.7) plus the latest stable line (16.1.4).
+      # See: CVE-2025-66478 (React2Shell / RSC protocol).
+      SANDBOX_DIR: ../sandbox-next
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install repo dependencies (workspaces)
+        run: npm install
+
+      - name: Build all packages (including CLI)
+        run: npm run build
+
+      - name: Enable Corepack (pnpm/yarn)
+        if: ${{ matrix.pm != 'npm' }}
+        shell: bash
+        run: corepack enable
+
+      - name: Create fresh Next.js app
+        shell: bash
+        run: |
+          rm -rf "${SANDBOX_DIR}" || true
+
+          if [ "${{ matrix.router }}" = "app" ]; then
+            ROUTER_ARGS="--app"
+          else
+            ROUTER_ARGS="--no-app"
+          fi
+
+          if [ "${{ matrix.pm }}" = "npm" ]; then
+            PM_ARGS="--use-npm"
+          elif [ "${{ matrix.pm }}" = "pnpm" ]; then
+            PM_ARGS="--use-pnpm"
+          else
+            PM_ARGS="--use-yarn"
+          fi
+
+          npx --yes create-next-app@${{ matrix.next }} "${SANDBOX_DIR}" \
+            --ts --eslint ${ROUTER_ARGS} --no-src-dir --no-tailwind ${PM_ARGS}
+
+      - name: Install blocks into fresh app
+        working-directory: ${{ env.SANDBOX_DIR }}
+        shell: bash
+        run: node "${GITHUB_WORKSPACE}/cli/dist/index.js" add blocks --sections --templates --yes
+
+      - name: Install app dependencies
+        working-directory: ${{ env.SANDBOX_DIR }}
+        shell: bash
+        run: |
+          if [ "${{ matrix.pm }}" = "npm" ]; then
+            npm cache clean --force
+            npm install --registry=https://registry.npmjs.org
+          elif [ "${{ matrix.pm }}" = "pnpm" ]; then
+            pnpm install
+          else
+            yarn install --immutable
+          fi
+
+      - name: Verify vendored tw-animate CSS copied + imported
+        working-directory: ${{ env.SANDBOX_DIR }}
+        shell: bash
+        run: node "${GITHUB_WORKSPACE}/cli/scripts/verify-sandbox-blocks.mjs"
+
+      - name: Build app
+        working-directory: ${{ env.SANDBOX_DIR }}
+        shell: bash
+        run: |
+          if [ "${{ matrix.pm }}" = "npm" ]; then
+            npm run build
+          elif [ "${{ matrix.pm }}" = "pnpm" ]; then
+            pnpm run build
+          else
+            yarn build
+          fi

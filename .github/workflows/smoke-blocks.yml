@@ -1,10 +1,9 @@
 name: Smoke Test (Blocks install)
 
-
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 jobs:
@@ -36,7 +35,9 @@ jobs:
 
       - name: Create fresh Next.js app (App Router)
         run: |
-          npx --yes create-next-app@16.1.0 ../sandbox-next --ts --eslint --app --no-src-dir --no-tailwind --use-npm
+          # Pin to a patched Next.js line for CI stability and security.
+          # Keep in sync with the full-matrix workflow.
+          npx --yes create-next-app@16.0.7 ../sandbox-next --ts --eslint --app --no-src-dir --no-tailwind --use-npm
 
       - name: Install blocks into fresh app
         working-directory: ../sandbox-next
