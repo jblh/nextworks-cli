@@ -20,6 +20,9 @@ packages/**/*.tgz
 .idea/
 .vscode/
 
+# Local AI tooling
+.continue/
+
 # TypeScript build info (already present in packages)
 **/*.tsbuildinfo
 

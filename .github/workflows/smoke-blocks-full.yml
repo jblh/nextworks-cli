@@ -82,7 +82,9 @@ jobs:
             npm cache clean --force
             npm install --registry=https://registry.npmjs.org
           elif [ "${{ matrix.pm }}" = "pnpm" ]; then
-            pnpm install
+            # create-next-app generates pnpm-lock.yaml. Our CLI mutates package.json after creation,
+            # so we must allow pnpm to update the lockfile.
+            pnpm install --no-frozen-lockfile
           else
             yarn install --immutable
           fi
