@@ -22,10 +22,6 @@ npx nextworks@latest add blocks --sections --templates
 npm install
 ```
 
-> **Alpha note**
-> Other kits (Auth Core, Forms, Data) are currently tested and supported on top of a default Blocks install.
-> Install Blocks first for the smoothest experience.
-
 ---
 
 ## 2) Run dev and verify routes
@@ -52,7 +48,7 @@ Blocks relies on global CSS files:
 - `app/globals.css`
 - `app/tw-animate.css`
 
-And the correct import location depends on your router:
+The correct import location depends on your router:
 
 - **App Router:** `app/layout.tsx` should import `./globals.css` (and `./tw-animate.css` if used).
 - **Pages Router:** `pages/_app.tsx` should import:

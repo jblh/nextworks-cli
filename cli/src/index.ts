@@ -4,6 +4,8 @@
 // SPDX-License-Identifier: MIT
 
 import { Command } from "commander";
+import fs from "fs";
+import path from "path";
 import { addBlocks } from "./commands/blocks";
 import { removeBlocks } from "./commands/remove-blocks";
 import { getInstalledKits } from "./utils/installation-tracker";
@@ -19,10 +21,21 @@ import {
 
 const program = new Command();
 
+const cliVersion = (() => {
+  try {
+    // When running from dist/, __dirname is: <pkgRoot>/dist
+    const pkgPath = path.resolve(__dirname, "..", "package.json");
+    const raw = fs.readFileSync(pkgPath, "utf8");
+    return JSON.parse(raw)?.version ?? "0.0.0";
+  } catch {
+    return "0.0.0";
+  }
+})();
+
 program
   .name("nextworks")
   .description("Nextworks CLI - Feature kits installer for Next.js apps")
-  .version("0.1.0");
+  .version(cliVersion);
 
 program
   .command("add <kit>")

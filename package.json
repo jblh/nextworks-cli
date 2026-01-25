@@ -1,6 +1,6 @@
 {
   "name": "nextworks-cli",
-  "private": true,
+  "private": false,
   "workspaces": [
     "cli",
     "packages/*"
