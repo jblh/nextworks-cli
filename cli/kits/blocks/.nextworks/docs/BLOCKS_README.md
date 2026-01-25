@@ -24,10 +24,6 @@ Depending on install flags, Blocks adds:
 
 ## Install commands / options
 
-> **Alpha note**
-> Other kits (Auth Core, Forms, Data) are currently tested and supported on top of a Blocks install that includes sections and templates.
-> For the smoothest experience, install Blocks first:
->
 > ```bash
 > npx nextworks@latest add blocks --sections --templates
 > ```
@@ -107,13 +103,3 @@ Notes:
 
 - Want to customize a template page?
   - edit the template route file (see paths above) and its local components.
-
----
-
-## Internal note (for maintainers of nextworks-cli)
-
-The files included in this kit are defined by the Blocks manifest in the Nextworks repo.
-
-- Manifest: `cli_manifests/blocks_manifest.json`
-
-When updating this kit inside the nextworks-cli repository, keep the manifest and kit folder in sync.

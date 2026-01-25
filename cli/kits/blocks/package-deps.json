@@ -13,9 +13,9 @@
     "next-themes": "^0.4.6",
     "motion": "^12.24.10",
     "sonner": "^2.0.7",
-    "@nextworks/blocks-core": "0.2.0-alpha.5",
-    "@nextworks/blocks-sections": "0.2.0-alpha.5",
-    "@nextworks/blocks-templates": "0.2.0-alpha.5"
+    "@nextworks/blocks-core": "0.2.0-alpha.6",
+    "@nextworks/blocks-sections": "0.2.0-alpha.6",
+    "@nextworks/blocks-templates": "0.2.0-alpha.6"
   },
   "devDependencies": {
     "tailwindcss": "^4.1.12"
