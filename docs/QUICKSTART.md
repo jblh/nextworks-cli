@@ -6,8 +6,6 @@ Fresh `create-next-app` + `npx nextworks add blocks --sections --templates`, plu
 
 [![Nextworks install demo](https://img.youtube.com/vi/7YKmGFmFY5c/hqdefault.jpg)](https://www.youtube.com/watch?v=7YKmGFmFY5c)
 
-> Video is **Unlisted** during alpha; the link will still work anywhere this doc is shared.
-
 This snippet is an easy, copy‑paste quickstart you can add to your README or run locally. It helps you get up and running quickly in a fresh Next.js project (App Router **or** Pages Router) using the `nextworks` CLI.
 
 For more details on the CLI and available kits, see `cli/README.md`.
