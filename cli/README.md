@@ -6,8 +6,6 @@ Fresh `create-next-app` + `npx nextworks add blocks --sections --templates`, plu
 
 [![Nextworks install demo](https://img.youtube.com/vi/7YKmGFmFY5c/hqdefault.jpg)](https://www.youtube.com/watch?v=7YKmGFmFY5c)
 
-> Video is **Unlisted** during alpha; the link will still work anywhere this README is shared.
-
 Nextworks is a CLI that installs **modular Next.js building blocks** into your app:
 
 - **Blocks** – UI sections, templates, and core UI primitives.
