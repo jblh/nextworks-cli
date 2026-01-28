@@ -2,6 +2,14 @@
 
 **nextworks** is a CLI that installs the Nextworks **Blocks kit** (core UI, sections, and page templates) into your Next.js project.
 
+## 90-second install demo (silent)
+
+Watch a fresh `create-next-app` + `npx nextworks add blocks --sections --templates` run end-to-end (includes a quick browser tour of the gallery + templates):
+
+[![Nextworks install demo](https://img.youtube.com/vi/7YKmGFmFY5c/hqdefault.jpg)](https://www.youtube.com/watch?v=7YKmGFmFY5c)
+
+> Video is **Unlisted** during alpha; the link will still work anywhere this README is shared.
+
 This repository contains the source for the **nextworks** CLI and its MIT-licensed core building blocks.
 
 ## Links
