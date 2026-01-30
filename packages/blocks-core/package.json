@@ -1,6 +1,6 @@
 {
   "name": "@nextworks/blocks-core",
-  "version": "0.2.0-alpha.6",
+  "version": "0.2.0-alpha.7",
   "private": false,
   "main": "dist-cjs/index.cjs",
   "module": "dist/index.js",
