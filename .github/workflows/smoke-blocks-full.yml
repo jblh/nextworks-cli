@@ -2,9 +2,6 @@ name: Full Matrix (Blocks install)
 
 on:
   workflow_dispatch:
-  schedule:
-    # Nightly (UTC)
-    - cron: "0 3 * * *"
 
 jobs:
   blocks-install-matrix:
