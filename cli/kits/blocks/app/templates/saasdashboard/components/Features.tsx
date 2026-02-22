@@ -73,7 +73,6 @@ export function Features() {
           "font-inter text-sm leading-relaxed text-[var(--card-muted-fg)] md:text-base",
         ),
       }}
-      // Motion config showcasing upgraded API
       motionConfig={{
         initial: { opacity: 0, y: 12 },
         whileInView: { opacity: 1, y: 0 },

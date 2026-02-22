@@ -3,7 +3,7 @@
 import { ProcessTimeline as SharedProcessTimeline } from "@/components/sections/ProcessTimeline";
 
 /**
- * Product Launch preset for ProcessTimeline wired to the upgraded shared ProcessTimeline component
+ * Product Launch preset for ProcessTimeline
  */
 export function ProcessTimeline() {
   const steps = [

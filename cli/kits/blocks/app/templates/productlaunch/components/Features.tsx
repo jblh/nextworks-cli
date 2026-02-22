@@ -3,8 +3,7 @@
 import { Features as SharedFeatures } from "@/components/sections/Features";
 
 /**
- * Product Launch preset for Features, wired to the upgraded shared Features component
- * using the slots + cn API. Keeps content and styles consistent with the template.
+ * Product Launch preset for Features
  */
 export function Features() {
   const featuresData = [

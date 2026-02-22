@@ -37,7 +37,7 @@ const agencyNavLinks: NavLinkGroup[] = [
 ];
 
 /**
- * Upgraded preset Footer for the Digital Agency template
+ * Preset Footer for the Digital Agency template
  * - Uses the shared Footer slot API
  * - Keeps brand distinct, flush-left; aligns top with nav headers
  */

@@ -117,8 +117,8 @@ function DashboardMockup({
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    const rx = (y / rect.height - 0.5) * -6; // rotateX up to ~±3deg
-    const ry = (x / rect.width - 0.5) * 6; // rotateY up to ~±3deg
+    const rx = (y / rect.height - 0.5) * -6;
+    const ry = (x / rect.width - 0.5) * 6;
     targetTilt.current = { rx, ry };
     if (rafId.current == null) rafId.current = requestAnimationFrame(animate);
   };

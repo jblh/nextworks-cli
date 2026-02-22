@@ -8,8 +8,7 @@ type Props = React.PropsWithChildren<{ className?: string }>;
  *
  * Maps component-level CSS variables (btn, input, card, etc.) to the
  * EnhancedThemeProvider token variables applied on :root (e.g., --primary,
- * --foreground, --card, --ring). This preserves the original Gallery behavior:
- * colors are driven by the selected Color Theme, not a fixed preset palette.
+ * --foreground, --card, --ring). Colors are driven by the selected Color Theme, not a fixed preset palette.
  */
 export function PresetThemeVars({ className, children }: Props) {
   return (

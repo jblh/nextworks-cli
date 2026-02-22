@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 export function Testimonials() {
   return (
     <div className="relative">
-      {/* Gradient mesh + fine noise overlays for depth */}
+      {/* Gradient mesh and fine noise overlays for depth */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 [background-image:radial-gradient(60rem_60rem_at_0%_0%,rgba(59,130,246,0.08),transparent_40%),radial-gradient(50rem_50rem_at_100%_100%,rgba(168,85,247,0.06),transparent_40%)] opacity-20"

@@ -3,7 +3,7 @@
 import { Team as SharedTeam } from "@/components/sections/Team";
 
 /**
- * Product Launch preset for Team wired to the upgraded shared Team component
+ * Product Launch preset for Team
  */
 export function Team() {
   const teamMembers = [

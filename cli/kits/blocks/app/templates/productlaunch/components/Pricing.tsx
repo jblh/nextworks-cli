@@ -3,7 +3,7 @@
 import { Pricing as SharedPricing } from "@/components/sections/Pricing";
 
 /**
- * Product Launch preset for Pricing wired to the upgraded shared Pricing component
+ * Product Launch preset for Pricing
  */
 export function Pricing() {
   return (

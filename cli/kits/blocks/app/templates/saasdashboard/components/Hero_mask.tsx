@@ -111,7 +111,6 @@ export function Hero() {
           imageContainer={{
             className:
               "relative self-start md:self-start md:flex-none md:shrink-0 w-full h-[24rem] sm:h-[26rem] md:h-[31rem] md:w-1/2 mb-6 md:mb-0",
-            // "relative self-start md:self-start md:flex-none md:shrink-0 w-full h-[24rem] sm:h-[26rem] md:h-[28rem] md:w-1/2 mb-6 md:mb-0",
           }}
           textContainer={{ className: "flex-1 p-5 lg:p-8" }}
           buttonsContainer={{

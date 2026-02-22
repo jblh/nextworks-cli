@@ -5,6 +5,7 @@ type Props = React.PropsWithChildren<{ className?: string }>;
 
 /**
  * ProductLaunch template theme variables wrapper.
+ * Not used by default for the ProductLaunch template.
  *
  * Sets a small CSS variable contract consumed by shared components
  * (Buttons, Inputs, Cards, Badges, Footer, Table, etc.).

@@ -91,7 +91,7 @@ const defaultFilters = [
   "Mobile Marketing",
 ];
 
-// Upgraded Portfolio Preset Component
+// Portfolio Preset Component
 export function Portfolio() {
   return (
     <section id="portfolio">
