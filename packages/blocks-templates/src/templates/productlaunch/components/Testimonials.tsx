@@ -3,7 +3,7 @@
 import { Testimonials as SharedTestimonials } from "@nextworks/blocks-sections";
 
 /**
- * Product Launch preset for Testimonials wired to the upgraded shared Testimonials component
+ * Product Launch preset for Testimonials wired to the shared Testimonials component
  */
 export function Testimonials() {
   const testimonials = [

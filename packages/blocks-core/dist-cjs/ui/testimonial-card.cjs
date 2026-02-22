@@ -17,7 +17,7 @@ function getInitials(from) {
 function TestimonialCard({ id, className, 
 // legacy defaults
 testimonialText = "Lorem ipsum dolor sit amet! Consectetur adipiscing elit.", testimonialAuthor = " - Cillum Dolore", testimonialAuthorInitials = "JD", 
-// new props (no defaults, we derive below)
+// New props (no defaults, we derive below)
 quote, name, role, card = {
     className: "bg-card text-card-foreground p-6 rounded-lg border border-border shadow-md transition-transform duration-200 hover:-translate-y-1 bg-[var(--card-bg)] text-[var(--card-fg)] border-[var(--card-border)] shadow-[var(--card-shadow)]",
 }, content = {

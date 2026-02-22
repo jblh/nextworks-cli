@@ -62,17 +62,6 @@ export interface FAQProps {
   enableMotion?: boolean;
 }
 
-// const defaultFaqData: FAQS[] = [
-//   {
-//     question: "What does IntelliOpAI do?",
-//     answer: "Automates ops with real-time insights.",
-//   },
-//   {
-//     question: "Do I need coding skills?",
-//     answer: "No, it's designed for ease of use.",
-//   },
-// ];
-
 const defaultFaqData: FAQS[] = [
   {
     question: "What does IntelliOpAI do?",
@@ -180,7 +169,7 @@ export function FAQ({
                   onClick={() => onToggle(index)}
                   className={cn(
                     "flex w-full items-center justify-between rounded-md p-4 text-left focus:outline-none",
-                    // preset-first ring/border
+                    // Preset-first ring/border
                     "border-[var(--btn-border)] focus-visible:ring-2 focus-visible:ring-[var(--btn-ring)] focus-visible:ring-offset-2",
                     questionButton.className,
                   )}

@@ -69,31 +69,3 @@ export function About() {
     />
   );
 }
-
-// "use client";
-
-// import React from "react";
-// import { About as SharedAbout } from "@/components/sections/About";
-
-// export function About() {
-//   return (
-//     <SharedAbout
-//       aboutHeadingText="Your Success Is Our Mission"
-//       aboutContentText="With 50+ successful projects and 5 years of experience, we specialize in creating digital solutions that drive real business growth. Our team combines creative design with data-driven strategy."
-//       aboutTextAlign="center"
-//       showStats={true}
-//       section={{
-//         className: "py-16 md:py-20 lg:py-24 bg-white dark:bg-gray-800",
-//       }}
-//       heading={{
-//         className: "text-4xl md:text-5xl lg:text-6xl font-bold text-foreground",
-//       }}
-//       content={{
-//         className:
-//           "text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed",
-//       }}
-//     />
-//   );
-// }
-
-// export default About;

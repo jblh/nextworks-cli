@@ -267,7 +267,7 @@ export function HeroOverlay({
         }
       : undefined;
 
-  // buttonLift defined above
+  // ButtonLift defined above
 
   // Merge alias section.className with container.className
   const finalContainerClass = cn(container.className, section?.className);

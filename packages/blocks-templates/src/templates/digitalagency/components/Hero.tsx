@@ -5,7 +5,7 @@ import { HeroSplit } from "@nextworks/blocks-sections";
 import { NetworkPattern } from "../components/NetworkPattern";
 
 /**
- * Upgraded HeroNew preset for the digital agency template,
+ * Hero preset for the digital agency template,
  * wired to the shared HeroSplit with slots + cn API.
  */
 export function Hero() {

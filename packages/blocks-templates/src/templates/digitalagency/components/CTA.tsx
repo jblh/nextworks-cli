@@ -40,35 +40,3 @@ export function CTA() {
     />
   );
 }
-
-// "use client";
-
-// import React from "react";
-// import { CTA as SharedCTA } from "@/components/sections/CTA";
-
-// export function CTA() {
-//   return (
-//     <SharedCTA
-//       heading={{
-//         text: "Ready To Transform Your Business?",
-//         className:
-//           "text-4xl md:text-5xl lg:text-6xl font-bold font-poppins leading-tight",
-//       }}
-//       section={{
-//         className:
-//           "flex h-[32vh] flex-col items-center overflow-hidden bg-fuchsia-50 dark:bg-gray-900",
-//       }}
-//       button={{
-//         text: "Get Your Free Quote",
-//         href: "#contact",
-//         variant: "default",
-//         size: "lg",
-//         className:
-//           "mt-6 bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-poppins shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5",
-//       }}
-//       spacing={{ topMargin: "mt-[8vh]" }}
-//     />
-//   );
-// }
-
-// export default CTA;

@@ -4,7 +4,7 @@ import { Footer as SharedFooter } from "@nextworks/blocks-sections";
 import { Twitter, Linkedin, Github, Youtube, Mail } from "lucide-react";
 
 /**
- * Upgraded preset Footer for the Product Launch template wired to the upgraded shared Footer
+ * Preset Footer for the Product Launch template wired to the shared Footer
  */
 export function Footer() {
   return (

@@ -169,12 +169,11 @@ export function CTA({
   secondaryButtonWrapper = { className: "" },
 
   spacing = { topMargin: "mt-0 sm:mt-12" },
-  // spacing = { topMargin: "mt-[17vh]" },
 
   ariaLabel = "Call to action section",
   role = "region",
 }: CTAProps) {
-  // default class for actions wrapper (keeps a gap and responsive row layout)
+  // Default class for actions wrapper (keeps a gap and responsive row layout)
   const actionsWrapperDefault =
     "mt-6 flex flex-col items-center gap-3 sm:flex-row";
 

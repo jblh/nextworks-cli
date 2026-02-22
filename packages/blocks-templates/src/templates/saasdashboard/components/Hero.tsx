@@ -87,7 +87,6 @@ export function Hero() {
         imageContainer={{
           className:
             "pl-0 relative self-start md:self-start md:flex-none md:shrink-0 w-full h-[24rem] sm:h-[32rem] md:h-[34rem] lg:h-[33rem] md:w-1/2 mb-0 md:mb-0 lg:mb-0 opacity-100",
-          // "relative self-start md:self-start md:flex-none md:shrink-0 w-full h-[24rem] sm:h-[26rem] md:h-[28rem] md:w-1/2 mb-6 md:mb-0",
         }}
         textContainer={{ className: "flex-1 p-5 lg:p-8" }}
         buttonsContainer={{

@@ -1,5 +1,3 @@
-// - /app/templates/gallery/page.tsx
-
 "use client";
 
 import {
@@ -241,7 +239,7 @@ export default function Gallery() {
                 "text-[var(--primary-foreground)] p-5 cursor-pointer rounded-lg " +
                 "transition-all duration-200 flex items-center justify-between " +
                 "shadow-lg hover:shadow-xl hover:-translate-y-0.5 " +
-                // define ring/border vars and ensure a visible border if tokens apply
+                // Define ring/border vars and ensure a visible border if tokens apply
                 "[--btn-ring:var(--ring)] [--btn-border:var(--primary)] border [&:where(button)]:border",
             }}
             answer={{

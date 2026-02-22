@@ -225,7 +225,7 @@ export function HeroSplit({
     imageContainer?.className,
   );
 
-  // -- This overrides the image.className that is passed from importing components ... devs should be able to decide on cover/contain from the importing component.
+  // Note: Avoid overriding the incoming image.className so callers can control object-fit (e.g., cover vs contain).
   const finalImageClass = cn(
     image?.className,
     imageLayout === "full-bleed"
