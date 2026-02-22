@@ -20,7 +20,7 @@ export interface HeroOverlayProps {
   id?: string;
   className?: string;
 
-  // New structured image props (aligns with HeroSplit)
+  // Structured image props
   image?: {
     src?: string;
     alt?: string;
@@ -61,7 +61,7 @@ export interface HeroOverlayProps {
 
   ctaContainer?: { className?: string };
 
-  // CTA objects now support label/href (aligns with HeroSplit)
+  // CTA objects support label/href
   cta1?: {
     label?: string;
     href?: string;

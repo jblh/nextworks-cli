@@ -7,7 +7,6 @@ import { CTAButton } from "@/components/ui/cta-button";
 import { ExternalLink, TrendingUp } from "lucide-react";
 import Image from "next/image";
 
-// TypeScript Interfaces
 export interface PortfolioProject {
   id: number;
   title: string;

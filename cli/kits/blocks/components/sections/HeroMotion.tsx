@@ -94,7 +94,7 @@ export interface HeroMotionProps {
 const defaultChildTransition: MotionTransition = {
   type: "tween",
   duration: 0.5,
-  ease: [0.22, 1, 0.36, 1], // smooth easeOut
+  ease: [0.22, 1, 0.36, 1],
 };
 
 /**

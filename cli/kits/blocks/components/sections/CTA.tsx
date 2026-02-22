@@ -169,7 +169,6 @@ export function CTA({
   secondaryButtonWrapper = { className: "" },
 
   spacing = { topMargin: "mt-0 sm:mt-12" },
-  // spacing = { topMargin: "mt-[17vh]" },
 
   ariaLabel = "Call to action section",
   role = "region",

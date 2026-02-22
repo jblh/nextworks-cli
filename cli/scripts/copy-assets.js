@@ -1,24 +1,20 @@
 const fs = require("fs-extra");
 const path = require("path");
 
-// repo layout note: cli_manifests lives at the repository root, while this script
-// runs from cli/scripts. Resolve repoRoot and the cli root explicitly.
+// Script location: cli/scripts. Assets: repoRoot/cli_manifests and cliRoot/kits.
 const cliRoot = path.resolve(__dirname, "..");
 const repoRoot = path.resolve(__dirname, "..", "..");
 const dist = path.join(cliRoot, "dist");
 
 fs.ensureDirSync(dist);
 
-// copy manifests from repo root and kits from cli into dist
-// IMPORTANT: dist/ may contain stale folders from previous builds.
-// Remove the destination folders first so deleted kits/manifests do not linger.
+// dist/ can contain leftovers from prior builds; destinations are removed before copying.
 const manifestsSrc = path.join(repoRoot, "cli_manifests");
 const kitsSrc = path.join(cliRoot, "kits");
 
 const manifestsDest = path.join(dist, "cli_manifests");
 const kitsDest = path.join(dist, "kits");
 
-// Clean destinations to avoid stale files being published
 fs.removeSync(manifestsDest);
 fs.removeSync(kitsDest);
 
