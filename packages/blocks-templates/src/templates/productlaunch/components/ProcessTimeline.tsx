@@ -3,7 +3,7 @@
 import { ProcessTimeline as SharedProcessTimeline } from "@nextworks/blocks-sections";
 
 /**
- * Product Launch preset for ProcessTimeline wired to the upgraded shared ProcessTimeline component
+ * Product Launch preset for ProcessTimeline wired to the shared ProcessTimeline component
  */
 export function ProcessTimeline() {
   const steps = [

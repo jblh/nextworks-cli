@@ -3,12 +3,8 @@
 import { FAQ as SharedFAQ } from "@nextworks/blocks-sections";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-// - org. jsdoc in the bck folder
-
 /**
- * Upgraded preset FAQ component for the product launch page.
- * Now uses the new shared FAQ_new.tsx API while preserving
- * the original styling, content, and accessibility semantics.
+ * Preset FAQ component for the product launch page.
  */
 export function FAQ() {
   return (
@@ -65,14 +61,9 @@ export function FAQ() {
       }}
       questionButton={{
         className:
-          // "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white p-5 cursor-pointer rounded-lg transition-all duration-200 flex items-center justify-between shadow-lg hover:shadow-xl hover:shadow-purple-500/30 hover:-translate-y-0.5 font-inter ",
-
-          // your existing classes...
           "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white p-5 cursor-pointer rounded-lg transition-all duration-200 flex items-center justify-between shadow-lg hover:shadow-xl hover:shadow-purple-500/30 hover:-translate-y-0.5 font-inter " +
-          // define the ring and border CSS vars you want
           "[--btn-ring:theme(colors.purple.500)] dark:[--btn-ring:theme(colors.purple.400)] " +
           "[--btn-border:theme(colors.purple.500)] dark:[--btn-border:theme(colors.purple.400)] " +
-          // ensure mouse focus uses your ring color too
           "focus:ring-[var(--btn-ring)]",
       }}
       // No extra styles for the question text; inherits from button

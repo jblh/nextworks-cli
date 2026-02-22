@@ -3,7 +3,7 @@
 import { ServicesGrid as SharedServicesGrid } from "@nextworks/blocks-sections";
 
 /**
- * Product Launch preset for ServicesGrid wired to the upgraded shared ServicesGrid component
+ * Product Launch preset for ServicesGrid wired to the shared ServicesGrid component
  */
 export function ServicesGrid() {
   const servicesData = [

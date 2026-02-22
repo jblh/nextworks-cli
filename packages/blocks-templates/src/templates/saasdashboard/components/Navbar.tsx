@@ -12,7 +12,7 @@ import { Navbar as SharedNavbar } from "@nextworks/blocks-sections";
  * - Blue hover states for links and theme toggle
  * - Glassy background with backdrop blur (light/dark)
  *
- * This preset exposes the Shared Navbar API so devs can override any prop/slot:
+ * This preset exposes the Shared Navbar API so any prop/slot can be overridden.
  *
  * Example:
  * <Navbar
@@ -72,7 +72,6 @@ const defaultProps: SharedNavbarProps = {
     className:
       "shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5",
   },
-  // Additional slots that weren't styled before, now aligned to the theme
   mobileMenu: {
     className: "border-t border-gray-200/80 dark:border-gray-800/80",
   },
@@ -110,50 +109,10 @@ const defaultProps: SharedNavbarProps = {
 
 export function Navbar(overrides: PresetOverrides = {}) {
   // Shallow-merge: passing a style-slot object (e.g., links, nav, etc.)
-  // replaces the default for that slot. Keeps the API simple and predictable.
+  // replaces the default for that slot.
   const props: SharedNavbarProps = {
     ...defaultProps,
     ...overrides,
   };
   return <SharedNavbar {...props} />;
 }
-
-// "use client";
-
-// import { Navbar as SharedNavbar } from "@/components/sections/Navbar";
-
-// export function Navbar() {
-//   return (
-//     <SharedNavbar
-//       brand="DashFlow"
-//       brandNode={
-//         <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-blue-600 to-purple-600 font-bold text-white shadow-sm ring-1 ring-white/40">
-//           DF
-//         </div>
-//       }
-//       menuItems={[
-//         { label: "Home", href: "#home" },
-//         { label: "Features", href: "#features" },
-//         { label: "Pricing", href: "#pricing" },
-//         { label: "Contact", href: "#contact" },
-//       ]}
-//       ctaButton={null}
-//       showColorModeToggle={true}
-//       navHeight="h-16"
-//       sticky={true}
-//       ariaLabel="DashFlow main navigation"
-//       nav={{
-//         className:
-//           "bg-white/60 dark:bg-gray-900/60 backdrop-blur supports-[backdrop-filter]:bg-white/60 supports-[backdrop-filter]:dark:bg-gray-900/60 text-gray-800 dark:text-white",
-//       }}
-//       brandText={{
-//         className:
-//           "text-xl font-bold font-inter text-blue-700 dark:text-blue-500",
-//       }}
-//       links={{
-//         className:
-//           "text-sm font-medium font-inter text-gray-800 dark:text-white hover:text-blue-700 dark:hover:text-blue-400",
-//       }}
-//     />
-//   );
-// }

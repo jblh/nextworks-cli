@@ -20,7 +20,7 @@ interface EnhancedThemeProviderProps {
   enableSystem?: NextThemesProviderProps["enableSystem"];
   disableTransitionOnChange?: NextThemesProviderProps["disableTransitionOnChange"];
   defaultThemeVariant?: ThemeVariant;
-  // Optional DX: provide default custom tokens declaratively (e.g. brand colors)
+  // Initial custom color tokens applied on first render (e.g. brand overrides)
   defaultCustomTokens?: Partial<ColorTokens> | null;
 }
 
@@ -138,7 +138,6 @@ export function EnhancedThemeProvider({
   }, []);
 
   // Listen for theme changes from next-themes
-
   React.useEffect(() => {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {

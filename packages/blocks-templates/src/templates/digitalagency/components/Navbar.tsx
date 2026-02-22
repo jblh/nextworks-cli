@@ -7,10 +7,9 @@ import { BrandNodeGradientRing } from "@nextworks/blocks-core";
 /**
  * Digital Agency preset Navbar (Nexus Digital)
  *
- * - Preserves original branding, colors, and blur effect
  * - No CTA button (ctaButton = null)
  * - Fuchsia hover/focus accents for links and toggles
- * - Exposes the full Shared Navbar API via shallow-merge overrides
+ * - Exposes the Shared Navbar API via shallow-merge overrides
  *
  * Example overrides:
  * <Navbar
@@ -42,7 +41,7 @@ const defaultProps: SharedNavbarProps = {
   // Allow page-level layout overrides if needed
   className: "",
 
-  // Style slots (preserve original look; add defaults for new slots)
+  // Style slots
   nav: {
     className:
       "bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-gray-200 dark:border-gray-800 " +
@@ -118,51 +117,3 @@ export function Navbar(overrides: PresetOverrides = {}) {
   };
   return <SharedNavbar {...props} />;
 }
-
-// "use client";
-
-// import React from "react";
-// import { Navbar as SharedNavbar } from "@/components/sections/Navbar";
-// import { BrandNodeGradientRing } from "@/components/ui/brand-node";
-
-// export function Navbar() {
-//   return (
-//     <SharedNavbar
-//       brand="Nexus Digital"
-//       brandNode={
-//         <BrandNodeGradientRing gradient="conic-gradient(#7c3aed, #ec4899, #7c3aed)" />
-//       }
-//       // brandNode={
-//       //   <div className="grid h-8 w-8 place-items-center rounded-md bg-gradient-to-br from-blue-600 to-purple-600 text-xs font-extrabold text-white shadow-sm">
-//       //     ND
-//       //   </div>
-//       // }
-//       menuItems={[
-//         { label: "Home", href: "#home" },
-//         { label: "Services", href: "#services" },
-//         { label: "Portfolio", href: "#portfolio" },
-//         { label: "Pricing", href: "#pricing" },
-//         { label: "Contact", href: "#contact" },
-//       ]}
-//       ctaButton={null}
-//       showColorModeToggle={true}
-//       nav={{
-//         className:
-//           "bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-gray-200 dark:border-gray-800 text-gray-800 dark:text-white",
-//       }}
-//       brandText={{
-//         className:
-//           "text-2xl font-bold font-poppins text-fuchsia-600 dark:text-fuchsia-400",
-//       }}
-//       links={{
-//         className:
-//           "text-sm font-inter font-medium text-gray-700 dark:text-gray-200 hover:text-fuchsia-600 dark:hover:text-fuchsia-400",
-//       }}
-//       mobileMenu={{
-//         className: "border-t border-gray-200 dark:border-gray-800",
-//       }}
-//     />
-//   );
-// }
-
-// export default Navbar;

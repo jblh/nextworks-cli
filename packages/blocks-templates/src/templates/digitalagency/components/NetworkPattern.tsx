@@ -5,11 +5,9 @@ import React from "react";
 /**
  * NetworkPattern
  * Tailwind-based animated network background for hero fallbacks.
- * Lightweight and dependency-free (no Chakra).
  */
 export const NetworkPattern: React.FC = () => {
   return (
-    // <div className="relative h-full w-full">
     <div className="relative h-full w-full overflow-hidden">
       {/* Ambient gradient blobs behind the network */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">

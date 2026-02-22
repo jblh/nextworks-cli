@@ -3,7 +3,7 @@
 import { Pricing as SharedPricing } from "@nextworks/blocks-sections";
 
 /**
- * Product Launch preset for Pricing wired to the upgraded shared Pricing component
+ * Product Launch preset for Pricing wired to the shared Pricing component
  */
 export function Pricing() {
   return (

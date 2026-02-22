@@ -14,7 +14,7 @@ export interface ServiceCardData {
 }
 
 /**
- * Props to configure the ServicesGrid component (upgraded slots + cn).
+ * Props to configure the ServicesGrid component (slots + cn).
  */
 export interface ServicesGridProps {
   /** Optional id on root */

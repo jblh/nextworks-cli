@@ -98,7 +98,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                   "bg-[var(--btn-bg)]",
                   "hover:bg-[var(--btn-hover-bg)]",
                   "hover:text-[var(--btn-hover-fg)]",
-                  // explicit dark variants to compete with dark: utilities from variants like outline
+                  // Explicit dark variants to compete with dark: utilities from variants like outline
                   "dark:bg-[var(--btn-bg)]",
                   "dark:hover:bg-[var(--btn-hover-bg)]",
                   "dark:hover:text-[var(--btn-hover-fg)]",

@@ -153,7 +153,7 @@ export function Navbar({
     className: "border-t border-border",
   },
 
-  /* new slot defaults */
+  /* New slot defaults */
   container = { className: "" },
   brandWrapper = { className: "" },
   desktopMenu = {
@@ -245,7 +245,6 @@ export function Navbar({
         </button>
 
         <div className={cn("hidden md:flex", desktopMenu.className)}>
-          {/* <div className={cn("hidden lg:flex", desktopMenu.className)}> */}
           {menuItems.map((item) => (
             <Link
               key={item.label}
@@ -292,7 +291,6 @@ export function Navbar({
           id={mobileMenuId}
           className={cn(
             "md:hidden",
-            // "lg:hidden",
             "overflow-y-auto overscroll-y-contain",
             nav.className,
             mobileMenu.className,

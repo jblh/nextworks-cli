@@ -56,7 +56,7 @@ export function TestimonialCard({
   testimonialText = "Lorem ipsum dolor sit amet! Consectetur adipiscing elit.",
   testimonialAuthor = " - Cillum Dolore",
   testimonialAuthorInitials = "JD",
-  // new props (no defaults, we derive below)
+  // New props (no defaults, we derive below)
   quote,
   name,
   role,

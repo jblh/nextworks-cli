@@ -3,7 +3,7 @@
 import { Team as SharedTeam } from "@nextworks/blocks-sections";
 
 /**
- * Product Launch preset for Team wired to the upgraded shared Team component
+ * Product Launch preset for Team wired to the shared Team component
  */
 export function Team() {
   const teamMembers = [
