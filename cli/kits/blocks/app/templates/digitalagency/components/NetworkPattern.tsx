@@ -5,13 +5,10 @@ import React from "react";
 /**
  * NetworkPattern
  * Tailwind-based animated network background for hero fallbacks.
- * Lightweight and dependency-free (no Chakra).
  */
 export const NetworkPattern: React.FC = () => {
   return (
-    // <div className="relative h-full w-full">
     <div className="relative h-full w-full overflow-hidden">
-      {/* Ambient gradient blobs behind the network */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-16 -left-16 h-72 w-72 rounded-full bg-blue-500/25 blur-3xl" />
         <div className="absolute right-0 bottom-0 h-80 w-80 rounded-full bg-cyan-400/25 blur-3xl" />
@@ -19,7 +16,6 @@ export const NetworkPattern: React.FC = () => {
         <div className="absolute -bottom-10 left-1/4 h-64 w-64 rounded-full bg-sky-500/10 blur-3xl" />
       </div>
 
-      {/* Main SVG network pattern */}
       <svg
         width="100%"
         height="100%"
@@ -39,7 +35,6 @@ export const NetworkPattern: React.FC = () => {
           </linearGradient>
         </defs>
 
-        {/* Subtle grid for depth */}
         <g className="opacity-30">
           {Array.from({ length: 18 }).map((_, i) => (
             <line
@@ -65,7 +60,6 @@ export const NetworkPattern: React.FC = () => {
           ))}
         </g>
 
-        {/* Connection Lines */}
         <g>
           <line
             x1="120"
@@ -158,7 +152,6 @@ export const NetworkPattern: React.FC = () => {
           />
         </g>
 
-        {/* Network Nodes */}
         <g>
           <circle
             cx="320"
@@ -254,7 +247,6 @@ export const NetworkPattern: React.FC = () => {
             />
           </circle>
 
-          {/* Extra tiny detail nodes */}
           <circle cx="200" cy="100" r="3" fill="#93C5FD" />
           <circle cx="380" cy="200" r="3" fill="#93C5FD" />
           <circle cx="150" cy="320" r="3" fill="#93C5FD" />
@@ -264,7 +256,6 @@ export const NetworkPattern: React.FC = () => {
         </g>
       </svg>
 
-      {/* Component-scoped CSS for subtle effects */}
       <style jsx>{`
         .pulse-node {
           filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.3));

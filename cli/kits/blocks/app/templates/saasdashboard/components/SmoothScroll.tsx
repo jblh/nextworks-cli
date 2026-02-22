@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-// Smoothly scrolls to hash targets with a custom, faster duration (~300ms)
+// Smoothly scrolls to section links with a faster duration
 export function SmoothScroll() {
   useEffect(() => {
     let suppressClick = false;
@@ -11,7 +11,7 @@ export function SmoothScroll() {
       const el = document.querySelector(href) as HTMLElement | null;
       if (!el) return;
 
-      const navbarOffsetPx = 64; // matches h-16 sticky navbar
+      const navbarOffsetPx = 64;
       const start = window.scrollY;
       const targetTop =
         el.getBoundingClientRect().top + window.scrollY - navbarOffsetPx;
@@ -19,7 +19,6 @@ export function SmoothScroll() {
       const duration = 300; // ms
       const startTime = performance.now();
 
-      // iOS-like easing
       const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
 
       const step = (now: number) => {
@@ -39,7 +38,7 @@ export function SmoothScroll() {
       const target = e.currentTarget as HTMLAnchorElement;
       const href = target.getAttribute("href");
       if (!href || !href.startsWith("#")) return;
-      // Only primary button, no modifiers
+
       if (
         ev.button !== 0 ||
         ev.metaKey ||

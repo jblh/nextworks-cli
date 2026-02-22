@@ -5,8 +5,7 @@ import { HeroSplit } from "@/components/sections/HeroSplit";
 import { NetworkPattern } from "./NetworkPattern";
 
 /**
- * Upgraded HeroNew preset for the digital agency template,
- * wired to the shared HeroSplit with slots + cn API.
+ * Hero preset for the digital agency template
  */
 export function Hero() {
   return (
@@ -46,14 +45,13 @@ export function Hero() {
           size: "lg",
           className: [
             "font-poppins font-semibold px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5",
-            "border-2", // match previous thickness
+            "border-2",
             // set colors via vars
-            "[--btn-fg:oklch(0.51_0.18_341)]", // fuchsia-700-ish
-            "[--btn-border:oklch(0.97_0.01_0)]", // white/90 approx
+            "[--btn-fg:oklch(0.51_0.18_341)]",
+            "[--btn-border:oklch(0.97_0.01_0)]",
             "[--btn-bg:oklch(0.97_0.01_0_/0.9)]",
-            "hover:[--btn-hover-bg:oklch(1_0_0)]", // white
+            "hover:[--btn-hover-bg:oklch(1_0_0)]",
             "hover:[--btn-hover-fg:oklch(0.51_0.18_341)]",
-            // dark: make it a light outline with white text
             "dark:[--btn-fg:oklch(1_0_0)]",
             "dark:[--btn-border:oklch(1_0_0_/0.9)]",
             "dark:[--btn-bg:transparent]",
@@ -68,20 +66,15 @@ export function Hero() {
         imageLayout="full-bleed"
         fallback={<NetworkPattern />}
         imageContainer={{ className: "mt-10 sm:mt-10 md:mt-0 md:mr-0 lg:mr-7" }}
-        // imageContainer={{
-        //   className:
-        //     "relative w-full min-h-[16rem] h-[20rem] md:h-[28rem] lg:h-[32rem] self-start mt-20 lg:mt-0 mb-10 lg:mb-0",
-        // }}
         textContainer={{
           className: "flex-1 px-5 lg:px-8 lg:self-start pt-0 md:pt-2 lg:pt-4",
         }}
         buttonsContainer={{
           className: [
             "gap-4 mt-8 sm:flex-col lg:flex-row",
-            "[--btn-ring:oklch(1_0_0)]", // white ring to match on purple bg
+            "[--btn-ring:oklch(1_0_0)]",
           ].join(" "),
         }}
-        // buttonsContainer={{ className: "flex gap-4 mt-8" }}
         textAlign="center"
         ariaLabel="Digital innovation that drives growth hero section"
       />

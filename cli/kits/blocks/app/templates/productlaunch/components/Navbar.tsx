@@ -1,5 +1,3 @@
-// app/templates/productlaunch/components/Navbar.tsx
-
 "use client";
 
 import type { ComponentProps } from "react";
@@ -14,7 +12,7 @@ import { Navbar as SharedNavbar } from "@/components/sections/Navbar";
  * - Purple hover states for links and theme toggle
  * - Clean white background with dark mode support
  *
- * This preset exposes the Shared Navbar API so devs can override any prop/slot:
+ * This preset exposes the Shared Navbar API, allowing full customization of any prop or slot.
  *
  * Example:
  * <Navbar
@@ -62,7 +60,7 @@ const defaultProps: SharedNavbarProps = {
       "text-sm font-medium font-inter text-gray-800 dark:text-white hover:text-purple-700 dark:hover:text-purple-500 " +
       "focus:ring-[var(--navbar-ring)]",
   },
-  // Preset keeps CTA hidden; if you enable it, these defaults give a subtle lift effect
+  // Preset keeps CTA hidden; if enabled, these defaults give a subtle lift effect
   ctaButtonStyle: {
     variant: "default",
     size: "default",
@@ -76,7 +74,7 @@ const defaultProps: SharedNavbarProps = {
     className: "max-w-7xl mx-auto",
   },
   brandWrapper: {
-    className: "", // base layout is provided by SharedNavbar; override here if needed
+    className: "", // Base layout is provided by SharedNavbar; override here if needed
   },
   desktopMenu: {
     className: "hidden items-center space-x-1 md:flex lg:space-x-6",
@@ -90,7 +88,7 @@ const defaultProps: SharedNavbarProps = {
   colorModeWrapper: {
     className: "ml-2",
   },
-  // With variables above, ThemeToggle can rely on them; explicit override optional
+  // ThemeToggle reads the CSS vars defined in `nav.className`; override via `themeToggle` if needed.
   // themeToggle: { ... }
   ctaButtonWrapper: {
     className: "ml-2",
@@ -98,7 +96,9 @@ const defaultProps: SharedNavbarProps = {
   mobileMenuInner: {
     className: "space-y-2 px-4 pt-2 pb-4",
   },
-  // Mobile links will read --navbar-hover-bg; explicit class optional
+  // Mobile menu links get their hover background from the `--navbar-hover-bg` CSS variable
+  // (set on the `nav` slot above). This class simply applies that variable on `:hover`, and can be
+  // removed/overridden if a different mobile-link hover treatment is preferable.
   mobileLinks: {
     className: "hover:bg-[var(--navbar-hover-bg)]",
   },
@@ -106,7 +106,7 @@ const defaultProps: SharedNavbarProps = {
 
 export function Navbar(overrides: PresetOverrides = {}) {
   // Shallow-merge: passing a style-slot object (e.g., links, nav, etc.)
-  // replaces the default for that slot. This keeps the API simple and predictable.
+  // replaces the default for that slot.
   const props: SharedNavbarProps = {
     ...defaultProps,
     ...overrides,
@@ -114,49 +114,3 @@ export function Navbar(overrides: PresetOverrides = {}) {
 
   return <SharedNavbar {...props} />;
 }
-
-// "use client";
-
-// import { Navbar as SharedNavbar } from "@/components/sections/Navbar";
-
-// /**
-//  * A preset Navbar component customized for the product launch page,
-//  * using the shared Navbar.tsx with predefined styles and content.
-//  *
-//  * Features:
-//  * - IntelliOpAI branding with purple color scheme
-//  * - Custom font families (Outfit for brand, Inter for links)
-//  * - No CTA button as specified in original preset
-//  * - Purple hover states for links and theme toggle
-//  * - Clean white background with dark mode support
-//  */
-// export function Navbar() {
-//   return (
-//     <SharedNavbar
-//       brand="IntelliOpAI"
-//       menuItems={[
-//         { label: "Home", href: "#home" },
-//         { label: "Features", href: "#features" },
-//         { label: "Pricing", href: "#pricing" },
-//         { label: "FAQ", href: "#faq" },
-//         { label: "Contact", href: "#contact" },
-//       ]}
-//       ctaButton={null}
-//       showColorModeToggle={true}
-//       navHeight="h-16"
-//       sticky={true}
-//       ariaLabel="IntelliOpAI main navigation"
-//       nav={{
-//         className: "bg-white dark:bg-gray-900 text-gray-800 dark:text-white",
-//       }}
-//       brandText={{
-//         className:
-//           "text-xl md:text-2xl font-bold font-outfit text-purple-700 dark:text-purple-500",
-//       }}
-//       links={{
-//         className:
-//           "text-sm font-medium font-inter text-gray-800 dark:text-white hover:text-purple-700 dark:hover:text-purple-500",
-//       }}
-//     />
-//   );
-// }

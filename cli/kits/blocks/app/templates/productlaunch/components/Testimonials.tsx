@@ -3,7 +3,8 @@
 import { Testimonials as SharedTestimonials } from "@/components/sections/Testimonials";
 
 /**
- * Product Launch preset for Testimonials wired to the upgraded shared Testimonials component
+ * Product Launch preset for Testimonials
+ *
  */
 export function Testimonials() {
   const testimonials = [

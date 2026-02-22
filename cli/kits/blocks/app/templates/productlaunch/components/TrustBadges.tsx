@@ -3,7 +3,7 @@
 import { TrustBadges as SharedTrustBadges } from "@/components/sections/TrustBadges";
 
 /**
- * Product Launch preset for TrustBadges wired to the upgraded shared TrustBadges component
+ * Product Launch preset for TrustBadges
  */
 export function TrustBadges() {
   const badges = [

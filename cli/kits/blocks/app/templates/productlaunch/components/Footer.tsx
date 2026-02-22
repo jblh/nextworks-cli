@@ -4,7 +4,7 @@ import { Footer as SharedFooter } from "@/components/sections/Footer";
 import { Twitter, Linkedin, Github, Youtube, Mail } from "lucide-react";
 
 /**
- * Upgraded preset Footer for the Product Launch template wired to the upgraded shared Footer
+ * Preset Footer for the Product Launch template
  */
 export function Footer() {
   return (

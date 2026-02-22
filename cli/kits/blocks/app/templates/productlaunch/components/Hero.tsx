@@ -3,8 +3,7 @@
 import { HeroSplit as SharedHeroSplit } from "@/components/sections/HeroSplit";
 
 /**
- * Product Launch preset for Hero, wired to the upgraded shared HeroSplit component
- * using the slots + cn API.
+ * Product Launch preset for Hero
  */
 export function Hero() {
   return (
@@ -42,24 +41,24 @@ export function Hero() {
         variant: "outline",
         size: "lg",
         className: [
-          // layout/typography/shadow/transitions
+          // Layout/typography/shadow/transitions
           "text-base font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 px-8 py-3",
-          // base colors (ensure outline has transparent bg instead of token background)
+          // Base colors (ensuring outline has transparent bg instead of token background)
           "[--btn-bg:transparent]",
           // CSS variable overrides to control colors while keeping the outline variant structure
           "[--btn-fg:theme(colors.purple.600)]",
           "[--btn-border:theme(colors.purple.600)]",
           "hover:[--btn-hover-bg:theme(colors.purple.50)]",
           "hover:[--btn-hover-fg:theme(colors.purple.600)]",
-          // dark mode
+          // Dark mode
           "dark:[--btn-bg:transparent]",
           "dark:[--btn-fg:theme(colors.purple.500)]",
           "dark:[--btn-border:theme(colors.purple.500)]",
           "dark:hover:[--btn-hover-bg:theme(colors.purple.950)]",
           "dark:hover:[--btn-hover-fg:theme(colors.purple.500)]",
-          // ensure hover text stays the intended color in light mode
+          // Ensure hover text stays the intended color in light mode
           "hover:[--btn-hover-fg:theme(colors.purple.600)]",
-          // ensure a border width is present for the outline variant override cases
+          // Ensure a border width is present for the outline variant override cases
           "border",
         ].join(" "),
       }}

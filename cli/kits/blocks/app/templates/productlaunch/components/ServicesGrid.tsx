@@ -3,7 +3,7 @@
 import { ServicesGrid as SharedServicesGrid } from "@/components/sections/ServicesGrid";
 
 /**
- * Product Launch preset for ServicesGrid wired to the upgraded shared ServicesGrid component
+ * Product Launch preset for ServicesGrid
  */
 export function ServicesGrid() {
   const servicesData = [

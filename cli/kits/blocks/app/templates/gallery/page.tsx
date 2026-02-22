@@ -1,5 +1,3 @@
-// - /app/templates/gallery/page.tsx
-
 "use client";
 
 import { About } from "@/components/sections/About";
@@ -144,7 +142,6 @@ export default function Gallery() {
             cta2={{
               label: "See Demo",
               href: "#hero-sections",
-              // Outline CTA should be transparent bg, primary fg/border, with subtle hover bg
               className:
                 "border [&:where(button)]:border " +
                 "[--btn-bg:transparent] dark:[--btn-bg:transparent] " +
