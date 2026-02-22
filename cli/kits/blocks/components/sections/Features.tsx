@@ -210,7 +210,8 @@ export function Features({
                   };
 
             // Ensure we always spread a defined object into transition
-            const baseTransition: MotionTransition = mConfig.transition ??
+            const baseTransition: MotionTransition =
+              mConfig.transition ??
               ({
                 type: "tween",
                 duration: 0,
@@ -253,9 +254,6 @@ export function Features({
                       !enableMotion && noMotionImage,
                     ),
                   }}
-                  // image={{
-                  //   className: cn(image.className),
-                  // }}
                   heading={{ className: cn(cardHeading.className) }}
                   subheading={{ className: cn(cardSubheading.className) }}
                   className={cn("h-full")}

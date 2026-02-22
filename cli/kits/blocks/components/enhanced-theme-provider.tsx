@@ -20,7 +20,6 @@ interface EnhancedThemeProviderProps {
   enableSystem?: NextThemesProviderProps["enableSystem"];
   disableTransitionOnChange?: NextThemesProviderProps["disableTransitionOnChange"];
   defaultThemeVariant?: ThemeVariant;
-  // Optional DX: provide default custom tokens declaratively (e.g. brand colors)
   defaultCustomTokens?: Partial<ColorTokens> | null;
 }
 
@@ -35,7 +34,9 @@ interface ThemeContextType {
   applyTheme: (variant: ThemeVariant, isDark?: boolean) => void;
 }
 
-const ThemeContext = React.createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = React.createContext<ThemeContextType | undefined>(
+  undefined,
+);
 
 export function useThemeVariant() {
   const context = React.useContext(ThemeContext);
@@ -102,7 +103,9 @@ export function EnhancedThemeProvider({
     (variant: ThemeVariant, isDark = false) => {
       const base = isDark ? darkThemes[variant].colors : themes[variant].colors;
       const merged =
-        variant === "custom" && customTheme ? { ...base, ...customTheme } : base;
+        variant === "custom" && customTheme
+          ? { ...base, ...customTheme }
+          : base;
 
       // Apply CSS custom properties to the document root
       const root = document.documentElement;
@@ -141,7 +144,10 @@ export function EnhancedThemeProvider({
   React.useEffect(() => {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === "attributes" && mutation.attributeName === "class") {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "class"
+        ) {
           const isDark = document.documentElement.classList.contains("dark");
           applyTheme(themeVariant, isDark);
         }
@@ -165,7 +171,13 @@ export function EnhancedThemeProvider({
       setCustomBrandColors,
       applyTheme,
     }),
-    [themeVariant, customTheme, setCustomTheme, setCustomBrandColors, applyTheme],
+    [
+      themeVariant,
+      customTheme,
+      setCustomTheme,
+      setCustomBrandColors,
+      applyTheme,
+    ],
   );
 
   return (

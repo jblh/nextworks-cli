@@ -85,10 +85,6 @@ export function ThemeSelector({
             )
           </p>
         </DropdownMenuLabel>
-        {/* <DropdownMenuLabel>
-          Color theme variants — gallery only
-        </DropdownMenuLabel> */}
-        {/* <DropdownMenuLabel>Theme preview controls</DropdownMenuLabel> */}
 
         <DropdownMenuSeparator />
         {Object.entries(themes).map(([key, themeConfig]) => (

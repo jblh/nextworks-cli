@@ -156,7 +156,7 @@ export function Navbar({
     className: "border-t border-border",
   },
 
-  /* new slot defaults */
+  /* Slot defaults */
   container = { className: "" },
   brandWrapper = { className: "" },
   desktopMenu = {
@@ -237,7 +237,6 @@ export function Navbar({
           aria-expanded={isMobileMenuOpen}
           aria-controls={mobileMenuId}
           className={cn("lg:hidden", toggleButton.className)}
-          // className={cn("lg:hidden", toggleButton.className)}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? (
@@ -248,7 +247,6 @@ export function Navbar({
         </button>
 
         <div className={cn("hidden md:flex", desktopMenu.className)}>
-          {/* <div className={cn("hidden lg:flex", desktopMenu.className)}> */}
           {menuItems.map((item) => (
             <Link
               key={item.label}
@@ -295,7 +293,6 @@ export function Navbar({
           id={mobileMenuId}
           className={cn(
             "md:hidden",
-            // "lg:hidden",
             "overflow-y-auto overscroll-y-contain",
             nav.className,
             mobileMenu.className,

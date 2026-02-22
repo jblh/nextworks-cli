@@ -26,7 +26,7 @@ export async function removeBlocks(options?: {
     const installed = config.installedKits.find((k) => k.name === "blocks");
 
     // Prefer removing exactly what was installed (tracked in .nextworks/config.json)
-    // so we don't accidentally delete user-owned files or miss router-mapped paths.
+    // to avoid accidentally deleting user-owned files or missing router-mapped paths.
     let files: string[] = installed?.files ?? [];
 
     // Fallback: if the kit isn't tracked (older installs), remove the union of

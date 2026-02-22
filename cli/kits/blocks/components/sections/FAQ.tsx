@@ -61,17 +61,6 @@ export interface FAQProps {
   enableMotion?: boolean;
 }
 
-// const defaultFaqData: FAQS[] = [
-//   {
-//     question: "What does IntelliOpAI do?",
-//     answer: "Automates ops with real-time insights.",
-//   },
-//   {
-//     question: "Do I need coding skills?",
-//     answer: "No, it's designed for ease of use.",
-//   },
-// ];
-
 const defaultFaqData: FAQS[] = [
   {
     question: "What does IntelliOpAI do?",

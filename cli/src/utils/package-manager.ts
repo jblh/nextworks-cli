@@ -46,7 +46,7 @@ export function getInstallCommand(pm: PackageManager): string {
 }
 
 export function getRunCommand(pm: PackageManager, script: string): string {
-  // Not currently used by the CLI, but handy if you later print `dev`/`build` instructions.
+  // Not currently used by the CLI, but handy if we later print `dev`/`build` instructions.
   switch (pm) {
     case "pnpm":
       return `pnpm ${script}`;

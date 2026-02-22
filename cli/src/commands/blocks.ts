@@ -1,4 +1,4 @@
-// inquirer is ESM-only. Use dynamic import() at runtime to avoid require() errors when CLI is compiled to CommonJS.
+// `inquirer` is ESM-only; load it via runtime `import()` for CJS builds and fall back if unavailable.
 import {
   copyFiles,
   updatePackageJson,
@@ -253,8 +253,8 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
     const appRouterLayoutExists = await fileExists(detectedLayoutPath);
     const pagesRouterAppExists = await fileExists(detectedPagesAppPath);
 
-    // Hybrid projects (common with create-next-app) may have both /app and /pages.
-    // In that case we should patch BOTH entrypoints so routes in either router
+    // Hybrid projects may have both /app and /pages.
+    // In that case patch BOTH entrypoints so routes in either router
     // are wrapped with providers.
     if (appRouterLayoutExists && pagesRouterAppExists) {
       try {
@@ -350,7 +350,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
           // Make app-providers.tsx point at the Pages-safe implementation.
           // (The kit defaults to App Router; Pages Router can't import @nextworks/blocks-core/server.)
           //
-          // Patch whichever path exists (some repos have src/pages but root-level components/).
+          // Patch whichever path exists.
           const candidateAppProvidersPaths = [
             "components/app-providers.tsx",
             "src/components/app-providers.tsx",
@@ -391,7 +391,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
             // Make app-providers.tsx point at the Pages-safe implementation.
             // (The kit defaults to App Router; Pages Router can't import @nextworks/blocks-core/server.)
             //
-            // Patch whichever path exists (some repos have src/pages but root-level components/).
+            // Patch whichever path exists.
             const candidateAppProvidersPaths = [
               "components/app-providers.tsx",
               "src/components/app-providers.tsx",
