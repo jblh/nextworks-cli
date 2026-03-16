@@ -16,7 +16,7 @@ interface NextworksConfig {
 
 const CONFIG_FILE = ".nextworks/config.json";
 
-export async function getLpkConfig(): Promise<NextworksConfig> {
+export async function getNextworksConfig(): Promise<NextworksConfig> {
   const configPath = path.join(process.cwd(), CONFIG_FILE);
 
   if (await fs.pathExists(configPath)) {
@@ -29,7 +29,9 @@ export async function getLpkConfig(): Promise<NextworksConfig> {
   };
 }
 
-export async function saveLpkConfig(config: NextworksConfig): Promise<void> {
+export async function saveNextworksConfig(
+  config: NextworksConfig,
+): Promise<void> {
   const configPath = path.join(process.cwd(), CONFIG_FILE);
   await fs.ensureDir(path.dirname(configPath));
   await fs.writeJson(configPath, config, { spaces: 2 });
@@ -41,7 +43,7 @@ export async function addInstalledKit(
   devDependencies: string[],
   files: string[],
 ): Promise<void> {
-  const config = await getLpkConfig();
+  const config = await getNextworksConfig();
 
   // Remove existing kit if it exists (for reinstall)
   config.installedKits = config.installedKits.filter(
@@ -57,19 +59,19 @@ export async function addInstalledKit(
     installedAt: new Date().toISOString(),
   });
 
-  await saveLpkConfig(config);
+  await saveNextworksConfig(config);
 }
 
 export async function removeInstalledKit(kitName: string): Promise<void> {
-  const config = await getLpkConfig();
+  const config = await getNextworksConfig();
   config.installedKits = config.installedKits.filter(
     (kit) => kit.name !== kitName,
   );
-  await saveLpkConfig(config);
+  await saveNextworksConfig(config);
 }
 
 export async function getInstalledKits(): Promise<string[]> {
-  const config = await getLpkConfig();
+  const config = await getNextworksConfig();
   return config.installedKits.map((kit) => kit.name);
 }
 
@@ -77,7 +79,7 @@ export async function getSharedDependencies(): Promise<{
   dependencies: string[];
   devDependencies: string[];
 }> {
-  const config = await getLpkConfig();
+  const config = await getNextworksConfig();
 
   const allDeps = new Set<string>();
   const allDevDeps = new Set<string>();
@@ -120,7 +122,7 @@ export async function getSafeToRemoveDependencies(kitName: string): Promise<{
   dependencies: string[];
   devDependencies: string[];
 }> {
-  const config = await getLpkConfig();
+  const config = await getNextworksConfig();
   const kit = config.installedKits.find((k) => k.name === kitName);
 
   if (!kit) {

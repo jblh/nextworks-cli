@@ -61,6 +61,10 @@ program
     "--pm <pm>",
     "Force package manager (npm|pnpm|yarn). Overrides lockfile detection.",
   )
+  .option(
+    "--dry-run",
+    "Preview changes without writing files or installing dependencies",
+  )
   .action(
     async (
       kit: string,
@@ -71,6 +75,7 @@ program
         uiOnly?: boolean;
         yes?: boolean;
         pm?: string;
+        dryRun?: boolean;
       },
     ) => {
       try {
@@ -152,6 +157,7 @@ program
               uiOnly: options.uiOnly,
               yes: options.yes,
               pm: forcedPm as PackageManager | undefined,
+              dryRun: options.dryRun,
             });
 
             if (yarnLinkerChanged) {

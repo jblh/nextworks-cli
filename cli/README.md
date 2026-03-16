@@ -2,7 +2,7 @@
 
 ## 90-second install demo (silent)
 
-Fresh `create-next-app` + `npx nextworks add blocks --sections --templates`, plus a quick browser tour of the gallery + templates:
+Fresh `create-next-app` + `npx nextworks add blocks --templates`, plus a quick browser tour of the gallery + templates:
 
 [![Nextworks install demo](https://img.youtube.com/vi/7YKmGFmFY5c/hqdefault.jpg)](https://www.youtube.com/watch?v=7YKmGFmFY5c)
 
@@ -35,28 +35,28 @@ Nextworks is a CLI that installs **modular Next.js building blocks** into your a
 > 2. From your app root, install **Blocks**:
 >
 >    ```bash
->    npx nextworks@latest add blocks --sections --templates
+>    npx nextworks@latest add blocks --templates
 >    ```
 >
 >    pnpm / yarn equivalents:
 >
 >    ```bash
->    pnpm dlx nextworks@latest add blocks --sections --templates
->    yarn dlx nextworks@latest add blocks --sections --templates
+>    pnpm dlx nextworks@latest add blocks --templates
+>    yarn dlx nextworks@latest add blocks --templates
 >    ```
 >
 >    Non-interactive / CI-friendly:
 >
 >    ```bash
->    npx nextworks@latest add blocks --sections --templates --yes
+>    npx nextworks@latest add blocks --templates --yes
 >    ```
 >
 >    Force a specific package manager (overrides lockfile detection):
 >
 >    ```bash
->    npx nextworks@latest add blocks --sections --templates --pm pnpm
->    npx nextworks@latest add blocks --sections --templates --pm yarn
->    npx nextworks@latest add blocks --sections --templates --pm npm
+>    npx nextworks@latest add blocks --templates --pm pnpm
+>    npx nextworks@latest add blocks --templates --pm yarn
+>    npx nextworks@latest add blocks --templates --pm npm
 >    ```
 >
 > 3. Optionally, adjust flags to install only what you want (UI-only, sections, templates).
@@ -133,14 +133,14 @@ yarn dlx nextworks@latest --help
 Example commands:
 
 ```bash
-npx nextworks@latest add blocks --sections --templates
-pnpm dlx nextworks@latest add blocks --sections --templates
-yarn dlx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks  --templates
+pnpm dlx nextworks@latest add blocks --templates
+yarn dlx nextworks@latest add blocks --templates
 
-npx nextworks@latest add blocks --sections --templates --yes  # non-interactive / CI
+npx nextworks@latest add blocks --templates --yes  # non-interactive / CI
 
 # Force a specific package manager (overrides lockfile detection)
-npx nextworks@latest add blocks --sections --templates --pm pnpm
+npx nextworks@latest add blocks --templates --pm pnpm
 ```
 
 ---
@@ -160,7 +160,7 @@ From your app root:
 Non-interactive / CI-friendly (auto-accept defaults where possible):
 
 ```bash
-npx nextworks@latest add blocks --sections --templates --yes
+npx nextworks@latest add blocks --templates --yes
 ```
 
 > **Turbopack / Next 16 note (fonts + AppProviders)**
@@ -175,7 +175,7 @@ npx nextworks@latest add blocks --sections --templates --yes
 > If you ever see a font-related Turbopack error after upgrades or manual edits, re-run:
 >
 > ```bash
-> npx nextworks@latest add blocks --sections --templates
+> npx nextworks@latest add blocks --templates
 > ```
 >
 > to re-apply the patch, and ensure your router entrypoint contains a valid
@@ -185,8 +185,10 @@ npx nextworks@latest add blocks --sections --templates --yes
 > - Pages Router: `pages/_app.tsx`
 
 ```bash
-npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks --templates
 ```
+
+> Note: Older docs (and the demo video) may show `--sections --templates`. It still works, but `--sections` is no longer needed.
 
 This copies:
 
@@ -211,21 +213,20 @@ After this step you should be able to start your dev server and visit:
 For a full UI kit including core primitives, sections, and templates, use:
 
 ```bash
-npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks --templates
 ```
 
 Non-interactive / CI-friendly:
 
 ```bash
-npx nextworks@latest add blocks --sections --templates --yes
+npx nextworks@latest add blocks --templates --yes
 ```
 
 If you want finer control:
 
 - `npx nextworks@latest add blocks --ui-only` – install core UI primitives only (no sections/templates).
 - `npx nextworks@latest add blocks --sections` – install core + sections only.
-- `npx nextworks@latest add blocks --templates` – install core + templates only.
-- `npx nextworks@latest add blocks --sections --templates` – install core + sections + templates.
+- `npx nextworks@latest add blocks --templates` – install core + sections + templates.
 
 ---
 
@@ -238,11 +239,11 @@ You can add a short “Nextworks setup” section to your app README:
 
 1. Install and run the CLI from your Next.js app root:
 
-   npx nextworks@latest add blocks --sections --templates
+   npx nextworks@latest add blocks --templates
 
    # CI / non-interactive:
 
-   npx nextworks@latest add blocks --sections --templates --yes
+   npx nextworks@latest add blocks --templates --yes
 
 2. Start dev server:
 

@@ -13,7 +13,7 @@ This package provides:
 Most developers should install Blocks via the **nextworks** CLI (copy-in / shadcn-style) rather than consuming this package directly.
 
 ```bash
-npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks --templates
 ```
 
 - npm (CLI): https://www.npmjs.com/package/nextworks

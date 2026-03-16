@@ -2,7 +2,7 @@
 
 ## 90-second install demo (silent)
 
-Fresh `create-next-app` + `npx nextworks add blocks --sections --templates`, plus a quick browser tour of the gallery + templates:
+Fresh `create-next-app` + `npx nextworks add blocks --templates`, plus a quick browser tour of the gallery + templates:
 
 [![Nextworks install demo](https://img.youtube.com/vi/7YKmGFmFY5c/hqdefault.jpg)](https://www.youtube.com/watch?v=7YKmGFmFY5c)
 
@@ -22,7 +22,7 @@ For more details on the CLI and available kits, see `cli/README.md`.
 > **Troubleshooting:** If your router entrypoint gets into a bad state (e.g. a broken `next/font/google` import), rerun:
 >
 > ```bash
-> npx nextworks@latest add blocks --sections --templates
+> npx nextworks@latest add blocks --templates
 > ```
 >
 > Or manually ensure:
@@ -40,9 +40,9 @@ cd <your-app>
 
 # Nextworks assumes TypeScript + Tailwind CSS (required for Blocks/templates)
 # Run with your package manager:
-npx nextworks@latest add blocks --sections --templates
-# pnpm dlx nextworks@latest add blocks --sections --templates
-# yarn dlx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks --templates
+# pnpm dlx nextworks@latest add blocks --templates
+# yarn dlx nextworks@latest add blocks --templates
 
 # Install deps (use the matching command)
 npm install
@@ -69,9 +69,9 @@ Try these routes:
 Tip: if you're in a repo with no lockfile yet (or you want to override detection), you can force it:
 
 ```bash
-npx nextworks@latest add blocks --sections --templates --pm pnpm
-npx nextworks@latest add blocks --sections --templates --pm yarn
-npx nextworks@latest add blocks --sections --templates --pm npm
+npx nextworks@latest add blocks --templates --pm pnpm
+npx nextworks@latest add blocks --templates --pm yarn
+npx nextworks@latest add blocks --templates --pm npm
 ```
 
 For more details on what gets installed/edited, see:

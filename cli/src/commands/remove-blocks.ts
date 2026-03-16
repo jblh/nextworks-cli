@@ -8,7 +8,7 @@ import {
 import {
   removeInstalledKit,
   getSafeToRemoveDependencies,
-  getLpkConfig,
+  getNextworksConfig,
 } from "../utils/installation-tracker";
 import {
   detectPackageManager,
@@ -22,7 +22,7 @@ export async function removeBlocks(options?: {
   console.log("Removing blocks kit...");
 
   try {
-    const config = await getLpkConfig();
+    const config = await getNextworksConfig();
     const installed = config.installedKits.find((k) => k.name === "blocks");
 
     // Prefer removing exactly what was installed (tracked in .nextworks/config.json)
