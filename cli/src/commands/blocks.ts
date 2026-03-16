@@ -17,10 +17,6 @@ import {
 } from "../utils/package-manager";
 import path from "path";
 
-// - 1. Dry-run patching of layout.tsx / _app.tsx
-
-// - 2. Dry-run paths depending on router type ( app router vs pages router ).
-
 interface BlocksManifestGroup {
   description?: string;
   files: string[];
@@ -63,7 +59,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
     // Behavior:
     // - No flags: install core + sections + templates by default.
     // - --sections: install core + sections only.
-    // - --templates: install core + templates only.
+    // - --templates: install core + sections + templates only.
     // - --sections --templates: core + sections + templates (same as default).
     // - --ui-only: install core only (bare UI primitives, no sections/templates).
     const explicitGroups: string[] = [];
@@ -74,49 +70,36 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
       typeof options.gallery === "boolean" ||
       typeof options.uiOnly === "boolean";
 
-    // - Dry-run
     if (options.dryRun) {
-      //
-      // - dry-run should compute `groupsToInstall`
-      // - using the *same* logic as the non-dry-run path,
-      // - otherwise users will be surprised.
-      //
+      // Dry-run: compute the same install plan as a real run, but don't write anything.
 
       let groupsToInstall: string[] = [];
 
       if (options.uiOnly) {
-        console.log("Flag: --ui-only");
         // uiOnly overrides other flags if set
+        console.log("Flag: --ui-only");
         groupsToInstall = manifest.groups
           ? ["core"].filter((g) => g in manifest.groups!)
           : [];
-      }
-
-      if (anyGroupFlag) {
+      } else if (anyGroupFlag) {
         if (options.sections) explicitGroups.push("sections");
-        if (options.templates) {
-          explicitGroups.push("sections");
-          explicitGroups.push("templates");
-        }
-        if (options.gallery) {
-          explicitGroups.push("sections");
-          explicitGroups.push("gallery");
-        }
-        console.log("Flag: " + explicitGroups);
+        if (options.templates) explicitGroups.push("sections", "templates");
+        if (options.gallery) explicitGroups.push("sections", "gallery");
+
+        console.log("Flags: " + explicitGroups.join(", "));
+
         groupsToInstall = manifest.groups
           ? ["core", ...explicitGroups].filter((g) => g in manifest.groups!)
           : [];
       } else {
+        // Default: core + sections
         console.log("No flags passed");
-        // No flags passed: include sections and templates by default so templates
-        // always have their section dependencies available.
         explicitGroups.push("sections");
         groupsToInstall = manifest.groups
           ? ["core", ...explicitGroups].filter((g) => g in manifest.groups!)
           : [];
       }
 
-      // - -------
       const files: string[] =
         groupsToInstall.length > 0 && manifest.groups
           ? groupsToInstall.flatMap((groupName) => {
@@ -132,177 +115,79 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
         const kitSource = path.join(kitDir, file);
         if (await fileExists(kitSource)) {
           filesToCopy.push(file);
-        } else {
-          const projectSource = path.join(process.cwd(), file);
-          if (await fileExists(projectSource)) {
-            console.log(`ℹ️  Skipping ${file} (already exists in project)`);
-          } else {
-            missingFiles.push(file);
-          }
+          continue;
         }
+
+        const projectSource = path.join(process.cwd(), file);
+        if (await fileExists(projectSource)) {
+          console.log(`ℹ️  Skipping ${file} (already exists in project)`);
+          continue;
+        }
+
+        missingFiles.push(file);
       }
 
-      // - Logging filesToCopy
       console.log("Blocks kit - dry-run ...");
       console.log("Files to be copied into project:");
-      filesToCopy.map((file) => {
-        console.log(file);
-      });
+      filesToCopy.forEach((file) => console.log(file));
 
-      // if (filesToCopy.length > 0) {
-      //   await copyFiles(kitDir, process.cwd(), filesToCopy);
-      // } else {
-      //   console.log(
-      //     "⚠️  No files to copy from the blocks kit (all files missing or already present)",
-      //   );
-      // }
-
-      // Update package.json and track install as usual
+      // Read kit dependencies (but do not write package.json).
       const depsPath = path.join(kitDir, "package-deps.json");
-      let deps: any = {};
       try {
-        deps = await readJsonFile(depsPath);
-
-        // - Dry-run log dependencies
+        const deps = await readJsonFile(depsPath);
         console.log("Dependencies:");
         console.log(deps);
-
-        // await updatePackageJson(deps, {
-        //   pm: options.pm ?? (await detectPackageManager(process.cwd())),
-        // });
-      } catch (err) {
+      } catch {
         console.log(
           "⚠️  No package-deps.json found for blocks or failed to read it",
         );
       }
 
-      // if (missingFiles.length > 0) {
-      //   console.log(
-      //     "\n⚠️ The following files referenced by the blocks manifest were not found in the kit and were not copied:",
-      //   );
-      //   missingFiles.forEach((f) => console.log(`  • ${f}`));
-      //   console.log(
-      //     "You may need to copy these files manually (for example placeholder assets under public/placeholders) or reconcile the kit files.",
-      //   );
-      // }
+      if (missingFiles.length > 0) {
+        console.log(
+          "\n⚠️ The following files referenced by the blocks manifest were not found in the kit:",
+        );
+        missingFiles.forEach((f) => console.log(`  • ${f}`));
+      }
 
-      // let layoutUpgraded = false;
-      // let pagesAppUpgraded = false;
-
-      // Offer to auto-upgrade the root layout to use AppProviders (App Router)
-      // (supports both root app/layout.tsx and src/app/layout.tsx)
+      // Patching plan (no changes are made in dry-run).
       const mode = await detectProjectRootMode(process.cwd());
       const detectedLayoutPath =
         mode === "src" ? "src/app/layout.tsx" : "app/layout.tsx";
-
       const detectedPagesAppPath =
         mode === "src" ? "src/pages/_app.tsx" : "pages/_app.tsx";
 
       const appRouterLayoutExists = await fileExists(detectedLayoutPath);
       const pagesRouterAppExists = await fileExists(detectedPagesAppPath);
 
-      // - Patching: give info on which files will be patched with AppProviders().
-      // - start with determining which router type it is (app | pages | hybrid):
-
-      // - remove the if(options.yes) from l. 175 - this should simply run no matter what.
-
-      // Hybrid projects may have both /app and /pages.
-      // In that case patch BOTH entrypoints so routes in either router
-      // are wrapped with providers.
-      // - Hybrid
       if (appRouterLayoutExists && pagesRouterAppExists) {
-        try {
-          console.log("Patched app/layout.tsx with AppProviders");
-          // await updateLayoutWithAppProviders();
-          // layoutUpgraded = true;
-        } catch (err) {
-          console.log(
-            "⚠️  Failed to update app/layout.tsx automatically:",
-            err,
-          );
-        }
-
-        try {
-          // await updatePagesAppWithAppProviders();
-          // await ensurePagesDocumentSuppressHydrationWarning();
-
-          // Ensure pages/_app.tsx uses the Pages-safe AppProviders implementation.
-          const candidatePagesAppProvidersPaths = [
-            "components/app-providers.pages.tsx",
-            "src/components/app-providers.pages.tsx",
-          ];
-
-          for (const appProvidersPath of candidatePagesAppProvidersPaths) {
-            if (await fileExists(appProvidersPath)) {
-              console.log(appProvidersPath + " was patched with AppProviders");
-              // const fsExtraModule = await import("fs-extra");
-              // await fsExtraModule.default.writeFile(
-              //   appProvidersPath,
-              //   '"use client";\n\nimport * as React from "react";\n\nimport { BlocksAppProviders } from "./providers/BlocksAppProviders";\n\nexport default function AppProviders({ children }: { children: React.ReactNode }) {\n  return (\n    <div className="antialiased">\n      <BlocksAppProviders>{children}</BlocksAppProviders>\n    </div>\n  );\n}\n',
-              // );
-            }
-          }
-
-          // Ensure root components/app-providers.tsx points to the App Router variant
-          // so app/layout.tsx imports the correct implementation.
-          // const candidateRootAppProvidersPaths = [
-          //   "components/app-providers.tsx",
-          //   "src/components/app-providers.tsx",
-          // ];
-
-          // for (const appProvidersPath of candidateRootAppProvidersPaths) {
-          //   if (await fileExists(appProvidersPath)) {
-          //     const fsExtraModule = await import("fs-extra");
-          //     await fsExtraModule.default.writeFile(
-          //       appProvidersPath,
-          //       'export { default } from "./app-providers.app";\n',
-          //     );
-          //   }
-          // }
-
-          // pagesAppUpgraded = true;
-        } catch (err) {
-          console.log(
-            "⚠️  Failed to update pages/_app.tsx automatically:",
-            err,
-          );
-        }
-      }
-      // - App router
-      else if (appRouterLayoutExists) {
-        try {
-          console.log("Patched app/layout.tsx");
-          // await updateLayoutWithAppProviders();
-          // layoutUpgraded = true;
-        } catch (err) {
-          console.log(
-            "⚠️  Failed to update app/layout.tsx automatically:",
-            err,
-          );
-        }
-      }
-      // - Pages router
-      else if (await fileExists(detectedPagesAppPath)) {
-        // Pages Router support:
-        // patch pages/_app.tsx (+ ensure _document.tsx hydration safety)
-        // switch the kit-provided app-providers entrypoint to the Pages-safe variant
-        //
-        // - if _document.tsx is patched with the suppressHydrationWarning, log this too.
-        // - Test in new pages app.
-        try {
-          console.log("Patched pages / _app.tsx");
-        } catch (err) {
-          console.log(
-            "⚠️  Failed to update pages/_app.tsx automatically:",
-            err,
-          );
-        }
+        console.log(
+          `Would patch ${detectedLayoutPath} (wrap with AppProviders)`,
+        );
+        console.log(
+          `Would patch ${detectedPagesAppPath} (wrap with AppProviders)`,
+        );
+        console.log(
+          `Would ensure ${mode === "src" ? "src/pages/_document.tsx" : "pages/_document.tsx"} includes suppressHydrationWarning`,
+        );
+      } else if (appRouterLayoutExists) {
+        console.log(
+          `Would patch ${detectedLayoutPath} (wrap with AppProviders)`,
+        );
+      } else if (pagesRouterAppExists) {
+        console.log(
+          `Would patch ${detectedPagesAppPath} (wrap with AppProviders)`,
+        );
+        console.log(
+          `Would ensure ${mode === "src" ? "src/pages/_document.tsx" : "pages/_document.tsx"} includes suppressHydrationWarning`,
+        );
+      } else {
+        console.log(
+          "ℹ️  No router entrypoints detected for patching (expected app/layout.tsx or pages/_app.tsx)",
+        );
       }
 
-      // - Where files live:
-
-      // Note: depending on router type, the templates are installed into different folders,
-      // but the URLs are the same.
+      // Where templates live (router-dependent; URLs are the same).
       if (pagesRouterAppExists && !appRouterLayoutExists) {
         console.log(
           `  (Pages Router install: files live under ${mode === "src" ? "src/pages/templates/<template>/index.tsx" : "pages/templates/<template>/index.tsx"})`,
@@ -313,6 +198,7 @@ export async function addBlocks(options: AddBlocksOptions = {}): Promise<void> {
         );
       }
 
+      console.log("No changes were made.");
       return;
     }
 
