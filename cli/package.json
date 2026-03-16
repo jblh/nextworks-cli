@@ -1,7 +1,7 @@
 {
   "name": "nextworks",
-  "version": "0.2.0-alpha.8",
-  "description": "Nextworks CLI - Blocks installer for Next.js apps",
+  "version": "0.2.0-alpha.9",
+  "description": "Nextworks CLI",
   "main": "dist/index.js",
   "bin": {
     "nextworks": "dist/index.js"

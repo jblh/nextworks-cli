@@ -18,7 +18,7 @@ This is the fastest path to verify your Blocks install is working and find the r
 From your app root:
 
 ```bash
-npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks --templates
 npm install
 ```
 

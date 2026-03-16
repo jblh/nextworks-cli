@@ -4,7 +4,9 @@
 
 ## 90-second install demo (silent)
 
-Watch a fresh `create-next-app` + `npx nextworks add blocks --sections --templates` run end-to-end (includes a quick browser tour of the gallery + templates):
+Watch a fresh `create-next-app` + `npx nextworks add blocks --templates` run end-to-end (includes a quick browser tour of the gallery + templates).
+
+> Note: In older versions (and in the demo video), you may see `--sections --templates`. It still works, but `--sections` is no longer needed.
 
 [![Nextworks install demo](https://img.youtube.com/vi/7YKmGFmFY5c/hqdefault.jpg)](https://www.youtube.com/watch?v=7YKmGFmFY5c)
 
@@ -24,7 +26,7 @@ This repository contains the source for the **nextworks** CLI and its MIT-licens
 > ```bash
 > npx create-next-app@latest
 > cd <your-app>
-> npx nextworks@latest add blocks --sections --templates
+> npx nextworks@latest add blocks --templates
 > npm install
 > npm run dev
 > ```
@@ -126,7 +128,7 @@ Install / try it (alpha quickstart):
 npx create-next-app@latest
 cd <your-app>
 # Nextworks assumes TypeScript + Tailwind CSS (required for Blocks/templates)
-npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks --templates
 ```
 
 Templates are installed in a router-native location:

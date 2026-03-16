@@ -68,38 +68,6 @@
     "templates": {
       "description": "Full page templates (Product Launch, SaaS Dashboard, Digital Agency, Gallery)",
       "files": [
-        "components/ui/alert-dialog.tsx",
-        "components/ui/brand-node.tsx",
-        "components/ui/button.tsx",
-        "components/ui/card.tsx",
-        "components/ui/checkbox.tsx",
-        "components/ui/cta-button.tsx",
-        "components/ui/dropdown-menu.tsx",
-        "components/ui/feature-card.tsx",
-        "components/ui/input.tsx",
-        "components/ui/label.tsx",
-        "components/ui/pricing-card.tsx",
-        "components/ui/select.tsx",
-        "components/ui/skeleton.tsx",
-        "components/ui/switch.tsx",
-        "components/ui/table.tsx",
-        "components/ui/testimonial-card.tsx",
-        "components/ui/textarea.tsx",
-        "components/ui/theme-selector.tsx",
-        "components/ui/theme-toggle.tsx",
-        "components/ui/toaster.tsx",
-        "components/enhanced-theme-provider.tsx",
-        "components/providers/BlocksAppProviders.tsx",
-        "components/app-providers.tsx",
-        "components/app-providers.app.tsx",
-        "components/app-providers.pages.tsx",
-        "components/theme-provider.tsx",
-        "lib/themes.ts",
-        "lib/utils.ts",
-        "app/globals.css",
-        "app/tw-animate.css",
-        "next.config.ts",
-
         "app/templates/productlaunch/page.tsx",
         "app/templates/productlaunch/PresetThemeVars.tsx",
         "app/templates/productlaunch/README.md",
@@ -168,8 +136,21 @@
         "public/placeholders/saas_dashboard/projectBoard.png",
         ".nextworks/docs/THEME_GUIDE.md"
       ]
+    },
+    "gallery": {
+      "description": "Gallery of marketing sections (Hero, CTA, Pricing, etc.)",
+      "files": [
+        "app/templates/gallery/page.tsx",
+        "app/templates/gallery/PresetThemeVars.tsx",
+        "public/placeholders/gallery/hero-pexels-broken-9945014.avif",
+        "public/placeholders/gallery/pexels-googledeepmind-25626431.jpg",
+        "public/placeholders/gallery/pexels-googledeepmind-25626432.jpg",
+        "public/placeholders/gallery/pexels-googledeepmind-25626434.jpg",
+        "public/placeholders/gallery/pexels-googledeepmind-25626436.jpg"
+      ]
     }
   },
+
   "files": [
     "public/placeholders/gallery/hero-pexels-broken-9945014.avif",
     "public/placeholders/gallery/pexels-googledeepmind-25626431.jpg",

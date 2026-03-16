@@ -18,7 +18,7 @@ npx nextworks@latest --help
 Most reliable alpha install path:
 
 ```bash
-npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks --templates
 ```
 
 For full setup steps, see: `cli/README.md`.

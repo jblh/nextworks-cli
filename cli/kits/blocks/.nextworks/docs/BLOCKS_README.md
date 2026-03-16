@@ -25,15 +25,14 @@ Depending on install flags, Blocks adds:
 ## Install commands / options
 
 > ```bash
-> npx nextworks@latest add blocks --sections --templates
+> npx nextworks@latest add blocks --templates
 > ```
 
 Blocks supports these install shapes:
 
 - `npx nextworks@latest add blocks --ui-only` → core UI primitives only
 - `npx nextworks@latest add blocks --sections` → core + sections
-- `npx nextworks@latest add blocks --templates` → core + templates
-- `npx nextworks@latest add blocks --sections --templates` → core + sections + templates (recommended)
+- `npx nextworks@latest add blocks --templates` → core + sections + templates (recommended)
 
 ---
 
