@@ -6,6 +6,7 @@
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
+import { doctor } from "./commands/doctor";
 import { addBlocks } from "./commands/blocks";
 import { removeBlocks } from "./commands/remove-blocks";
 import { getInstalledKits } from "./utils/installation-tracker";
@@ -18,6 +19,7 @@ import {
   ensureYarnNodeModulesLinker,
   isYarnPnPProject,
 } from "./utils/yarn-pnp";
+import { error } from "console";
 
 const program = new Command();
 
@@ -38,6 +40,24 @@ program
   .version(cliVersion);
 
 program
+  .command("doctor")
+  .description("Diagnostics - is project is compatible with nextworks?")
+  .option("--json", "Outputs in json.")
+  .option("--fix", "Fixes project")
+  .option(
+    "--kit <kit>",
+    "Check for projects compatibility with installation of specific nextworks kit.",
+  )
+  .action(async (options: { json?: boolean; fix?: boolean; kit?: string }) => {
+    try {
+      const result = await doctor(options);
+      console.log(result);
+    } catch {
+      throw error;
+    }
+  });
+
+program
   .command("add <kit>")
   .description("Add a feature kit to your project")
   .option(
@@ -48,7 +68,7 @@ program
     "--templates",
     "Include full page templates (Product Launch, SaaS Dashboard, Digital Agency, Gallery)",
   )
-  .option("--gallery", "Include gallery/demo template and assets")
+  .option("--gallery", "Include gallery template and assets")
   .option(
     "--ui-only",
     "Install core UI primitives only (no sections/templates)",
