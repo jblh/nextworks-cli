@@ -24,6 +24,7 @@ type CheckWritability =
   | { status: "not-writable" }
   | { status: "not-found-parent-writable" }
   | { status: "not-found-parent-not-writable" };
+type RouterType = "app" | "pages" | "hybrid";
 
 interface BlocksManifestGroup {
   description?: string;
@@ -47,6 +48,8 @@ interface DoctorOptions {
 interface ProjectSanity {
   hasPackageJson: boolean;
   hasNext: boolean;
+  projectRoot: "src" | "root" | null;
+  routerType: "app" | "pages" | "hybrid" | null;
   projectRootMode: string | null;
 }
 
@@ -88,6 +91,8 @@ function createInitialDoctorResult(): DoctorResult {
     projectSanity: {
       hasPackageJson: false,
       hasNext: false,
+      projectRoot: null,
+      routerType: null,
       projectRootMode: null,
     },
     environmentChecks: {
@@ -138,31 +143,47 @@ function getNodeVersionCheck(): EnvironmentChecks["nodeVersion"] {
 }
 
 // - for A3. Detect projectRootMode
-function getProjectRootModeLabel(options: {
+function getProjectRootInfo(options: {
   mode: "src" | "root" | null;
   hasAppRouter: boolean;
   hasPagesRouter: boolean;
-}): string | null {
+}): {
+  routerType: RouterType | null;
+  projectRootMode: string | null;
+} {
   const { mode, hasAppRouter, hasPagesRouter } = options;
 
   if (mode !== "src" && mode !== "root") {
-    return null;
+    return {
+      routerType: null,
+      projectRootMode: null,
+    };
   }
 
-  let routerType: string | null = null;
+  let routerType: RouterType | null = null;
+  let routerTypeLabel: string | null = null;
 
   if (hasAppRouter && hasPagesRouter) {
-    routerType = "Hybrid router";
+    routerType = "hybrid";
+    routerTypeLabel = "Hybrid router";
   } else if (hasAppRouter) {
-    routerType = "App router";
+    routerType = "app";
+    routerTypeLabel = "App router";
   } else if (hasPagesRouter) {
-    routerType = "Pages router";
+    routerType = "pages";
+    routerTypeLabel = "Pages router";
   } else {
-    return null;
+    return {
+      routerType: null,
+      projectRootMode: null,
+    };
   }
 
   const rootLabel = mode === "src" ? "with src folder" : "with no src folder";
-  return `${routerType} ${rootLabel}`;
+  return {
+    routerType: routerType,
+    projectRootMode: `${routerTypeLabel} ${rootLabel}`,
+  };
 }
 
 // - For C. Next.js router & entrypoint patchability checks
@@ -235,8 +256,11 @@ export async function doctor(
     );
   }
 
+  // - ---------------------------------------------------------
+
   // - A3. Detect projectRootMode
   const mode = await detectProjectRootMode(cwd);
+  result.projectSanity.projectRoot = mode;
 
   const detectedLayoutPath =
     mode === "src" ? "src/app/layout.tsx" : "app/layout.tsx";
@@ -246,14 +270,20 @@ export async function doctor(
   const appRouterLayoutExists = await fileExists(detectedLayoutPath);
   const pagesRouterAppExists = await fileExists(detectedPagesAppPath);
 
-  const projectRootModeLabel = getProjectRootModeLabel({
+  // - -------------------------------------------
+
+  const { routerType, projectRootMode } = getProjectRootInfo({
     mode,
     hasAppRouter: appRouterLayoutExists,
     hasPagesRouter: pagesRouterAppExists,
   });
 
-  if (projectRootModeLabel) {
-    result.projectSanity.projectRootMode = projectRootModeLabel;
+  if (routerType) {
+    result.projectSanity.routerType = routerType;
+  }
+
+  if (projectRootMode) {
+    result.projectSanity.projectRootMode = projectRootMode;
   } else {
     result.errors.push(
       "Could not detect Next.js router type or project root mode.",
@@ -278,7 +308,10 @@ export async function doctor(
 
   // - -------------------------------------------------------------------
   // # C- Next.js router & entrypoint patchability checks
+  // - Fine, so now I have the info about rootmode etc in results.
   // - C 1.
+  // find out if its src or root... and what kind of router it is
+  // this is in results by now.
 
   // - Call helper functions and do property assignment in results.
   // fileHasSuppressHydrationWarning(filePath: string);
