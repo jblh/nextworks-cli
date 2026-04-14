@@ -142,7 +142,7 @@ function getNodeVersionCheck(): EnvironmentChecks["nodeVersion"] {
   };
 }
 
-// - for A3. Detect projectRootMode
+// - for A3.
 function getProjectRootInfo(options: {
   mode: "src" | "root" | null;
   hasAppRouter: boolean;
@@ -308,10 +308,7 @@ export async function doctor(
 
   // - -------------------------------------------------------------------
   // # C- Next.js router & entrypoint patchability checks
-  // - Fine, so now I have the info about rootmode etc in results.
   // - C 1.
-  // find out if its src or root... and what kind of router it is
-  // this is in results by now.
 
   // - Call helper functions and do property assignment in results.
   // fileHasSuppressHydrationWarning(filePath: string);
