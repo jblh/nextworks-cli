@@ -1,6 +1,7 @@
 import fs from "fs-extra";
 import { constants } from "fs";
 import path from "path";
+
 import {
   readJsonFile,
   fileExists,
@@ -16,10 +17,12 @@ import { getInstalledKits } from "../utils/installation-tracker";
 
 type CheckStatus = "ok" | "error" | "warning";
 type CheckResult =
+  | { status: "init" }
   | { status: "found" }
   | { status: "not-found" }
   | { status: "unreadable"; error: unknown };
 type CheckWritability =
+  | { status: "init" }
   | { status: "writable" }
   | { status: "not-writable" }
   | { status: "not-found-parent-writable" }
@@ -65,14 +68,15 @@ interface EnvironmentChecks {
 interface PatchabilityCheck {
   path: string;
   exists: boolean;
-  writable?: boolean;
-  hasSuppressHydrationWarning?: boolean;
+  writable: boolean | null;
+  writeableInfo: CheckWritability;
+  hasSuppressHydrationWarning: CheckResult;
 }
 
 interface RouterPatchability {
-  appLayout?: PatchabilityCheck;
-  pagesApp?: PatchabilityCheck;
-  pagesDocument?: PatchabilityCheck;
+  appLayout: PatchabilityCheck;
+  pagesApp: PatchabilityCheck;
+  pagesDocument: PatchabilityCheck;
 }
 
 interface DoctorResult {
@@ -103,7 +107,44 @@ function createInitialDoctorResult(): DoctorResult {
         message: YARN_PNP_MESSAGE,
       },
     },
-    routerPatchability: {},
+    routerPatchability: {
+      appLayout: {
+        path: "",
+        exists: false,
+        writable: false,
+        writeableInfo: { status: "init" },
+        hasSuppressHydrationWarning: { status: "init" },
+      },
+      pagesApp: {
+        path: "",
+        exists: false,
+        writable: false,
+        writeableInfo: { status: "init" },
+        hasSuppressHydrationWarning: { status: "init" },
+      },
+      pagesDocument: {
+        path: "",
+        exists: false,
+        writable: false,
+        writeableInfo: { status: "init" },
+        hasSuppressHydrationWarning: { status: "init" },
+      },
+    },
+    //   pagesApp: {
+    //   path: string;
+    //   exists: boolean;
+    //   writable?: boolean;
+    //   writeableInfo: CheckWritability;
+    //   hasSuppressHydrationWarning: boolean;
+    // },
+    // pagesDocument: {
+    // path: string;
+    // exists: boolean;
+    // writable?: boolean;
+    // writeableInfo: CheckWritability;
+    // hasSuppressHydrationWarning: boolean;
+    // }
+
     warnings: [],
     errors: [],
   };
@@ -239,7 +280,6 @@ export async function doctor(
     "cli_manifests",
     "blocks_manifest.json",
   );
-  const manifest = (await readJsonFile(manifestPath)) as BlocksManifest;
 
   // - A - PROJECT SANITY
   //
@@ -258,7 +298,10 @@ export async function doctor(
 
   // - ---------------------------------------------------------
 
+  const manifest = (await readJsonFile(manifestPath)) as BlocksManifest;
+
   // - A3. Detect projectRootMode
+
   const mode = await detectProjectRootMode(cwd);
   result.projectSanity.projectRoot = mode;
 
@@ -309,12 +352,57 @@ export async function doctor(
   // - -------------------------------------------------------------------
   // # C- Next.js router & entrypoint patchability checks
   // - C 1.
+  // Evalutae both
+  // What are the results of the sanity check?
+  // Those results determine how we do this
 
-  // - Call helper functions and do property assignment in results.
-  // fileHasSuppressHydrationWarning(filePath: string);
-  // fileIsWritable(filePath: string)
+  // Do the App router check if it's app router or hybrid
+  if (
+    result.projectSanity.routerType === "app" ||
+    result.projectSanity.routerType === "hybrid"
+  ) {
+    if (result.projectSanity.projectRoot === "src") {
+      // # inspect src/app/layout.tsx
 
-  // - -------------------------------------------------------------------
+      const filePath = path.join(process.cwd(), "src", "app", "layout.tsx");
+      result.routerPatchability.appLayout.path = filePath;
+
+      const layoutExists = await fileExists(filePath);
+      result.routerPatchability.appLayout.exists = layoutExists;
+
+      const isWriteableInfo = await fileIsWritable(filePath);
+      result.routerPatchability.appLayout.writeableInfo = isWriteableInfo;
+
+      const writeAble = isWriteableInfo.status;
+      if (writeAble === "writable") {
+        result.routerPatchability.appLayout.writable = true;
+      } else if (writeAble === "not-writable") {
+        result.routerPatchability.appLayout.writable = false;
+      } else {
+        result.routerPatchability.appLayout.writable = null;
+      }
+
+      const hasHydrationWarning =
+        await fileHasSuppressHydrationWarning(filePath);
+      result.routerPatchability.appLayout.hasSuppressHydrationWarning =
+        hasHydrationWarning;
+    } else {
+      // inspect app/layout.tsx
+    }
+  }
+
+  if (
+    result.projectSanity.routerType === "pages" ||
+    result.projectSanity.routerType === "hybrid"
+  ) {
+    if (result.projectSanity.projectRoot === "src") {
+      // inspect src/pages/_app.tsx
+      // inspect src/pages/_document.tsx
+    } else {
+      // inspect pages/_app.tsx
+      // inspect pages/_document.tsx
+    }
+  }
 
   return result;
 }
