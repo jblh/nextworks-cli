@@ -350,58 +350,112 @@ export async function doctor(
   result.environmentChecks.yarnPnPDection.isPnP = isYarnPnP;
 
   // - -------------------------------------------------------------------
-  // # C- Next.js router & entrypoint patchability checks
-  // - C 1.
-  // Evalutae both
-  // What are the results of the sanity check?
-  // Those results determine how we do this
+  // Next.js router & entrypoint patchability checks
 
-  // Do the App router check if it's app router or hybrid
+  // App router patchability check
   if (
     result.projectSanity.routerType === "app" ||
     result.projectSanity.routerType === "hybrid"
   ) {
+    let layoutFilePath = "";
+
     if (result.projectSanity.projectRoot === "src") {
-      // # inspect src/app/layout.tsx
-
-      const filePath = path.join(process.cwd(), "src", "app", "layout.tsx");
-      result.routerPatchability.appLayout.path = filePath;
-
-      const layoutExists = await fileExists(filePath);
-      result.routerPatchability.appLayout.exists = layoutExists;
-
-      const isWriteableInfo = await fileIsWritable(filePath);
-      result.routerPatchability.appLayout.writeableInfo = isWriteableInfo;
-
-      const writeAble = isWriteableInfo.status;
-      if (writeAble === "writable") {
-        result.routerPatchability.appLayout.writable = true;
-      } else if (writeAble === "not-writable") {
-        result.routerPatchability.appLayout.writable = false;
-      } else {
-        result.routerPatchability.appLayout.writable = null;
-      }
-
-      const hasHydrationWarning =
-        await fileHasSuppressHydrationWarning(filePath);
-      result.routerPatchability.appLayout.hasSuppressHydrationWarning =
-        hasHydrationWarning;
+      layoutFilePath = path.join(process.cwd(), "src", "app", "layout.tsx");
     } else {
-      // inspect app/layout.tsx
+      layoutFilePath = path.join(process.cwd(), "app", "layout.tsx");
     }
+
+    result.routerPatchability.appLayout.path = layoutFilePath;
+
+    const layoutExists = await fileExists(layoutFilePath);
+    result.routerPatchability.appLayout.exists = layoutExists;
+
+    const isWriteableInfo = await fileIsWritable(layoutFilePath);
+    result.routerPatchability.appLayout.writeableInfo = isWriteableInfo;
+
+    const writeAble = isWriteableInfo.status;
+    if (writeAble === "writable") {
+      result.routerPatchability.appLayout.writable = true;
+    } else if (writeAble === "not-writable") {
+      result.routerPatchability.appLayout.writable = false;
+    } else {
+      result.routerPatchability.appLayout.writable = null;
+    }
+
+    const hasHydrationWarning =
+      await fileHasSuppressHydrationWarning(layoutFilePath);
+    result.routerPatchability.appLayout.hasSuppressHydrationWarning =
+      hasHydrationWarning;
   }
 
+  // Pages router patchability check
   if (
     result.projectSanity.routerType === "pages" ||
     result.projectSanity.routerType === "hybrid"
   ) {
+    // Check _app.tsx
+
+    let _appFilePath = "";
+
     if (result.projectSanity.projectRoot === "src") {
-      // inspect src/pages/_app.tsx
-      // inspect src/pages/_document.tsx
+      _appFilePath = path.join(process.cwd(), "src", "pages", "_app.tsx");
     } else {
-      // inspect pages/_app.tsx
-      // inspect pages/_document.tsx
+      _appFilePath = path.join(process.cwd(), "pages", "_app.tsx");
     }
+
+    result.routerPatchability.pagesApp.path = _appFilePath;
+
+    const _appExists = await fileExists(_appFilePath);
+    result.routerPatchability.pagesApp.exists = _appExists;
+
+    const is_appWriteableInfo = await fileIsWritable(_appFilePath);
+    result.routerPatchability.pagesApp.writeableInfo = is_appWriteableInfo;
+
+    const _appWriteAble = is_appWriteableInfo.status;
+    if (_appWriteAble === "writable") {
+      result.routerPatchability.pagesApp.writable = true;
+    } else if (_appWriteAble === "not-writable") {
+      result.routerPatchability.pagesApp.writable = false;
+    } else {
+      result.routerPatchability.pagesApp.writable = null;
+    }
+
+    // Check _document.tsx
+    let _documentFilePath = "";
+
+    if (result.projectSanity.projectRoot === "src") {
+      _documentFilePath = path.join(
+        process.cwd(),
+        "src",
+        "pages",
+        "_document.tsx",
+      );
+    } else {
+      _documentFilePath = path.join(process.cwd(), "pages", "_document.tsx");
+    }
+
+    result.routerPatchability.pagesDocument.path = _documentFilePath;
+
+    const _documentExists = await fileExists(_documentFilePath);
+    result.routerPatchability.pagesDocument.exists = _documentExists;
+
+    const is_documentWriteableInfo = await fileIsWritable(_documentFilePath);
+    result.routerPatchability.pagesDocument.writeableInfo =
+      is_documentWriteableInfo;
+
+    const _documentWriteAble = is_documentWriteableInfo.status;
+    if (_documentWriteAble === "writable") {
+      result.routerPatchability.appLayout.writable = true;
+    } else if (_documentWriteAble === "not-writable") {
+      result.routerPatchability.appLayout.writable = false;
+    } else {
+      result.routerPatchability.appLayout.writable = null;
+    }
+
+    const hasHydrationWarning =
+      await fileHasSuppressHydrationWarning(_documentFilePath);
+    result.routerPatchability.pagesDocument.hasSuppressHydrationWarning =
+      hasHydrationWarning;
   }
 
   return result;
