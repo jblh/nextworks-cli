@@ -351,7 +351,7 @@ export async function doctor(
 
   // - -------------------------------------------------------------------
   // Next.js router & entrypoint patchability checks
-
+  // C1.
   // App router patchability check
   if (
     result.projectSanity.routerType === "app" ||
@@ -445,11 +445,11 @@ export async function doctor(
 
     const _documentWriteAble = is_documentWriteableInfo.status;
     if (_documentWriteAble === "writable") {
-      result.routerPatchability.appLayout.writable = true;
+      result.routerPatchability.pagesDocument.writable = true;
     } else if (_documentWriteAble === "not-writable") {
-      result.routerPatchability.appLayout.writable = false;
+      result.routerPatchability.pagesDocument.writable = false;
     } else {
-      result.routerPatchability.appLayout.writable = null;
+      result.routerPatchability.pagesDocument.writable = null;
     }
 
     const hasHydrationWarning =
