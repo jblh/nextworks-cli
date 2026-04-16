@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm -ws run build",
-    "clean": "npm -ws run clean || exit 0"
+    "build": "npm --workspaces run build",
+    "clean": "npm --workspaces --if-present run clean"
   }
 }
