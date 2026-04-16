@@ -130,21 +130,6 @@ function createInitialDoctorResult(): DoctorResult {
         hasSuppressHydrationWarning: { status: "init" },
       },
     },
-    //   pagesApp: {
-    //   path: string;
-    //   exists: boolean;
-    //   writable?: boolean;
-    //   writeableInfo: CheckWritability;
-    //   hasSuppressHydrationWarning: boolean;
-    // },
-    // pagesDocument: {
-    // path: string;
-    // exists: boolean;
-    // writable?: boolean;
-    // writeableInfo: CheckWritability;
-    // hasSuppressHydrationWarning: boolean;
-    // }
-
     warnings: [],
     errors: [],
   };

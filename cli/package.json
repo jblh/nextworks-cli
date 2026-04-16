@@ -1,6 +1,6 @@
 {
   "name": "nextworks",
-  "version": "0.2.0-alpha.10",
+  "version": "0.2.0-alpha.11",
   "description": "Nextworks CLI",
   "main": "dist/index.js",
   "bin": {

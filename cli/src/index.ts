@@ -6,6 +6,7 @@
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
+import util from "util";
 import { doctor } from "./commands/doctor";
 import { addBlocks } from "./commands/blocks";
 import { removeBlocks } from "./commands/remove-blocks";
@@ -51,7 +52,7 @@ program
   .action(async (options: { json?: boolean; fix?: boolean; kit?: string }) => {
     try {
       const result = await doctor(options);
-      console.log(result);
+      console.log(util.inspect(result, { depth: null, colors: true }));
     } catch {
       throw error;
     }
