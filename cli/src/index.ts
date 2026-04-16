@@ -6,7 +6,6 @@
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
-import util from "util";
 import { doctor } from "./commands/doctor";
 import { addBlocks } from "./commands/blocks";
 import { removeBlocks } from "./commands/remove-blocks";
@@ -20,7 +19,6 @@ import {
   ensureYarnNodeModulesLinker,
   isYarnPnPProject,
 } from "./utils/yarn-pnp";
-import { error } from "console";
 
 const program = new Command();
 
@@ -53,50 +51,33 @@ program
     try {
       const result = await doctor(options);
 
-      console.log(
-        util.inspect({
-          projectSanity: result.projectSanity,
-          environmentChecks: result.environmentChecks,
-        }),
-        { depth: null, colors: true },
-      );
+      const output: Record<string, unknown> = {
+        projectSanity: result.projectSanity,
+        environmentChecks: result.environmentChecks,
+      };
 
       if (
         result.projectSanity.routerType === "app" ||
         result.projectSanity.routerType === "hybrid"
       ) {
-        console.log(
-          util.inspect({
-            routerPatchability: {
-              appLayout: result.routerPatchability.appLayout,
-            },
-          }),
-          { depth: null, colors: true },
-        );
+        output.routerPatchability = {
+          ...(output.routerPatchability as Record<string, unknown> | undefined),
+          appLayout: result.routerPatchability.appLayout,
+        };
       }
 
       if (
         result.projectSanity.routerType === "pages" ||
         result.projectSanity.routerType === "hybrid"
       ) {
-        console.log(
-          util.inspect({
-            routerPatchability: {
-              pagesApp: result.routerPatchability.pagesApp,
-            },
-          }),
-          { depth: null, colors: true },
-        );
-
-        console.log(
-          util.inspect({
-            routerPatchability: {
-              pagesDocument: result.routerPatchability.pagesDocument,
-            },
-          }),
-          { depth: null, colors: true },
-        );
+        output.routerPatchability = {
+          ...(output.routerPatchability as Record<string, unknown> | undefined),
+          pagesApp: result.routerPatchability.pagesApp,
+          pagesDocument: result.routerPatchability.pagesDocument,
+        };
       }
+
+      console.log(JSON.stringify(output, null, 2));
     } catch (error) {
       throw error;
     }
