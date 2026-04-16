@@ -52,8 +52,52 @@ program
   .action(async (options: { json?: boolean; fix?: boolean; kit?: string }) => {
     try {
       const result = await doctor(options);
-      console.log(util.inspect(result, { depth: null, colors: true }));
-    } catch {
+
+      console.log(
+        util.inspect({
+          projectSanity: result.projectSanity,
+          environmentChecks: result.environmentChecks,
+        }),
+        { depth: null, colors: true },
+      );
+
+      if (
+        result.projectSanity.routerType === "app" ||
+        result.projectSanity.routerType === "hybrid"
+      ) {
+        console.log(
+          util.inspect({
+            routerPatchability: {
+              appLayout: result.routerPatchability.appLayout,
+            },
+          }),
+          { depth: null, colors: true },
+        );
+      }
+
+      if (
+        result.projectSanity.routerType === "pages" ||
+        result.projectSanity.routerType === "hybrid"
+      ) {
+        console.log(
+          util.inspect({
+            routerPatchability: {
+              pagesApp: result.routerPatchability.pagesApp,
+            },
+          }),
+          { depth: null, colors: true },
+        );
+
+        console.log(
+          util.inspect({
+            routerPatchability: {
+              pagesDocument: result.routerPatchability.pagesDocument,
+            },
+          }),
+          { depth: null, colors: true },
+        );
+      }
+    } catch (error) {
       throw error;
     }
   });
