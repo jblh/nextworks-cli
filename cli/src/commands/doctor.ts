@@ -249,23 +249,26 @@ async function fileIsWritable(filePath: string): Promise<CheckWritability> {
   }
 }
 
-function addRouterPatchabilityDiagnostics(result: DoctorResult): void {
+function getRouterPatchabilityDiagnostics(result: DoctorResult): {
+  warnings: string[];
+  errors: string[];
+} {
+  const warnings: string[] = [];
+  const errors: string[] = [];
   const { routerType } = result.projectSanity;
 
   if (routerType === "app" || routerType === "hybrid") {
     const appLayout = result.routerPatchability.appLayout;
 
     if (appLayout.exists && appLayout.writeableInfo.status === "not-writable") {
-      result.errors.push(
-        `App Router layout is not writable: ${appLayout.path}`,
-      );
+      errors.push(`App Router layout is not writable: ${appLayout.path}`);
     }
 
     if (
       appLayout.exists &&
       appLayout.hasSuppressHydrationWarning.status === "not-found"
     ) {
-      result.warnings.push(
+      warnings.push(
         `App Router layout is missing suppressHydrationWarning: ${appLayout.path}`,
       );
     }
@@ -276,16 +279,14 @@ function addRouterPatchabilityDiagnostics(result: DoctorResult): void {
     const pagesDocument = result.routerPatchability.pagesDocument;
 
     if (pagesApp.exists && pagesApp.writeableInfo.status === "not-writable") {
-      result.errors.push(
-        `Pages Router _app.tsx is not writable: ${pagesApp.path}`,
-      );
+      errors.push(`Pages Router _app.tsx is not writable: ${pagesApp.path}`);
     }
 
     if (
       pagesDocument.exists &&
       pagesDocument.writeableInfo.status === "not-writable"
     ) {
-      result.errors.push(
+      errors.push(
         `Pages Router _document.tsx is not writable: ${pagesDocument.path}`,
       );
     }
@@ -294,7 +295,7 @@ function addRouterPatchabilityDiagnostics(result: DoctorResult): void {
       pagesDocument.exists &&
       pagesDocument.hasSuppressHydrationWarning.status === "not-found"
     ) {
-      result.warnings.push(
+      warnings.push(
         `Pages Router _document.tsx is missing suppressHydrationWarning: ${pagesDocument.path}`,
       );
     }
@@ -303,7 +304,7 @@ function addRouterPatchabilityDiagnostics(result: DoctorResult): void {
       !pagesDocument.exists &&
       pagesDocument.writeableInfo.status === "not-found-parent-writable"
     ) {
-      result.warnings.push(
+      warnings.push(
         `Pages Router _document.tsx does not exist and will need to be created during install: ${pagesDocument.path}`,
       );
     }
@@ -312,11 +313,13 @@ function addRouterPatchabilityDiagnostics(result: DoctorResult): void {
       !pagesDocument.exists &&
       pagesDocument.writeableInfo.status === "not-found-parent-not-writable"
     ) {
-      result.errors.push(
+      errors.push(
         `Pages Router _document.tsx does not exist and its parent directory is not writable: ${pagesDocument.path}`,
       );
     }
   }
+
+  return { warnings, errors };
 }
 
 export async function doctor(
@@ -498,7 +501,9 @@ export async function doctor(
       hasHydrationWarning;
   }
 
-  addRouterPatchabilityDiagnostics(result);
+  const diagnostics = getRouterPatchabilityDiagnostics(result);
+  result.warnings.push(...diagnostics.warnings);
+  result.errors.push(...diagnostics.errors);
 
   return result;
 }
