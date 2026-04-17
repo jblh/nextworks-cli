@@ -6,7 +6,7 @@ Curated set of files to read to understand the repository architecture, CLI beha
 
 - `README.md`
 - `cli/README.md`
-- `.continue/context/project-overview.md` (format reference only)
+- `.continue/context/project-overview-nextworks-cli.md`
 
 ## CLI entrypoint and core behavior
 
