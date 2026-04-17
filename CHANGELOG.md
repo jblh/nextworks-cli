@@ -6,6 +6,12 @@ This project is currently **early-access alpha**; expect breaking changes.
 
 ## Unreleased
 
+- Doctor project sanity diagnostics now add blocking errors when:
+  - `package.json` is missing
+  - `next` is missing from `dependencies`/`devDependencies`
+  - no supported App Router or Pages Router entrypoint is found
+- `nextworks doctor` now always outputs JSON, including `warnings` and `errors`.
+
 - Blocks install defaults/flags:
   - `nextworks add blocks` now installs **core + sections** by default.
   - `--templates` includes `sections` (so `--sections --templates` is redundant but still supported).

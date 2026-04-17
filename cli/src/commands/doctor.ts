@@ -43,7 +43,6 @@ interface BlocksManifest {
 }
 
 interface DoctorOptions {
-  json?: boolean;
   fix?: boolean;
   kit?: string;
 }
@@ -85,6 +84,11 @@ interface DoctorResult {
   routerPatchability: RouterPatchability;
   warnings: string[];
   errors: string[];
+}
+
+interface PackageJsonLike {
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
 }
 
 const MIN_MAJOR_NODE_VERSION = 20;
@@ -273,12 +277,24 @@ export async function doctor(
   const hasPackageJson = await fileExists(packageJsonPath);
   result.projectSanity.hasPackageJson = hasPackageJson;
 
+  if (!hasPackageJson) {
+    result.errors.push(
+      "package.json not found. Run nextworks from a Next.js project root.",
+    );
+  }
+
   // - A 2. Detect Next.js presence
   if (hasPackageJson) {
-    const pkg = await readPackageJson(cwd);
-    result.projectSanity.hasNext = !!(
-      pkg.dependencies?.next || pkg.devDependencies?.next
+    const pkg = (await readPackageJson(cwd)) as PackageJsonLike;
+    result.projectSanity.hasNext = Boolean(
+      pkg.dependencies?.next || pkg.devDependencies?.next,
     );
+
+    if (!result.projectSanity.hasNext) {
+      result.errors.push(
+        'Next.js dependency "next" not found in dependencies or devDependencies.',
+      );
+    }
   }
 
   // - ---------------------------------------------------------
@@ -314,9 +330,8 @@ export async function doctor(
     result.projectSanity.projectRootMode = projectRootMode;
   } else {
     result.errors.push(
-      "Could not detect Next.js router type or project root mode.",
+      "No supported Next.js router entrypoint found. Expected app/layout.tsx, src/app/layout.tsx, pages/_app.tsx, or src/pages/_app.tsx.",
     );
-    console.log("Could not detect Next.js router type or project root mode.");
   }
 
   // - B - RUNTIME/TOOLING ENVIRONMENT CHECKS
