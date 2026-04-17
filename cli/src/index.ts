@@ -41,19 +41,20 @@ program
 program
   .command("doctor")
   .description("Diagnostics - is project is compatible with nextworks?")
-  .option("--json", "Outputs in json.")
   .option("--fix", "Fixes project")
   .option(
     "--kit <kit>",
     "Check for projects compatibility with installation of specific nextworks kit.",
   )
-  .action(async (options: { json?: boolean; fix?: boolean; kit?: string }) => {
+  .action(async (options: { fix?: boolean; kit?: string }) => {
     try {
       const result = await doctor(options);
 
       const output: Record<string, unknown> = {
         projectSanity: result.projectSanity,
         environmentChecks: result.environmentChecks,
+        warnings: result.warnings,
+        errors: result.errors,
       };
 
       if (
