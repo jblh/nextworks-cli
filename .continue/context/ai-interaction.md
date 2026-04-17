@@ -25,8 +25,6 @@ This is the preferred workflow for feature/fix work in this repo:
 10. **Review** - Review AI-generated code periodically and on demand.
 11. **Close out** - Mark as completed in @context/current-feature.md and add to history.
 
-Do NOT commit without permission. If a relevant build/check fails, fix the issues first or explain what is blocking the change.
-
 ## Branching
 
 Preferred workflow: create a new branch for each feature/fix when working in git branches. Name branches like **feature/[feature]** or **fix/[fix]**. Ask before deleting a branch after merge.
