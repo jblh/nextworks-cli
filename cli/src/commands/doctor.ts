@@ -172,7 +172,6 @@ function getNodeVersionCheck(): EnvironmentChecks["nodeVersion"] {
   };
 }
 
-// - for A3.
 function getProjectRootInfo(options: {
   mode: "src" | "root" | null;
   hasAppRouter: boolean;
@@ -216,7 +215,6 @@ function getProjectRootInfo(options: {
   };
 }
 
-// - For C. Next.js router & entrypoint patchability checks
 async function fileHasSuppressHydrationWarning(
   filePath: string,
 ): Promise<CheckResult> {
@@ -256,13 +254,8 @@ export async function doctor(
 ): Promise<DoctorResult> {
   const cwd = process.cwd();
 
-  // # Initialize results
-  // ! in yarnPnPDection, the message is hardcoded to tell users what to do in case of YarnPnP:
-  // ! in the part of index.ts, that takes care of formatting & printing results from doctor,
-  // ! there should be logic, that only print this message if it is indeed a YarnPNP situation.
   const result = createInitialDoctorResult();
 
-  // - Read manifest
   const kitDir = resolveAssetPath("kits", "blocks");
 
   const manifestPath = resolveAssetPath(
@@ -270,9 +263,6 @@ export async function doctor(
     "blocks_manifest.json",
   );
 
-  // - A - PROJECT SANITY
-  //
-  // - A 1. Check that current working directory has a package.json.
   const packageJsonPath = getPackageJsonPath(cwd);
   const hasPackageJson = await fileExists(packageJsonPath);
   result.projectSanity.hasPackageJson = hasPackageJson;
@@ -283,7 +273,6 @@ export async function doctor(
     );
   }
 
-  // - A 2. Detect Next.js presence
   if (hasPackageJson) {
     const pkg = (await readPackageJson(cwd)) as PackageJsonLike;
     result.projectSanity.hasNext = Boolean(
@@ -297,11 +286,7 @@ export async function doctor(
     }
   }
 
-  // - ---------------------------------------------------------
-
   const manifest = (await readJsonFile(manifestPath)) as BlocksManifest;
-
-  // - A3. Detect projectRootMode
 
   const mode = await detectProjectRootMode(cwd);
   result.projectSanity.projectRoot = mode;
@@ -313,8 +298,6 @@ export async function doctor(
 
   const appRouterLayoutExists = await fileExists(detectedLayoutPath);
   const pagesRouterAppExists = await fileExists(detectedPagesAppPath);
-
-  // - -------------------------------------------
 
   const { routerType, projectRootMode } = getProjectRootInfo({
     mode,
@@ -334,25 +317,16 @@ export async function doctor(
     );
   }
 
-  // - B - RUNTIME/TOOLING ENVIRONMENT CHECKS
-
-  // - B 1. Node version.
   result.environmentChecks.nodeVersion = getNodeVersionCheck();
 
-  // - B 2. Package Manager Detection
   const detectedPM = await detectPackageManager(cwd);
   const installCmd = getInstallCommand(detectedPM);
   result.environmentChecks.packageManager.pm = detectedPM;
   result.environmentChecks.packageManager.installCommand = installCmd;
 
-  // - B3. Yarn Plug'n'Play (PnP) detection
   const isYarnPnP = await isYarnPnPProject(cwd);
   result.environmentChecks.yarnPnPDection.isPnP = isYarnPnP;
 
-  // - -------------------------------------------------------------------
-  // Next.js router & entrypoint patchability checks
-  // C1.
-  // App router patchability check
   if (
     result.projectSanity.routerType === "app" ||
     result.projectSanity.routerType === "hybrid"
@@ -388,13 +362,10 @@ export async function doctor(
       hasHydrationWarning;
   }
 
-  // Pages router patchability check
   if (
     result.projectSanity.routerType === "pages" ||
     result.projectSanity.routerType === "hybrid"
   ) {
-    // Check _app.tsx
-
     let _appFilePath = "";
 
     if (result.projectSanity.projectRoot === "src") {
@@ -420,7 +391,6 @@ export async function doctor(
       result.routerPatchability.pagesApp.writable = null;
     }
 
-    // Check _document.tsx
     let _documentFilePath = "";
 
     if (result.projectSanity.projectRoot === "src") {
