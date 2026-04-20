@@ -1,21 +1,14 @@
-# Current Feature: Doctor Project Root Writability
+# Current Feature
 
 ## Status
 
 <!-- Not Started|In Progress|Complete -->
 
-Complete
+Not Started
 
 ## Goals
 
-- Check whether the current project root directory exists and is writable.
-- Add an error when the project root is not writable.
-- Keep this check separate from router patch target writability diagnostics.
-
 ## Notes
-
-- Read-only diagnostic only.
-- Treat project-root writability as a directory check, not a file-target patchability/creatability check.
 
 ## Release / Docs Checks
 
