@@ -61,6 +61,12 @@ interface TailwindCheck {
   detected: boolean;
 }
 
+interface TypeScriptCheck {
+  hasTsconfig: boolean;
+  hasTypeScriptDependency: boolean;
+  detected: boolean;
+}
+
 interface EnvironmentChecks {
   nodeVersion: { status: CheckStatus; message: string };
   packageManager: {
@@ -69,6 +75,7 @@ interface EnvironmentChecks {
   };
   yarnPnPDection: { isPnP: boolean; message: string };
   tailwind: TailwindCheck;
+  typescript: TypeScriptCheck;
 }
 
 interface PatchabilityCheck {
@@ -109,6 +116,16 @@ function hasTailwindDependency(pkg: PackageJsonLike): boolean {
   return Boolean(
     pkg.dependencies?.tailwindcss || pkg.devDependencies?.tailwindcss,
   );
+}
+
+function hasTypeScriptDependency(pkg: PackageJsonLike): boolean {
+  return Boolean(
+    pkg.dependencies?.typescript || pkg.devDependencies?.typescript,
+  );
+}
+
+async function hasTsconfig(cwd: string): Promise<boolean> {
+  return fileExists(path.join(cwd, "tsconfig.json"));
 }
 
 async function hasCssBasedTailwindUsage(cwd: string): Promise<boolean> {
@@ -166,6 +183,11 @@ function createInitialDoctorResult(): DoctorResult {
       tailwind: {
         hasTailwindDependency: false,
         hasCssBasedTailwindUsage: false,
+        detected: false,
+      },
+      typescript: {
+        hasTsconfig: false,
+        hasTypeScriptDependency: false,
         detected: false,
       },
     },
@@ -517,6 +539,8 @@ export async function doctor(
   if (packageJson) {
     result.environmentChecks.tailwind.hasTailwindDependency =
       hasTailwindDependency(packageJson);
+    result.environmentChecks.typescript.hasTypeScriptDependency =
+      hasTypeScriptDependency(packageJson);
   }
 
   result.environmentChecks.tailwind.hasCssBasedTailwindUsage =
@@ -528,6 +552,17 @@ export async function doctor(
   if (!result.environmentChecks.tailwind.detected) {
     result.warnings.push(
       'Tailwind CSS was not detected. Blocks requires Tailwind CSS v4-style setup via a `tailwindcss` dependency or CSS imports such as `@import "tailwindcss"`.',
+    );
+  }
+
+  result.environmentChecks.typescript.hasTsconfig = await hasTsconfig(cwd);
+  result.environmentChecks.typescript.detected =
+    result.environmentChecks.typescript.hasTsconfig ||
+    result.environmentChecks.typescript.hasTypeScriptDependency;
+
+  if (!result.environmentChecks.typescript.detected) {
+    result.errors.push(
+      "TypeScript was not detected. Blocks requires a `tsconfig.json` file or a `typescript` dependency in dependencies or devDependencies.",
     );
   }
 
