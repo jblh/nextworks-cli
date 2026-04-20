@@ -55,6 +55,12 @@ interface ProjectSanity {
   projectRootMode: string | null;
 }
 
+interface TailwindCheck {
+  hasTailwindDependency: boolean;
+  hasCssBasedTailwindUsage: boolean;
+  detected: boolean;
+}
+
 interface EnvironmentChecks {
   nodeVersion: { status: CheckStatus; message: string };
   packageManager: {
@@ -62,6 +68,7 @@ interface EnvironmentChecks {
     installCommand: string;
   };
   yarnPnPDection: { isPnP: boolean; message: string };
+  tailwind: TailwindCheck;
 }
 
 interface PatchabilityCheck {
@@ -98,6 +105,45 @@ interface PackageJsonLike {
   devDependencies?: Record<string, string>;
 }
 
+function hasTailwindDependency(pkg: PackageJsonLike): boolean {
+  return Boolean(
+    pkg.dependencies?.tailwindcss || pkg.devDependencies?.tailwindcss,
+  );
+}
+
+async function hasCssBasedTailwindUsage(cwd: string): Promise<boolean> {
+  const cssCandidates = [
+    path.join(cwd, "app", "globals.css"),
+    path.join(cwd, "src", "app", "globals.css"),
+    path.join(cwd, "styles", "globals.css"),
+    path.join(cwd, "src", "styles", "globals.css"),
+    path.join(cwd, "pages", "_app.tsx"),
+    path.join(cwd, "src", "pages", "_app.tsx"),
+  ];
+
+  for (const candidate of cssCandidates) {
+    if (!(await fileExists(candidate))) {
+      continue;
+    }
+
+    try {
+      const content = await fs.readFile(candidate, "utf8");
+
+      if (
+        content.includes('@import "tailwindcss"') ||
+        content.includes("@import 'tailwindcss'") ||
+        content.includes("@theme")
+      ) {
+        return true;
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return false;
+}
+
 const MIN_MAJOR_NODE_VERSION = 20;
 const YARN_PNP_MESSAGE = "Set nodeLinker: node-modules in .yarnrc.yml";
 
@@ -117,7 +163,13 @@ function createInitialDoctorResult(): DoctorResult {
         isPnP: false,
         message: YARN_PNP_MESSAGE,
       },
+      tailwind: {
+        hasTailwindDependency: false,
+        hasCssBasedTailwindUsage: false,
+        detected: false,
+      },
     },
+
     projectRootWritability: {
       path: "",
       exists: false,
@@ -405,8 +457,11 @@ export async function doctor(
     );
   }
 
+  let packageJson: PackageJsonLike | null = null;
+
   if (hasPackageJson) {
     const pkg = (await readPackageJson(cwd)) as PackageJsonLike;
+    packageJson = pkg;
     result.projectSanity.hasNext = Boolean(
       pkg.dependencies?.next || pkg.devDependencies?.next,
     );
@@ -458,6 +513,23 @@ export async function doctor(
 
   const isYarnPnP = await isYarnPnPProject(cwd);
   result.environmentChecks.yarnPnPDection.isPnP = isYarnPnP;
+
+  if (packageJson) {
+    result.environmentChecks.tailwind.hasTailwindDependency =
+      hasTailwindDependency(packageJson);
+  }
+
+  result.environmentChecks.tailwind.hasCssBasedTailwindUsage =
+    await hasCssBasedTailwindUsage(cwd);
+  result.environmentChecks.tailwind.detected =
+    result.environmentChecks.tailwind.hasTailwindDependency ||
+    result.environmentChecks.tailwind.hasCssBasedTailwindUsage;
+
+  if (!result.environmentChecks.tailwind.detected) {
+    result.warnings.push(
+      'Tailwind CSS was not detected. Blocks requires Tailwind CSS v4-style setup via a `tailwindcss` dependency or CSS imports such as `@import "tailwindcss"`.',
+    );
+  }
 
   result.projectRootWritability = await getProjectRootWritability(cwd);
   if (!result.projectRootWritability.exists) {

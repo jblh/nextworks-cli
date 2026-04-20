@@ -37,17 +37,19 @@ Complete the current feature.
 1. Read `current-feature.md` to identify the active feature, goals, and notes
 2. Run a final review to ensure everything is complete
 3. If the feature is complete, update `## Status` in `current-feature.md` to `Complete` before closeout
-4. Ask before staging, committing, pushing, or merging, following repo workflow guidance
-5. Stage all changes only after approval
-6. Commit with a descriptive conventional commit message based on the feature only after approval
-7. Push the branch to origin only after approval
-8. Merge into `main` only after approval
-9. Switch back to `main` only after approval
-10. Reset `current-feature.md`:
+4. Ask once for approval before any git closeout actions that modify repo history or remote state
+5. After approval, perform the full approved closeout flow without re-asking between steps: stage, commit, push, merge, and switch branches as applicable
+6. Stage all intended changes only after approval
+7. Commit with a descriptive conventional commit message based on the feature only after approval
+8. Push the branch to origin only after approval
+9. Merge into `main` only after approval
+10. Switch back to `main` only after approval
+
+11. Reset `current-feature.md`:
 
 - Change H1 back to `# Current Feature`
 - Clear Goals and Notes sections
 - Set Status to `Not Started`
 
-11. Add the completed feature summary to the end of `## History`
-12. If there is no active feature in `current-feature.md`, state that clearly instead of assuming prior chat context
+12. Add the completed feature summary to the end of `## History`
+13. If there is no active feature in `current-feature.md`, state that clearly instead of assuming prior chat context
