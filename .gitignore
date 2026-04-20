@@ -21,6 +21,9 @@ packages/**/*.tgz
 .idea/
 .vscode/
 
+# Diagrams
+..visualizing/
+
 # TypeScript build info (already present in packages)
 **/*.tsbuildinfo
 

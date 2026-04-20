@@ -78,9 +78,16 @@ interface RouterPatchability {
   pagesDocument: PatchabilityCheck;
 }
 
+interface ProjectRootWritability {
+  path: string;
+  exists: boolean;
+  writable: boolean | null;
+}
+
 interface DoctorResult {
   projectSanity: ProjectSanity;
   environmentChecks: EnvironmentChecks;
+  projectRootWritability: ProjectRootWritability;
   routerPatchability: RouterPatchability;
   warnings: string[];
   errors: string[];
@@ -111,6 +118,12 @@ function createInitialDoctorResult(): DoctorResult {
         message: YARN_PNP_MESSAGE,
       },
     },
+    projectRootWritability: {
+      path: "",
+      exists: false,
+      writable: null,
+    },
+
     routerPatchability: {
       appLayout: {
         path: "",
@@ -247,6 +260,52 @@ async function fileIsWritable(filePath: string): Promise<CheckWritability> {
       }
     }
   }
+}
+
+async function directoryIsWritable(
+  directoryPath: string,
+): Promise<boolean | null> {
+  try {
+    const stats = await fs.stat(directoryPath);
+
+    if (!stats.isDirectory()) {
+      return null;
+    }
+
+    await fs.access(directoryPath, fs.constants.W_OK);
+    return true;
+  } catch (error: unknown) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error.code === "EACCES" || error.code === "EPERM")
+    ) {
+      return false;
+    }
+
+    return null;
+  }
+}
+
+async function getProjectRootWritability(
+  cwd: string,
+): Promise<ProjectRootWritability> {
+  const exists = await fileExists(cwd);
+
+  if (!exists) {
+    return {
+      path: cwd,
+      exists: false,
+      writable: null,
+    };
+  }
+
+  return {
+    path: cwd,
+    exists: true,
+    writable: await directoryIsWritable(cwd),
+  };
 }
 
 function getRouterPatchabilityDiagnostics(result: DoctorResult): {
@@ -399,6 +458,17 @@ export async function doctor(
 
   const isYarnPnP = await isYarnPnPProject(cwd);
   result.environmentChecks.yarnPnPDection.isPnP = isYarnPnP;
+
+  result.projectRootWritability = await getProjectRootWritability(cwd);
+  if (!result.projectRootWritability.exists) {
+    result.errors.push(
+      `Project root does not exist: ${result.projectRootWritability.path}`,
+    );
+  } else if (result.projectRootWritability.writable === false) {
+    result.errors.push(
+      `Project root is not writable: ${result.projectRootWritability.path}`,
+    );
+  }
 
   if (
     result.projectSanity.routerType === "app" ||

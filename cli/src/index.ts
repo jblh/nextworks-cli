@@ -53,6 +53,7 @@ program
       const output: Record<string, unknown> = {
         projectSanity: result.projectSanity,
         environmentChecks: result.environmentChecks,
+        projectRootWritability: result.projectRootWritability,
         warnings: result.warnings,
         errors: result.errors,
       };
