@@ -4,9 +4,21 @@ description: Apply whenever the user uses the dash-command shorthand in chat.
 
 When the user writes `- <name>`, treat it as a command invocation.
 
+Do not read the shared context files during normal chat or ordinary repo tasks.
+Only load the shared context files when the user explicitly starts with `- feature ...`, or explicitly asks you to read them.
+
 Read the appropriate file for the command invocation, so, for example "- feature load" means read .continue/context/feature-load-command.md
 
 Here are the command invocations and corresponding files to read:
+
+For `- feature ...` commands, also read and keep in working context:
+
+- `.continue/context/project-overview-nextworks-cli.md`
+- `.continue/context/coding-standards.md`
+- `.continue/context/ai-interaction.md`
+- `.continue/context/current-feature.md`
+
+Do not read those shared context files for non-`feature` commands unless the user explicitly asks for them.
 
 - `- feature load ...` must read `.continue/context/feature-load-command.md`
 - `- feature start` must read `.continue/context/feature-start-command.md`
