@@ -4,6 +4,10 @@
 
 Replace the current normal doctor output with grouped human-readable diagnostics.
 
+## Implementation Note
+
+- Working file: `cli/src/commands/doctor.ts`
+
 ## Requirements
 
 - In normal mode, `cli/src/index.ts` must not print the raw doctor result as JSON.

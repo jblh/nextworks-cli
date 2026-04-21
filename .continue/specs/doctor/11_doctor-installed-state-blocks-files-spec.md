@@ -4,6 +4,10 @@
 
 Verify representative on-disk files when Blocks is recorded as installed.
 
+## Implementation Note
+
+- Working file: `cli/src/commands/doctor.ts`
+
 ## Requirements
 
 - If Blocks is recorded as installed, the doctor command must verify that representative installed files exist on disk.

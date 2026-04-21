@@ -4,6 +4,10 @@
 
 Set doctor process exit codes from diagnostics.
 
+## Implementation Note
+
+- Working file: `cli/src/commands/doctor.ts`
+
 ## Requirements
 
 - The doctor command must exit `0` when there are no error diagnostics.

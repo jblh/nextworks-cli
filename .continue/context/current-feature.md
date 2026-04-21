@@ -1,17 +1,12 @@
-# Current Feature: Doctor Installed State Recorded Kits Spec
+# Current Feature
 
 ## Status
 
-In Progress
+Not Started
 
 ## Goals
 
-- Read recorded installs from `.nextworks/config.json` using existing installation-tracker utilities where possible.
-- Include recorded installed kits in the doctor result.
-
 ## Notes
-
-Report recorded install state from the nextworks tracker.
 
 ## Release / Docs Checks
 
@@ -31,3 +26,4 @@ Report recorded install state from the nextworks tracker.
 - 2026 04 21 - Doctor Blocks Manifest Kit Source Spec — Added doctor diagnostics that read the Blocks manifest source and validate manifest-declared kit files against the installed Blocks kit packages in the consuming project.
 - 2026 04 21 - Doctor Blocks Destination Collisions Core Spec — Added doctor collision diagnostics for high-risk install destinations using root-mode and router-aware path mapping, with warnings for existing app-providers, UI/sections, globals, utility, and router entrypoint targets.
 - 2026 04 21 - Doctor Blocks Destination Collisions Templates Spec — Added template destination collision diagnostics for App Router and Pages Router template paths, including rewritten Pages Router template destinations.
+- 2026 04 21 - Doctor Installed State Recorded Kits Spec — Added doctor support for reading recorded installed kits from `.nextworks/config.json` and including them in the doctor result.

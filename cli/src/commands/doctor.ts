@@ -147,6 +147,18 @@ const COLLISION_CANDIDATES = {
   ],
 } as const;
 
+interface RecordedInstalledKit {
+  name: string;
+  dependencies: string[];
+  devDependencies: string[];
+  files: string[];
+  installedAt: string;
+}
+
+interface RecordedInstallState {
+  installedKits: RecordedInstalledKit[];
+}
+
 interface DoctorResult {
   projectSanity: ProjectSanity;
   environmentChecks: EnvironmentChecks;
@@ -154,6 +166,7 @@ interface DoctorResult {
   routerPatchability: RouterPatchability;
   appProvidersShim: AppProvidersShimCheck;
   collisions: CollisionDiagnostics;
+  recordedInstallState: RecordedInstallState;
   warnings: string[];
   errors: string[];
 }
@@ -258,6 +271,9 @@ function createInitialDoctorResult(): DoctorResult {
     },
     collisions: {
       paths: [],
+    },
+    recordedInstallState: {
+      installedKits: [],
     },
     routerPatchability: {
       appLayout: {
@@ -640,6 +656,20 @@ async function getCollisionDiagnostics(
   return { paths };
 }
 
+async function getRecordedInstallState(): Promise<RecordedInstallState> {
+  const installedKitNames = await getInstalledKits();
+
+  const installedKits = installedKitNames.map((name) => ({
+    name,
+    dependencies: [],
+    devDependencies: [],
+    files: [],
+    installedAt: "",
+  }));
+
+  return { installedKits };
+}
+
 export async function doctor(
   options: DoctorOptions = {},
 ): Promise<DoctorResult> {
@@ -881,7 +911,15 @@ export async function doctor(
       .map((entry) => `Install collision detected: ${entry.path}`),
   );
 
+  result.recordedInstallState = await getRecordedInstallState();
+  if (result.recordedInstallState.installedKits.length === 0) {
+    result.warnings.push(
+      "No recorded installed kits found in .nextworks/config.json.",
+    );
+  }
+
   const diagnostics = getRouterPatchabilityDiagnostics(result);
+
   result.warnings.push(...diagnostics.warnings);
   result.errors.push(...diagnostics.errors);
 
