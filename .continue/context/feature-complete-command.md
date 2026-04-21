@@ -34,7 +34,7 @@ Complete the current feature.
 
 ### Requirements
 
-1. Read `current-feature.md` to identify the active feature, goals, and notes
+1. Read `current-feature.md` to identify the active feature, goals, and notes ( if it looks completed, then proceed to step 4. )
 2. Run a final review to ensure everything is complete
 3. If the feature is complete, update `## Status` in `current-feature.md` to `Complete` before closeout
 4. Stage all intended changes
@@ -50,4 +50,3 @@ Complete the current feature.
 - Set Status to `Not Started`
 
 12. Add the completed feature summary to the end of `## History`
-13. If there is no active feature in `current-feature.md`, state that clearly instead of assuming prior chat context
