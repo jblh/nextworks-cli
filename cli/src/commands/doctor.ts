@@ -159,6 +159,12 @@ interface RecordedInstallState {
   installedKits: RecordedInstalledKit[];
 }
 
+interface BlocksFilePresenceCheck {
+  path: string;
+  exists: boolean;
+  required: boolean;
+}
+
 interface DoctorResult {
   projectSanity: ProjectSanity;
   environmentChecks: EnvironmentChecks;
@@ -167,6 +173,7 @@ interface DoctorResult {
   appProvidersShim: AppProvidersShimCheck;
   collisions: CollisionDiagnostics;
   recordedInstallState: RecordedInstallState;
+  blocksFilePresence: BlocksFilePresenceCheck[];
   warnings: string[];
   errors: string[];
 }
@@ -275,6 +282,7 @@ function createInitialDoctorResult(): DoctorResult {
     recordedInstallState: {
       installedKits: [],
     },
+    blocksFilePresence: [],
     routerPatchability: {
       appLayout: {
         path: "",
@@ -670,6 +678,41 @@ async function getRecordedInstallState(): Promise<RecordedInstallState> {
   return { installedKits };
 }
 
+function getBlocksManifestRequiredFiles(manifest: BlocksManifest): string[] {
+  const groups = manifest.groups ?? {};
+  const files = new Set<string>();
+
+  for (const group of Object.values(groups)) {
+    for (const file of group.files) {
+      files.add(file);
+    }
+  }
+
+  return [...files];
+}
+
+function getBlocksInstalledFileChecks(
+  cwd: string,
+  manifest: BlocksManifest,
+  recordedInstallState: RecordedInstallState,
+): BlocksFilePresenceCheck[] {
+  const hasBlocksInstalled = recordedInstallState.installedKits.some(
+    (kit) => kit.name === manifest.name,
+  );
+
+  if (!hasBlocksInstalled) {
+    return [];
+  }
+
+  const requiredFiles = getBlocksManifestRequiredFiles(manifest);
+
+  return requiredFiles.map((relativePath) => ({
+    path: path.join(cwd, relativePath),
+    exists: false,
+    required: true,
+  }));
+}
+
 export async function doctor(
   options: DoctorOptions = {},
 ): Promise<DoctorResult> {
@@ -916,6 +959,21 @@ export async function doctor(
     result.warnings.push(
       "No recorded installed kits found in .nextworks/config.json.",
     );
+  }
+
+  result.blocksFilePresence = getBlocksInstalledFileChecks(
+    cwd,
+    manifest,
+    result.recordedInstallState,
+  );
+
+  for (const entry of result.blocksFilePresence) {
+    entry.exists = await fileExists(entry.path);
+    if (!entry.exists) {
+      result.warnings.push(
+        `Recorded Blocks install is missing expected file: ${entry.path}`,
+      );
+    }
   }
 
   const diagnostics = getRouterPatchabilityDiagnostics(result);
