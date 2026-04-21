@@ -1,5 +1,5 @@
 import fs from "fs-extra";
-import { constants } from "fs";
+
 import path from "path";
 
 import {
@@ -736,8 +736,6 @@ export async function doctor(
   const cwd = process.cwd();
 
   const result = createInitialDoctorResult();
-
-  const kitDir = resolveAssetPath("kits", "blocks");
 
   const manifestPath = resolveAssetPath(
     "cli_manifests",
