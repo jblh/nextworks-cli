@@ -36,17 +36,16 @@ Complete the current feature.
 
 1. Read `current-feature.md` to identify the active feature, goals, and notes ( if it looks completed, then proceed to step 4. )
 2. Run a final review to ensure everything is complete
-3. If the feature is complete, update `## Status` in `current-feature.md` to `Complete` before closeout
-4. Stage all intended changes
-5. Commit with a descriptive conventional commit message based on the feature
-6. Push the branch to origin
-7. Merge into `main`
-8. Switch back to `main`
+3. If the feature is complete,
+4. Reset `current-feature.md`:
 
-9. Reset `current-feature.md`:
-
+- Update `## Status` in `current-feature.md` to `Not Started` before closeout
 - Change H1 back to `# Current Feature`
 - Clear Goals and Notes sections
-- Set Status to `Not Started`
+- Add the completed feature summary to the end of `## History`
 
-12. Add the completed feature summary to the end of `## History`
+5. Stage all intended changes
+6. Commit with a descriptive conventional commit message based on the feature
+7. Push the branch to origin
+8. Merge into `main`
+9. Switch back to `main`
