@@ -98,11 +98,20 @@ interface ProjectRootWritability {
   writable: boolean | null;
 }
 
+interface AppProvidersShimCheck {
+  path: string;
+  exists: boolean;
+  target: string | null;
+  targetExists: boolean | null;
+  targetMatchesRouter: boolean | null;
+}
+
 interface DoctorResult {
   projectSanity: ProjectSanity;
   environmentChecks: EnvironmentChecks;
   projectRootWritability: ProjectRootWritability;
   routerPatchability: RouterPatchability;
+  appProvidersShim: AppProvidersShimCheck;
   warnings: string[];
   errors: string[];
 }
@@ -198,6 +207,13 @@ function createInitialDoctorResult(): DoctorResult {
       writable: null,
     },
 
+    appProvidersShim: {
+      path: "",
+      exists: false,
+      target: null,
+      targetExists: null,
+      targetMatchesRouter: null,
+    },
     routerPatchability: {
       appLayout: {
         path: "",
@@ -320,18 +336,26 @@ async function fileIsWritable(filePath: string): Promise<CheckWritability> {
   try {
     await fs.access(filePath, fs.constants.W_OK);
     return { status: "writable" };
-  } catch (err: any) {
-    if (err.code === "EACCES" || err.code === "EPERM") {
-      return { status: "not-writable" };
-    } else {
-      const parentDir = path.dirname(filePath);
+  } catch (err: unknown) {
+    const errorCode =
+      typeof err === "object" &&
+      err !== null &&
+      "code" in err &&
+      typeof err.code === "string"
+        ? err.code
+        : null;
 
-      try {
-        await fs.access(parentDir, fs.constants.W_OK);
-        return { status: "not-found-parent-writable" };
-      } catch {
-        return { status: "not-found-parent-not-writable" };
-      }
+    if (errorCode === "EACCES" || errorCode === "EPERM") {
+      return { status: "not-writable" };
+    }
+
+    const parentDir = path.dirname(filePath);
+
+    try {
+      await fs.access(parentDir, fs.constants.W_OK);
+      return { status: "not-found-parent-writable" };
+    } catch {
+      return { status: "not-found-parent-not-writable" };
     }
   }
 }
@@ -380,6 +404,73 @@ async function getProjectRootWritability(
     exists: true,
     writable: await directoryIsWritable(cwd),
   };
+}
+
+async function getAppProvidersShimDiagnostics(
+  cwd: string,
+  routerType: DoctorResult["projectSanity"]["routerType"],
+): Promise<{ shim: AppProvidersShimCheck; warnings: string[] }> {
+  const warnings: string[] = [];
+  const shimCandidates = [
+    path.join(cwd, "components", "app-providers.tsx"),
+    path.join(cwd, "src", "components", "app-providers.tsx"),
+  ];
+  let shimPath = shimCandidates[0];
+
+  for (const candidate of shimCandidates) {
+    if (await fileExists(candidate)) {
+      shimPath = candidate;
+      break;
+    }
+  }
+
+  const exists = await fileExists(shimPath);
+
+  const shim: AppProvidersShimCheck = {
+    path: shimPath,
+    exists,
+    target: null,
+    targetExists: null,
+    targetMatchesRouter: null,
+  };
+
+  if (!exists) {
+    return { shim, warnings };
+  }
+
+  const content = await fs.readFile(shimPath, "utf8");
+  const match = content.match(
+    /from\s+["']\.\/(app-providers\.(?:app|pages))["']/,
+  );
+  const target = match?.[1] ?? null;
+  shim.target = target;
+
+  if (!target) {
+    return { shim, warnings };
+  }
+
+  const targetPath = path.join(path.dirname(shimPath), `${target}.tsx`);
+  shim.targetExists = await fileExists(targetPath);
+
+  if (shim.targetExists === false) {
+    warnings.push(`app-providers shim target file is missing: ${targetPath}`);
+  }
+
+  const expectedTarget =
+    routerType === "app"
+      ? "app-providers.app"
+      : routerType === "pages"
+        ? "app-providers.pages"
+        : null;
+  shim.targetMatchesRouter = expectedTarget ? expectedTarget === target : null;
+
+  if (expectedTarget && expectedTarget !== target) {
+    warnings.push(
+      `app-providers shim target does not match detected ${routerType} router mode: ${shimPath} -> ${target}`,
+    );
+  }
+
+  return { shim, warnings };
 }
 
 function getRouterPatchabilityDiagnostics(result: DoctorResult): {
@@ -677,6 +768,13 @@ export async function doctor(
     result.routerPatchability.pagesDocument.hasSuppressHydrationWarning =
       hasHydrationWarning;
   }
+
+  const shimDiagnostics = await getAppProvidersShimDiagnostics(
+    cwd,
+    result.projectSanity.routerType,
+  );
+  result.appProvidersShim = shimDiagnostics.shim;
+  result.warnings.push(...shimDiagnostics.warnings);
 
   const diagnostics = getRouterPatchabilityDiagnostics(result);
   result.warnings.push(...diagnostics.warnings);
