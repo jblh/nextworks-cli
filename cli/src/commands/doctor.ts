@@ -73,7 +73,8 @@ interface EnvironmentChecks {
     pm: import("../utils/package-manager").PackageManager;
     installCommand: string;
   };
-  yarnPnPDection: { isPnP: boolean; message: string };
+  yarnPnPDetection: { isPnP: boolean; message: string };
+
   tailwind: TailwindCheck;
   typescript: TypeScriptCheck;
 }
@@ -247,7 +248,7 @@ function createInitialDoctorResult(): DoctorResult {
     environmentChecks: {
       nodeVersion: { status: "ok", message: "" },
       packageManager: { pm: "pnpm", installCommand: "" },
-      yarnPnPDection: {
+      yarnPnPDetection: {
         isPnP: false,
         message: YARN_PNP_MESSAGE,
       },
@@ -382,7 +383,7 @@ function getProjectRootInfo(options: {
 
   const rootLabel = mode === "src" ? "with src folder" : "with no src folder";
   return {
-    routerType: routerType,
+    routerType,
     projectRootMode: `${routerTypeLabel} ${rootLabel}`,
   };
 }
@@ -792,7 +793,7 @@ export async function doctor(
   result.environmentChecks.packageManager.installCommand = installCmd;
 
   const isYarnPnP = await isYarnPnPProject(cwd);
-  result.environmentChecks.yarnPnPDection.isPnP = isYarnPnP;
+  result.environmentChecks.yarnPnPDetection.isPnP = isYarnPnP;
 
   if (packageJson) {
     result.environmentChecks.tailwind.hasTailwindDependency =
@@ -982,4 +983,141 @@ export async function doctor(
   result.errors.push(...diagnostics.errors);
 
   return result;
+}
+
+export function formatDoctorResult(result: DoctorResult): string[] {
+  const lines: string[] = ["Doctor diagnostics"];
+  const iconFor = (status: CheckStatus) =>
+    status === "ok" ? "✅" : status === "warning" ? "⚠️" : "❌";
+
+  lines.push("\nEnvironment");
+  lines.push(
+    `  ${iconFor(result.environmentChecks.nodeVersion.status)} ${result.environmentChecks.nodeVersion.message}`,
+  );
+  lines.push(
+    `  ✅ Package manager detected: ${result.environmentChecks.packageManager.pm} (${result.environmentChecks.packageManager.installCommand})`,
+  );
+  lines.push(
+    `  ${result.environmentChecks.yarnPnPDetection.isPnP ? "⚠️" : "✅"} Yarn Plug'n'Play ${result.environmentChecks.yarnPnPDetection.isPnP ? "detected" : "not detected"}`,
+  );
+  if (result.environmentChecks.yarnPnPDetection.isPnP)
+    lines.push(`  ⚠️ ${result.environmentChecks.yarnPnPDetection.message}`);
+
+  lines.push("\nProject detection");
+  lines.push(
+    `  ${result.projectSanity.hasPackageJson ? "✅" : "❌"} package.json ${result.projectSanity.hasPackageJson ? "found" : "not found"}`,
+  );
+  lines.push(
+    `  ${result.projectSanity.hasNext ? "✅" : "❌"} Next.js dependency ${result.projectSanity.hasNext ? "found" : "not found"}`,
+  );
+  lines.push(
+    `  ${result.projectSanity.projectRoot ? "✅" : "❌"} Project root mode: ${result.projectSanity.projectRoot ?? "not detected"}`,
+  );
+  lines.push(
+    `  ${result.projectSanity.routerType ? "✅" : "❌"} Router type: ${result.projectSanity.routerType ?? "not detected"}`,
+  );
+  if (result.projectSanity.projectRootMode)
+    lines.push(`  ✅ ${result.projectSanity.projectRootMode}`);
+
+  lines.push("\nRouter / patch targets");
+  if (
+    result.projectSanity.routerType === "app" ||
+    result.projectSanity.routerType === "hybrid"
+  ) {
+    lines.push(
+      `  ${result.routerPatchability.appLayout.exists ? "✅" : "⚠️"} app/layout.tsx: ${result.routerPatchability.appLayout.path}`,
+    );
+    lines.push(
+      `  ${result.routerPatchability.appLayout.exists ? (result.routerPatchability.appLayout.writeableInfo.status === "not-writable" ? "❌" : "✅") : "⚠️"} Writable: ${String(result.routerPatchability.appLayout.writable)}`,
+    );
+    lines.push(
+      `  ${result.routerPatchability.appLayout.hasSuppressHydrationWarning.status === "found" ? "✅" : "⚠️"} suppressHydrationWarning: ${result.routerPatchability.appLayout.hasSuppressHydrationWarning.status}`,
+    );
+  }
+  if (
+    result.projectSanity.routerType === "pages" ||
+    result.projectSanity.routerType === "hybrid"
+  ) {
+    lines.push(
+      `  ${result.routerPatchability.pagesApp.exists ? "✅" : "⚠️"} pages/_app.tsx: ${result.routerPatchability.pagesApp.path}`,
+    );
+    lines.push(
+      `  ${result.routerPatchability.pagesApp.exists ? (result.routerPatchability.pagesApp.writeableInfo.status === "not-writable" ? "❌" : "✅") : "⚠️"} Writable: ${String(result.routerPatchability.pagesApp.writable)}`,
+    );
+    lines.push(
+      `  ${result.routerPatchability.pagesDocument.exists ? "✅" : "⚠️"} pages/_document.tsx: ${result.routerPatchability.pagesDocument.path}`,
+    );
+    lines.push(
+      `  ${result.routerPatchability.pagesDocument.exists ? (result.routerPatchability.pagesDocument.writeableInfo.status === "not-writable" || result.routerPatchability.pagesDocument.writeableInfo.status === "not-found-parent-not-writable" ? "❌" : "✅") : "⚠️"} Writable: ${String(result.routerPatchability.pagesDocument.writable)}`,
+    );
+    lines.push(
+      `  ${result.routerPatchability.pagesDocument.hasSuppressHydrationWarning.status === "found" ? "✅" : "⚠️"} suppressHydrationWarning: ${result.routerPatchability.pagesDocument.hasSuppressHydrationWarning.status}`,
+    );
+    lines.push(
+      `  ${result.appProvidersShim.exists ? (result.appProvidersShim.targetMatchesRouter === false || result.appProvidersShim.targetExists === false ? "⚠️" : "✅") : "⚠️"} components/app-providers.tsx: ${result.appProvidersShim.path}`,
+    );
+  }
+
+  lines.push("\nKit prerequisites");
+  lines.push(
+    `  ${result.environmentChecks.tailwind.detected ? "✅" : "⚠️"} Tailwind CSS ${result.environmentChecks.tailwind.detected ? "detected" : "not detected"}`,
+  );
+  lines.push(
+    `  ${result.environmentChecks.typescript.detected ? "✅" : "❌"} TypeScript ${result.environmentChecks.typescript.detected ? "detected" : "not detected"}`,
+  );
+
+  lines.push("\nFilesystem / collisions");
+  lines.push(
+    `  ${result.projectRootWritability.writable === false ? "❌" : result.projectRootWritability.exists ? "✅" : "❌"} Project root writable: ${String(result.projectRootWritability.writable)}`,
+  );
+  const existingCollisions = result.collisions.paths.filter(
+    (collision) => collision.exists,
+  );
+  if (existingCollisions.length === 0) {
+    lines.push("  ✅ No install collisions detected");
+  } else {
+    for (const entry of existingCollisions) {
+      lines.push(`  ⚠️ Collision: ${entry.path}`);
+    }
+  }
+
+  lines.push("\nInstalled state");
+  if (result.recordedInstallState.installedKits.length === 0) {
+    lines.push("  ⚠️ No recorded installed kits found");
+  } else {
+    for (const kit of result.recordedInstallState.installedKits) {
+      lines.push(`  ✅ Recorded kit: ${kit.name}`);
+    }
+  }
+  const missingRecordedFiles = result.blocksFilePresence.filter(
+    (file) => !file.exists,
+  );
+  if (missingRecordedFiles.length > 0) {
+    for (const entry of missingRecordedFiles) {
+      lines.push(`  ⚠️ Missing recorded file: ${entry.path}`);
+    }
+  }
+
+  lines.push("\nRecommendation");
+  if (result.errors.length === 0) {
+    lines.push("  ✅ Recommended next step: nextworks add blocks");
+  } else {
+    const priorityError = result.errors[0];
+    lines.push(`  ❌ Fix blocking issues before install: ${priorityError}`);
+  }
+
+  if (result.warnings.length) {
+    lines.push("\nWarnings");
+    for (const warning of result.warnings) {
+      lines.push(`  ⚠️ ${warning}`);
+    }
+  }
+  if (result.errors.length) {
+    lines.push("\nErrors");
+    for (const error of result.errors) {
+      lines.push(`  ❌ ${error}`);
+    }
+  }
+
+  return lines;
 }
