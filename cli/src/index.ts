@@ -6,7 +6,8 @@
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
-import { doctor } from "./commands/doctor";
+import { doctor, formatDoctorResult } from "./commands/doctor";
+
 import { addBlocks } from "./commands/blocks";
 import { removeBlocks } from "./commands/remove-blocks";
 import { getInstalledKits } from "./utils/installation-tracker";
@@ -73,141 +74,16 @@ program
         process.exit(hasErrors ? 1 : 0);
       }
 
-      console.log("Doctor diagnostics");
-
-      console.log("\nEnvironment");
-      console.log(
-        `  ${result.environmentChecks.nodeVersion.status === "ok" ? "✅" : "❌"} ${result.environmentChecks.nodeVersion.message}`,
-      );
-      console.log(
-        `  ✅ Package manager detected: ${result.environmentChecks.packageManager.pm} (${result.environmentChecks.packageManager.installCommand})`,
-      );
-      console.log(
-        `  ${result.environmentChecks.yarnPnPDection.isPnP ? "⚠️" : "✅"} Yarn Plug'n'Play ${result.environmentChecks.yarnPnPDection.isPnP ? "detected" : "not detected"}`,
-      );
-      if (result.environmentChecks.yarnPnPDection.isPnP) {
-        console.log(`  ⚠️ ${result.environmentChecks.yarnPnPDection.message}`);
+      for (const line of formatDoctorResult(result)) {
+        console.log(line);
       }
-
-      console.log("\nProject detection");
-      console.log(
-        `  ${result.projectSanity.hasPackageJson ? "✅" : "❌"} package.json ${result.projectSanity.hasPackageJson ? "found" : "not found"}`,
-      );
-      console.log(
-        `  ${result.projectSanity.hasNext ? "✅" : "❌"} Next.js dependency ${result.projectSanity.hasNext ? "found" : "not found"}`,
-      );
-      console.log(
-        `  ${result.projectSanity.projectRoot ? "✅" : "❌"} Project root mode: ${result.projectSanity.projectRoot ?? "not detected"}`,
-      );
-      console.log(
-        `  ${result.projectSanity.routerType ? "✅" : "❌"} Router type: ${result.projectSanity.routerType ?? "not detected"}`,
-      );
-      if (result.projectSanity.projectRootMode) {
-        console.log(`  ✅ ${result.projectSanity.projectRootMode}`);
-      }
-
-      console.log("\nRouter / patch targets");
-      if (
-        result.projectSanity.routerType === "app" ||
-        result.projectSanity.routerType === "hybrid"
-      ) {
-        console.log(
-          `  ${result.routerPatchability.appLayout.exists ? "✅" : "⚠️"} App layout: ${result.routerPatchability.appLayout.path}`,
-        );
-        console.log(
-          `  ${result.routerPatchability.appLayout.writeableInfo.status === "not-writable" ? "❌" : "✅"} Writable: ${String(result.routerPatchability.appLayout.writable)}`,
-        );
-        console.log(
-          `  ${result.routerPatchability.appLayout.hasSuppressHydrationWarning.status === "found" ? "✅" : result.routerPatchability.appLayout.hasSuppressHydrationWarning.status === "not-found" ? "⚠️" : "⚠️"} suppressHydrationWarning: ${result.routerPatchability.appLayout.hasSuppressHydrationWarning.status}`,
-        );
-      }
-      if (
-        result.projectSanity.routerType === "pages" ||
-        result.projectSanity.routerType === "hybrid"
-      ) {
-        console.log(
-          `  ${result.routerPatchability.pagesApp.exists ? "✅" : "⚠️"} Pages _app: ${result.routerPatchability.pagesApp.path}`,
-        );
-        console.log(
-          `  ${result.routerPatchability.pagesApp.writeableInfo.status === "not-writable" ? "❌" : "✅"} Writable: ${String(result.routerPatchability.pagesApp.writable)}`,
-        );
-        console.log(
-          `  ${result.routerPatchability.pagesDocument.exists ? "✅" : "⚠️"} Pages _document: ${result.routerPatchability.pagesDocument.path}`,
-        );
-        console.log(
-          `  ${result.routerPatchability.pagesDocument.writeableInfo.status === "not-writable" || result.routerPatchability.pagesDocument.writeableInfo.status === "not-found-parent-not-writable" ? "❌" : "✅"} Writable: ${String(result.routerPatchability.pagesDocument.writable)}`,
-        );
-        console.log(
-          `  ${result.routerPatchability.pagesDocument.hasSuppressHydrationWarning.status === "found" ? "✅" : result.routerPatchability.pagesDocument.hasSuppressHydrationWarning.status === "not-found" ? "⚠️" : "⚠️"} suppressHydrationWarning: ${result.routerPatchability.pagesDocument.hasSuppressHydrationWarning.status}`,
-        );
-      }
-      if (result.appProvidersShim.exists) {
-        console.log(
-          `  ${result.appProvidersShim.targetMatchesRouter === false || result.appProvidersShim.targetExists === false ? "⚠️" : "✅"} App providers shim: ${result.appProvidersShim.path}`,
-        );
-      }
-
-      console.log("\nKit prerequisites");
-      console.log(
-        `  ${result.environmentChecks.tailwind.detected ? "✅" : "⚠️"} Tailwind CSS ${result.environmentChecks.tailwind.detected ? "detected" : "not detected"}`,
-      );
-      console.log(
-        `  ${result.environmentChecks.typescript.detected ? "✅" : "❌"} TypeScript ${result.environmentChecks.typescript.detected ? "detected" : "not detected"}`,
-      );
-
-      console.log("\nFilesystem / collisions");
-      console.log(
-        `  ${result.projectRootWritability.writable === false ? "❌" : result.projectRootWritability.exists ? "✅" : "❌"} Project root writable: ${String(result.projectRootWritability.writable)}`,
-      );
-      const existingCollisions = result.collisions.paths.filter(
-        (entry) => entry.exists,
-      );
-      if (existingCollisions.length === 0) {
-        console.log("  ✅ No install collisions detected");
-      } else {
-        for (const entry of existingCollisions) {
-          console.log(`  ⚠️ Collision: ${entry.path}`);
-        }
-      }
-
-      console.log("\nInstalled state");
-      if (result.recordedInstallState.installedKits.length === 0) {
-        console.log("  ⚠️ No recorded installed kits found");
-      } else {
-        for (const kit of result.recordedInstallState.installedKits) {
-          console.log(`  ✅ Recorded kit: ${kit.name}`);
-        }
-      }
-      const missingRecordedFiles = result.blocksFilePresence.filter(
-        (entry) => !entry.exists,
-      );
-      if (missingRecordedFiles.length > 0) {
-        for (const entry of missingRecordedFiles) {
-          console.log(`  ⚠️ Missing recorded file: ${entry.path}`);
-        }
-      }
-
-      if (result.warnings.length > 0) {
-        console.log("\nWarnings");
-        for (const warning of result.warnings) {
-          console.log(`  ⚠️ ${warning}`);
-        }
-      }
-
-      if (result.errors.length > 0) {
-        console.log("\nErrors");
-        for (const error of result.errors) {
-          console.log(`  ❌ ${error}`);
-        }
-      }
-
       console.log("\nRecommendation");
-      if (!hasErrors) {
-        console.log("  ✅ Recommended next step: nextworks add blocks");
-      } else {
+      if (hasErrors) {
         console.log(
           `  ❌ Fix blocking issues before install: ${result.errors[0]}`,
         );
+      } else {
+        console.log("  ✅ Recommended next step: nextworks add blocks");
       }
 
       process.exit(hasErrors ? 1 : 0);

@@ -18,6 +18,7 @@ Not Started
 <!-- ADD THIS TO THE BOTTOM OF THE HISTORY LIST -->
 
 - 2026 04 16 - Doctor Project Sanity Spec — Added blocking doctor diagnostics for missing `package.json`, missing `next`, and missing supported router entrypoints; doctor now always outputs JSON including `warnings` and `errors`.
+
 - 2026 04 17 - Doctor Router Patchability Spec — Added doctor warnings/errors for router patchability checks across App Router, Pages Router, and hybrid projects, including non-writable targets and missing `suppressHydrationWarning` / `_document.tsx` creation diagnostics.
 - 2026 04 17 - Doctor Project Root Writability Spec — Added a fatal project-root writability diagnostic, separate from router patch target checks, using a dedicated existing-directory writability check for the current project root.
 - 2026 04 20 - Doctor Blocks Tailwind Spec — Added Tailwind prerequisite detection to doctor using `tailwindcss` dependencies and CSS-based Tailwind v4 signals, with a warning when Tailwind is not detected.
@@ -28,3 +29,4 @@ Not Started
 - 2026 04 21 - Doctor Blocks Destination Collisions Templates Spec — Added template destination collision diagnostics for App Router and Pages Router template paths, including rewritten Pages Router template destinations.
 - 2026 04 21 - Doctor Installed State Recorded Kits Spec — Added doctor support for reading recorded installed kits from `.nextworks/config.json` and including them in the doctor result.
 - 2026 04 21 - Doctor Installed State Blocks Files Spec — Added read-only doctor diagnostics that verify representative Blocks files exist when Blocks is recorded as installed, warning on recorded-state/file mismatches.
+- 2026 04 21 - Doctor Output Human Readable Spec — Replaced normal doctor JSON output with grouped human-readable diagnostics, including environment, project, router, prerequisite, filesystem, collision, and installed-state sections.
