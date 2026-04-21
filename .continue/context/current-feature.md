@@ -10,7 +10,7 @@ Not Started
 
 ## Release / Docs Checks
 
-- `npm run build`
+- `npm run build` ✅
 
 ## History
 
@@ -32,3 +32,4 @@ Not Started
 - 2026 04 21 - Doctor Output Human Readable Spec — Replaced normal doctor JSON output with grouped human-readable diagnostics, including environment, project, router, prerequisite, filesystem, collision, installed-state, and recommendation sections.
 - 2026 04 21 - Doctor Output Recommendation Spec — Added a short final recommendation to doctor output, preferring `nextworks add blocks` when no blocking errors exist and surfacing blocking fixes first when errors do exist.
 - 2026 04 21 - Doctor Output JSON Spec — Added structured JSON output for doctor with grouped diagnostics, warnings, errors, and overall status while keeping the human-readable path separate.
+- 2026 04 21 - Doctor Exit Codes Spec — Made doctor exit `0` for warning-only or clean runs and `1` when any error diagnostics are present, with the same behavior in human-readable and `--json` modes.
