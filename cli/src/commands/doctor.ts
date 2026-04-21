@@ -115,6 +115,13 @@ interface CollisionDiagnostics {
   paths: CollisionCheck[];
 }
 
+const TEMPLATE_SLUGS = [
+  "productlaunch",
+  "saasdashboard",
+  "digitalagency",
+  "gallery",
+] as const;
+
 const COLLISION_CANDIDATES = {
   src: [
     "src/components/app-providers.tsx",
@@ -584,8 +591,34 @@ function getRouterPatchabilityDiagnostics(result: DoctorResult): {
   return { warnings, errors };
 }
 
-function collectCollisionChecks(cwd: string, mode: "src" | "root") {
-  const candidates = COLLISION_CANDIDATES[mode];
+function collectCollisionChecks(
+  cwd: string,
+  mode: "src" | "root",
+  routerType: DoctorResult["projectSanity"]["routerType"],
+) {
+  const candidates = [...COLLISION_CANDIDATES[mode]];
+
+  for (const slug of TEMPLATE_SLUGS) {
+    if (routerType === "pages" || routerType === "hybrid") {
+      if (mode === "src") {
+        candidates.push(`src/pages/templates/${slug}/index.tsx` as never);
+        candidates.push(`src/components/templates/${slug}` as never);
+      } else {
+        candidates.push(`pages/templates/${slug}/index.tsx` as never);
+        candidates.push(`components/templates/${slug}` as never);
+      }
+    }
+
+    if (routerType === "app" || routerType === "hybrid") {
+      if (mode === "src") {
+        candidates.push(`src/app/templates/${slug}/page.tsx` as never);
+        candidates.push(`src/app/templates/${slug}` as never);
+      } else {
+        candidates.push(`app/templates/${slug}/page.tsx` as never);
+        candidates.push(`app/templates/${slug}` as never);
+      }
+    }
+  }
 
   return candidates.map((relativePath) => ({
     path: path.join(cwd, relativePath),
@@ -596,8 +629,9 @@ function collectCollisionChecks(cwd: string, mode: "src" | "root") {
 async function getCollisionDiagnostics(
   cwd: string,
   mode: "src" | "root",
+  routerType: DoctorResult["projectSanity"]["routerType"],
 ): Promise<CollisionDiagnostics> {
-  const paths = collectCollisionChecks(cwd, mode);
+  const paths = collectCollisionChecks(cwd, mode, routerType);
 
   for (const entry of paths) {
     entry.exists = await fileExists(entry.path);
@@ -836,7 +870,11 @@ export async function doctor(
   result.appProvidersShim = shimDiagnostics.shim;
   result.warnings.push(...shimDiagnostics.warnings);
 
-  result.collisions = await getCollisionDiagnostics(cwd, mode ?? "root");
+  result.collisions = await getCollisionDiagnostics(
+    cwd,
+    mode ?? "root",
+    result.projectSanity.routerType,
+  );
   result.warnings.push(
     ...result.collisions.paths
       .filter((entry) => entry.exists)
