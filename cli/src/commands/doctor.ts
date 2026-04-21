@@ -13,7 +13,7 @@ import {
   getInstallCommand,
 } from "../utils/package-manager";
 import { isYarnPnPProject } from "../utils/yarn-pnp";
-import { getInstalledKits } from "../utils/installation-tracker";
+import { getNextworksConfig } from "../utils/installation-tracker";
 
 type CheckStatus = "ok" | "error" | "warning";
 type CheckResult =
@@ -83,7 +83,8 @@ interface PatchabilityCheck {
   path: string;
   exists: boolean;
   writable: boolean | null;
-  writeableInfo: CheckWritability;
+  writableInfo: CheckWritability;
+
   hasSuppressHydrationWarning: CheckResult;
 }
 
@@ -305,21 +306,21 @@ function createInitialDoctorResult(): DoctorResult {
         path: "",
         exists: false,
         writable: false,
-        writeableInfo: { status: "init" },
+        writableInfo: { status: "init" },
         hasSuppressHydrationWarning: { status: "init" },
       },
       pagesApp: {
         path: "",
         exists: false,
         writable: false,
-        writeableInfo: { status: "init" },
+        writableInfo: { status: "init" },
         hasSuppressHydrationWarning: { status: "init" },
       },
       pagesDocument: {
         path: "",
         exists: false,
         writable: false,
-        writeableInfo: { status: "init" },
+        writableInfo: { status: "init" },
         hasSuppressHydrationWarning: { status: "init" },
       },
     },
@@ -570,7 +571,7 @@ function getRouterPatchabilityDiagnostics(result: DoctorResult): {
   if (routerType === "app" || routerType === "hybrid") {
     const appLayout = result.routerPatchability.appLayout;
 
-    if (appLayout.exists && appLayout.writeableInfo.status === "not-writable") {
+    if (appLayout.exists && appLayout.writableInfo.status === "not-writable") {
       errors.push(`App Router layout is not writable: ${appLayout.path}`);
     }
 
@@ -588,13 +589,13 @@ function getRouterPatchabilityDiagnostics(result: DoctorResult): {
     const pagesApp = result.routerPatchability.pagesApp;
     const pagesDocument = result.routerPatchability.pagesDocument;
 
-    if (pagesApp.exists && pagesApp.writeableInfo.status === "not-writable") {
+    if (pagesApp.exists && pagesApp.writableInfo.status === "not-writable") {
       errors.push(`Pages Router _app.tsx is not writable: ${pagesApp.path}`);
     }
 
     if (
       pagesDocument.exists &&
-      pagesDocument.writeableInfo.status === "not-writable"
+      pagesDocument.writableInfo.status === "not-writable"
     ) {
       errors.push(
         `Pages Router _document.tsx is not writable: ${pagesDocument.path}`,
@@ -612,7 +613,7 @@ function getRouterPatchabilityDiagnostics(result: DoctorResult): {
 
     if (
       !pagesDocument.exists &&
-      pagesDocument.writeableInfo.status === "not-found-parent-writable"
+      pagesDocument.writableInfo.status === "not-found-parent-writable"
     ) {
       warnings.push(
         `Pages Router _document.tsx does not exist and will need to be created during install: ${pagesDocument.path}`,
@@ -621,7 +622,7 @@ function getRouterPatchabilityDiagnostics(result: DoctorResult): {
 
     if (
       !pagesDocument.exists &&
-      pagesDocument.writeableInfo.status === "not-found-parent-not-writable"
+      pagesDocument.writableInfo.status === "not-found-parent-not-writable"
     ) {
       errors.push(
         `Pages Router _document.tsx does not exist and its parent directory is not writable: ${pagesDocument.path}`,
@@ -682,30 +683,17 @@ async function getCollisionDiagnostics(
 }
 
 async function getRecordedInstallState(): Promise<RecordedInstallState> {
-  const installedKitNames = await getInstalledKits();
+  const config = await getNextworksConfig();
 
-  const installedKits = installedKitNames.map((name) => ({
-    name,
-    dependencies: [],
-    devDependencies: [],
-    files: [],
-    installedAt: "",
-  }));
-
-  return { installedKits };
-}
-
-function getBlocksManifestRequiredFiles(manifest: BlocksManifest): string[] {
-  const groups = manifest.groups ?? {};
-  const files = new Set<string>();
-
-  for (const group of Object.values(groups)) {
-    for (const file of group.files) {
-      files.add(file);
-    }
-  }
-
-  return [...files];
+  return {
+    installedKits: config.installedKits.map((kit) => ({
+      name: kit.name,
+      dependencies: [...kit.dependencies],
+      devDependencies: [...kit.devDependencies],
+      files: [...kit.files],
+      installedAt: kit.installedAt,
+    })),
+  };
 }
 
 function getBlocksInstalledFileChecks(
@@ -713,17 +701,15 @@ function getBlocksInstalledFileChecks(
   manifest: BlocksManifest,
   recordedInstallState: RecordedInstallState,
 ): BlocksFilePresenceCheck[] {
-  const hasBlocksInstalled = recordedInstallState.installedKits.some(
+  const installedBlocksKit = recordedInstallState.installedKits.find(
     (kit) => kit.name === manifest.name,
   );
 
-  if (!hasBlocksInstalled) {
+  if (!installedBlocksKit) {
     return [];
   }
 
-  const requiredFiles = getBlocksManifestRequiredFiles(manifest);
-
-  return requiredFiles.map((relativePath) => ({
+  return installedBlocksKit.files.map((relativePath) => ({
     path: path.join(cwd, relativePath),
     exists: false,
     required: true,
@@ -800,6 +786,9 @@ export async function doctor(
   }
 
   result.environmentChecks.nodeVersion = getNodeVersionCheck();
+  if (result.environmentChecks.nodeVersion.status === "error") {
+    result.errors.push(result.environmentChecks.nodeVersion.message);
+  }
 
   const detectedPM = await detectPackageManager(cwd);
   const installCmd = getInstallCommand(detectedPM);
@@ -808,6 +797,11 @@ export async function doctor(
 
   const isYarnPnP = await isYarnPnPProject(cwd);
   result.environmentChecks.yarnPnPDetection.isPnP = isYarnPnP;
+  if (isYarnPnP) {
+    result.warnings.push(
+      `Yarn Plug'n'Play detected. ${result.environmentChecks.yarnPnPDetection.message}`,
+    );
+  }
 
   if (packageJson) {
     result.environmentChecks.tailwind.hasTailwindDependency =
@@ -867,13 +861,13 @@ export async function doctor(
     const layoutExists = await fileExists(layoutFilePath);
     result.routerPatchability.appLayout.exists = layoutExists;
 
-    const isWriteableInfo = await fileIsWritable(layoutFilePath);
-    result.routerPatchability.appLayout.writeableInfo = isWriteableInfo;
+    const writableInfo = await fileIsWritable(layoutFilePath);
+    result.routerPatchability.appLayout.writableInfo = writableInfo;
 
-    const writeAble = isWriteableInfo.status;
-    if (writeAble === "writable") {
+    const writableStatus = writableInfo.status;
+    if (writableStatus === "writable") {
       result.routerPatchability.appLayout.writable = true;
-    } else if (writeAble === "not-writable") {
+    } else if (writableStatus === "not-writable") {
       result.routerPatchability.appLayout.writable = false;
     } else {
       result.routerPatchability.appLayout.writable = null;
@@ -902,13 +896,13 @@ export async function doctor(
     const _appExists = await fileExists(_appFilePath);
     result.routerPatchability.pagesApp.exists = _appExists;
 
-    const is_appWriteableInfo = await fileIsWritable(_appFilePath);
-    result.routerPatchability.pagesApp.writeableInfo = is_appWriteableInfo;
+    const appWritableInfo = await fileIsWritable(_appFilePath);
+    result.routerPatchability.pagesApp.writableInfo = appWritableInfo;
 
-    const _appWriteAble = is_appWriteableInfo.status;
-    if (_appWriteAble === "writable") {
+    const appWritableStatus = appWritableInfo.status;
+    if (appWritableStatus === "writable") {
       result.routerPatchability.pagesApp.writable = true;
-    } else if (_appWriteAble === "not-writable") {
+    } else if (appWritableStatus === "not-writable") {
       result.routerPatchability.pagesApp.writable = false;
     } else {
       result.routerPatchability.pagesApp.writable = null;
@@ -932,14 +926,13 @@ export async function doctor(
     const _documentExists = await fileExists(_documentFilePath);
     result.routerPatchability.pagesDocument.exists = _documentExists;
 
-    const is_documentWriteableInfo = await fileIsWritable(_documentFilePath);
-    result.routerPatchability.pagesDocument.writeableInfo =
-      is_documentWriteableInfo;
+    const documentWritableInfo = await fileIsWritable(_documentFilePath);
+    result.routerPatchability.pagesDocument.writableInfo = documentWritableInfo;
 
-    const _documentWriteAble = is_documentWriteableInfo.status;
-    if (_documentWriteAble === "writable") {
+    const documentWritableStatus = documentWritableInfo.status;
+    if (documentWritableStatus === "writable") {
       result.routerPatchability.pagesDocument.writable = true;
-    } else if (_documentWriteAble === "not-writable") {
+    } else if (documentWritableStatus === "not-writable") {
       result.routerPatchability.pagesDocument.writable = false;
     } else {
       result.routerPatchability.pagesDocument.writable = null;
@@ -1042,7 +1035,7 @@ export function formatDoctorResult(result: DoctorResult): string[] {
       `  ${result.routerPatchability.appLayout.exists ? "✅" : "⚠️"} app/layout.tsx: ${result.routerPatchability.appLayout.path}`,
     );
     lines.push(
-      `  ${result.routerPatchability.appLayout.exists ? (result.routerPatchability.appLayout.writeableInfo.status === "not-writable" ? "❌" : "✅") : "⚠️"} Writable: ${String(result.routerPatchability.appLayout.writable)}`,
+      `  ${result.routerPatchability.appLayout.exists ? (result.routerPatchability.appLayout.writableInfo.status === "not-writable" ? "❌" : "✅") : "⚠️"} Writable: ${String(result.routerPatchability.appLayout.writable)}`,
     );
     lines.push(
       `  ${result.routerPatchability.appLayout.hasSuppressHydrationWarning.status === "found" ? "✅" : "⚠️"} suppressHydrationWarning: ${result.routerPatchability.appLayout.hasSuppressHydrationWarning.status}`,
@@ -1056,13 +1049,13 @@ export function formatDoctorResult(result: DoctorResult): string[] {
       `  ${result.routerPatchability.pagesApp.exists ? "✅" : "⚠️"} pages/_app.tsx: ${result.routerPatchability.pagesApp.path}`,
     );
     lines.push(
-      `  ${result.routerPatchability.pagesApp.exists ? (result.routerPatchability.pagesApp.writeableInfo.status === "not-writable" ? "❌" : "✅") : "⚠️"} Writable: ${String(result.routerPatchability.pagesApp.writable)}`,
+      `  ${result.routerPatchability.pagesApp.exists ? (result.routerPatchability.pagesApp.writableInfo.status === "not-writable" ? "❌" : "✅") : "⚠️"} Writable: ${String(result.routerPatchability.pagesApp.writable)}`,
     );
     lines.push(
       `  ${result.routerPatchability.pagesDocument.exists ? "✅" : "⚠️"} pages/_document.tsx: ${result.routerPatchability.pagesDocument.path}`,
     );
     lines.push(
-      `  ${result.routerPatchability.pagesDocument.exists ? (result.routerPatchability.pagesDocument.writeableInfo.status === "not-writable" || result.routerPatchability.pagesDocument.writeableInfo.status === "not-found-parent-not-writable" ? "❌" : "✅") : "⚠️"} Writable: ${String(result.routerPatchability.pagesDocument.writable)}`,
+      `  ${result.routerPatchability.pagesDocument.exists ? (result.routerPatchability.pagesDocument.writableInfo.status === "not-writable" || result.routerPatchability.pagesDocument.writableInfo.status === "not-found-parent-not-writable" ? "❌" : "✅") : "⚠️"} Writable: ${String(result.routerPatchability.pagesDocument.writable)}`,
     );
     lines.push(
       `  ${result.routerPatchability.pagesDocument.hasSuppressHydrationWarning.status === "found" ? "✅" : "⚠️"} suppressHydrationWarning: ${result.routerPatchability.pagesDocument.hasSuppressHydrationWarning.status}`,
