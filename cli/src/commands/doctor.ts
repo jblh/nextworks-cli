@@ -179,6 +179,22 @@ interface DoctorResult {
   errors: string[];
 }
 
+export interface DoctorJsonResult {
+  status: "ok" | "error";
+  results: {
+    projectSanity: ProjectSanity;
+    environmentChecks: EnvironmentChecks;
+    projectRootWritability: ProjectRootWritability;
+    routerPatchability: RouterPatchability;
+    appProvidersShim: AppProvidersShimCheck;
+    collisions: CollisionDiagnostics;
+    recordedInstallState: RecordedInstallState;
+    blocksFilePresence: BlocksFilePresenceCheck[];
+  };
+  warnings: string[];
+  errors: string[];
+}
+
 interface PackageJsonLike {
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;

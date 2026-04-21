@@ -6,7 +6,11 @@
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
-import { doctor, formatDoctorResult } from "./commands/doctor";
+import {
+  doctor,
+  formatDoctorResult,
+  type DoctorJsonResult,
+} from "./commands/doctor";
 
 import { addBlocks } from "./commands/blocks";
 import { removeBlocks } from "./commands/remove-blocks";
@@ -54,7 +58,7 @@ program
       const hasErrors = result.errors.length > 0;
 
       if (options.json) {
-        const output = {
+        const output: DoctorJsonResult = {
           status: hasErrors ? "error" : "ok",
           results: {
             projectSanity: result.projectSanity,
