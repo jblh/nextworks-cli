@@ -37,15 +37,13 @@ Complete the current feature.
 1. Read `current-feature.md` to identify the active feature, goals, and notes
 2. Run a final review to ensure everything is complete
 3. If the feature is complete, update `## Status` in `current-feature.md` to `Complete` before closeout
-4. Ask once for approval before any git closeout actions that modify repo history or remote state
-5. After approval, perform the full approved closeout flow without re-asking between steps: stage, commit, push, merge, and switch branches as applicable
-6. Stage all intended changes
-7. Commit with a descriptive conventional commit message based on the feature
-8. Push the branch to origin
-9. Merge into `main`
-10. Switch back to `main`
+4. Stage all intended changes
+5. Commit with a descriptive conventional commit message based on the feature
+6. Push the branch to origin
+7. Merge into `main`
+8. Switch back to `main`
 
-11. Reset `current-feature.md`:
+9. Reset `current-feature.md`:
 
 - Change H1 back to `# Current Feature`
 - Clear Goals and Notes sections
