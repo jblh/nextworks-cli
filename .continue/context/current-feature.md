@@ -2,7 +2,7 @@
 
 ## Status
 
-Not Started
+Complete
 
 ## Goals
 
@@ -22,3 +22,4 @@ Not Started
 - 2026 04 20 - Doctor Blocks TypeScript Spec — Added doctor TypeScript prerequisite detection using `tsconfig.json` and `typescript` dependencies, with an error when TypeScript readiness is not detected.
 - 2026 04 21 - Doctor Blocks App Providers Shim Spec — Added read-only doctor diagnostics for the local app-providers shim, including router-mode matching and missing target file warnings.
 - 2026 04 21 - Doctor Blocks Manifest Kit Source Spec — Added doctor diagnostics that read the Blocks manifest source and validate manifest-declared kit files against the installed Blocks kit packages in the consuming project.
+- 2026 04 21 - Doctor Blocks Destination Collisions Core Spec — Added doctor collision diagnostics for high-risk install destinations using root-mode and router-aware path mapping, with warnings for existing app-providers, UI/sections, globals, utility, and router entrypoint targets.

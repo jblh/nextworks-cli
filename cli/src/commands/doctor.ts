@@ -106,12 +106,47 @@ interface AppProvidersShimCheck {
   targetMatchesRouter: boolean | null;
 }
 
+interface CollisionCheck {
+  path: string;
+  exists: boolean;
+}
+
+interface CollisionDiagnostics {
+  paths: CollisionCheck[];
+}
+
+const COLLISION_CANDIDATES = {
+  src: [
+    "src/components/app-providers.tsx",
+    "src/components/ui",
+    "src/components/sections",
+    "src/app/globals.css",
+    "src/app/tw-animate.css",
+    "src/lib/utils.ts",
+    "src/app/layout.tsx",
+    "src/pages/_app.tsx",
+    "src/pages/_document.tsx",
+  ],
+  root: [
+    "components/app-providers.tsx",
+    "components/ui",
+    "components/sections",
+    "app/globals.css",
+    "app/tw-animate.css",
+    "lib/utils.ts",
+    "app/layout.tsx",
+    "pages/_app.tsx",
+    "pages/_document.tsx",
+  ],
+} as const;
+
 interface DoctorResult {
   projectSanity: ProjectSanity;
   environmentChecks: EnvironmentChecks;
   projectRootWritability: ProjectRootWritability;
   routerPatchability: RouterPatchability;
   appProvidersShim: AppProvidersShimCheck;
+  collisions: CollisionDiagnostics;
   warnings: string[];
   errors: string[];
 }
@@ -213,6 +248,9 @@ function createInitialDoctorResult(): DoctorResult {
       target: null,
       targetExists: null,
       targetMatchesRouter: null,
+    },
+    collisions: {
+      paths: [],
     },
     routerPatchability: {
       appLayout: {
@@ -546,6 +584,28 @@ function getRouterPatchabilityDiagnostics(result: DoctorResult): {
   return { warnings, errors };
 }
 
+function collectCollisionChecks(cwd: string, mode: "src" | "root") {
+  const candidates = COLLISION_CANDIDATES[mode];
+
+  return candidates.map((relativePath) => ({
+    path: path.join(cwd, relativePath),
+    exists: false,
+  }));
+}
+
+async function getCollisionDiagnostics(
+  cwd: string,
+  mode: "src" | "root",
+): Promise<CollisionDiagnostics> {
+  const paths = collectCollisionChecks(cwd, mode);
+
+  for (const entry of paths) {
+    entry.exists = await fileExists(entry.path);
+  }
+
+  return { paths };
+}
+
 export async function doctor(
   options: DoctorOptions = {},
 ): Promise<DoctorResult> {
@@ -775,6 +835,13 @@ export async function doctor(
   );
   result.appProvidersShim = shimDiagnostics.shim;
   result.warnings.push(...shimDiagnostics.warnings);
+
+  result.collisions = await getCollisionDiagnostics(cwd, mode ?? "root");
+  result.warnings.push(
+    ...result.collisions.paths
+      .filter((entry) => entry.exists)
+      .map((entry) => `Install collision detected: ${entry.path}`),
+  );
 
   const diagnostics = getRouterPatchabilityDiagnostics(result);
   result.warnings.push(...diagnostics.warnings);
