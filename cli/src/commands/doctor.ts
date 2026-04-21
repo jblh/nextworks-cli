@@ -1,3 +1,4 @@
+// DO NOT DELETE UNUSED IMPORTS OR ANY UNUSED VARIABLES!
 import fs from "fs-extra";
 import { constants } from "fs";
 import path from "path";
@@ -40,6 +41,12 @@ interface BlocksManifest {
   files?: string[];
   groups?: Record<string, BlocksManifestGroup>;
   cliKitPath: string;
+}
+
+interface ManifestSourceCheck {
+  manifestPath: string;
+  installedKitPaths: string[];
+  missingFiles: string[];
 }
 
 interface DoctorOptions {
@@ -112,6 +119,7 @@ interface DoctorResult {
   projectRootWritability: ProjectRootWritability;
   routerPatchability: RouterPatchability;
   appProvidersShim: AppProvidersShimCheck;
+  manifestSource: ManifestSourceCheck;
   warnings: string[];
   errors: string[];
 }
@@ -214,6 +222,12 @@ function createInitialDoctorResult(): DoctorResult {
       targetExists: null,
       targetMatchesRouter: null,
     },
+    manifestSource: {
+      manifestPath: "",
+      installedKitPaths: [],
+      missingFiles: [],
+    },
+
     routerPatchability: {
       appLayout: {
         path: "",
@@ -546,6 +560,57 @@ function getRouterPatchabilityDiagnostics(result: DoctorResult): {
   return { warnings, errors };
 }
 
+function getManifestFiles(manifest: BlocksManifest): string[] {
+  const files = new Set<string>();
+
+  for (const file of manifest.files ?? []) {
+    files.add(file);
+  }
+
+  for (const group of Object.values(manifest.groups ?? {})) {
+    for (const file of group.files) {
+      files.add(file);
+    }
+  }
+
+  return Array.from(files);
+}
+
+async function getManifestSourceDiagnostics(
+  manifest: BlocksManifest,
+  packageRoots: string[],
+  manifestPath: string,
+): Promise<{ manifestSource: ManifestSourceCheck; warnings: string[] }> {
+  const warnings: string[] = [];
+  const installedKitPaths = packageRoots;
+  const missingFiles: string[] = [];
+
+  for (const file of getManifestFiles(manifest)) {
+    const fileExistsInAnyPackage = await Promise.all(
+      packageRoots.map((root) => fileExists(path.join(root, file))),
+    );
+
+    if (!fileExistsInAnyPackage.some(Boolean)) {
+      missingFiles.push(file);
+    }
+  }
+
+  if (missingFiles.length > 0) {
+    warnings.push(
+      `Blocks manifest references files missing from installed block packages: ${missingFiles.join(", ")}`,
+    );
+  }
+
+  return {
+    manifestSource: {
+      manifestPath,
+      installedKitPaths,
+      missingFiles,
+    },
+    warnings,
+  };
+}
+
 export async function doctor(
   options: DoctorOptions = {},
 ): Promise<DoctorResult> {
@@ -553,12 +618,15 @@ export async function doctor(
 
   const result = createInitialDoctorResult();
 
-  const kitDir = resolveAssetPath("kits", "blocks");
-
   const manifestPath = resolveAssetPath(
     "cli_manifests",
     "blocks_manifest.json",
   );
+  const packageRoots = [
+    path.join(cwd, "node_modules", "@nextworks", "blocks-core"),
+    path.join(cwd, "node_modules", "@nextworks", "blocks-sections"),
+    path.join(cwd, "node_modules", "@nextworks", "blocks-templates"),
+  ];
 
   const packageJsonPath = getPackageJsonPath(cwd);
   const hasPackageJson = await fileExists(packageJsonPath);
@@ -587,6 +655,7 @@ export async function doctor(
   }
 
   const manifest = (await readJsonFile(manifestPath)) as BlocksManifest;
+  result.manifestSource.manifestPath = manifestPath;
 
   const mode = await detectProjectRootMode(cwd);
   result.projectSanity.projectRoot = mode;
@@ -775,6 +844,15 @@ export async function doctor(
   );
   result.appProvidersShim = shimDiagnostics.shim;
   result.warnings.push(...shimDiagnostics.warnings);
+
+  const manifestDiagnostics = await getManifestSourceDiagnostics(
+    manifest,
+    packageRoots,
+    manifestPath,
+  );
+
+  result.manifestSource = manifestDiagnostics.manifestSource;
+  result.warnings.push(...manifestDiagnostics.warnings);
 
   const diagnostics = getRouterPatchabilityDiagnostics(result);
   result.warnings.push(...diagnostics.warnings);
