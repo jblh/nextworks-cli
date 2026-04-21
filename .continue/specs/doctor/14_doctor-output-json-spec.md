@@ -4,6 +4,10 @@
 
 Make `--json` output structured machine-readable doctor data.
 
+## Implementation Note
+
+- Working file: `cli/src/commands/doctor.ts`
+
 ## Requirements
 
 - When `--json` is passed, `cli/src/index.ts` must output structured JSON.

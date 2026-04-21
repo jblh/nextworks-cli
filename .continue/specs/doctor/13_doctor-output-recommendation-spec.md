@@ -4,6 +4,10 @@
 
 Add a short recommendation at the end of human-readable doctor output.
 
+## Implementation Note
+
+- Working file: `cli/src/commands/doctor.ts`
+
 ## Requirements
 
 - If there are no error diagnostics, the output must recommend `nextworks add blocks`.
