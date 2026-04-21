@@ -1,22 +1,12 @@
-# Current Feature: Doctor Output JSON Spec
+# Current Feature
 
 ## Status
 
-Complete
+Not Started
 
 ## Goals
 
-- Make `--json` output structured, machine-readable doctor data.
-- Keep JSON output separate from the normal human-readable presentation path.
-- Include grouped results, warnings, errors, and overall status.
-- Cover current doctor diagnostics in grouped JSON output.
-- Distinguish success with no errors from failure with one or more errors.
-
 ## Notes
-
-- Working file: `cli/src/commands/doctor.ts`
-- `cli/src/index.ts` must emit JSON when `--json` is passed.
-- Grouped results should include `projectSanity`, `environmentChecks`, `projectRootWritability`, `routerPatchability`, `appProvidersShim`, `collisions`, `recordedInstallState`, and `blocksFilePresence`.
 
 ## Release / Docs Checks
 
@@ -41,3 +31,4 @@ Complete
 - 2026 04 21 - Doctor Installed State Blocks Files Spec — Added read-only doctor diagnostics that verify representative Blocks files exist when Blocks is recorded as installed, warning on recorded-state/file mismatches.
 - 2026 04 21 - Doctor Output Human Readable Spec — Replaced normal doctor JSON output with grouped human-readable diagnostics, including environment, project, router, prerequisite, filesystem, collision, installed-state, and recommendation sections.
 - 2026 04 21 - Doctor Output Recommendation Spec — Added a short final recommendation to doctor output, preferring `nextworks add blocks` when no blocking errors exist and surfacing blocking fixes first when errors do exist.
+- 2026 04 21 - Doctor Output JSON Spec — Added structured JSON output for doctor with grouped diagnostics, warnings, errors, and overall status while keeping the human-readable path separate.
