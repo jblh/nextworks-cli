@@ -81,14 +81,6 @@ program
       for (const line of formatDoctorResult(result)) {
         console.log(line);
       }
-      console.log("\nRecommendation");
-      if (hasErrors) {
-        console.log(
-          `  ❌ Fix blocking issues before install: ${result.errors[0]}`,
-        );
-      } else {
-        console.log("  ✅ Recommended next step: nextworks add blocks");
-      }
 
       process.exit(hasErrors ? 1 : 0);
     } catch (error) {
