@@ -31,7 +31,7 @@ Fonts are instead configured directly in your app’s router entrypoint (the CLI
 If you ever see a font-related Turbopack error after upgrades or manual edits, re-run:
 
 ```bash
-npx nextworks@latest add blocks --sections --templates
+npx nextworks@latest add blocks --templates
 ```
 
 to re-apply the router entrypoint patch, and ensure your entrypoint contains a valid
