@@ -1,0 +1,13 @@
+name: Context7 mcpServer
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: Context7
+    command: npx
+    args:
+      - "-y"
+      - "@upstash/context7-mcp"
+      - "--api-key"
+      - ${{ secrets.CONTEXT7_API_KEY }}
+    env:
+      CONTEXT7_API_KEY: ${{ secrets.CONTEXT7_API_KEY }}
