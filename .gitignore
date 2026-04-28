@@ -24,6 +24,9 @@ packages/**/*.tgz
 # Diagrams
 ..visualizing/
 
+# Playwright
+.playwright-mcp/
+
 # TypeScript build info (already present in packages)
 **/*.tsbuildinfo
 
