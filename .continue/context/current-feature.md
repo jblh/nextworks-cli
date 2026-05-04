@@ -1,4 +1,4 @@
-# Current Feature: HeroProductDemo Shared Section API
+# Current Feature
 
 ## Status
 
@@ -6,34 +6,15 @@ Not Started
 
 ## Goals
 
-- Add a new shared `HeroProductDemo` section component in package source and copied kit source.
-- Keep `HeroProductDemo` separate from `HeroSplit` and follow existing shared section API conventions.
-- Support heading, subheading, CTA props, slot overrides, aria label, and optional motion toggle.
-- Accept scenario/stage configuration props and pass normalized values into internal demo stage primitives.
-- Export `HeroProductDemo` from the shared sections package public surface without exporting low-level demo primitives.
+- None.
 
 ## Notes
 
-- Source spec: `.continue/specs/heroproductdemo/1_heroproductdemo-shared-section-api-spec.md`
-- In scope files:
-  - `packages/blocks-sections/src/components/HeroProductDemo.tsx`
-  - `packages/blocks-sections/src/components/index.ts`
-  - `cli/kits/blocks/components/sections/HeroProductDemo.tsx`
-- `HeroProductDemo` must provide the outer hero layout and reusable public API for a layered product-demo hero.
-- It must not extend or mutate `HeroSplit`.
-- It must not hardcode AI workflow branding, copy, or scenario content.
-- Internal demo stage mechanics, detailed scenario typing, panel renderers, template-local preset work, and manifest updates are out of scope for this spec.
-- Before implementing, inspect the existing shared hero/section APIs and one or two template wrappers to match repo patterns. Most relevant files:
-  - `packages/blocks-sections/src/components/HeroSplit.tsx`
-  - `packages/blocks-sections/src/components/Navbar.tsx`
-  - `packages/blocks-sections/src/components/index.ts`
-  - `cli/kits/blocks/components/sections/HeroSplit.tsx`
-  - `packages/blocks-templates/src/templates/saas-dashboard/components/Hero.tsx`
-  - `cli/kits/blocks/app/templates/saas-dashboard/components/Hero.tsx`
+- None.
 
 ## Release / Docs Checks
 
-- `npm run build` ✅
+- None.
 
 ## History
 
@@ -55,3 +36,4 @@ Not Started
 - 2026 04 21 - Doctor Output Recommendation Spec — Added a short final recommendation to doctor output, preferring `nextworks add blocks` when no blocking errors exist and surfacing blocking fixes first when errors do exist.
 - 2026 04 21 - Doctor Output JSON Spec — Added structured JSON output for doctor with grouped diagnostics, warnings, errors, and overall status while keeping the human-readable path separate.
 - 2026 04 21 - Doctor Exit Codes Spec — Made doctor exit `0` for warning-only or clean runs and `1` when any error diagnostics are present, with the same behavior in human-readable and `--json` modes.
+- 2026 05 04 - HeroProductDemo Shared Section API — Added the new shared `HeroProductDemo` section in package source and copied kit source, exported it from the shared sections public surface, and completed the reusable hero API for layered product-demo content without exposing low-level demo primitives.

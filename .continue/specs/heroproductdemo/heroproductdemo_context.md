@@ -9,6 +9,7 @@ This work is explicitly inspired by the **interaction mechanics** of the Cursor 
 ## Product concept
 
 Template story:
+
 - AI understands requests
 - triggers multi-step workflows
 - routes approvals
@@ -16,10 +17,12 @@ Template story:
 - shows live execution state
 
 Recommended product framing:
+
 - AI workflow automation platform for modern teams
 - layered windows for builder, live execution, approvals, and context
 
 Primary panels/windows:
+
 1. Workflow Studio
 2. Live Run / Activity Feed
 3. Approval Inbox
@@ -30,6 +33,7 @@ Primary panels/windows:
 Do **not** extend `HeroSplit` to support this.
 
 Reason:
+
 - `HeroSplit` is a text + image/fallback section.
 - This new hero is a richer product-demo system with multiple layered windows and internal scenario/state mechanics.
 - It should be implemented as a **new shared section** plus **shared internal demo primitives**, with a **template-local preset wrapper**.
@@ -37,7 +41,9 @@ Reason:
 ## Shared vs preset split
 
 ### Shared reusable layer
+
 The shared layer should contain only reusable mechanics and rendering primitives:
+
 - hero-with-demo layout
 - stage layout engine
 - generic window shell/chrome
@@ -47,7 +53,9 @@ The shared layer should contain only reusable mechanics and rendering primitives
 - reusable highlight/status UI patterns
 
 ### Template-local preset layer
+
 The new AI workflow template should contain:
+
 - product naming/copy
 - headline/subheadline
 - CTA labels
@@ -61,31 +69,40 @@ The new AI workflow template should contain:
 ## Confirmed repo patterns
 
 ### Shared sections
+
 Shared reusable sections live in both:
+
 - `packages/blocks-sections/src/components/**`
 - `cli/kits/blocks/components/sections/**`
 
 The package source uses exports via:
+
 - `packages/blocks-sections/src/components/index.ts`
 - `packages/blocks-sections/src/index.ts`
 
 The copied kit side does **not** need a local barrel export for this work.
 
 ### Templates
+
 Template source lives in:
+
 - `packages/blocks-templates/src/templates/<slug>/**`
 
 Copied installable template files live in:
+
 - `cli/kits/blocks/app/templates/<slug>/**`
 
 Important distinction:
+
 - package source template entry uses `Page.tsx`
 - copied kit route entry uses `page.tsx`
 
 This is existing repo convention, not two duplicate files in one location.
 
 ### Template-local composition pattern
+
 Existing templates use local wrappers such as:
+
 - `components/Hero.tsx`
 - `components/Navbar.tsx`
 - `components/Pricing.tsx`
@@ -93,6 +110,7 @@ Existing templates use local wrappers such as:
 Those wrappers import shared sections and pass preset content/config into them.
 
 The new template should follow the same pattern:
+
 - local `components/Hero.tsx` imports shared `HeroProductDemo`
 - local wrapper supplies AI workflow-specific props/data/styles
 
@@ -101,6 +119,7 @@ The new template should follow the same pattern:
 The relevant inspiration is the **mechanics** of the Cursor homepage hero, not its visual branding.
 
 Behavior/mechanics to preserve:
+
 - multiple interactive-looking windows
 - real DOM/React-like composition, not video/canvas requirement
 - absolute positioning
@@ -116,6 +135,7 @@ Behavior/mechanics to preserve:
 - motion based on state changes rather than animating everything constantly
 
 The implementation should imitate Cursor’s **interaction grammar** first, then change:
+
 - product category
 - content model
 - panel names/data
@@ -125,15 +145,19 @@ The implementation should imitate Cursor’s **interaction grammar** first, then
 ## Recommended naming
 
 Shared section name:
+
 - `HeroProductDemo.tsx`
 
 Template-local hero wrapper:
+
 - `components/Hero.tsx`
 
 New template slug:
+
 - `aiworkflow`
 
 Rationale:
+
 - shared mechanic is broader than just workflow automation
 - template story stays AI-workflow specific
 - `components/Hero.tsx` matches existing template conventions
@@ -141,6 +165,7 @@ Rationale:
 ## Planned shared file structure
 
 ### Package source
+
 - `packages/blocks-sections/src/components/HeroProductDemo.tsx`
 - `packages/blocks-sections/src/components/product-demo/types.ts`
 - `packages/blocks-sections/src/components/product-demo/DemoStage.tsx`
@@ -151,6 +176,7 @@ Rationale:
 - `packages/blocks-sections/src/components/product-demo/KnowledgePanel.tsx`
 
 ### Copied kit mirror
+
 - `cli/kits/blocks/components/sections/HeroProductDemo.tsx`
 - `cli/kits/blocks/components/sections/product-demo/types.ts`
 - `cli/kits/blocks/components/sections/product-demo/DemoStage.tsx`
@@ -163,6 +189,7 @@ Rationale:
 ## Planned template file structure
 
 ### Package source
+
 - `packages/blocks-templates/src/templates/aiworkflow/Page.tsx`
 - `packages/blocks-templates/src/templates/aiworkflow/PresetThemeVars.tsx`
 - `packages/blocks-templates/src/templates/aiworkflow/README.md`
@@ -180,6 +207,7 @@ Rationale:
   - optional `TrustBadges.tsx`
 
 ### Copied kit mirror
+
 - `cli/kits/blocks/app/templates/aiworkflow/page.tsx`
 - `cli/kits/blocks/app/templates/aiworkflow/PresetThemeVars.tsx`
 - `cli/kits/blocks/app/templates/aiworkflow/README.md`
@@ -190,24 +218,33 @@ Rationale:
 ## Export and sync implications
 
 ### Shared sections package export
+
 Need to export only the new public shared section:
+
 - add `HeroProductDemo` to `packages/blocks-sections/src/components/index.ts`
 
 Do **not** export the internal product-demo primitives publicly unless later needed.
 
 ### Templates package export
+
 Need to update:
+
 - `packages/blocks-templates/src/index.ts`
 
 Expected addition:
+
 - `export * as AIWorkflow from "./templates/aiworkflow/Page";`
 
 ### Manifest sync
+
 The copied kit template and any new shared kit files will need to be added to:
+
 - `cli_manifests/blocks_manifest.json`
 
 ### Docs sync
+
 If the new template becomes installable via the standard templates flow, relevant docs may also need updates later:
+
 - root `README.md`
 - `cli/README.md`
 - `docs/**`
@@ -216,7 +253,9 @@ If the new template becomes installable via the standard templates flow, relevan
 ## Existing design patterns to preserve
 
 ### Shared section API style
+
 The new shared hero should follow existing section conventions such as those seen in `HeroSplit` and `Navbar`:
+
 - root `className`
 - slot-style override objects
 - typed props
@@ -225,7 +264,9 @@ The new shared hero should follow existing section conventions such as those see
 - optional motion toggle
 
 ### Template wrapper pattern
+
 Template wrappers should remain shallow adapters that:
+
 - import a shared section
 - set preset content/config/styling
 - preserve the ability to override further if needed later
@@ -233,7 +274,9 @@ Template wrappers should remain shallow adapters that:
 ## Recommended prop flow
 
 ### Template `components/Hero.tsx`
+
 Passes into shared `HeroProductDemo`:
+
 - heading
 - subheading
 - CTA config
@@ -242,7 +285,9 @@ Passes into shared `HeroProductDemo`:
 - stage options
 
 ### Shared `HeroProductDemo.tsx`
+
 Accepts:
+
 - hero text props
 - CTA props
 - section/container/text/demo slot overrides
@@ -253,16 +298,24 @@ Accepts:
 Then it normalizes and passes panel/stage props into `DemoStage`.
 
 ### `DemoStage.tsx`
+
 Receives normalized scenario/window data and renders:
+
 - overlapping windows
 - active scenario state
 - auto-cycling behavior
 - reduced-motion-safe transitions
 - window shells with panel content
 
+Implementation note from the shared-section API pass:
+
+- `DemoStage` currently exists as an internal component embedded inside `HeroProductDemo.tsx`. That is acceptable for the API-only spec, but the later internal-primitives spec will likely extract it into its own file.
+- The current placeholder normalization for `initialScenarioIndex` allows an index equal to scenario count when scenarios exist. It is not breaking yet because the value is only exposed through data attributes in the placeholder stage, but it should be corrected when real stage mechanics are implemented.
+
 ## Strong data-model recommendation
 
 Use one typed top-level scenario object per scene/state. Each scenario should include, directly or by nested objects:
+
 - workflow studio state
 - run console state
 - approval inbox state
@@ -277,6 +330,7 @@ This keeps the system reusable and makes step-by-step implementation and spec-wr
 ## Suggested page composition
 
 The final page composition should be a normal Nextworks template page, likely using:
+
 - `Navbar`
 - `Hero`
 - optional `TrustBadges`
@@ -294,6 +348,7 @@ The exact section list may be adjusted during implementation, but the hero remai
 ## Scope sequencing
 
 Recommended spec/implementation order:
+
 1. Shared `HeroProductDemo` API
 2. Shared demo data model
 3. Shared `DemoStage` and `DemoWindow` mechanics
@@ -316,6 +371,7 @@ Recommended spec/implementation order:
 ## Notes for future implementation chats
 
 If working one spec at a time, this context file should be treated as the source of truth for:
+
 - why `HeroProductDemo` exists
 - why this is not an extension of `HeroSplit`
 - what belongs in shared vs preset
