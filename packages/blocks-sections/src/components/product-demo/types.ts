@@ -1,0 +1,178 @@
+export type ProductDemoStatusTone =
+  | "neutral"
+  | "info"
+  | "success"
+  | "warning"
+  | "danger";
+
+export type ProductDemoHighlightTone =
+  | ProductDemoStatusTone
+  | "accent"
+  | "muted";
+
+export type ProductDemoWindowKey =
+  | "workflowStudio"
+  | "runConsole"
+  | "approvalInbox"
+  | "knowledgePanel";
+
+export interface ProductDemoWindowStatus {
+  label: string;
+  tone?: ProductDemoStatusTone;
+}
+
+export interface ProductDemoWindowLayoutHint {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  zIndex?: number;
+  rotateDeg?: number;
+}
+
+export interface ProductDemoWindowMeta {
+  key: ProductDemoWindowKey;
+  title: string;
+  subtitle?: string;
+  status?: ProductDemoWindowStatus;
+  badge?: string;
+  layoutHint?: ProductDemoWindowLayoutHint;
+}
+
+export interface ProductDemoHighlightTarget {
+  id: string;
+  label?: string;
+  tone?: ProductDemoHighlightTone;
+}
+
+export interface ProductDemoWorkflowNode {
+  id: string;
+  label: string;
+  description?: string;
+  type?: string;
+  status?: ProductDemoStatusTone;
+  active?: boolean;
+  emphasized?: boolean;
+  metadata?: string;
+}
+
+export interface ProductDemoWorkflowBranch {
+  id: string;
+  fromNodeId: string;
+  toNodeId: string;
+  label?: string;
+  status?: ProductDemoStatusTone;
+  active?: boolean;
+}
+
+export interface ProductDemoWorkflowStudioState {
+  window: ProductDemoWindowMeta;
+  title?: string;
+  subtitle?: string;
+  nodes: ProductDemoWorkflowNode[];
+  branches?: ProductDemoWorkflowBranch[];
+  activeNodeId?: string;
+  highlights?: ProductDemoHighlightTarget[];
+}
+
+export interface ProductDemoRunConsoleEntry {
+  id: string;
+  message: string;
+  timestamp?: string;
+  source?: string;
+  status?: ProductDemoStatusTone;
+  highlighted?: boolean;
+}
+
+export interface ProductDemoRunConsoleMetric {
+  id: string;
+  label: string;
+  value: string;
+  tone?: ProductDemoStatusTone;
+}
+
+export interface ProductDemoRunConsoleState {
+  window: ProductDemoWindowMeta;
+  title?: string;
+  subtitle?: string;
+  statusLabel?: string;
+  progressLabel?: string;
+  entries: ProductDemoRunConsoleEntry[];
+  metrics?: ProductDemoRunConsoleMetric[];
+  activeEntryId?: string;
+  highlights?: ProductDemoHighlightTarget[];
+}
+
+export interface ProductDemoApprovalAction {
+  id: string;
+  label: string;
+  tone?: ProductDemoStatusTone;
+}
+
+export interface ProductDemoApprovalItem {
+  id: string;
+  title: string;
+  description?: string;
+  requester?: string;
+  status?: ProductDemoStatusTone;
+  priorityLabel?: string;
+  dueLabel?: string;
+  actions?: ProductDemoApprovalAction[];
+  highlighted?: boolean;
+}
+
+export interface ProductDemoApprovalInboxState {
+  window: ProductDemoWindowMeta;
+  title?: string;
+  subtitle?: string;
+  counts?: Array<{
+    id: string;
+    label: string;
+    value: string;
+    tone?: ProductDemoStatusTone;
+  }>;
+  items: ProductDemoApprovalItem[];
+  activeItemId?: string;
+  highlights?: ProductDemoHighlightTarget[];
+}
+
+export interface ProductDemoKnowledgeSource {
+  id: string;
+  label: string;
+  kind?: string;
+  status?: ProductDemoStatusTone;
+}
+
+export interface ProductDemoKnowledgeSnippet {
+  id: string;
+  title: string;
+  content: string;
+  sourceId?: string;
+  confidence?: string;
+  tags?: string[];
+  highlighted?: boolean;
+}
+
+export interface ProductDemoKnowledgePanelState {
+  window: ProductDemoWindowMeta;
+  title?: string;
+  subtitle?: string;
+  query?: string;
+  summary?: string;
+  sources?: ProductDemoKnowledgeSource[];
+  snippets: ProductDemoKnowledgeSnippet[];
+  activeSnippetId?: string;
+  highlights?: ProductDemoHighlightTarget[];
+}
+
+export interface ProductDemoScenario {
+  key: string;
+  label?: string;
+  description?: string;
+  workflowStudio: ProductDemoWorkflowStudioState;
+  runConsole: ProductDemoRunConsoleState;
+  approvalInbox: ProductDemoApprovalInboxState;
+  knowledgePanel: ProductDemoKnowledgePanelState;
+  activeWindow?: ProductDemoWindowKey;
+  highlights?: ProductDemoHighlightTarget[];
+}
