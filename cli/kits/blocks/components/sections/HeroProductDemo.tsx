@@ -153,7 +153,8 @@ export function HeroProductDemo({
     >
       <div
         className={cn(
-          "mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-16",
+          "mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:gap-12 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]",
+
           container?.className,
         )}
       >
