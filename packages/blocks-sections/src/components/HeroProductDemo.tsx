@@ -4,6 +4,8 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@nextworks/blocks-core";
 import { cn } from "@nextworks/blocks-core";
+import { DemoStage } from "./product-demo/DemoStage";
+import type { ProductDemoScenario } from "./product-demo/types";
 
 export interface HeroProductDemoTextContent {
   text?: string;
@@ -27,8 +29,9 @@ export interface HeroProductDemoCta {
 }
 
 export interface HeroProductDemoStageConfig {
-  scenarios?: unknown[];
+  scenarios?: ProductDemoScenario[];
   initialScenarioIndex?: number;
+  activeScenarioKey?: string;
   autoCycle?: boolean;
   cycleIntervalMs?: number;
   className?: string;
@@ -55,12 +58,6 @@ export interface HeroProductDemoProps extends HeroProductDemoSlots {
   enableMotion?: boolean;
 }
 
-interface DemoStageProps {
-  config?: HeroProductDemoStageConfig;
-  enableMotion?: boolean;
-  children?: React.ReactNode;
-}
-
 function normalizeTextContent(
   value: string | HeroProductDemoTextContent | undefined,
   defaults: Required<HeroProductDemoTextContent>,
@@ -73,106 +70,6 @@ function normalizeTextContent(
     text: value?.text ?? defaults.text,
     className: cn(defaults.className, value?.className),
   };
-}
-
-function DemoStage({ config, enableMotion = true, children }: DemoStageProps) {
-  const normalizedScenarioCount = config?.scenarios?.length ?? 0;
-  const normalizedInitialScenarioIndex = Math.max(
-    0,
-    Math.min(config?.initialScenarioIndex ?? 0, normalizedScenarioCount || 0),
-  );
-
-  return (
-    <div
-      data-product-demo-stage
-      data-auto-cycle={config?.autoCycle ? "true" : "false"}
-      data-enable-motion={enableMotion ? "true" : "false"}
-      data-scenario-count={normalizedScenarioCount}
-      data-initial-scenario-index={normalizedInitialScenarioIndex}
-      data-cycle-interval-ms={config?.cycleIntervalMs ?? 0}
-      className={cn(
-        "relative isolate min-h-[24rem] w-full overflow-hidden rounded-[2rem] border border-border/60 bg-gradient-to-br from-background via-background to-muted/40 shadow-2xl",
-        enableMotion &&
-          "transition-transform duration-300 hover:-translate-y-1",
-        config?.className,
-      )}
-      aria-hidden="true"
-    >
-      {children ?? (
-        <div className="absolute inset-0">
-          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-primary/8 to-transparent" />
-          <div className="absolute inset-4 rounded-[1.5rem] border border-border/50 bg-background/80 backdrop-blur-sm" />
-          <div className="absolute left-6 top-6 flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-rose-400/80" />
-            <span className="h-3 w-3 rounded-full bg-amber-400/80" />
-            <span className="h-3 w-3 rounded-full bg-emerald-400/80" />
-          </div>
-          <div className="absolute left-6 right-6 top-16 grid gap-4 md:grid-cols-[1.15fr_0.85fr]">
-            <div className="rounded-[1.25rem] border border-border/60 bg-card/90 p-5 shadow-lg">
-              <div className="mb-4 flex items-center justify-between">
-                <div>
-                  <div className="h-3 w-24 rounded-full bg-muted" />
-                  <div className="mt-2 h-2.5 w-36 rounded-full bg-muted/80" />
-                </div>
-                <div className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                  Active flow
-                </div>
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 rounded-xl border border-border/50 bg-background/80 p-3">
-                  <div className="h-8 w-8 rounded-lg bg-primary/15" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-2.5 w-28 rounded-full bg-muted" />
-                    <div className="h-2.5 w-40 rounded-full bg-muted/80" />
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 rounded-xl border border-primary/35 bg-primary/8 p-3 shadow-sm">
-                  <div className="h-8 w-8 rounded-lg bg-primary/20" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-2.5 w-24 rounded-full bg-primary/35" />
-                    <div className="h-2.5 w-44 rounded-full bg-primary/20" />
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 rounded-xl border border-border/50 bg-background/80 p-3">
-                  <div className="h-8 w-8 rounded-lg bg-muted" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-2.5 w-20 rounded-full bg-muted" />
-                    <div className="h-2.5 w-32 rounded-full bg-muted/80" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="rounded-[1.25rem] border border-border/60 bg-card/90 p-5 shadow-lg">
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="h-3 w-28 rounded-full bg-muted" />
-                  <div className="h-6 w-20 rounded-full bg-emerald-500/15" />
-                </div>
-                <div className="space-y-3">
-                  <div className="h-2.5 w-full rounded-full bg-muted" />
-                  <div className="h-2.5 w-5/6 rounded-full bg-muted/80" />
-                  <div className="h-2.5 w-2/3 rounded-full bg-muted/70" />
-                </div>
-              </div>
-              <div className="rounded-[1.25rem] border border-border/60 bg-card/90 p-5 shadow-lg">
-                <div className="mb-3 h-3 w-24 rounded-full bg-muted" />
-                <div className="space-y-3">
-                  <div className="rounded-xl border border-border/50 bg-background/80 p-3">
-                    <div className="h-2.5 w-16 rounded-full bg-muted" />
-                    <div className="mt-2 h-2.5 w-28 rounded-full bg-muted/80" />
-                  </div>
-                  <div className="rounded-xl border border-border/50 bg-background/80 p-3">
-                    <div className="h-2.5 w-20 rounded-full bg-muted" />
-                    <div className="mt-2 h-2.5 w-24 rounded-full bg-muted/80" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
 }
 
 export function HeroProductDemo({
@@ -319,9 +216,18 @@ export function HeroProductDemo({
         </div>
 
         <div className={cn("relative", demoContainer?.className)}>
-          <DemoStage config={stage} enableMotion={enableMotion}>
-            {demo}
-          </DemoStage>
+          {demo ?? (
+            <DemoStage
+              scenarios={stage?.scenarios}
+              initialScenarioIndex={stage?.initialScenarioIndex}
+              activeScenarioKey={stage?.activeScenarioKey}
+              autoCycle={stage?.autoCycle}
+              cycleIntervalMs={stage?.cycleIntervalMs}
+              className={stage?.className}
+              enableMotion={enableMotion}
+              ariaLabel="Layered product demo"
+            />
+          )}
         </div>
       </div>
     </section>
