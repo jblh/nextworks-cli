@@ -209,13 +209,13 @@ function getWindowRenderData(
 function getWindowShellClass(key: ProductDemoWindowKey) {
   switch (key) {
     case "workflowStudio":
-      return "lg:absolute lg:left-[3%] lg:top-[8%] lg:h-[72%] lg:w-[58%]";
+      return "lg:absolute lg:left-[2%] lg:top-[9%] lg:h-[66%] lg:w-[46%]";
     case "knowledgePanel":
-      return "lg:absolute lg:right-[6%] lg:top-[6%] lg:h-[42%] lg:w-[34%]";
+      return "lg:absolute lg:left-[50%] lg:top-[10%] lg:h-[34%] lg:w-[30%] xl:left-[49%] xl:w-[29%]";
     case "runConsole":
-      return "lg:absolute lg:left-[12%] lg:bottom-[5%] lg:h-[34%] lg:w-[42%]";
+      return "lg:absolute lg:left-[50%] lg:bottom-[10%] lg:h-[33%] lg:w-[32%] xl:left-[49%] xl:w-[31%]";
     case "approvalInbox":
-      return "lg:absolute lg:right-[8%] lg:bottom-[8%] lg:h-[40%] lg:w-[32%]";
+      return "lg:absolute lg:right-[1%] lg:top-[17%] lg:h-[45%] lg:w-[24%] xl:right-[2%] xl:h-[44%] xl:w-[23%]";
     default:
       return "";
   }
@@ -346,7 +346,7 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:block lg:h-[32rem] xl:h-[34rem]">
+        <div className="hidden lg:block lg:h-[34rem] xl:h-[36rem]">
           {windows.map((windowData) => {
             const activeWindow =
               activeScenario.activeWindow === windowData.key ||
