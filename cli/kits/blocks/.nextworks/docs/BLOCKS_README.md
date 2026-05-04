@@ -54,6 +54,7 @@ Blocks supports these install shapes:
    - `/templates/productlaunch`
    - `/templates/saasdashboard`
    - `/templates/digitalagency`
+   - `/templates/aiworkflow`
    - `/templates/gallery`
 
 ---
