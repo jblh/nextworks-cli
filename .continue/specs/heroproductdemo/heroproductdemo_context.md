@@ -312,6 +312,7 @@ Implementation note from the shared-section API pass:
 - `DemoStage` currently exists as an internal component embedded inside `HeroProductDemo.tsx`. That is acceptable for the API-only spec, but the later internal-primitives spec will likely extract it into its own file.
 - The current placeholder normalization for `initialScenarioIndex` allows an index equal to scenario count when scenarios exist. It is not breaking yet because the value is only exposed through data attributes in the placeholder stage, but it should be corrected when real stage mechanics are implemented.
 - `HeroProductDemo` still uses `unknown[]` for `stage.scenarios`; that can be wired to `ProductDemoScenario[]` in the next implementation step.
+- `DemoStage.tsx` may retain leftover `STATUS_TONE_CLASSES` / `getStatusClass` definitions after panel extraction. They are harmless if unused, but should be treated as cleanup debt unless a later step intentionally reuses them there.
 
 ## Strong data-model recommendation
 
