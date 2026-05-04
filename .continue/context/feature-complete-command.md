@@ -32,11 +32,13 @@ Read the current feature from:
 
 Complete the current feature.
 
+Invoking `- feature complete` is explicit approval to perform the full closeout workflow, including git write actions required by this command.
+
 ### Requirements
 
-1. Read `current-feature.md` to identify the active feature, goals, and notes ( if it looks completed, then proceed to step 4. )
+1. Read `current-feature.md` to identify the active feature, goals, and notes (if it already looks completed, proceed directly to step 4)
 2. Run a final review to ensure everything is complete
-3. If the feature is complete,
+3. If the feature is complete, continue the closeout flow without asking for additional confirmation
 4. Reset `current-feature.md`:
 
 - Update `## Status` in `current-feature.md` to `Not Started` before closeout
@@ -49,3 +51,5 @@ Complete the current feature.
 7. Push the branch to origin
 8. Merge into `main`
 9. Switch back to `main`
+
+Do not stop to ask for approval before staging, committing, pushing, merging, or switching branches when the user explicitly invoked `- feature complete`.
