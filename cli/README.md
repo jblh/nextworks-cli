@@ -204,7 +204,7 @@ This copies:
 After this step you should be able to start your dev server and visit:
 
 - `/` (if wired as the home page), or
-- `/templates/productlaunch`, `/templates/saasdashboard`, `/templates/digitalagency`
+- `/templates/productlaunch`, `/templates/saasdashboard`, `/templates/digitalagency`, `/templates/aiworkflow`
 
 ---
 
@@ -253,6 +253,7 @@ You can add a short “Nextworks setup” section to your app README:
    - `/templates/productlaunch`
    - `/templates/saasdashboard`
    - `/templates/digitalagency`
+   - `/templates/aiworkflow`
    - `/templates/gallery`
 
    Template files live at:
