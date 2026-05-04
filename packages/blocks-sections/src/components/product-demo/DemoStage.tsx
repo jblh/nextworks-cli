@@ -209,25 +209,32 @@ function getWindowRenderData(
 function getWindowShellClass(key: ProductDemoWindowKey) {
   switch (key) {
     case "workflowStudio":
-      return "lg:absolute lg:left-[3%] lg:top-[8%] lg:h-[72%] lg:w-[58%]";
-    case "knowledgePanel":
-      return "lg:absolute lg:right-[6%] lg:top-[6%] lg:h-[42%] lg:w-[34%]";
+      return "lg:col-span-1 lg:row-span-1 lg:min-w-0";
     case "runConsole":
-      return "lg:absolute lg:left-[12%] lg:bottom-[5%] lg:h-[34%] lg:w-[42%]";
+      return "lg:col-span-1 lg:row-span-1 lg:min-w-0";
+    case "knowledgePanel":
+      return "lg:col-span-1 lg:row-span-1 lg:min-w-0";
     case "approvalInbox":
-      return "lg:absolute lg:right-[8%] lg:bottom-[8%] lg:h-[40%] lg:w-[32%]";
+      return "lg:absolute lg:bottom-5 lg:right-5 lg:z-20 lg:w-[22rem] xl:w-[23rem]";
     default:
       return "";
   }
 }
 
 function getTransformStyle(
+  key: ProductDemoWindowKey,
   meta: ProductDemoWindowMeta,
 ): React.CSSProperties | undefined {
   const layoutHint = meta.layoutHint;
 
   if (!layoutHint) {
-    return undefined;
+    return key === "approvalInbox" ? { zIndex: 20 } : undefined;
+  }
+
+  if (key !== "approvalInbox") {
+    return {
+      zIndex: layoutHint.zIndex,
+    };
   }
 
   const translateX = layoutHint.x ?? 0;
@@ -346,50 +353,100 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:block lg:h-[32rem] xl:h-[34rem]">
-          {windows.map((windowData) => {
-            const activeWindow =
-              activeScenario.activeWindow === windowData.key ||
-              (!activeScenario.activeWindow &&
-                windowData.key === "workflowStudio");
+        <div className="hidden lg:relative lg:block lg:min-h-[34rem] xl:min-h-[36rem]">
+          <div className="grid h-full grid-cols-3 gap-4 xl:gap-5">
+            {windows
+              .filter((windowData) => windowData.key !== "approvalInbox")
+              .map((windowData) => {
+                const activeWindow =
+                  activeScenario.activeWindow === windowData.key ||
+                  (!activeScenario.activeWindow &&
+                    windowData.key === "workflowStudio");
 
-            return (
-              <motion.div
-                key={windowData.key}
-                initial={
-                  enableMotion ? { opacity: 0, y: 18, scale: 0.98 } : false
-                }
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: activeWindow ? 1 : 0.985,
-                }}
-                transition={
-                  enableMotion
-                    ? {
-                        type: "tween",
-                        duration: 0.45,
-                      }
-                    : { duration: 0 }
-                }
-                className={cn(
-                  "will-change-transform",
-                  getWindowShellClass(windowData.key),
-                )}
-                style={getTransformStyle(windowData.meta)}
-              >
-                <DemoWindow
-                  window={windowData.meta}
-                  active={activeWindow}
-                  dimmed={!activeWindow}
-                  enableMotion={enableMotion}
-                  className="h-full"
+                return (
+                  <motion.div
+                    key={windowData.key}
+                    initial={
+                      enableMotion ? { opacity: 0, y: 18, scale: 0.98 } : false
+                    }
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      scale: activeWindow ? 1 : 0.985,
+                    }}
+                    transition={
+                      enableMotion
+                        ? {
+                            type: "tween",
+                            duration: 0.45,
+                          }
+                        : { duration: 0 }
+                    }
+                    className={cn(
+                      "will-change-transform",
+                      getWindowShellClass(windowData.key),
+                    )}
+                    style={getTransformStyle(windowData.key, windowData.meta)}
+                  >
+                    <DemoWindow
+                      window={windowData.meta}
+                      active={activeWindow}
+                      dimmed={!activeWindow}
+                      enableMotion={enableMotion}
+                      className="h-full"
+                    >
+                      {windowData.content}
+                    </DemoWindow>
+                  </motion.div>
+                );
+              })}
+          </div>
+
+          {windows
+            .filter((windowData) => windowData.key === "approvalInbox")
+            .map((windowData) => {
+              const activeWindow =
+                activeScenario.activeWindow === windowData.key ||
+                (!activeScenario.activeWindow &&
+                  windowData.key === "workflowStudio");
+
+              return (
+                <motion.div
+                  key={windowData.key}
+                  initial={
+                    enableMotion ? { opacity: 0, y: 18, scale: 0.98 } : false
+                  }
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: activeWindow ? 1 : 0.985,
+                  }}
+                  transition={
+                    enableMotion
+                      ? {
+                          type: "tween",
+                          duration: 0.45,
+                        }
+                      : { duration: 0 }
+                  }
+                  className={cn(
+                    "will-change-transform",
+                    getWindowShellClass(windowData.key),
+                  )}
+                  style={getTransformStyle(windowData.key, windowData.meta)}
                 >
-                  {windowData.content}
-                </DemoWindow>
-              </motion.div>
-            );
-          })}
+                  <DemoWindow
+                    window={windowData.meta}
+                    active={activeWindow}
+                    dimmed={!activeWindow}
+                    enableMotion={enableMotion}
+                    className="h-full"
+                  >
+                    {windowData.content}
+                  </DemoWindow>
+                </motion.div>
+              );
+            })}
         </div>
       </div>
     </div>
