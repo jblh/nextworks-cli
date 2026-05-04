@@ -225,7 +225,7 @@ Helpful workflows include:
 - `--dry-run` to preview file changes
 - `remove blocks` to uninstall the kit
 - `list` to show installed kits
-- `doctor` to check compatibility
+- `doctor` to check compatibility and install readiness
 - install tracking in `.nextworks/config.json`
 
 Current implementation notes:
@@ -233,7 +233,23 @@ Current implementation notes:
 - install/remove is tracked at the file/dependency level in `.nextworks/config.json`
 - `remove blocks` prefers tracked installed files first, then falls back to the manifest if needed
 - uninstall is intentionally **best effort**; the docs correctly recommend git-based revert as the safest rollback path
-- `doctor` exists but is currently only partially implemented compared with the intended vision described in docs/overview text
+- `doctor` is now a substantive preflight diagnostic command rather than just a stub. It currently checks:
+  - `package.json` presence and whether `next` is installed
+  - project root mode detection (`root` vs `src`)
+  - router detection (`app`, `pages`, or `hybrid`)
+  - Node.js compatibility (currently Node 20+)
+  - detected package manager and install command
+  - Yarn Plug'n'Play detection with guidance to switch to `nodeLinker: node-modules`
+  - Tailwind detection via dependency presence and CSS-based Tailwind v4-style imports
+  - TypeScript detection via `tsconfig.json` and/or `typescript` dependency
+  - project root writability
+  - router patch target writability for `app/layout.tsx`, `pages/_app.tsx`, and `pages/_document.tsx`
+  - whether `suppressHydrationWarning` is already present where expected
+  - local `components/app-providers.tsx` shim presence and whether it points to the router-appropriate target
+  - likely install collisions for common kit paths and template destinations
+  - recorded installed kits from `.nextworks/config.json`
+  - whether tracked Blocks-installed files are still present on disk
+- the current `doctor` output is both human-readable and structured enough internally to support richer future reporting; it already goes beyond the older overview text that described it as only partially implemented
 
 ### I) GitHub / Environment Compatibility
 
@@ -247,6 +263,14 @@ The repository explicitly supports:
 - Tailwind CSS based consuming apps
 
 There is also explicit Yarn Plug'n'Play detection and a guided fallback to `nodeLinker: node-modules`, because Yarn PnP is treated as a frequent source of Next.js/Turbopack issues.
+
+The root and CLI READMEs now also frame the most reliable alpha path very explicitly:
+
+- create a fresh Next.js app
+- run `npx nextworks@latest add blocks --templates`
+- prefer TypeScript + Tailwind CSS projects
+- use `--yes` for non-interactive/CI installs
+- treat `--templates` as the recommended install path, while `--sections --templates` remains accepted mainly for backward compatibility in older docs/demo material
 
 ---
 
@@ -426,7 +450,8 @@ Repository workflow characteristics observed:
 
 - smoke tests verify kit installs across routing modes
 - a full matrix workflow verifies OS / Node / Next.js / router / package-manager combinations
-- docs explain install, safety, and troubleshooting
+- docs explain install, safety, troubleshooting, and alpha expectations
+- root and `cli/` READMEs are closely aligned around the recommended `add blocks --templates` workflow
 - file manifests make the install behavior inspectable
 
 Recommended authoring patterns:
@@ -481,7 +506,8 @@ Potential future improvements may include:
 - the CLI, copied kit, and package source are all present and functional
 - the main focus is Blocks installation, router patching reliability, and documentation clarity
 - CI coverage is stronger than a typical prototype, especially around fresh-install verification
-- some surfaces are still in progress or unevenly polished (for example `doctor`, some docs phrasing, and a few source/package inconsistencies like ProductLaunch preset wrapping)
+- some surfaces are still in progress or unevenly polished (for example some docs phrasing and a few source/package inconsistencies like ProductLaunch preset wrapping)
+- compared with earlier overview notes, `doctor` has progressed into a meaningful diagnostics surface for compatibility, patchability, collisions, and tracked-install integrity
 - best suited for experimentation and iterative improvement
 
 ---
