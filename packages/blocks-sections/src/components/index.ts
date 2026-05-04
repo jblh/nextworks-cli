@@ -13,6 +13,7 @@ export type {
 export { Footer } from "./Footer";
 export * from "./HeroMotion";
 export * from "./HeroOverlay";
+export * from "./HeroProductDemo";
 export * from "./HeroSplit";
 export * from "./Navbar";
 export * from "./Newsletter";
