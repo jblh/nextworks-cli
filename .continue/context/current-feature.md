@@ -6,11 +6,7 @@ Not Started
 
 ## Goals
 
-- None.
-
 ## Notes
-
-- None.
 
 ## Release / Docs Checks
 
@@ -40,3 +36,4 @@ Not Started
 - 2026 05 04 - HeroProductDemo Data Model Spec — Added typed shared product-demo hero scenario models in package source and copied kit source, covering scenario keys, highlight state, window metadata, content records, and optional arrangement hints without using `any`.
 - 2026 05 04 - HeroProductDemo Stage and Window Mechanics Spec — Added shared internal `DemoStage` and `DemoWindow` components in package source and copied kit source, with scenario-driven layered window rendering, active scenario selection, and optional auto-cycling for the product-demo hero.
 - 2026 05 04 - HeroProductDemo Panel Renderers Spec — Added internal shared panel renderer components for workflow studio, run console, approval inbox, and knowledge panels in both package and copied-kit sources, keeping them typed, reusable, and non-public while supporting richer product-demo scenario rendering.
+- 2026 05 04 - AI Workflow Template Hero Preset Spec — Added a new template-local `Hero.tsx` for the `aiworkflow` template in package source and copied kit source, configuring `HeroProductDemo` with AI workflow-specific messaging, CTAs, scenario data, panel content, and visual styling while keeping shared demo mechanics unchanged.
