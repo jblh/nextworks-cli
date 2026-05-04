@@ -153,13 +153,13 @@ export function HeroProductDemo({
     >
       <div
         className={cn(
-          "mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-16",
+          "mx-auto flex max-w-7xl flex-col gap-10 lg:gap-12",
           container?.className,
         )}
       >
         <div
           className={cn(
-            "relative z-10 flex flex-col items-start",
+            "relative z-10 flex max-w-3xl flex-col items-start",
             textContainer?.className,
           )}
         >
@@ -215,7 +215,7 @@ export function HeroProductDemo({
           </div>
         </div>
 
-        <div className={cn("relative", demoContainer?.className)}>
+        <div className={cn("relative w-full", demoContainer?.className)}>
           {demo ?? (
             <DemoStage
               scenarios={stage?.scenarios}

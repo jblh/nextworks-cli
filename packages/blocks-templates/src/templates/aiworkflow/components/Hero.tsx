@@ -8,7 +8,8 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
     key: "intake-triage",
     label: "Intake & triage",
     description:
-      "AI turns a revenue operations request into a routed workflow with approvals and live context.",
+      "AI turns a revenue operations request into a routed workflow, then steps teams through context, execution, and approval in sequence.",
+
     activeWindow: "workflowStudio",
     workflowStudio: {
       window: {
@@ -26,9 +27,10 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           rotateDeg: -2,
         },
       },
-      title: "New request → launch expansion campaign",
+      title: "1. Intake request → map the workflow",
       subtitle:
-        "AI maps triggers, owners, systems, and approval checkpoints before launch.",
+        "AI converts the request into a structured flow with the next handoff already prepared.",
+
       activeNodeId: "route-approval",
       activeRegionId: "handoffs",
       highlights: [
@@ -131,10 +133,13 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           rotateDeg: 2,
         },
       },
-      title: "AI orchestration log",
-      subtitle: "Every step is visible, timed, and recoverable.",
-      statusLabel: "Awaiting approvals",
-      progressLabel: "3 of 5 steps complete",
+      title: "2. Prepare execution in the live run",
+      subtitle:
+        "As the flow is mapped, downstream actions queue in order for launch.",
+
+      statusLabel: "Queued behind approval",
+      progressLabel: "Context gathered → awaiting sign-off",
+
       progressPercent: 64,
       activeEntryId: "log-3",
       entries: [
@@ -154,7 +159,9 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
         },
         {
           id: "log-3",
-          message: "Opened approval tasks for finance and legal",
+          message:
+            "Queued approval tasks for finance and legal after policy match",
+
           timestamp: "09:15",
           source: "Approval Router",
           status: "warning",
@@ -192,8 +199,10 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           rotateDeg: 1,
         },
       },
-      title: "High-confidence approvals",
-      subtitle: "Review only where policy requires human sign-off.",
+      title: "3. Route the exact approval request",
+      subtitle:
+        "Only the policy-required decision reaches a human, with the reasoning attached.",
+
       activeItemId: "approval-1",
       counts: [
         { id: "c1", label: "Pending", value: "2", tone: "warning" },
@@ -247,9 +256,10 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           rotateDeg: -1,
         },
       },
-      title: "Context behind every action",
+      title: "Source the context before anything runs",
       subtitle:
-        "AI cites policies, customer context, and prior outcomes before it acts.",
+        "AI grounds the workflow in policy and prior outcomes before it creates the approval path.",
+
       query:
         "Which approvals are required for a regional budget expansion over $25k?",
       summary:
@@ -300,7 +310,8 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
     key: "run-sync",
     label: "Live execution",
     description:
-      "Once approved, AI updates systems, posts status, and keeps teams synced in real time.",
+      "After approval, AI moves left to right through execution, status updates, and monitored completion.",
+
     activeWindow: "runConsole",
     workflowStudio: {
       window: {
@@ -318,9 +329,10 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           rotateDeg: -2,
         },
       },
-      title: "Approved workflow in motion",
+      title: "1. Approval flips the workflow live",
       subtitle:
-        "The same flow now drives tool updates, notifications, and handoffs automatically.",
+        "The mapped flow now advances straight into system updates and downstream handoffs.",
+
       activeNodeId: "notify-teams",
       nodes: [
         {
@@ -409,9 +421,10 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           rotateDeg: 2,
         },
       },
-      title: "Everything updates in sequence",
+      title: "2. Watch every action execute in order",
       subtitle:
-        "Users see the workflow advance without digging through logs or scripts.",
+        "Teams can follow the exact sequence without opening a single background job dashboard.",
+
       statusLabel: "Running smoothly",
       progressLabel: "5 of 6 steps complete",
       progressPercent: 86,
@@ -473,9 +486,10 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           rotateDeg: 1,
         },
       },
-      title: "Approvals only when needed",
+      title: "3. Keep the approval trail visible",
       subtitle:
-        "Human review is targeted, auditable, and out of the critical path once complete.",
+        "Once the decision is made, the inbox becomes the audit layer instead of the bottleneck.",
+
       counts: [
         { id: "rc1", label: "Pending", value: "0", tone: "success" },
         { id: "rc2", label: "Completed", value: "8", tone: "info" },
@@ -520,9 +534,10 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           rotateDeg: -1,
         },
       },
-      title: "Grounded automation, not guesswork",
+      title: "Context stays attached to execution",
       subtitle:
-        "Every downstream change is tied back to source context and prior operating rules.",
+        "Every downstream change still points back to the operating rule that triggered it.",
+
       query: "What should happen after launch approval is complete?",
       summary:
         "Sync CRM, notify GTM owners, create follow-up tasks, and monitor SLA risks until completion.",
@@ -565,12 +580,14 @@ export function Hero() {
       <HeroProductDemo
         className="bg-[linear-gradient(180deg,rgba(248,250,252,0.98)_0%,rgba(239,246,255,0.92)_46%,rgba(248,250,252,0.98)_100%)] dark:bg-[linear-gradient(180deg,rgba(2,6,23,0.98)_0%,rgba(8,47,73,0.96)_42%,rgba(15,23,42,0.98)_100%)]"
         heading={{
-          text: "Let AI run the workflows your team still manages by hand.",
+          text: "Let AI move work from request to action in one visible flow.",
+
           className:
             "max-w-3xl text-left font-outfit text-4xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl dark:text-white",
         }}
         subheading={{
-          text: "Turn requests into multi-step workflows that gather context, route approvals, update tools, and show live execution from one AI workflow automation platform.",
+          text: "Turn incoming requests into workflows that gather context, queue the next step, route the right approval, and then execute left to right with live status.",
+
           className:
             "mt-6 max-w-2xl text-left font-inter text-base leading-7 text-slate-600 sm:text-lg dark:text-slate-300",
         }}
@@ -617,14 +634,13 @@ export function Hero() {
           className: "px-6 py-16 sm:px-8 lg:px-10 lg:py-24",
         }}
         container={{
-          className:
-            "relative z-10 items-start gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]",
+          className: "relative z-10 gap-8 lg:gap-10",
         }}
         textContainer={{
-          className: "pt-4 lg:pt-10",
+          className: "pt-2 lg:pt-4",
         }}
         demoContainer={{
-          className: "relative min-h-[36rem] lg:min-h-[42rem]",
+          className: "relative min-h-[36rem] w-full lg:min-h-[42rem]",
         }}
         buttonsContainer={{
           className: "mt-8 flex-col items-start sm:flex-row sm:items-center",
