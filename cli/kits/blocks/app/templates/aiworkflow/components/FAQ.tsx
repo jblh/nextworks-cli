@@ -1,0 +1,63 @@
+"use client";
+
+import { FAQ as SharedFAQ } from "@/components/sections/FAQ";
+
+export function FAQ() {
+  return (
+    <SharedFAQ
+      faqSectionHeaderText="Frequently asked questions"
+      faqData={[
+        {
+          question: "What kinds of workflows can I automate?",
+          answer:
+            "Teams use FlowPilot AI for intake routing, approvals, CRM and ticket updates, launch coordination, support escalations, and other repeatable cross-tool processes.",
+        },
+        {
+          question: "How do approvals work?",
+          answer:
+            "You define thresholds and policy rules once. The workflow requests human approval only when conditions match, while lower-risk steps continue automatically.",
+        },
+        {
+          question: "Can AI use our internal documentation and policies?",
+          answer:
+            "Yes. The knowledge layer can reference playbooks, policies, runbooks, and other connected sources so actions stay grounded in current context.",
+        },
+        {
+          question: "Will we be able to audit every action?",
+          answer:
+            "Yes. Each workflow run records decisions, approvals, tool updates, and execution logs so teams can trace what happened and why.",
+        },
+        {
+          question: "Do we need engineering support to start?",
+          answer:
+            "Most teams start with business-owned workflows using existing integrations and preset patterns. Engineering can extend the system later when needed.",
+        },
+        {
+          question: "Which tools can it connect to?",
+          answer:
+            "The template story assumes common systems such as Slack, CRM platforms, ticketing tools, docs, and project trackers, with more connectors added as needed.",
+        },
+      ]}
+      section={{ className: "bg-background px-5 py-16" }}
+      container={{ className: "max-w-6xl mx-auto" }}
+      heading={{
+        className:
+          "mb-8 text-center font-outfit text-3xl font-semibold text-[var(--heading-fg)] md:text-4xl",
+      }}
+      grid={{ className: "grid grid-cols-1 gap-5 lg:grid-cols-2" }}
+      item={{ className: "mb-0 w-full" }}
+      questionButton={{
+        className:
+          "flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-white p-5 font-inter font-semibold text-slate-900 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-300 hover:bg-cyan-50 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:hover:border-cyan-700 dark:hover:bg-cyan-950/40",
+      }}
+      answer={{
+        className:
+          "overflow-hidden rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--card-fg)] shadow-sm",
+      }}
+      answerText={{
+        className: "font-inter text-sm leading-7 text-[var(--card-fg)]",
+      }}
+      ariaLabel="AI workflow frequently asked questions"
+    />
+  );
+}
