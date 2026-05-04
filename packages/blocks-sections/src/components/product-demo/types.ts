@@ -65,13 +65,25 @@ export interface ProductDemoWorkflowBranch {
   active?: boolean;
 }
 
+export interface ProductDemoWorkflowRegion {
+  id: string;
+  label: string;
+  description?: string;
+  status?: ProductDemoStatusTone;
+  nodeIds?: string[];
+  active?: boolean;
+  highlighted?: boolean;
+}
+
 export interface ProductDemoWorkflowStudioState {
   window: ProductDemoWindowMeta;
   title?: string;
   subtitle?: string;
   nodes: ProductDemoWorkflowNode[];
   branches?: ProductDemoWorkflowBranch[];
+  regions?: ProductDemoWorkflowRegion[];
   activeNodeId?: string;
+  activeRegionId?: string;
   highlights?: ProductDemoHighlightTarget[];
 }
 
@@ -81,6 +93,7 @@ export interface ProductDemoRunConsoleEntry {
   timestamp?: string;
   source?: string;
   status?: ProductDemoStatusTone;
+  detail?: string;
   highlighted?: boolean;
 }
 
@@ -99,6 +112,7 @@ export interface ProductDemoRunConsoleState {
   progressLabel?: string;
   entries: ProductDemoRunConsoleEntry[];
   metrics?: ProductDemoRunConsoleMetric[];
+  progressPercent?: number;
   activeEntryId?: string;
   highlights?: ProductDemoHighlightTarget[];
 }
@@ -149,6 +163,7 @@ export interface ProductDemoKnowledgeSnippet {
   content: string;
   sourceId?: string;
   confidence?: string;
+  excerptLabel?: string;
   tags?: string[];
   highlighted?: boolean;
 }

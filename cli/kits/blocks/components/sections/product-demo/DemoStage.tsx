@@ -4,17 +4,17 @@ import React from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { DemoWindow } from "./DemoWindow";
+import { ApprovalInboxPanel } from "./ApprovalInboxPanel";
+import { KnowledgePanel } from "./KnowledgePanel";
+import { RunConsolePanel } from "./RunConsolePanel";
+import { WorkflowStudioPanel } from "./WorkflowStudioPanel";
 import type {
-  ProductDemoApprovalInboxState,
   ProductDemoHighlightTarget,
   ProductDemoHighlightTone,
-  ProductDemoKnowledgePanelState,
-  ProductDemoRunConsoleState,
   ProductDemoScenario,
   ProductDemoStatusTone,
   ProductDemoWindowKey,
   ProductDemoWindowMeta,
-  ProductDemoWorkflowStudioState,
 } from "./types";
 
 export interface DemoStageProps {
@@ -159,377 +159,6 @@ function HighlightPills({
   );
 }
 
-function WorkflowStudioPanel({
-  state,
-}: {
-  state: ProductDemoWorkflowStudioState;
-}) {
-  return (
-    <div className="flex h-full flex-col gap-4">
-      <div className="space-y-1.5">
-        {state.title && (
-          <h4 className="text-sm font-semibold text-card-foreground">
-            {state.title}
-          </h4>
-        )}
-        {state.subtitle && (
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            {state.subtitle}
-          </p>
-        )}
-      </div>
-
-      <HighlightPills highlights={state.highlights} />
-
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {state.nodes.map((node) => {
-          const isActive = node.id === state.activeNodeId || node.active;
-
-          return (
-            <div
-              key={node.id}
-              className={cn(
-                "rounded-2xl border border-border/60 bg-background/80 p-3 shadow-sm",
-                isActive && "border-primary/45 bg-primary/6 shadow-md",
-                node.emphasized && "ring-1 ring-primary/30",
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                    {node.type ?? "step"}
-                  </div>
-                  <div className="mt-1 text-sm font-semibold text-card-foreground">
-                    {node.label}
-                  </div>
-                </div>
-                {node.status && (
-                  <span
-                    className={cn(
-                      "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                      getStatusClass(node.status),
-                    )}
-                  >
-                    {node.status}
-                  </span>
-                )}
-              </div>
-              {node.description && (
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  {node.description}
-                </p>
-              )}
-              {node.metadata && (
-                <div className="mt-3 text-[11px] text-muted-foreground/90">
-                  {node.metadata}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function RunConsolePanel({ state }: { state: ProductDemoRunConsoleState }) {
-  return (
-    <div className="flex h-full flex-col gap-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="space-y-1.5">
-          {state.title && (
-            <h4 className="text-sm font-semibold text-card-foreground">
-              {state.title}
-            </h4>
-          )}
-          {state.subtitle && (
-            <p className="text-xs leading-relaxed text-muted-foreground">
-              {state.subtitle}
-            </p>
-          )}
-        </div>
-
-        {(state.statusLabel || state.progressLabel) && (
-          <div className="space-y-1 text-right">
-            {state.statusLabel && (
-              <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                {state.statusLabel}
-              </div>
-            )}
-            {state.progressLabel && (
-              <div className="text-sm font-semibold text-card-foreground">
-                {state.progressLabel}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {state.metrics?.length ? (
-        <div className="grid grid-cols-2 gap-2">
-          {state.metrics.map((metric) => (
-            <div
-              key={metric.id}
-              className={cn(
-                "rounded-xl border px-3 py-2",
-                getStatusClass(metric.tone),
-              )}
-            >
-              <div className="text-[10px] font-medium uppercase tracking-[0.14em] opacity-80">
-                {metric.label}
-              </div>
-              <div className="mt-1 text-sm font-semibold">{metric.value}</div>
-            </div>
-          ))}
-        </div>
-      ) : null}
-
-      <HighlightPills highlights={state.highlights} />
-
-      <div className="space-y-2">
-        {state.entries.map((entry) => {
-          const isActive =
-            entry.id === state.activeEntryId || entry.highlighted;
-
-          return (
-            <div
-              key={entry.id}
-              className={cn(
-                "rounded-xl border border-border/60 bg-background/70 px-3 py-2.5",
-                isActive && "border-primary/40 bg-primary/6",
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <div className="text-sm text-card-foreground">
-                    {entry.message}
-                  </div>
-                  {(entry.source || entry.timestamp) && (
-                    <div className="mt-1 text-[11px] text-muted-foreground">
-                      {[entry.source, entry.timestamp]
-                        .filter(Boolean)
-                        .join(" • ")}
-                    </div>
-                  )}
-                </div>
-                {entry.status && (
-                  <span
-                    className={cn(
-                      "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                      getStatusClass(entry.status),
-                    )}
-                  >
-                    {entry.status}
-                  </span>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function ApprovalInboxPanel({
-  state,
-}: {
-  state: ProductDemoApprovalInboxState;
-}) {
-  return (
-    <div className="flex h-full flex-col gap-4">
-      <div className="space-y-1.5">
-        {state.title && (
-          <h4 className="text-sm font-semibold text-card-foreground">
-            {state.title}
-          </h4>
-        )}
-        {state.subtitle && (
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            {state.subtitle}
-          </p>
-        )}
-      </div>
-
-      {state.counts?.length ? (
-        <div className="flex flex-wrap gap-2">
-          {state.counts.map((count) => (
-            <div
-              key={count.id}
-              className={cn(
-                "rounded-xl border px-3 py-2",
-                getStatusClass(count.tone),
-              )}
-            >
-              <div className="text-[10px] font-medium uppercase tracking-[0.14em] opacity-80">
-                {count.label}
-              </div>
-              <div className="mt-1 text-sm font-semibold">{count.value}</div>
-            </div>
-          ))}
-        </div>
-      ) : null}
-
-      <HighlightPills highlights={state.highlights} />
-
-      <div className="space-y-3">
-        {state.items.map((item) => {
-          const isActive = item.id === state.activeItemId || item.highlighted;
-
-          return (
-            <div
-              key={item.id}
-              className={cn(
-                "rounded-2xl border border-border/60 bg-background/80 p-3",
-                isActive && "border-primary/45 bg-primary/6 shadow-sm",
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-sm font-semibold text-card-foreground">
-                    {item.title}
-                  </div>
-                  {item.description && (
-                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                      {item.description}
-                    </p>
-                  )}
-                </div>
-                {item.status && (
-                  <span
-                    className={cn(
-                      "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                      getStatusClass(item.status),
-                    )}
-                  >
-                    {item.status}
-                  </span>
-                )}
-              </div>
-
-              {(item.requester || item.priorityLabel || item.dueLabel) && (
-                <div className="mt-3 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-                  {item.requester && <span>By {item.requester}</span>}
-                  {item.priorityLabel && <span>{item.priorityLabel}</span>}
-                  {item.dueLabel && <span>{item.dueLabel}</span>}
-                </div>
-              )}
-
-              {item.actions?.length ? (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {item.actions.map((action) => (
-                    <span
-                      key={action.id}
-                      className={cn(
-                        "rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                        getStatusClass(action.tone),
-                      )}
-                    >
-                      {action.label}
-                    </span>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function KnowledgePanel({ state }: { state: ProductDemoKnowledgePanelState }) {
-  return (
-    <div className="flex h-full flex-col gap-4">
-      <div className="space-y-1.5">
-        {state.title && (
-          <h4 className="text-sm font-semibold text-card-foreground">
-            {state.title}
-          </h4>
-        )}
-        {state.subtitle && (
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            {state.subtitle}
-          </p>
-        )}
-      </div>
-
-      {state.query && (
-        <div className="rounded-xl border border-primary/25 bg-primary/8 px-3 py-2 text-xs text-primary">
-          {state.query}
-        </div>
-      )}
-
-      {state.summary && (
-        <p className="text-xs leading-relaxed text-muted-foreground">
-          {state.summary}
-        </p>
-      )}
-
-      {state.sources?.length ? (
-        <div className="flex flex-wrap gap-2">
-          {state.sources.map((source) => (
-            <span
-              key={source.id}
-              className={cn(
-                "rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                getStatusClass(source.status),
-              )}
-            >
-              {source.label}
-            </span>
-          ))}
-        </div>
-      ) : null}
-
-      <HighlightPills highlights={state.highlights} />
-
-      <div className="space-y-3">
-        {state.snippets.map((snippet) => {
-          const isActive =
-            snippet.id === state.activeSnippetId || snippet.highlighted;
-
-          return (
-            <div
-              key={snippet.id}
-              className={cn(
-                "rounded-2xl border border-border/60 bg-background/80 p-3",
-                isActive && "border-primary/45 bg-primary/6 shadow-sm",
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="text-sm font-semibold text-card-foreground">
-                  {snippet.title}
-                </div>
-                {snippet.confidence && (
-                  <span className="rounded-full border border-border/60 bg-muted/60 px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                    {snippet.confidence}
-                  </span>
-                )}
-              </div>
-              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                {snippet.content}
-              </p>
-              {snippet.tags?.length ? (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {snippet.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-border/60 bg-background/70 px-2 py-0.5 text-[10px] text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 function getWindowRenderData(
   scenario: ProductDemoScenario,
 ): WindowRenderData[] {
@@ -537,22 +166,42 @@ function getWindowRenderData(
     {
       key: "workflowStudio",
       meta: scenario.workflowStudio.window,
-      content: <WorkflowStudioPanel state={scenario.workflowStudio} />,
+      content: (
+        <>
+          <HighlightPills highlights={scenario.workflowStudio.highlights} />
+          <WorkflowStudioPanel state={scenario.workflowStudio} />
+        </>
+      ),
     },
     {
       key: "knowledgePanel",
       meta: scenario.knowledgePanel.window,
-      content: <KnowledgePanel state={scenario.knowledgePanel} />,
+      content: (
+        <>
+          <HighlightPills highlights={scenario.knowledgePanel.highlights} />
+          <KnowledgePanel state={scenario.knowledgePanel} />
+        </>
+      ),
     },
     {
       key: "runConsole",
       meta: scenario.runConsole.window,
-      content: <RunConsolePanel state={scenario.runConsole} />,
+      content: (
+        <>
+          <HighlightPills highlights={scenario.runConsole.highlights} />
+          <RunConsolePanel state={scenario.runConsole} />
+        </>
+      ),
     },
     {
       key: "approvalInbox",
       meta: scenario.approvalInbox.window,
-      content: <ApprovalInboxPanel state={scenario.approvalInbox} />,
+      content: (
+        <>
+          <HighlightPills highlights={scenario.approvalInbox.highlights} />
+          <ApprovalInboxPanel state={scenario.approvalInbox} />
+        </>
+      ),
     },
   ];
 }
