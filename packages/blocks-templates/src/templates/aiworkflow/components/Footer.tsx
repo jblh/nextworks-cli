@@ -1,0 +1,109 @@
+"use client";
+
+import { Footer as SharedFooter } from "@nextworks/blocks-sections";
+import { Github, Linkedin, Mail, Twitter } from "lucide-react";
+
+export function Footer() {
+  return (
+    <SharedFooter
+      id="footer"
+      footerBrandName="FlowPilot AI"
+      footerNavLinks={[
+        {
+          heading: "Platform",
+          links: [
+            { name: "Features", href: "#features" },
+            { name: "Pricing", href: "#pricing" },
+            { name: "FAQ", href: "#faq" },
+            { name: "Contact", href: "#contact" },
+          ],
+        },
+        {
+          heading: "Use cases",
+          links: [
+            { name: "Revenue operations", href: "#features" },
+            { name: "Launch workflows", href: "#features" },
+            { name: "Approvals", href: "#faq" },
+            { name: "Integrations", href: "#features" },
+          ],
+        },
+        {
+          heading: "Company",
+          links: [
+            { name: "About", href: "#home" },
+            { name: "Security", href: "#faq" },
+            { name: "Status", href: "#contact" },
+            { name: "Privacy", href: "#contact" },
+          ],
+        },
+      ]}
+      footerSocialLinks={[
+        {
+          name: "Twitter",
+          icon: Twitter,
+          url: "https://twitter.com/flowpilotai",
+          external: true,
+          label: "Follow FlowPilot AI on Twitter",
+        },
+        {
+          name: "LinkedIn",
+          icon: Linkedin,
+          url: "https://linkedin.com/company/flowpilotai",
+          external: true,
+          label: "Connect with FlowPilot AI on LinkedIn",
+        },
+        {
+          name: "GitHub",
+          icon: Github,
+          url: "https://github.com/flowpilotai",
+          external: true,
+          label: "View FlowPilot AI on GitHub",
+        },
+        {
+          name: "Email",
+          icon: Mail,
+          url: "mailto:hello@flowpilot.ai",
+          external: true,
+          label: "Email FlowPilot AI",
+        },
+      ]}
+      section={{
+        className:
+          "w-full border-t border-[var(--footer-border)] bg-[var(--footer-bg)] text-[var(--footer-fg)]",
+      }}
+      container={{ className: "max-w-7xl mx-auto px-6" }}
+      brand={{
+        className:
+          "font-outfit text-xl font-semibold text-[var(--footer-heading-fg)] md:text-2xl",
+      }}
+      brandWrapper={{ className: "flex flex-col items-start text-left lg:pr-8" }}
+      navSection={{
+        className:
+          "flex flex-col items-start justify-between gap-8 pt-10 pb-12 lg:flex-row",
+      }}
+      navGroup={{ className: "flex min-w-[150px] flex-col items-start text-left" }}
+      navHeading={{
+        className:
+          "mb-4 font-inter text-sm font-semibold uppercase tracking-wider text-[var(--footer-heading-fg)]",
+      }}
+      navLink={{
+        className:
+          "mb-3 block font-inter text-sm text-[var(--footer-link-fg)] transition-colors duration-200 hover:text-[var(--footer-link-hover-fg)]",
+      }}
+      socialSection={{
+        className:
+          "flex items-center justify-center gap-5 border-t border-[var(--footer-border)] py-8",
+      }}
+      socialLink={{
+        className:
+          "rounded-lg p-3 text-[var(--footer-link-fg)] transition-all duration-200 hover:bg-[var(--footer-link-hover-bg)] hover:text-[var(--footer-link-hover-fg)]",
+      }}
+      socialIcon={{ className: "h-5 w-5" }}
+      copyright={{
+        className:
+          "border-t border-[var(--footer-border)] py-6 text-center font-inter text-sm text-[var(--footer-muted-fg)]",
+      }}
+      ariaLabel="AI workflow footer"
+    />
+  );
+}

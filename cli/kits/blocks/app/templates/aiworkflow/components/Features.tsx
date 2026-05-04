@@ -1,0 +1,65 @@
+"use client";
+
+import { Features as SharedFeatures } from "@/components/sections/Features";
+
+const featuresData = [
+  {
+    imageSrc: "/placeholders/saas_dashboard/projectBoard.png",
+    imageAlt: "Workflow builder and orchestration canvas",
+    headingText: "Design workflows from plain-language requests",
+    subheadingText:
+      "AI turns a request into a structured workflow with triggers, conditions, tool actions, and approval checkpoints.",
+  },
+  {
+    imageSrc: "/placeholders/saas_dashboard/analytics.png",
+    imageAlt: "Live execution feed and analytics dashboard",
+    headingText: "See every step as it runs",
+    subheadingText:
+      "Track execution state, latency, retries, and downstream updates in a live run feed your team can actually follow.",
+  },
+  {
+    imageSrc: "/placeholders/saas_dashboard/chat.png",
+    imageAlt: "Approval inbox and team collaboration interface",
+    headingText: "Route approvals only where they matter",
+    subheadingText:
+      "Let policy decide when humans need to review while routine decisions stay automated and fully auditable.",
+  },
+];
+
+export function Features() {
+  return (
+    <SharedFeatures
+      sectionHeading="One system for requests, approvals, execution, and visibility"
+      sectionSubheading="Compose AI-assisted workflows that pull in context, coordinate teams, and keep every system in sync."
+      featuresData={featuresData}
+      section={{ className: "bg-background py-18 md:py-22 lg:py-24" }}
+      container={{ className: "max-w-7xl mx-auto px-6 md:px-8 lg:px-10" }}
+      header={{ className: "mb-12 text-center md:mb-14" }}
+      heading={{
+        className:
+          "font-outfit text-3xl font-semibold text-[var(--heading-fg)] md:text-4xl lg:text-5xl",
+      }}
+      subheading={{
+        className:
+          "mx-auto max-w-3xl font-inter text-base leading-7 text-[var(--subheading-fg)] md:text-lg",
+      }}
+      grid={{
+        className: "grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3",
+      }}
+      card={{
+        className:
+          "h-full rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--card-fg)] shadow-[var(--card-shadow)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl",
+      }}
+      image={{ className: "h-52 w-full object-cover" }}
+      cardHeading={{
+        className:
+          "font-inter text-xl font-semibold leading-tight text-[var(--card-title-fg)]",
+      }}
+      cardSubheading={{
+        className:
+          "font-inter text-sm leading-6 text-[var(--card-muted-fg)] md:text-base",
+      }}
+      ariaLabel="AI workflow features"
+    />
+  );
+}

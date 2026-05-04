@@ -1,0 +1,103 @@
+"use client";
+
+import { ProcessTimeline as SharedProcessTimeline } from "@nextworks/blocks-sections";
+
+export function ProcessTimeline() {
+  return (
+    <SharedProcessTimeline
+      steps={[
+        {
+          stepNumber: 1,
+          title: "Capture the request",
+          description:
+            "AI turns messages, tickets, and forms into structured workflow inputs with clear intent and metadata.",
+          icon: "✉️",
+        },
+        {
+          stepNumber: 2,
+          title: "Ground the decision",
+          description:
+            "Policies, playbooks, and account context are pulled in before the workflow takes action.",
+          icon: "🧠",
+        },
+        {
+          stepNumber: 3,
+          title: "Route approvals and actions",
+          description:
+            "Human review appears only when thresholds or policy require it, while approved actions continue automatically.",
+          icon: "✅",
+        },
+        {
+          stepNumber: 4,
+          title: "Sync every tool",
+          description:
+            "CRM records, project tasks, team updates, and audit logs stay aligned from one execution graph.",
+          icon: "🔄",
+        },
+      ]}
+      heading="From request to completed workflow in four clear stages"
+      subheading="Keep AI automation visible, governed, and operational across the systems your team already uses."
+      section={{
+        className:
+          "bg-[linear-gradient(180deg,rgba(248,250,252,1)_0%,rgba(240,249,255,0.7)_100%)] py-18 md:py-22 dark:bg-[linear-gradient(180deg,rgba(2,6,23,1)_0%,rgba(8,47,73,0.4)_100%)]",
+      }}
+      container={{ className: "max-w-6xl mx-auto px-6 md:px-10" }}
+      header={{ className: "mb-16 text-center" }}
+      headingStyle={{
+        className:
+          "font-outfit text-3xl font-semibold text-[var(--heading-fg)] md:text-4xl lg:text-5xl",
+      }}
+      subheadingStyle={{
+        className:
+          "mx-auto max-w-3xl font-inter text-base leading-7 text-[var(--subheading-fg)] md:text-lg",
+      }}
+      timelineContainer={{ className: "mx-auto w-full max-w-5xl" }}
+      desktopTimeline={{
+        className: "relative hidden w-full justify-between lg:flex",
+      }}
+      connectingLine={{
+        className:
+          "absolute left-16 right-16 top-8 h-px bg-gradient-to-r from-cyan-200 via-sky-400 to-violet-400 dark:from-cyan-900 dark:via-cyan-500 dark:to-violet-500",
+      }}
+      stepContainer={{
+        className: "relative z-10 flex max-w-56 flex-1 flex-col items-center gap-5",
+      }}
+      stepCircle={{
+        className:
+          "flex h-16 w-16 items-center justify-center rounded-full bg-slate-950 text-white shadow-lg shadow-cyan-500/10 dark:bg-cyan-400 dark:text-slate-950",
+      }}
+      stepNumber={{ className: "font-outfit text-2xl font-bold" }}
+      stepIcon={{ className: "text-3xl" }}
+      stepContent={{ className: "space-y-3 text-center" }}
+      stepTitle={{
+        className:
+          "font-inter text-lg font-semibold text-[var(--card-title-fg)]",
+      }}
+      stepDescription={{
+        className:
+          "font-inter text-sm leading-6 text-[var(--card-muted-fg)]",
+      }}
+      mobileTimeline={{ className: "flex w-full flex-col gap-8 lg:hidden" }}
+      mobileStep={{ className: "relative flex items-start" }}
+      mobileVerticalLine={{
+        className:
+          "absolute bottom-[-2rem] left-8 top-16 w-px bg-cyan-300 dark:bg-cyan-700",
+      }}
+      mobileStepCircle={{
+        className:
+          "mr-6 flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-slate-950 text-white shadow-lg dark:bg-cyan-400 dark:text-slate-950",
+      }}
+      mobileStepContent={{ className: "flex-1 space-y-3 pt-2" }}
+      mobileStepIcon={{ className: "text-3xl" }}
+      mobileStepTitle={{
+        className:
+          "font-inter text-lg font-semibold text-[var(--card-title-fg)]",
+      }}
+      mobileStepDescription={{
+        className:
+          "font-inter text-sm leading-6 text-[var(--card-muted-fg)]",
+      }}
+      ariaLabel="AI workflow process timeline"
+    />
+  );
+}

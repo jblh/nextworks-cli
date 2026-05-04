@@ -1,0 +1,90 @@
+"use client";
+
+import type { ComponentProps } from "react";
+import { Navbar as SharedNavbar } from "@/components/sections/Navbar";
+
+type SharedNavbarProps = ComponentProps<typeof SharedNavbar>;
+type PresetOverrides = Partial<SharedNavbarProps>;
+
+const defaultProps: SharedNavbarProps = {
+  brand: "FlowPilot AI",
+  brandNode: (
+    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 via-sky-500 to-violet-500 font-bold text-slate-950 shadow-sm ring-1 ring-white/40">
+      FP
+    </div>
+  ),
+  menuItems: [
+    { label: "Home", href: "#home" },
+    { label: "Features", href: "#features" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "FAQ", href: "#faq" },
+    { label: "Contact", href: "#contact" },
+  ],
+  ctaButton: null,
+  showColorModeToggle: true,
+  navHeight: "h-16",
+  sticky: true,
+  ariaLabel: "FlowPilot AI main navigation",
+  className: "",
+  nav: {
+    className:
+      "border-b border-slate-200/80 bg-white/80 text-slate-900 backdrop-blur supports-[backdrop-filter]:bg-white/80 " +
+      "dark:border-slate-800 dark:bg-slate-950/75 dark:text-white supports-[backdrop-filter]:dark:bg-slate-950/75 " +
+      "[--navbar-accent:theme(colors.cyan.600)] dark:[--navbar-accent:theme(colors.cyan.400)] " +
+      "[--navbar-toggle-bg:theme(colors.white)] dark:[--navbar-toggle-bg:theme(colors.slate.950)] " +
+      "[--navbar-hover-bg:theme(colors.cyan.50)] dark:[--navbar-hover-bg:color-mix(in_oklab,oklch(0.24_0.06_230)_24%,transparent)] " +
+      "[--navbar-ring:theme(colors.cyan.500)] dark:[--navbar-ring:theme(colors.cyan.400)] " +
+      "[--navbar-border:theme(colors.slate.200)] dark:[--navbar-border:theme(colors.slate.800)]",
+  },
+  brandText: {
+    className:
+      "text-xl font-semibold font-outfit text-slate-950 dark:text-white",
+  },
+  links: {
+    className:
+      "text-sm font-medium font-inter text-slate-700 hover:text-cyan-700 focus:ring-[var(--navbar-ring)] dark:text-slate-200 dark:hover:text-cyan-300",
+  },
+  ctaButtonStyle: {
+    variant: "default",
+    size: "default",
+    className:
+      "shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg",
+  },
+  mobileMenu: {
+    className: "border-t border-slate-200 dark:border-slate-800",
+  },
+  container: {
+    className: "max-w-7xl mx-auto",
+  },
+  brandWrapper: {
+    className: "",
+  },
+  desktopMenu: {
+    className: "hidden items-center space-x-1 md:flex lg:space-x-6",
+  },
+  toggleButton: {
+    className:
+      "md:hidden flex items-center justify-center rounded-md p-2 transition-colors hover:bg-cyan-50 dark:hover:bg-cyan-950/30 focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400",
+  },
+  colorModeWrapper: {
+    className: "ml-2",
+  },
+  ctaButtonWrapper: {
+    className: "ml-2",
+  },
+  mobileMenuInner: {
+    className: "space-y-2 px-4 pt-2 pb-4",
+  },
+  mobileLinks: {
+    className: "hover:bg-[var(--navbar-hover-bg)]",
+  },
+};
+
+export function Navbar(overrides: PresetOverrides = {}) {
+  const props: SharedNavbarProps = {
+    ...defaultProps,
+    ...overrides,
+  };
+
+  return <SharedNavbar {...props} />;
+}
