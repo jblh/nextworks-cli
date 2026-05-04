@@ -27,11 +27,11 @@ This is the preferred workflow for feature/fix work in this repo:
 
 ## Branching
 
-Preferred workflow: create a new branch for each feature/fix when working in git branches. Name branches like **feature/[feature]** or **fix/[fix]**. Ask before deleting a branch after merge.
+Preferred workflow: create a new branch for each feature/fix when working in git branches. Name branches like **feature/[feature]** or **fix/[fix]**. Ask before deleting a branch after merge. When the user explicitly invokes `- feature complete`, treat that as approval for the command's required branch switching, push, and merge actions.
 
 ## Commits
 
-- Ask before committing (don't auto-commit)
+- Ask before committing (don't auto-commit), except when the user explicitly invokes `- feature complete`; that command counts as approval for the commit and the required git closeout actions in that workflow
 - Use conventional commit messages (feat:, fix:, chore:, etc.)
 - Keep commits focused (one feature/fix per commit)
 
