@@ -1,6 +1,6 @@
 # SaaSDashboard Template Theming
 
-This template is preset-first. It’s wrapped with `PresetThemeVars` to apply a sky/blue palette across shared components. Use local overrides sparingly (e.g., a CTA hover state unique to a section).
+This template is preset-first. It’s wrapped with `PresetThemeVars` to apply a sky/blue palette across shared components.
 
 ## Where it’s wired
 
