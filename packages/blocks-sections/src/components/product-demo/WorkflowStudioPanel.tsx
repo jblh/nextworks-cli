@@ -98,7 +98,9 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                 {region.nodeIds?.length ? (
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {region.nodeIds.map((nodeId) => {
-                      const node = state.nodes.find((item) => item.id === nodeId);
+                      const node = state.nodes.find(
+                        (item) => item.id === nodeId,
+                      );
 
                       return (
                         <span
@@ -177,7 +179,8 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                 className={cn(
                   "rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
                   getStatusClass(branch.status),
-                  branch.active && "border-primary/45 bg-primary/10 text-primary",
+                  branch.active &&
+                    "border-primary/45 bg-primary/10 text-primary",
                 )}
               >
                 {branch.label ?? `${branch.fromNodeId} → ${branch.toNodeId}`}

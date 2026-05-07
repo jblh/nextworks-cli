@@ -7,7 +7,8 @@ const scenarios: ProductDemoScenario[] = [
   {
     key: "intake-triage",
     label: "Intake & triage",
-    description: "AI turns a revenue operations request into a routed workflow with approvals and live context.",
+    description:
+      "AI turns (test ) revenue operations request into a routed workflow with approvals and live context.",
     activeWindow: "workflowStudio",
     workflowStudio: {
       window: {
@@ -16,10 +17,18 @@ const scenarios: ProductDemoScenario[] = [
         subtitle: "Request intake",
         status: { label: "Drafting", tone: "info" },
         badge: "Scenario 01",
-        layoutHint: { x: 0, y: 0, width: 62, height: 72, zIndex: 40, rotateDeg: -2 },
+        layoutHint: {
+          x: 0,
+          y: 0,
+          width: 62,
+          height: 72,
+          zIndex: 40,
+          rotateDeg: -2,
+        },
       },
       title: "New request → launch expansion campaign",
-      subtitle: "AI maps triggers, owners, systems, and approval checkpoints before launch.",
+      subtitle:
+        "AI maps triggers, owners, systems, and approval checkpoints before launch.",
       activeNodeId: "route-approval",
       activeRegionId: "handoffs",
       highlights: [
@@ -46,7 +55,8 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "route-approval",
           label: "Route approval",
-          description: "Send legal + finance review in parallel with due dates.",
+          description:
+            "Send legal + finance review in parallel with due dates.",
           type: "Approval",
           status: "warning",
           active: true,
@@ -112,7 +122,14 @@ const scenarios: ProductDemoScenario[] = [
         subtitle: "Execution feed",
         status: { label: "Streaming", tone: "info" },
         badge: "24 events",
-        layoutHint: { x: 50, y: 12, width: 44, height: 52, zIndex: 30, rotateDeg: 2 },
+        layoutHint: {
+          x: 50,
+          y: 12,
+          width: 44,
+          height: 52,
+          zIndex: 30,
+          rotateDeg: 2,
+        },
       },
       title: "AI orchestration log",
       subtitle: "Every step is visible, timed, and recoverable.",
@@ -166,7 +183,14 @@ const scenarios: ProductDemoScenario[] = [
         subtitle: "Decisions",
         status: { label: "Needs review", tone: "warning" },
         badge: "2 pending",
-        layoutHint: { x: 8, y: 56, width: 38, height: 38, zIndex: 20, rotateDeg: 1 },
+        layoutHint: {
+          x: 8,
+          y: 56,
+          width: 38,
+          height: 38,
+          zIndex: 20,
+          rotateDeg: 1,
+        },
       },
       title: "High-confidence approvals",
       subtitle: "Review only where policy requires human sign-off.",
@@ -180,7 +204,8 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "approval-1",
           title: "Budget increase for EMEA launch",
-          description: "AI recommends +18% budget based on forecasted pipeline lift.",
+          description:
+            "AI recommends +18% budget based on forecasted pipeline lift.",
           requester: "Growth workflow",
           status: "warning",
           priorityLabel: "High impact",
@@ -194,14 +219,17 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "approval-2",
           title: "Legal review for new vendor terms",
-          description: "Generated summary attached with highlighted clause changes.",
+          description:
+            "Generated summary attached with highlighted clause changes.",
           requester: "Procurement workflow",
           status: "info",
           priorityLabel: "Standard",
           dueLabel: "Today",
         },
       ],
-      highlights: [{ id: "approval-1", label: "Priority approval", tone: "accent" }],
+      highlights: [
+        { id: "approval-1", label: "Priority approval", tone: "accent" },
+      ],
     },
     knowledgePanel: {
       window: {
@@ -210,23 +238,39 @@ const scenarios: ProductDemoScenario[] = [
         subtitle: "Grounding",
         status: { label: "Synced", tone: "success" },
         badge: "12 sources",
-        layoutHint: { x: 58, y: 56, width: 36, height: 36, zIndex: 10, rotateDeg: -1 },
+        layoutHint: {
+          x: 58,
+          y: 56,
+          width: 36,
+          height: 36,
+          zIndex: 10,
+          rotateDeg: -1,
+        },
       },
       title: "Context behind every action",
-      subtitle: "AI cites policies, customer context, and prior outcomes before it acts.",
-      query: "Which approvals are required for a regional budget expansion over $25k?",
-      summary: "Finance and legal approval are required when forecasted spend exceeds threshold and vendor terms change.",
+      subtitle:
+        "AI cites policies, customer context, and prior outcomes before it acts.",
+      query:
+        "Which approvals are required for a regional budget expansion over $25k?",
+      summary:
+        "Finance and legal approval are required when forecasted spend exceeds threshold and vendor terms change.",
       sources: [
         { id: "s1", label: "Budget Policy", kind: "Policy", status: "success" },
         { id: "s2", label: "Vendor Terms", kind: "Contract", status: "info" },
-        { id: "s3", label: "Campaign Playbook", kind: "Runbook", status: "success" },
+        {
+          id: "s3",
+          label: "Campaign Playbook",
+          kind: "Runbook",
+          status: "success",
+        },
       ],
       activeSnippetId: "snippet-1",
       snippets: [
         {
           id: "snippet-1",
           title: "Budget threshold rule",
-          content: "Campaigns above $25k require finance approval. Add legal review when vendor commitments or contractual language change.",
+          content:
+            "Campaigns above $25k require finance approval. Add legal review when vendor commitments or contractual language change.",
           sourceId: "s1",
           confidence: "98% match",
           excerptLabel: "Recommended policy",
@@ -236,13 +280,16 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "snippet-2",
           title: "Previous launch outcome",
-          content: "Similar EMEA launch workflows reduced manual routing time by 72% while keeping audit logs intact.",
+          content:
+            "Similar EMEA launch workflows reduced manual routing time by 72% while keeping audit logs intact.",
           sourceId: "s3",
           confidence: "Historical pattern",
           tags: ["benchmark", "ops efficiency"],
         },
       ],
-      highlights: [{ id: "snippet-1", label: "Policy citation", tone: "success" }],
+      highlights: [
+        { id: "snippet-1", label: "Policy citation", tone: "success" },
+      ],
     },
     highlights: [
       { id: "route-approval", label: "Approval branch", tone: "accent" },
@@ -252,7 +299,8 @@ const scenarios: ProductDemoScenario[] = [
   {
     key: "run-sync",
     label: "Live execution",
-    description: "Once approved, AI updates systems, posts status, and keeps teams synced in real time.",
+    description:
+      "Once approved, AI updates systems, posts status, and keeps teams synced in real time.",
     activeWindow: "runConsole",
     workflowStudio: {
       window: {
@@ -261,10 +309,18 @@ const scenarios: ProductDemoScenario[] = [
         subtitle: "Approved flow",
         status: { label: "Executing", tone: "success" },
         badge: "Scenario 02",
-        layoutHint: { x: 0, y: 0, width: 62, height: 72, zIndex: 30, rotateDeg: -2 },
+        layoutHint: {
+          x: 0,
+          y: 0,
+          width: 62,
+          height: 72,
+          zIndex: 30,
+          rotateDeg: -2,
+        },
       },
       title: "Approved workflow in motion",
-      subtitle: "The same flow now drives tool updates, notifications, and handoffs automatically.",
+      subtitle:
+        "The same flow now drives tool updates, notifications, and handoffs automatically.",
       activeNodeId: "notify-teams",
       nodes: [
         {
@@ -278,7 +334,8 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "update-crm",
           label: "Update CRM",
-          description: "Sync campaign fields, account owners, and target lists.",
+          description:
+            "Sync campaign fields, account owners, and target lists.",
           type: "Action",
           status: "success",
           metadata: "HubSpot + Salesforce",
@@ -343,10 +400,18 @@ const scenarios: ProductDemoScenario[] = [
         subtitle: "Execution feed",
         status: { label: "Healthy", tone: "success" },
         badge: "42 events",
-        layoutHint: { x: 50, y: 10, width: 44, height: 54, zIndex: 40, rotateDeg: 2 },
+        layoutHint: {
+          x: 50,
+          y: 10,
+          width: 44,
+          height: 54,
+          zIndex: 40,
+          rotateDeg: 2,
+        },
       },
       title: "Everything updates in sequence",
-      subtitle: "Users see the workflow advance without digging through logs or scripts.",
+      subtitle:
+        "Users see the workflow advance without digging through logs or scripts.",
       statusLabel: "Running smoothly",
       progressLabel: "5 of 6 steps complete",
       progressPercent: 86,
@@ -369,7 +434,8 @@ const scenarios: ProductDemoScenario[] = [
         },
         {
           id: "exec-3",
-          message: "Published launch brief to #gtm-launch and created Linear checklist",
+          message:
+            "Published launch brief to #gtm-launch and created Linear checklist",
           timestamp: "09:19",
           source: "Notifier",
           status: "info",
@@ -398,10 +464,18 @@ const scenarios: ProductDemoScenario[] = [
         subtitle: "Audit trail",
         status: { label: "Clear", tone: "success" },
         badge: "0 pending",
-        layoutHint: { x: 10, y: 58, width: 36, height: 34, zIndex: 20, rotateDeg: 1 },
+        layoutHint: {
+          x: 10,
+          y: 58,
+          width: 36,
+          height: 34,
+          zIndex: 20,
+          rotateDeg: 1,
+        },
       },
       title: "Approvals only when needed",
-      subtitle: "Human review is targeted, auditable, and out of the critical path once complete.",
+      subtitle:
+        "Human review is targeted, auditable, and out of the critical path once complete.",
       counts: [
         { id: "rc1", label: "Pending", value: "0", tone: "success" },
         { id: "rc2", label: "Completed", value: "8", tone: "info" },
@@ -411,7 +485,8 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "approval-done-1",
           title: "Finance approval recorded",
-          description: "Budget threshold exception approved with full audit log.",
+          description:
+            "Budget threshold exception approved with full audit log.",
           requester: "Growth workflow",
           status: "success",
           priorityLabel: "Complete",
@@ -420,7 +495,8 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "approval-done-2",
           title: "Legal review completed",
-          description: "Clause changes accepted and attached to workflow record.",
+          description:
+            "Clause changes accepted and attached to workflow record.",
           requester: "Procurement workflow",
           status: "success",
           priorityLabel: "Complete",
@@ -435,14 +511,28 @@ const scenarios: ProductDemoScenario[] = [
         subtitle: "Operational context",
         status: { label: "Fresh", tone: "success" },
         badge: "8 live docs",
-        layoutHint: { x: 58, y: 56, width: 34, height: 34, zIndex: 10, rotateDeg: -1 },
+        layoutHint: {
+          x: 58,
+          y: 56,
+          width: 34,
+          height: 34,
+          zIndex: 10,
+          rotateDeg: -1,
+        },
       },
       title: "Grounded automation, not guesswork",
-      subtitle: "Every downstream change is tied back to source context and prior operating rules.",
+      subtitle:
+        "Every downstream change is tied back to source context and prior operating rules.",
       query: "What should happen after launch approval is complete?",
-      summary: "Sync CRM, notify GTM owners, create follow-up tasks, and monitor SLA risks until completion.",
+      summary:
+        "Sync CRM, notify GTM owners, create follow-up tasks, and monitor SLA risks until completion.",
       sources: [
-        { id: "rs1", label: "Launch Runbook", kind: "Runbook", status: "success" },
+        {
+          id: "rs1",
+          label: "Launch Runbook",
+          kind: "Runbook",
+          status: "success",
+        },
         { id: "rs2", label: "Team SLA Policy", kind: "Policy", status: "info" },
       ],
       activeSnippetId: "runbook-snippet",
@@ -450,7 +540,8 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "runbook-snippet",
           title: "Post-approval sequence",
-          content: "After approvals clear, update CRM state, notify GTM channels, open implementation tasks, and start SLA monitoring for any dependencies.",
+          content:
+            "After approvals clear, update CRM state, notify GTM channels, open implementation tasks, and start SLA monitoring for any dependencies.",
           sourceId: "rs1",
           confidence: "Runbook step 4",
           excerptLabel: "Execution guidance",
@@ -526,7 +617,8 @@ export function Hero() {
           className: "px-6 py-16 sm:px-8 lg:px-10 lg:py-24",
         }}
         container={{
-          className: "relative z-10 items-start gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]",
+          className:
+            "relative z-10 items-start gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]",
         }}
         textContainer={{
           className: "pt-4 lg:pt-10",
