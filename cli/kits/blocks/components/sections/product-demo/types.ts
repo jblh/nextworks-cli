@@ -11,6 +11,7 @@ export type ProductDemoHighlightTone =
   | "muted";
 
 export type ProductDemoWindowKey =
+  | "taskList"
   | "workflowStudio"
   | "runConsole"
   | "approvalInbox"
@@ -73,6 +74,21 @@ export interface ProductDemoWorkflowRegion {
   nodeIds?: string[];
   active?: boolean;
   highlighted?: boolean;
+}
+
+export interface ProductDemoTaskItem {
+  id: string;
+  title: string;
+  description?: string;
+  meta?: string;
+}
+
+export interface ProductDemoTaskListState {
+  window: ProductDemoWindowMeta;
+  title?: string;
+  subtitle?: string;
+  items: ProductDemoTaskItem[];
+  activeItemId?: string;
 }
 
 export interface ProductDemoWorkflowStudioState {
@@ -184,6 +200,7 @@ export interface ProductDemoScenario {
   key: string;
   label?: string;
   description?: string;
+  taskList: ProductDemoTaskListState;
   workflowStudio: ProductDemoWorkflowStudioState;
   runConsole: ProductDemoRunConsoleState;
   approvalInbox: ProductDemoApprovalInboxState;

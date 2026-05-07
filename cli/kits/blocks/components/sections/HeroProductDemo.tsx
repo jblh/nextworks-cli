@@ -43,6 +43,7 @@ export interface HeroProductDemoSlots {
   textContainer?: { className?: string };
   demoContainer?: { className?: string };
   buttonsContainer?: { className?: string };
+  demoBelowText?: boolean;
 }
 
 export interface HeroProductDemoProps extends HeroProductDemoSlots {
@@ -86,6 +87,7 @@ export function HeroProductDemo({
   textContainer,
   demoContainer,
   buttonsContainer,
+  demoBelowText = false,
   ariaLabel = "Product demo hero section",
   enableMotion = true,
 }: HeroProductDemoProps) {
@@ -98,7 +100,7 @@ export function HeroProductDemo({
   const defaultSubheading = {
     text: "Pair clear positioning with a layered product demo that makes the workflow feel real before anyone clicks.",
     className:
-      "mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg lg:text-xl",
+      "mt-4 max-w-2xl text-sm text-muted-foreground sm:text-base lg:text-lg",
   };
 
   const normalizedHeading = normalizeTextContent(heading, defaultHeading);
@@ -141,6 +143,62 @@ export function HeroProductDemo({
       }
     : undefined;
 
+  const renderButtons = (
+    <div
+      className={cn(
+        "mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center",
+        buttonsContainer?.className,
+      )}
+    >
+      {mergedCta1.label && (
+        <Button
+          asChild
+          variant={mergedCta1.variant}
+          size={mergedCta1.size}
+          className={mergedCta1.className}
+          unstyled={mergedCta1.unstyled}
+          style={mergedCta1.style}
+        >
+          <Link href={mergedCta1.href || "#"} aria-label={mergedCta1.label}>
+            {mergedCta1.label}
+          </Link>
+        </Button>
+      )}
+
+      {mergedCta2?.label && (
+        <Button
+          asChild
+          variant={mergedCta2.variant}
+          size={mergedCta2.size}
+          className={mergedCta2.className}
+          unstyled={mergedCta2.unstyled}
+          style={mergedCta2.style}
+        >
+          <Link href={mergedCta2.href || "#"} aria-label={mergedCta2.label}>
+            {mergedCta2.label}
+          </Link>
+        </Button>
+      )}
+    </div>
+  );
+
+  const renderDemo = (
+    <div className={cn("relative", demoContainer?.className)}>
+      {demo ?? (
+        <DemoStage
+          scenarios={stage?.scenarios}
+          initialScenarioIndex={stage?.initialScenarioIndex}
+          activeScenarioKey={stage?.activeScenarioKey}
+          autoCycle={stage?.autoCycle}
+          cycleIntervalMs={stage?.cycleIntervalMs}
+          className={stage?.className}
+          enableMotion={enableMotion}
+          ariaLabel="Layered product demo"
+        />
+      )}
+    </div>
+  );
+
   return (
     <section
       id={id}
@@ -153,8 +211,9 @@ export function HeroProductDemo({
     >
       <div
         className={cn(
-          "mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:gap-12 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]",
-
+          demoBelowText
+            ? "mx-auto flex max-w-7xl flex-col gap-8"
+            : "mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:gap-12 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]",
           container?.className,
         )}
       >
@@ -168,68 +227,18 @@ export function HeroProductDemo({
             {normalizedHeading.text}
           </h1>
 
-          <p className={cn(normalizedSubheading.className)}>
-            {normalizedSubheading.text}
-          </p>
+          {normalizedSubheading.text ? (
+            <p className={cn(normalizedSubheading.className)}>
+              {normalizedSubheading.text}
+            </p>
+          ) : null}
 
-          <div
-            className={cn(
-              "mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center",
-              buttonsContainer?.className,
-            )}
-          >
-            {mergedCta1.label && (
-              <Button
-                asChild
-                variant={mergedCta1.variant}
-                size={mergedCta1.size}
-                className={mergedCta1.className}
-                unstyled={mergedCta1.unstyled}
-                style={mergedCta1.style}
-              >
-                <Link
-                  href={mergedCta1.href || "#"}
-                  aria-label={mergedCta1.label}
-                >
-                  {mergedCta1.label}
-                </Link>
-              </Button>
-            )}
-
-            {mergedCta2?.label && (
-              <Button
-                asChild
-                variant={mergedCta2.variant}
-                size={mergedCta2.size}
-                className={mergedCta2.className}
-                unstyled={mergedCta2.unstyled}
-                style={mergedCta2.style}
-              >
-                <Link
-                  href={mergedCta2.href || "#"}
-                  aria-label={mergedCta2.label}
-                >
-                  {mergedCta2.label}
-                </Link>
-              </Button>
-            )}
-          </div>
+          {!demoBelowText ? renderButtons : null}
         </div>
 
-        <div className={cn("relative", demoContainer?.className)}>
-          {demo ?? (
-            <DemoStage
-              scenarios={stage?.scenarios}
-              initialScenarioIndex={stage?.initialScenarioIndex}
-              activeScenarioKey={stage?.activeScenarioKey}
-              autoCycle={stage?.autoCycle}
-              cycleIntervalMs={stage?.cycleIntervalMs}
-              className={stage?.className}
-              enableMotion={enableMotion}
-              ariaLabel="Layered product demo"
-            />
-          )}
-        </div>
+        {renderDemo}
+
+        {demoBelowText ? renderButtons : null}
       </div>
     </section>
   );

@@ -4,15 +4,14 @@ import React from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { DemoWindow } from "./DemoWindow";
-import { ApprovalInboxPanel } from "./ApprovalInboxPanel";
 import { KnowledgePanel } from "./KnowledgePanel";
 import { RunConsolePanel } from "./RunConsolePanel";
+import { TaskListPanel } from "./TaskListPanel";
 import { WorkflowStudioPanel } from "./WorkflowStudioPanel";
 import type {
   ProductDemoHighlightTarget,
   ProductDemoHighlightTone,
   ProductDemoScenario,
-  ProductDemoStatusTone,
   ProductDemoWindowKey,
   ProductDemoWindowMeta,
 } from "./types";
@@ -35,10 +34,10 @@ type WindowRenderData = {
 };
 
 const WINDOW_ORDER: ProductDemoWindowKey[] = [
+  "taskList",
   "workflowStudio",
-  "knowledgePanel",
   "runConsole",
-  "approvalInbox",
+  "knowledgePanel",
 ];
 
 const HIGHLIGHT_TONE_CLASSES: Record<ProductDemoHighlightTone, string> = {
@@ -53,16 +52,6 @@ const HIGHLIGHT_TONE_CLASSES: Record<ProductDemoHighlightTone, string> = {
   muted: "border-border/60 bg-background/70 text-muted-foreground",
 };
 
-const STATUS_TONE_CLASSES: Record<ProductDemoStatusTone, string> = {
-  neutral: "border-border/60 bg-muted/55 text-muted-foreground",
-  info: "border-sky-500/30 bg-sky-500/10 text-sky-600 dark:text-sky-300",
-  success:
-    "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300",
-  warning:
-    "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
-  danger: "border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-300",
-};
-
 function clampInitialScenarioIndex(index: number | undefined, count: number) {
   if (count <= 0) {
     return 0;
@@ -75,22 +64,14 @@ function getHighlightClass(tone: ProductDemoHighlightTone = "accent") {
   return HIGHLIGHT_TONE_CLASSES[tone];
 }
 
-function getStatusClass(tone: ProductDemoStatusTone = "neutral") {
-  return STATUS_TONE_CLASSES[tone];
-}
-
 function useActiveScenario({
   scenarios,
   initialScenarioIndex,
   activeScenarioKey,
-  autoCycle,
-  cycleIntervalMs,
 }: {
   scenarios: ProductDemoScenario[];
   initialScenarioIndex?: number;
   activeScenarioKey?: string;
-  autoCycle?: boolean;
-  cycleIntervalMs?: number;
 }) {
   const fallbackIndex = React.useMemo(
     () => clampInitialScenarioIndex(initialScenarioIndex, scenarios.length),
@@ -117,20 +98,11 @@ function useActiveScenario({
     }
   }, [activeScenarioKey, controlledIndex]);
 
-  React.useEffect(() => {
-    if (activeScenarioKey || !autoCycle || scenarios.length <= 1) {
-      return;
-    }
-
-    const intervalMs = Math.max(cycleIntervalMs ?? 4500, 1200);
-    const timer = window.setInterval(() => {
-      setInternalIndex((currentIndex) => (currentIndex + 1) % scenarios.length);
-    }, intervalMs);
-
-    return () => window.clearInterval(timer);
-  }, [activeScenarioKey, autoCycle, cycleIntervalMs, scenarios.length]);
-
-  return scenarios[activeIndex] ?? scenarios[0];
+  return {
+    activeScenario: scenarios[activeIndex] ?? scenarios[0],
+    activeIndex,
+    setActiveIndex: setInternalIndex,
+  };
 }
 
 function HighlightPills({
@@ -161,8 +133,16 @@ function HighlightPills({
 
 function getWindowRenderData(
   scenario: ProductDemoScenario,
+  onSelectTask: (taskId: string) => void,
 ): WindowRenderData[] {
   return [
+    {
+      key: "taskList",
+      meta: scenario.taskList.window,
+      content: (
+        <TaskListPanel state={scenario.taskList} onSelect={onSelectTask} />
+      ),
+    },
     {
       key: "workflowStudio",
       meta: scenario.workflowStudio.window,
@@ -170,16 +150,6 @@ function getWindowRenderData(
         <>
           <HighlightPills highlights={scenario.workflowStudio.highlights} />
           <WorkflowStudioPanel state={scenario.workflowStudio} />
-        </>
-      ),
-    },
-    {
-      key: "knowledgePanel",
-      meta: scenario.knowledgePanel.window,
-      content: (
-        <>
-          <HighlightPills highlights={scenario.knowledgePanel.highlights} />
-          <KnowledgePanel state={scenario.knowledgePanel} />
         </>
       ),
     },
@@ -194,12 +164,12 @@ function getWindowRenderData(
       ),
     },
     {
-      key: "approvalInbox",
-      meta: scenario.approvalInbox.window,
+      key: "knowledgePanel",
+      meta: scenario.knowledgePanel.window,
       content: (
         <>
-          <HighlightPills highlights={scenario.approvalInbox.highlights} />
-          <ApprovalInboxPanel state={scenario.approvalInbox} />
+          <HighlightPills highlights={scenario.knowledgePanel.highlights} />
+          <KnowledgePanel state={scenario.knowledgePanel} />
         </>
       ),
     },
@@ -208,65 +178,33 @@ function getWindowRenderData(
 
 function getWindowShellClass(key: ProductDemoWindowKey) {
   switch (key) {
+    case "taskList":
+      return "lg:col-span-2";
     case "workflowStudio":
-      return "lg:absolute lg:left-[2%] lg:top-[9%] lg:h-[66%] lg:w-[46%]";
-    case "knowledgePanel":
-      return "lg:absolute lg:left-[50%] lg:top-[10%] lg:h-[34%] lg:w-[30%] xl:left-[49%] xl:w-[29%]";
+      return "lg:col-span-3";
     case "runConsole":
-      return "lg:absolute lg:left-[50%] lg:bottom-[10%] lg:h-[33%] lg:w-[32%] xl:left-[49%] xl:w-[31%]";
+      return "lg:col-span-5";
+    case "knowledgePanel":
     case "approvalInbox":
-      return "lg:absolute lg:right-[1%] lg:top-[17%] lg:h-[45%] lg:w-[24%] xl:right-[2%] xl:h-[44%] xl:w-[23%]";
+      return "hidden";
     default:
       return "";
   }
-}
-
-function getTransformStyle(
-  meta: ProductDemoWindowMeta,
-): React.CSSProperties | undefined {
-  const layoutHint = meta.layoutHint;
-
-  if (!layoutHint) {
-    return undefined;
-  }
-
-  const translateX = layoutHint.x ?? 0;
-  const translateY = layoutHint.y ?? 0;
-  const rotate = layoutHint.rotateDeg ?? 0;
-
-  return {
-    zIndex: layoutHint.zIndex,
-    transform: `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`,
-  };
 }
 
 export function DemoStage({
   scenarios = [],
   initialScenarioIndex,
   activeScenarioKey,
-  autoCycle = false,
-  cycleIntervalMs = 4500,
   className,
   enableMotion = true,
   ariaLabel = "Product demo stage",
 }: DemoStageProps) {
-  const activeScenario = useActiveScenario({
+  const { activeScenario, activeIndex, setActiveIndex } = useActiveScenario({
     scenarios,
     initialScenarioIndex,
     activeScenarioKey,
-    autoCycle,
-    cycleIntervalMs,
   });
-
-  const activeIndex = React.useMemo(() => {
-    if (!activeScenario) {
-      return 0;
-    }
-
-    return scenarios.findIndex(
-      (scenario) => scenario.key === activeScenario.key,
-    );
-  }, [activeScenario, scenarios]);
 
   if (!activeScenario) {
     return (
@@ -286,38 +224,42 @@ export function DemoStage({
     );
   }
 
-  const windows = getWindowRenderData(activeScenario).sort(
-    (a, b) => WINDOW_ORDER.indexOf(a.key) - WINDOW_ORDER.indexOf(b.key),
-  );
+  const windows = getWindowRenderData(activeScenario, (taskId) => {
+    const nextIndex = scenarios.findIndex(
+      (scenario) => scenario.key === taskId,
+    );
+
+    if (nextIndex >= 0) {
+      setActiveIndex(nextIndex);
+    }
+  }).sort((a, b) => WINDOW_ORDER.indexOf(a.key) - WINDOW_ORDER.indexOf(b.key));
 
   return (
     <div
       data-product-demo-stage
-      data-auto-cycle={autoCycle ? "true" : "false"}
       data-enable-motion={enableMotion ? "true" : "false"}
       data-scenario-count={scenarios.length}
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
-      data-cycle-interval-ms={cycleIntervalMs}
       className={cn(
-        "relative isolate min-h-[30rem] w-full overflow-hidden rounded-[2rem] border border-border/60 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.13),transparent_35%),linear-gradient(135deg,rgba(15,23,42,0.04),transparent_55%)] shadow-2xl",
+        "relative isolate min-h-[31rem] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#07111f] shadow-[0_24px_80px_-32px_rgba(15,23,42,0.75)]",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background/96 to-muted/45" />
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-primary/8 to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.18),transparent_32%),linear-gradient(180deg,rgba(8,15,28,0.98)_0%,rgba(6,12,24,0.98)_100%)]" />
+      <div className="absolute inset-x-0 top-0 h-14 border-b border-white/10 bg-white/[0.03]" />
 
-      <div className="relative z-10 flex min-h-[30rem] flex-col gap-4 p-4 sm:p-5 lg:block lg:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-1">
+      <div className="relative z-10 flex min-h-[31rem] flex-col gap-4 p-4 sm:p-5 lg:p-6">
+        <div className="flex flex-wrap items-start justify-between gap-3 pb-1">
           <div>
             {activeScenario.label && (
-              <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-primary/80">
+              <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-sky-300/80">
                 {activeScenario.label}
               </div>
             )}
             {activeScenario.description && (
-              <p className="mt-1 max-w-xl text-xs leading-relaxed text-muted-foreground">
+              <p className="mt-1 max-w-xl text-xs leading-relaxed text-slate-400">
                 {activeScenario.description}
               </p>
             )}
@@ -328,6 +270,10 @@ export function DemoStage({
 
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
+            if (getWindowShellClass(windowData.key) === "hidden") {
+              return null;
+            }
+
             const activeWindow =
               activeScenario.activeWindow === windowData.key ||
               (!activeScenario.activeWindow &&
@@ -339,6 +285,8 @@ export function DemoStage({
                 window={windowData.meta}
                 active={activeWindow}
                 enableMotion={enableMotion}
+                showControls={false}
+                showResizeHandle={false}
               >
                 {windowData.content}
               </DemoWindow>
@@ -346,8 +294,14 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:block lg:h-[34rem] xl:h-[36rem]">
+        <div className="hidden lg:grid lg:h-[35rem] lg:grid-cols-10 lg:gap-4 xl:h-[37rem]">
           {windows.map((windowData) => {
+            const shellClass = getWindowShellClass(windowData.key);
+
+            if (shellClass === "hidden") {
+              return null;
+            }
+
             const activeWindow =
               activeScenario.activeWindow === windowData.key ||
               (!activeScenario.activeWindow &&
@@ -356,34 +310,28 @@ export function DemoStage({
             return (
               <motion.div
                 key={windowData.key}
-                initial={
-                  enableMotion ? { opacity: 0, y: 18, scale: 0.98 } : false
-                }
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: activeWindow ? 1 : 0.985,
-                }}
+                initial={enableMotion ? { opacity: 0, y: 14 } : false}
+                animate={{ opacity: 1, y: 0 }}
                 transition={
                   enableMotion
                     ? {
                         type: "tween",
-                        duration: 0.45,
+                        duration: 0.3,
                       }
                     : { duration: 0 }
                 }
-                className={cn(
-                  "will-change-transform",
-                  getWindowShellClass(windowData.key),
-                )}
-                style={getTransformStyle(windowData.meta)}
+                className={cn("will-change-transform", shellClass)}
               >
                 <DemoWindow
                   window={windowData.meta}
                   active={activeWindow}
-                  dimmed={!activeWindow}
+                  dimmed={false}
                   enableMotion={enableMotion}
-                  className="h-full"
+                  showControls={false}
+                  showResizeHandle={false}
+                  className="h-full rounded-[1.35rem] border-white/10 bg-white/[0.03] shadow-[0_18px_50px_-28px_rgba(15,23,42,0.95)]"
+                  chromeClassName="border-white/10 bg-white/[0.03]"
+                  bodyClassName="px-4 py-4 sm:px-4 sm:py-4"
                 >
                   {windowData.content}
                 </DemoWindow>
