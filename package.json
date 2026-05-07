@@ -8,6 +8,10 @@
   "scripts": {
     "build": "npm --workspaces run build",
     "clean": "npm --workspaces --if-present run clean",
-    "sync": "node scripts/sync-kit-to-packages.mjs"
+    "sync": "node scripts/sync-kit-to-packages.mjs",
+    "watch": "node scripts/watch-dev.mjs"
+  },
+  "dependencies": {
+    "chokidar": "^5.0.0"
   }
 }

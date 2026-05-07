@@ -50,12 +50,26 @@ Check for drift without writing files:
 node scripts/sync-kit-to-packages.mjs --check
 ```
 
+Force overwrite all relevant sync targets, even if content appears unchanged:
+
+```bash
+node scripts/sync-kit-to-packages.mjs --force
+node scripts/sync-kit-to-packages.mjs --scope templates --force
+```
+
 Sync one area only:
 
 ```bash
 node scripts/sync-kit-to-packages.mjs --scope core
 node scripts/sync-kit-to-packages.mjs --scope sections
 node scripts/sync-kit-to-packages.mjs --scope templates
+```
+
+Verbose sync output showing each source → target mapping touched during the run:
+
+```bash
+node scripts/sync-kit-to-packages.mjs --scope templates --verbose
+node scripts/sync-kit-to-packages.mjs --scope templates --force --verbose
 ```
 
 ## Validation
@@ -73,6 +87,10 @@ pnpm --dir packages/blocks-templates exec npx tsc -p tsconfig.json --noEmit
 - Sync direction is intentional: `cli/kits/blocks` → `packages/*`
 - Do not treat package edits as source-of-truth frontend edits
 - If package files are hand-edited, the next sync may overwrite them
+- `--check` compares transformed source content against current package file content and reports drift without writing
+- `--force` skips the unchanged-content short-circuit and overwrites every relevant target file
+- `--verbose` prints each included source file and its mapped target path during sync
+- `--check` and `--force` cannot be used together
 - This is v1 sync tooling, not a full codegen pipeline
 - Some transformations are still special-cased rather than fully generalized
 - `packages/blocks-core/src/lib/themes.ts` is still a special case during sync

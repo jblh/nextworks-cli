@@ -36,16 +36,22 @@ async function walkFiles(dir) {
 }
 
 function parseArgs(argv) {
-  const args = { check: false, scope: "all" };
+  const args = { check: false, force: false, scope: "all", verbose: false };
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--check") args.check = true;
+    else if (arg === "--force") args.force = true;
+    else if (arg === "--verbose") args.verbose = true;
     else if (arg === "--scope") args.scope = argv[i + 1] ?? "all";
   }
 
   if (!["all", "core", "sections", "templates"].includes(args.scope)) {
     throw new Error(`Invalid --scope value: ${args.scope}`);
+  }
+
+  if (args.check && args.force) {
+    throw new Error("--check and --force cannot be used together");
   }
 
   return args;
@@ -307,7 +313,12 @@ async function writeGeneratedFile(targetFile, content) {
   await fs.writeFile(targetFile, content, "utf8");
 }
 
-async function syncGroup(group, checkOnly) {
+async function syncGroup(
+  group,
+  checkOnly,
+  forceWrite = false,
+  verbose = false,
+) {
   const sourceRoot = path.join(repoRoot, group.sourceRoot);
   const targetRoot = path.join(repoRoot, group.targetRoot);
   const files = await walkFiles(sourceRoot);
@@ -324,6 +335,10 @@ async function syncGroup(group, checkOnly) {
     const targetRelative = buildTargetPath(group.name, sourceRelative);
     const targetFile = path.join(targetRoot, targetRelative);
 
+    if (verbose) {
+      console.log(` [${group.name}] ${sourceRelative} -> ${targetRelative}`);
+    }
+
     const sourceContent = await fs.readFile(sourceFile, "utf8");
     const transformed = group.transform(sourceContent, targetRelative);
     const finalContent = /\.md$/u.test(targetRelative)
@@ -333,7 +348,7 @@ async function syncGroup(group, checkOnly) {
       ? await fs.readFile(targetFile, "utf8")
       : null;
 
-    if (existingContent === finalContent) {
+    if (!forceWrite && existingContent === finalContent) {
       results.push({ status: "unchanged", targetRelative });
       continue;
     }
@@ -348,7 +363,13 @@ async function syncGroup(group, checkOnly) {
 
     await writeGeneratedFile(targetFile, finalContent);
     results.push({
-      status: existingContent === null ? "created" : "updated",
+      status: forceWrite
+        ? existingContent === null
+          ? "created"
+          : "overwritten"
+        : existingContent === null
+          ? "created"
+          : "updated",
       targetRelative,
     });
   }
@@ -356,7 +377,7 @@ async function syncGroup(group, checkOnly) {
   return results;
 }
 
-async function syncTemplateIndex(checkOnly) {
+async function syncTemplateIndex(checkOnly, forceWrite = false) {
   const templatesRoot = path.join(
     repoRoot,
     "packages/blocks-templates/src/templates",
@@ -382,7 +403,7 @@ async function syncTemplateIndex(checkOnly) {
     ? await fs.readFile(targetFile, "utf8")
     : null;
 
-  if (existingContent === finalContent) {
+  if (!forceWrite && existingContent === finalContent) {
     return { status: "unchanged", targetRelative: "index.ts" };
   }
 
@@ -395,7 +416,13 @@ async function syncTemplateIndex(checkOnly) {
 
   await writeGeneratedFile(targetFile, finalContent);
   return {
-    status: existingContent === null ? "created" : "updated",
+    status: forceWrite
+      ? existingContent === null
+        ? "created"
+        : "overwritten"
+      : existingContent === null
+        ? "created"
+        : "updated",
     targetRelative: "index.ts",
   };
 }
@@ -410,7 +437,12 @@ async function main() {
   let hasDrift = false;
 
   for (const group of groups) {
-    const results = await syncGroup(group, args.check);
+    const results = await syncGroup(
+      group,
+      args.check,
+      args.force,
+      args.verbose,
+    );
     const changed = results.filter((result) => result.status !== "unchanged");
 
     console.log(
@@ -424,7 +456,7 @@ async function main() {
   }
 
   if (groups.some((group) => group.name === "templates")) {
-    const indexResult = await syncTemplateIndex(args.check);
+    const indexResult = await syncTemplateIndex(args.check, args.force);
     const changed = indexResult.status !== "unchanged";
 
     console.log(

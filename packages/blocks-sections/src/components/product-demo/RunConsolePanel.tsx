@@ -3,7 +3,10 @@
 
 import React from "react";
 import { cn } from "@nextworks/blocks-core";
-import type { ProductDemoRunConsoleState, ProductDemoStatusTone } from "./types";
+import type {
+  ProductDemoRunConsoleState,
+  ProductDemoStatusTone,
+} from "./types";
 
 export interface RunConsolePanelProps {
   state: ProductDemoRunConsoleState;
@@ -101,7 +104,8 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
 
       <div className="space-y-2">
         {state.entries.map((entry) => {
-          const isActive = entry.id === state.activeEntryId || entry.highlighted;
+          const isActive =
+            entry.id === state.activeEntryId || entry.highlighted;
 
           return (
             <div
@@ -113,10 +117,14 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <div className="text-sm text-card-foreground">{entry.message}</div>
+                  <div className="text-sm text-card-foreground">
+                    {entry.message}
+                  </div>
                   {(entry.source || entry.timestamp) && (
                     <div className="mt-1 text-[11px] text-muted-foreground">
-                      {[entry.source, entry.timestamp].filter(Boolean).join(" • ")}
+                      {[entry.source, entry.timestamp]
+                        .filter(Boolean)
+                        .join(" • ")}
                     </div>
                   )}
                   {entry.detail && (

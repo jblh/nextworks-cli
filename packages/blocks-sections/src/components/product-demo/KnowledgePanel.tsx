@@ -75,7 +75,9 @@ export function KnowledgePanel({ state }: KnowledgePanelProps) {
         {state.snippets.map((snippet) => {
           const isActive =
             snippet.id === state.activeSnippetId || snippet.highlighted;
-          const source = state.sources?.find((item) => item.id === snippet.sourceId);
+          const source = state.sources?.find(
+            (item) => item.id === snippet.sourceId,
+          );
 
           return (
             <div
@@ -92,7 +94,9 @@ export function KnowledgePanel({ state }: KnowledgePanelProps) {
                   </div>
                   {(snippet.excerptLabel || source?.label) && (
                     <div className="mt-1 text-[11px] text-muted-foreground">
-                      {[snippet.excerptLabel, source?.label].filter(Boolean).join(" • ")}
+                      {[snippet.excerptLabel, source?.label]
+                        .filter(Boolean)
+                        .join(" • ")}
                     </div>
                   )}
                 </div>
