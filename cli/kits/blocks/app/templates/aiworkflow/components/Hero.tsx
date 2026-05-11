@@ -98,7 +98,7 @@ const scenarios: ProductDemoScenario[] = [
     runConsole: {
       window: {
         key: "runConsole",
-        title: "Result",
+        title: "Editor",
         subtitle: "File diff",
         status: { label: "Updating", tone: "info" },
       },
@@ -138,10 +138,12 @@ const scenarios: ProductDemoScenario[] = [
           highlighted: true,
           lineNumber: "42",
           code: [
-            "const safeReturnTo = normalizeReturnTo(searchParams.get('returnTo'))",
-            "const destination = safeReturnTo ?? '/dashboard'",
-            "router.replace('/dashboard')",
-            "router.replace(destination)",
+            " const safeReturnTo = normalizeReturnTo(searchParams.get('returnTo'))",
+            " const destination = safeReturnTo ?? '/dashboard'",
+            "-router.replace('/dashboard')",
+            "+router.replace(destination)",
+            "+trackAuthRedirect(destination)",
+            " return null",
           ],
         },
         {
@@ -157,7 +159,7 @@ const scenarios: ProductDemoScenario[] = [
         { id: "m2", label: "Edits", value: "12", tone: "info" },
         { id: "m3", label: "Checks", value: "1/2", tone: "warning" },
       ],
-      highlights: [{ id: "diff-3", label: "Live patch", tone: "accent" }],
+      highlights: [],
     },
     approvalInbox: {
       window: {
@@ -291,7 +293,7 @@ const scenarios: ProductDemoScenario[] = [
     runConsole: {
       window: {
         key: "runConsole",
-        title: "Result",
+        title: "Editor",
         subtitle: "Component output",
         status: { label: "Updating", tone: "info" },
       },
@@ -329,11 +331,17 @@ const scenarios: ProductDemoScenario[] = [
           highlighted: true,
           lineNumber: "18",
           code: [
-            "export function PricingTiers({ plans }: PricingTiersProps) {",
-            "  return plans.map((plan) => (",
-            "    <PricingCard key={plan.name} plan={plan} />",
-            "  ))",
-            "}",
+            " export function PricingTiers({ plans }: PricingTiersProps) {",
+            "-  return plans.map((plan) => (",
+            "+  return (",
+            "+    <div className='grid gap-6 lg:grid-cols-3'>",
+            "+      {plans.map((plan) => (",
+            "         <PricingCard key={plan.name} plan={plan} />",
+            "+      ))}",
+            "+    </div>",
+            "-  ))",
+            "+  )",
+            " }",
           ],
         },
         {
@@ -349,9 +357,7 @@ const scenarios: ProductDemoScenario[] = [
         { id: "pm2", label: "Blocks", value: "3", tone: "info" },
         { id: "pm3", label: "Dupes", value: "-38%", tone: "success" },
       ],
-      highlights: [
-        { id: "pricing-3", label: "Extracted block", tone: "accent" },
-      ],
+      highlights: [],
     },
     approvalInbox: {
       window: {
@@ -488,7 +494,7 @@ const scenarios: ProductDemoScenario[] = [
     runConsole: {
       window: {
         key: "runConsole",
-        title: "Result",
+        title: "Editor",
         subtitle: "UI output",
         status: { label: "Updating", tone: "info" },
       },
@@ -527,10 +533,18 @@ const scenarios: ProductDemoScenario[] = [
           highlighted: true,
           lineNumber: "27",
           code: [
-            "useEffect(() => {",
-            "  window.addEventListener('keydown', onKeyDown)",
-            "  return () => window.removeEventListener('keydown', onKeyDown)",
-            "}, [])",
+            " useEffect(() => {",
+            "+  const handleKeyDown = (event: KeyboardEvent) => {",
+            "+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {",
+            "+      event.preventDefault()",
+            "+      setOpen((current) => !current)",
+            "+    }",
+            "+  }",
+            "-  window.addEventListener('keydown', onKeyDown)",
+            "+  window.addEventListener('keydown', handleKeyDown)",
+            "-  return () => window.removeEventListener('keydown', onKeyDown)",
+            "+  return () => window.removeEventListener('keydown', handleKeyDown)",
+            " }, [])",
           ],
         },
         {
@@ -546,7 +560,7 @@ const scenarios: ProductDemoScenario[] = [
         { id: "cm2", label: "Routes", value: "5", tone: "success" },
         { id: "cm3", label: "Shortcut", value: "Cmd+K", tone: "success" },
       ],
-      highlights: [{ id: "cmd-3", label: "Shortcut wired", tone: "accent" }],
+      highlights: [],
     },
     approvalInbox: {
       window: {

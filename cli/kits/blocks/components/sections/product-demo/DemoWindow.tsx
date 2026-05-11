@@ -46,11 +46,13 @@ export function DemoWindow({
   return (
     <section
       className={cn(
-        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden rounded-[1.5rem] border border-border/60 bg-card/92 shadow-[0_18px_48px_-24px_rgba(15,23,42,0.45)] backdrop-blur-xl",
+        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-border/60 bg-card/92 shadow-[0_18px_48px_-24px_rgba(15,23,42,0.45)] backdrop-blur-xl",
+
         enableMotion &&
           "transition-[transform,opacity,box-shadow,border-color] duration-500 ease-out motion-reduce:transition-none",
         active &&
-          "border-primary/45 shadow-[0_24px_60px_-26px_rgba(59,130,246,0.45)]",
+          "border-white/14 shadow-[0_24px_60px_-26px_rgba(59,130,246,0.16)]",
+
         dimmed && "opacity-90",
         className,
       )}

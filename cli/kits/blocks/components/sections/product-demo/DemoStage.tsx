@@ -146,22 +146,12 @@ function getWindowRenderData(
     {
       key: "workflowStudio",
       meta: scenario.workflowStudio.window,
-      content: (
-        <>
-          <HighlightPills highlights={scenario.workflowStudio.highlights} />
-          <WorkflowStudioPanel state={scenario.workflowStudio} />
-        </>
-      ),
+      content: <WorkflowStudioPanel state={scenario.workflowStudio} />,
     },
     {
       key: "runConsole",
       meta: scenario.runConsole.window,
-      content: (
-        <>
-          <HighlightPills highlights={scenario.runConsole.highlights} />
-          <RunConsolePanel state={scenario.runConsole} />
-        </>
-      ),
+      content: <RunConsolePanel state={scenario.runConsole} />,
     },
     {
       key: "knowledgePanel",
@@ -181,9 +171,9 @@ function getWindowShellClass(key: ProductDemoWindowKey) {
     case "taskList":
       return "lg:col-span-2";
     case "workflowStudio":
-      return "lg:col-span-3";
+      return "lg:col-span-2";
     case "runConsole":
-      return "lg:col-span-5";
+      return "lg:col-span-6";
     case "knowledgePanel":
     case "approvalInbox":
       return "hidden";
@@ -264,8 +254,6 @@ export function DemoStage({
               </p>
             )}
           </div>
-
-          <HighlightPills highlights={activeScenario.highlights} />
         </div>
 
         <div className="grid gap-4 lg:hidden">
@@ -294,7 +282,7 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:grid lg:h-[35rem] lg:grid-cols-10 lg:gap-4 xl:h-[37rem]">
+        <div className="hidden lg:grid lg:h-[35rem] lg:grid-cols-10 lg:gap-0 xl:h-[37rem]">
           {windows.map((windowData) => {
             const shellClass = getWindowShellClass(windowData.key);
 
@@ -329,9 +317,28 @@ export function DemoStage({
                   enableMotion={enableMotion}
                   showControls={false}
                   showResizeHandle={false}
-                  className="h-full rounded-[1.35rem] border-white/10 bg-white/[0.03] shadow-[0_18px_50px_-28px_rgba(15,23,42,0.95)]"
-                  chromeClassName="border-white/10 bg-white/[0.03]"
-                  bodyClassName="px-4 py-4 sm:px-4 sm:py-4"
+                  className={cn(
+                    "h-full border-y border-white/10 bg-white/[0.03] shadow-none",
+                    windowData.key === "taskList" &&
+                      "rounded-l-[1.35rem] border-l",
+                    windowData.key === "runConsole" &&
+                      "rounded-r-[1.35rem] border-r",
+                    windowData.key === "workflowStudio" &&
+                      "border-l-0 border-r-0 rounded-none",
+                  )}
+                  chromeClassName={cn(
+                    "border-white/10 bg-white/[0.025]",
+                    windowData.key === "taskList" && "rounded-none",
+                    windowData.key === "workflowStudio" &&
+                      "border-l-0 border-r-0 rounded-none",
+                    windowData.key === "runConsole" &&
+                      "px-3 py-2.5 sm:px-3 rounded-none",
+                  )}
+                  bodyClassName={cn(
+                    "px-4 py-4 sm:px-4 sm:py-4",
+                    windowData.key === "runConsole" &&
+                      "px-2 py-2 sm:px-2 sm:py-2",
+                  )}
                 >
                   {windowData.content}
                 </DemoWindow>
