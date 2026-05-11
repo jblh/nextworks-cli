@@ -33,18 +33,23 @@ function getProgressPercent(value: number | undefined) {
 
 export function RunConsolePanel({ state }: RunConsolePanelProps) {
   const progressPercent = getProgressPercent(state.progressPercent);
+  const activeEntry = state.entries.find(
+    (entry) => entry.id === state.activeEntryId || entry.highlighted,
+  );
+  const activeCode = activeEntry?.code ?? [];
+  const startLine = Number(activeEntry?.lineNumber ?? 24);
 
   return (
-    <div className="flex h-full flex-col gap-4">
+    <div className="flex h-full flex-col gap-4 text-white/95">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-1.5">
           {state.title && (
-            <h4 className="text-sm font-semibold text-card-foreground">
+            <h4 className="text-sm font-semibold text-white/95">
               {state.title}
             </h4>
           )}
           {state.subtitle && (
-            <p className="text-xs leading-relaxed text-muted-foreground">
+            <p className="text-xs leading-relaxed text-slate-400">
               {state.subtitle}
             </p>
           )}
@@ -53,12 +58,12 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
         {(state.statusLabel || state.progressLabel) && (
           <div className="space-y-1 text-right">
             {state.statusLabel && (
-              <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+              <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
                 {state.statusLabel}
               </div>
             )}
             {state.progressLabel && (
-              <div className="text-sm font-semibold text-card-foreground">
+              <div className="text-sm font-semibold text-white/95">
                 {state.progressLabel}
               </div>
             )}
@@ -68,82 +73,111 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
 
       {typeof progressPercent === "number" ? (
         <div className="space-y-2">
-          <div className="h-2 overflow-hidden rounded-full bg-muted/70">
+          <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-primary transition-[width] duration-500"
+              className="h-full rounded-full bg-cyan-400 transition-[width] duration-500"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
-          <div className="text-[11px] text-muted-foreground">
+          <div className="text-[11px] text-slate-500">
             {progressPercent}% complete
           </div>
         </div>
       ) : null}
 
-      {state.metrics?.length ? (
-        <div className="grid grid-cols-2 gap-2">
-          {state.metrics.map((metric) => (
-            <div
-              key={metric.id}
-              className={cn(
-                "rounded-xl border px-3 py-2",
-                getStatusClass(metric.tone),
-              )}
-            >
-              <div className="text-[10px] font-medium uppercase tracking-[0.14em] opacity-80">
-                {metric.label}
-              </div>
-              <div className="mt-1 text-sm font-semibold">{metric.value}</div>
-            </div>
-          ))}
+      <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-500">
+        {state.metrics?.map((metric) => (
+          <div
+            key={metric.id}
+            className={cn(
+              "rounded-full border px-2.5 py-1 font-medium uppercase tracking-[0.14em]",
+              getStatusClass(metric.tone),
+            )}
+          >
+            {metric.label}: {metric.value}
+          </div>
+        ))}
+      </div>
+
+      {activeEntry ? (
+        <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-[11px] text-slate-400">
+          <div className="min-w-0 truncate">
+            <span className="mr-2 uppercase tracking-[0.14em] text-slate-500">
+              {activeEntry.source}
+            </span>
+            {activeEntry.message}
+          </div>
+          <div className="shrink-0 text-slate-500">{activeEntry.timestamp}</div>
         </div>
       ) : null}
 
-      <div className="space-y-2">
-        {state.entries.map((entry) => {
-          const isActive =
-            entry.id === state.activeEntryId || entry.highlighted;
+      <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#08111d] shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
+        <div className="flex items-center gap-2 border-b border-white/8 bg-[#0b1525] px-3 py-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-rose-400/90" />
+          <span className="h-2.5 w-2.5 rounded-full bg-amber-400/90" />
+          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/90" />
+          <div className="ml-3 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 font-mono text-[11px] text-slate-300">
+            {state.editorTabLabel ?? state.title}
+          </div>
+          {state.editorLanguage ? (
+            <div className="ml-auto font-mono text-[11px] text-slate-500">
+              {state.editorLanguage}
+            </div>
+          ) : null}
+        </div>
 
-          return (
-            <div
-              key={entry.id}
-              className={cn(
-                "rounded-xl border border-border/60 bg-background/70 px-3 py-2.5",
-                isActive && "border-primary/40 bg-primary/6",
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <div className="text-sm text-card-foreground">
-                    {entry.message}
-                  </div>
-                  {(entry.source || entry.timestamp) && (
-                    <div className="mt-1 text-[11px] text-muted-foreground">
-                      {[entry.source, entry.timestamp]
-                        .filter(Boolean)
-                        .join(" • ")}
-                    </div>
+        {state.editorSummary ? (
+          <div className="border-b border-white/8 px-4 py-2 text-[11px] text-slate-400">
+            {state.editorSummary}
+          </div>
+        ) : null}
+
+        <div className="grid min-h-[20rem] grid-cols-[4rem_minmax(0,1fr)]">
+          <div className="border-r border-white/8 bg-[#07101b] px-2 py-4 font-mono text-[11px] leading-7 text-slate-600">
+            {activeCode.map((_, index) => (
+              <div key={`${startLine + index}`} className="text-right">
+                {startLine + index}
+              </div>
+            ))}
+          </div>
+
+          <div className="px-4 py-4 font-mono text-[12px] leading-7 text-slate-300">
+            {activeCode.map((line, index) => {
+              const isAdded = line.trimStart().startsWith("+");
+              const isRemoved = line.trimStart().startsWith("-");
+
+              return (
+                <div
+                  key={`${line}-${index}`}
+                  className={cn(
+                    "flex border-l border-transparent pl-3",
+                    isAdded &&
+                      "border-emerald-400/40 bg-emerald-400/[0.08] text-emerald-200",
+                    isRemoved &&
+                      "border-rose-400/35 bg-rose-400/[0.08] text-rose-200",
+                    !isAdded && !isRemoved && "text-slate-300",
                   )}
-                  {entry.detail && (
-                    <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                      {entry.detail}
-                    </p>
-                  )}
-                </div>
-                {entry.status && (
+                >
                   <span
                     className={cn(
-                      "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                      getStatusClass(entry.status),
+                      "mr-3 w-3 shrink-0 text-center text-[11px]",
+                      isAdded
+                        ? "text-emerald-300"
+                        : isRemoved
+                          ? "text-rose-300"
+                          : "text-slate-500",
                     )}
                   >
-                    {entry.status}
+                    {isAdded ? "+" : isRemoved ? "-" : " "}
                   </span>
-                )}
-              </div>
-            </div>
-          );
-        })}
+                  <span className="min-w-0 flex-1 whitespace-pre-wrap break-words">
+                    {isAdded || isRemoved ? line.slice(1).trimStart() : line}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
