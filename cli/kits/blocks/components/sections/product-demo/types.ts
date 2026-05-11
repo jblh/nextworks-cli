@@ -110,6 +110,8 @@ export interface ProductDemoRunConsoleEntry {
   source?: string;
   status?: ProductDemoStatusTone;
   detail?: string;
+  lineNumber?: string;
+  code?: string[];
   highlighted?: boolean;
 }
 
@@ -130,6 +132,9 @@ export interface ProductDemoRunConsoleState {
   metrics?: ProductDemoRunConsoleMetric[];
   progressPercent?: number;
   activeEntryId?: string;
+  editorTabLabel?: string;
+  editorLanguage?: string;
+  editorSummary?: string;
   highlights?: ProductDemoHighlightTarget[];
 }
 

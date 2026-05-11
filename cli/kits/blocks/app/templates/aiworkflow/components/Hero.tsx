@@ -25,19 +25,19 @@ const scenarios: ProductDemoScenario[] = [
           id: "fix-auth-flow",
           title: "Fix auth flow",
           description: "Resolve broken redirect after OAuth callback.",
-          meta: "apps/web � due now",
+          meta: "apps/web / due now",
         },
         {
           id: "refactor-pricing-page",
           title: "Refactor pricing page",
           description: "Split pricing blocks into reusable components.",
-          meta: "marketing site � queued",
+          meta: "marketing site / queued",
         },
         {
           id: "ship-command-palette",
           title: "Ship command palette",
           description: "Add keyboard search and action switching.",
-          meta: "dashboard � ready",
+          meta: "dashboard / ready",
         },
       ],
     },
@@ -108,6 +108,10 @@ const scenarios: ProductDemoScenario[] = [
       progressLabel: "12 lines changed",
       progressPercent: 68,
       activeEntryId: "diff-3",
+      editorTabLabel: "page.tsx",
+      editorLanguage: "TypeScript",
+      editorSummary:
+        "Guard empty return paths and preserve intended destination.",
       entries: [
         {
           id: "diff-1",
@@ -132,8 +136,13 @@ const scenarios: ProductDemoScenario[] = [
           source: "editor",
           status: "info",
           highlighted: true,
-          detail:
-            "+ const safeReturnTo = normalizeReturnTo(searchParams.get('returnTo'))",
+          lineNumber: "42",
+          code: [
+            "const safeReturnTo = normalizeReturnTo(searchParams.get('returnTo'))",
+            "const destination = safeReturnTo ?? '/dashboard'",
+            "router.replace('/dashboard')",
+            "router.replace(destination)",
+          ],
         },
         {
           id: "diff-4",
@@ -211,19 +220,19 @@ const scenarios: ProductDemoScenario[] = [
           id: "fix-auth-flow",
           title: "Fix auth flow",
           description: "Resolve broken redirect after OAuth callback.",
-          meta: "apps/web � due now",
+          meta: "apps/web / due now",
         },
         {
           id: "refactor-pricing-page",
           title: "Refactor pricing page",
           description: "Split pricing blocks into reusable components.",
-          meta: "marketing site � queued",
+          meta: "marketing site / queued",
         },
         {
           id: "ship-command-palette",
           title: "Ship command palette",
           description: "Add keyboard search and action switching.",
-          meta: "dashboard � ready",
+          meta: "dashboard / ready",
         },
       ],
     },
@@ -292,6 +301,10 @@ const scenarios: ProductDemoScenario[] = [
       progressLabel: "3 components created",
       progressPercent: 59,
       activeEntryId: "pricing-3",
+      editorTabLabel: "PricingTiers.tsx",
+      editorLanguage: "TSX",
+      editorSummary:
+        "Move repeated pricing JSX into a reusable tiers component.",
       entries: [
         {
           id: "pricing-1",
@@ -314,8 +327,14 @@ const scenarios: ProductDemoScenario[] = [
           source: "editor",
           status: "info",
           highlighted: true,
-          detail:
-            "export function PricingTiers({ plans }: PricingTiersProps) { ... }",
+          lineNumber: "18",
+          code: [
+            "export function PricingTiers({ plans }: PricingTiersProps) {",
+            "  return plans.map((plan) => (",
+            "    <PricingCard key={plan.name} plan={plan} />",
+            "  ))",
+            "}",
+          ],
         },
         {
           id: "pricing-4",
@@ -395,19 +414,19 @@ const scenarios: ProductDemoScenario[] = [
           id: "fix-auth-flow",
           title: "Fix auth flow",
           description: "Resolve broken redirect after OAuth callback.",
-          meta: "apps/web � due now",
+          meta: "apps/web / due now",
         },
         {
           id: "refactor-pricing-page",
           title: "Refactor pricing page",
           description: "Split pricing blocks into reusable components.",
-          meta: "marketing site � queued",
+          meta: "marketing site / queued",
         },
         {
           id: "ship-command-palette",
           title: "Ship command palette",
           description: "Add keyboard search and action switching.",
-          meta: "dashboard � ready",
+          meta: "dashboard / ready",
         },
       ],
     },
@@ -448,7 +467,7 @@ const scenarios: ProductDemoScenario[] = [
           id: "wire-shortcuts",
           label: "Wire keyboard shortcuts",
           description:
-            "Open palette with ?K and route selected actions instantly.",
+            "Open palette with Cmd+K and route selected actions instantly.",
           type: "Edit",
           status: "info",
           active: true,
@@ -480,6 +499,10 @@ const scenarios: ProductDemoScenario[] = [
       progressLabel: "8 commands wired",
       progressPercent: 73,
       activeEntryId: "cmd-3",
+      editorTabLabel: "command-menu.tsx",
+      editorLanguage: "TSX",
+      editorSummary:
+        "Wire a global shortcut and searchable action list into the dashboard shell.",
       entries: [
         {
           id: "cmd-1",
@@ -497,13 +520,18 @@ const scenarios: ProductDemoScenario[] = [
         },
         {
           id: "cmd-3",
-          message: "Binding ?K to open the command menu globally",
+          message: "Binding Cmd+K to open the command menu globally",
           timestamp: "11:22",
           source: "editor",
           status: "info",
           highlighted: true,
-          detail:
-            "useEffect(() => window.addEventListener('keydown', onKeyDown), [])",
+          lineNumber: "27",
+          code: [
+            "useEffect(() => {",
+            "  window.addEventListener('keydown', onKeyDown)",
+            "  return () => window.removeEventListener('keydown', onKeyDown)",
+            "}, [])",
+          ],
         },
         {
           id: "cmd-4",
@@ -516,7 +544,7 @@ const scenarios: ProductDemoScenario[] = [
       metrics: [
         { id: "cm1", label: "Commands", value: "8", tone: "info" },
         { id: "cm2", label: "Routes", value: "5", tone: "success" },
-        { id: "cm3", label: "Shortcut", value: "?K", tone: "success" },
+        { id: "cm3", label: "Shortcut", value: "Cmd+K", tone: "success" },
       ],
       highlights: [{ id: "cmd-3", label: "Shortcut wired", tone: "accent" }],
     },

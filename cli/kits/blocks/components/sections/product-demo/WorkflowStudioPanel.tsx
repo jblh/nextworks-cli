@@ -35,19 +35,34 @@ function getRegionState(
 }
 
 export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
+  const activeIndex = state.nodes.findIndex(
+    (node) => node.id === state.activeNodeId || node.active,
+  );
+  const activeStep = activeIndex >= 0 ? activeIndex + 1 : undefined;
+
   return (
     <div className="flex h-full flex-col gap-4">
-      <div className="space-y-1.5">
-        {state.title && (
-          <h4 className="text-sm font-semibold text-card-foreground">
-            {state.title}
-          </h4>
-        )}
-        {state.subtitle && (
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            {state.subtitle}
-          </p>
-        )}
+      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-1.5">
+            {state.title && (
+              <h4 className="text-sm font-semibold text-white/95">
+                {state.title}
+              </h4>
+            )}
+            {state.subtitle && (
+              <p className="text-xs leading-relaxed text-slate-400">
+                {state.subtitle}
+              </p>
+            )}
+          </div>
+
+          {typeof activeStep === "number" ? (
+            <div className="rounded-full border border-sky-400/20 bg-sky-400/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-sky-300">
+              Step {activeStep}/{state.nodes.length}
+            </div>
+          ) : null}
+        </div>
       </div>
 
       {state.regions?.length ? (
@@ -116,49 +131,69 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
         </div>
       ) : null}
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {state.nodes.map((node) => {
+      <div className="flex flex-1 flex-col gap-3">
+        {state.nodes.map((node, index) => {
           const isActive = node.id === state.activeNodeId || node.active;
 
           return (
-            <div
-              key={node.id}
-              className={cn(
-                "rounded-2xl border border-border/60 bg-background/80 p-3 shadow-sm",
-                isActive && "border-primary/45 bg-primary/6 shadow-md",
-                node.emphasized && "ring-1 ring-primary/30",
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                    {node.type ?? "step"}
-                  </div>
-                  <div className="mt-1 text-sm font-semibold text-card-foreground">
-                    {node.label}
-                  </div>
+            <div key={node.id} className="flex gap-3">
+              <div className="flex w-7 flex-col items-center pt-1">
+                <div
+                  className={cn(
+                    "flex h-7 w-7 items-center justify-center rounded-full border text-[10px] font-semibold",
+                    isActive
+                      ? "border-cyan-400/40 bg-cyan-400/15 text-cyan-300"
+                      : node.status === "success"
+                        ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
+                        : "border-white/10 bg-white/[0.03] text-slate-400",
+                  )}
+                >
+                  {index + 1}
                 </div>
-                {node.status && (
-                  <span
-                    className={cn(
-                      "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                      getStatusClass(node.status),
-                    )}
-                  >
-                    {node.status}
-                  </span>
+                {index < state.nodes.length - 1 ? (
+                  <div className="mt-2 h-full w-px bg-white/10" />
+                ) : null}
+              </div>
+
+              <div
+                className={cn(
+                  "min-w-0 flex-1 rounded-2xl border border-white/10 bg-white/[0.025] p-3.5",
+                  isActive &&
+                    "border-cyan-400/30 bg-cyan-400/[0.07] shadow-[0_18px_40px_-28px_rgba(34,211,238,0.7)]",
+                  node.emphasized && "ring-1 ring-cyan-400/20",
+                )}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-slate-500">
+                      {node.type ?? "step"}
+                    </div>
+                    <div className="mt-1 text-sm font-semibold text-white/95">
+                      {node.label}
+                    </div>
+                  </div>
+                  {node.status && (
+                    <span
+                      className={cn(
+                        "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
+                        getStatusClass(node.status),
+                      )}
+                    >
+                      {node.status}
+                    </span>
+                  )}
+                </div>
+                {node.description && (
+                  <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                    {node.description}
+                  </p>
+                )}
+                {node.metadata && (
+                  <div className="mt-3 rounded-xl border border-white/8 bg-[#08111d] px-2.5 py-2 font-mono text-[11px] text-slate-400">
+                    {node.metadata}
+                  </div>
                 )}
               </div>
-              {node.description && (
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  {node.description}
-                </p>
-              )}
-              {node.metadata && (
-                <div className="mt-3 text-[11px] text-muted-foreground/90">
-                  {node.metadata}
-                </div>
-              )}
             </div>
           );
         })}
