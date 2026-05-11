@@ -171,9 +171,9 @@ function getWindowShellClass(key: ProductDemoWindowKey) {
     case "taskList":
       return "lg:col-span-2";
     case "workflowStudio":
-      return "lg:col-span-2";
+      return "lg:col-span-3";
     case "runConsole":
-      return "lg:col-span-6";
+      return "lg:col-span-5";
     case "knowledgePanel":
     case "approvalInbox":
       return "hidden";
