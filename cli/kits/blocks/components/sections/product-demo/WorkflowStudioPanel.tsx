@@ -2,8 +2,8 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import type {
   ProductDemoStatusTone,
-  ProductDemoWorkflowRegion,
   ProductDemoWorkflowStudioState,
+  ProductDemoWorkflowTranscriptEntry,
 } from "./types";
 
 export interface WorkflowStudioPanelProps {
@@ -24,14 +24,23 @@ function getStatusClass(tone: ProductDemoStatusTone = "neutral") {
   return STATUS_TONE_CLASSES[tone];
 }
 
-function getRegionState(
-  region: ProductDemoWorkflowRegion,
-  activeRegionId: string | undefined,
-) {
-  const isActive = region.id === activeRegionId || region.active;
-  const isHighlighted = region.highlighted || isActive;
+function normalizeEntry(
+  entry: string | ProductDemoWorkflowTranscriptEntry,
+  index: number,
+): ProductDemoWorkflowTranscriptEntry {
+  if (typeof entry !== "string") {
+    return entry;
+  }
 
-  return { isActive, isHighlighted };
+  if (index === 0) {
+    return { id: `entry-${index}`, kind: "title", text: entry };
+  }
+
+  if (/^thought/i.test(entry)) {
+    return { id: `entry-${index}`, kind: "thought", text: entry };
+  }
+
+  return { id: `entry-${index}`, kind: "activity", text: entry };
 }
 
 export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
@@ -39,185 +48,143 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
     (node) => node.id === state.activeNodeId || node.active,
   );
   const activeStep = activeIndex >= 0 ? activeIndex + 1 : undefined;
+  const activeNode = activeIndex >= 0 ? state.nodes[activeIndex] : undefined;
+  const transcript = (state.transcript ?? []).map(normalizeEntry);
+  const composer = state.composer;
 
   return (
-    <div className="flex h-full flex-col gap-4">
-      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+    <div className="flex h-full flex-col overflow-hidden bg-[#08111c]">
+      <div className="border-b border-white/8 px-4 py-3">
         <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1.5">
+          <div className="min-w-0">
             {state.title && (
-              <h4 className="text-sm font-semibold text-white/95">
+              <h4 className="text-[13px] font-medium text-white/92">
                 {state.title}
               </h4>
             )}
             {state.subtitle && (
-              <p className="text-xs leading-relaxed text-slate-400">
+              <p className="mt-1 max-w-sm text-[11px] leading-relaxed text-slate-400">
                 {state.subtitle}
               </p>
             )}
           </div>
 
           {typeof activeStep === "number" ? (
-            <div className="rounded-full border border-sky-400/20 bg-sky-400/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-sky-300">
+            <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-slate-400">
+              <span
+                className={cn(
+                  "h-1.5 w-1.5 rounded-full",
+                  activeNode?.status === "success"
+                    ? "bg-emerald-400"
+                    : "bg-cyan-400",
+                )}
+              />
               Step {activeStep}/{state.nodes.length}
             </div>
           ) : null}
         </div>
       </div>
 
-      {state.regions?.length ? (
-        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-          {state.regions.map((region) => {
-            const { isActive, isHighlighted } = getRegionState(
-              region,
-              state.activeRegionId,
-            );
+      <div className="flex-1 overflow-auto px-4 py-4">
+        <div className="space-y-3.5">
+          {transcript.map((entry, index) => {
+            if (entry.kind === "title") {
+              return (
+                <div key={entry.id} className="space-y-2">
+                  <div className="text-[11px] font-medium tracking-[0.02em] text-slate-500">
+                    {entry.text}
+                  </div>
+                  {activeNode?.description ? (
+                    <div className="rounded-xl border border-white/8 bg-white/[0.035] px-3 py-2.5 text-[12px] leading-relaxed text-slate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                      {activeNode.description}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            }
+
+            if (entry.kind === "message") {
+              return (
+                <div
+                  key={entry.id}
+                  className="max-w-[92%] text-[12px] leading-relaxed text-slate-200"
+                >
+                  {entry.text}
+                </div>
+              );
+            }
+
+            if (entry.kind === "file") {
+              return (
+                <div
+                  key={entry.id}
+                  className="flex items-center justify-between gap-3 rounded-md border border-white/7 bg-white/[0.025] px-3 py-2 text-[11px] text-slate-300"
+                >
+                  <span className="truncate font-mono text-[11px] text-slate-300">
+                    {entry.path ?? entry.text}
+                  </span>
+                  <div className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
+                    {typeof entry.added === "number" ? (
+                      <span className="text-emerald-400">+{entry.added}</span>
+                    ) : null}
+                    {typeof entry.removed === "number" ? (
+                      <span className="text-rose-400">-{entry.removed}</span>
+                    ) : null}
+                  </div>
+                </div>
+              );
+            }
+
+            if (entry.kind === "thought") {
+              return (
+                <div
+                  key={entry.id}
+                  className="text-[11px] leading-relaxed text-slate-500"
+                >
+                  {entry.text}
+                </div>
+              );
+            }
+
+            const isLastActivity =
+              index === transcript.length - 1 ||
+              (index < transcript.length - 1 &&
+                transcript[index + 1]?.kind === "file");
 
             return (
-              <div
-                key={region.id}
-                className={cn(
-                  "rounded-2xl border border-border/60 bg-background/75 p-3",
-                  isActive && "border-primary/45 bg-primary/8 shadow-sm",
-                  isHighlighted && "ring-1 ring-primary/20",
-                )}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                      Region
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-card-foreground">
-                      {region.label}
-                    </div>
-                  </div>
-                  {region.status && (
-                    <span
-                      className={cn(
-                        "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                        getStatusClass(region.status),
-                      )}
-                    >
-                      {region.status}
-                    </span>
-                  )}
+              <div key={entry.id} className="space-y-1.5">
+                <div className="text-[11px] leading-relaxed text-slate-500">
+                  {entry.text}
                 </div>
-                {region.description && (
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                    {region.description}
-                  </p>
-                )}
-                {region.nodeIds?.length ? (
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {region.nodeIds.map((nodeId) => {
-                      const node = state.nodes.find(
-                        (item) => item.id === nodeId,
-                      );
-
-                      return (
-                        <span
-                          key={nodeId}
-                          className="rounded-full border border-border/60 bg-background/80 px-2 py-0.5 text-[10px] text-muted-foreground"
-                        >
-                          {node?.label ?? nodeId}
-                        </span>
-                      );
-                    })}
+                {isLastActivity && activeNode?.metadata ? (
+                  <div className="pt-1 text-[11px] leading-relaxed text-slate-300">
+                    {activeNode.metadata}
                   </div>
                 ) : null}
               </div>
             );
           })}
         </div>
-      ) : null}
-
-      <div className="flex flex-1 flex-col gap-3">
-        {state.nodes.map((node, index) => {
-          const isActive = node.id === state.activeNodeId || node.active;
-
-          return (
-            <div key={node.id} className="flex gap-3">
-              <div className="flex w-7 flex-col items-center pt-1">
-                <div
-                  className={cn(
-                    "flex h-7 w-7 items-center justify-center rounded-full border text-[10px] font-semibold",
-                    isActive
-                      ? "border-cyan-400/40 bg-cyan-400/15 text-cyan-300"
-                      : node.status === "success"
-                        ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
-                        : "border-white/10 bg-white/[0.03] text-slate-400",
-                  )}
-                >
-                  {index + 1}
-                </div>
-                {index < state.nodes.length - 1 ? (
-                  <div className="mt-2 h-full w-px bg-white/10" />
-                ) : null}
-              </div>
-
-              <div
-                className={cn(
-                  "min-w-0 flex-1 rounded-2xl border border-white/10 bg-white/[0.025] p-3.5",
-                  isActive &&
-                    "border-cyan-400/30 bg-cyan-400/[0.07] shadow-[0_18px_40px_-28px_rgba(34,211,238,0.7)]",
-                  node.emphasized && "ring-1 ring-cyan-400/20",
-                )}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-slate-500">
-                      {node.type ?? "step"}
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-white/95">
-                      {node.label}
-                    </div>
-                  </div>
-                  {node.status && (
-                    <span
-                      className={cn(
-                        "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                        getStatusClass(node.status),
-                      )}
-                    >
-                      {node.status}
-                    </span>
-                  )}
-                </div>
-                {node.description && (
-                  <p className="mt-2 text-xs leading-relaxed text-slate-400">
-                    {node.description}
-                  </p>
-                )}
-                {node.metadata && (
-                  <div className="mt-3 rounded-xl border border-white/8 bg-[#08111d] px-2.5 py-2 font-mono text-[11px] text-slate-400">
-                    {node.metadata}
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
       </div>
 
-      {state.branches?.length ? (
-        <div className="rounded-2xl border border-dashed border-border/60 bg-background/60 p-3">
-          <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-            Transitions
-          </div>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {state.branches.map((branch) => (
-              <div
-                key={branch.id}
-                className={cn(
-                  "rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                  getStatusClass(branch.status),
-                  branch.active &&
-                    "border-primary/45 bg-primary/10 text-primary",
-                )}
-              >
-                {branch.label ?? `${branch.fromNodeId} → ${branch.toNodeId}`}
-              </div>
-            ))}
+      {composer ? (
+        <div className="border-t border-white/8 px-4 py-3">
+          <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+            <div className="text-[11px] text-slate-500">
+              {composer.placeholder ??
+                "Ask the agent to inspect, search, or build..."}
+            </div>
+            <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-400">
+              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1">
+                {composer.modeLabel ?? "Agent"}
+              </span>
+              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1">
+                {composer.modelLabel ?? "Model 2"}
+              </span>
+              <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-300">
+                ↑
+              </span>
+            </div>
           </div>
         </div>
       ) : null}

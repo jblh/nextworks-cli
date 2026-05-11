@@ -91,6 +91,22 @@ export interface ProductDemoTaskListState {
   activeItemId?: string;
 }
 
+export interface ProductDemoWorkflowTranscriptEntry {
+  id: string;
+  kind?: "title" | "prompt" | "activity" | "thought" | "message" | "file";
+  text: string;
+  path?: string;
+  added?: number;
+  removed?: number;
+  tone?: ProductDemoStatusTone;
+}
+
+export interface ProductDemoWorkflowComposerState {
+  placeholder?: string;
+  modeLabel?: string;
+  modelLabel?: string;
+}
+
 export interface ProductDemoWorkflowStudioState {
   window: ProductDemoWindowMeta;
   title?: string;
@@ -101,6 +117,8 @@ export interface ProductDemoWorkflowStudioState {
   activeNodeId?: string;
   activeRegionId?: string;
   highlights?: ProductDemoHighlightTarget[];
+  transcript?: Array<string | ProductDemoWorkflowTranscriptEntry>;
+  composer?: ProductDemoWorkflowComposerState;
 }
 
 export interface ProductDemoRunConsoleEntry {

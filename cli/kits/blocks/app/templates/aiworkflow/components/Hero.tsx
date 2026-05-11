@@ -52,6 +52,56 @@ const scenarios: ProductDemoScenario[] = [
       subtitle:
         "The agent reads the auth callback, checks navigation state, and prepares a safe patch.",
       activeNodeId: "edit-callback",
+      transcript: [
+        { id: "auth-title", kind: "title", text: "Fix auth flow" },
+        {
+          id: "auth-prompt",
+          kind: "prompt",
+          text: "Fix the OAuth callback redirect so the app preserves the intended destination after sign-in.",
+        },
+        {
+          id: "auth-read-1",
+          kind: "activity",
+          text: "Read app/auth/callback/page.tsx",
+        },
+        {
+          id: "auth-read-2",
+          kind: "activity",
+          text: "Read lib/auth/normalize-return-to.ts",
+        },
+        { id: "auth-thought", kind: "thought", text: "Thought for 6s" },
+        {
+          id: "auth-message",
+          kind: "message",
+          text: "I'll patch the callback so it keeps a sanitized return destination and only falls back when the value is missing or invalid.",
+        },
+        {
+          id: "auth-file-1",
+          kind: "file",
+          path: "app/auth/callback/page.tsx",
+          text: "app/auth/callback/page.tsx",
+          added: 14,
+          removed: 3,
+        },
+        {
+          id: "auth-file-2",
+          kind: "file",
+          path: "lib/auth/normalize-return-to.ts",
+          text: "lib/auth/normalize-return-to.ts",
+          added: 6,
+          removed: 1,
+        },
+        {
+          id: "auth-summary",
+          kind: "message",
+          text: "Done. Empty return paths now fall back safely, while valid destinations keep users on the route they intended to open.",
+        },
+      ],
+      composer: {
+        placeholder: "Plan, inspect, or patch the next issue...",
+        modeLabel: "Agent",
+        modelLabel: "Sonnet",
+      },
       highlights: [
         { id: "inspect-route", label: "Read files", tone: "info" },
         { id: "edit-callback", label: "Write patch", tone: "accent" },
@@ -249,6 +299,56 @@ const scenarios: ProductDemoScenario[] = [
       subtitle:
         "The agent maps repeated UI, creates reusable blocks, and rewires the page composition.",
       activeNodeId: "create-blocks",
+      transcript: [
+        { id: "pricing-title", kind: "title", text: "Refactor pricing page" },
+        {
+          id: "pricing-prompt",
+          kind: "prompt",
+          text: "Extract the pricing page into reusable sections without changing the visual output.",
+        },
+        {
+          id: "pricing-read-1",
+          kind: "activity",
+          text: "Read app/(marketing)/pricing/page.tsx",
+        },
+        {
+          id: "pricing-read-2",
+          kind: "activity",
+          text: "Inspect repeated pricing tier markup",
+        },
+        { id: "pricing-thought", kind: "thought", text: "Thought for 5s" },
+        {
+          id: "pricing-message",
+          kind: "message",
+          text: "I'll extract the repeated hero, tier, and FAQ sections into dedicated components so the page becomes a clean composition layer.",
+        },
+        {
+          id: "pricing-file-1",
+          kind: "file",
+          path: "components/pricing/PricingTiers.tsx",
+          text: "components/pricing/PricingTiers.tsx",
+          added: 52,
+          removed: 0,
+        },
+        {
+          id: "pricing-file-2",
+          kind: "file",
+          path: "app/(marketing)/pricing/page.tsx",
+          text: "app/(marketing)/pricing/page.tsx",
+          added: 18,
+          removed: 34,
+        },
+        {
+          id: "pricing-summary",
+          kind: "message",
+          text: "The pricing page is now split into reusable blocks, with the main entry focused on composition and shared data.",
+        },
+      ],
+      composer: {
+        placeholder: "Plan, search, or restructure the page...",
+        modeLabel: "Agent",
+        modelLabel: "Sonnet",
+      },
       highlights: [
         { id: "scan-page", label: "Find repetition", tone: "info" },
         { id: "create-blocks", label: "Extract components", tone: "accent" },
@@ -447,6 +547,56 @@ const scenarios: ProductDemoScenario[] = [
       subtitle:
         "The agent wires shortcut handling, searchable actions, and quick navigation into one flow.",
       activeNodeId: "wire-shortcuts",
+      transcript: [
+        { id: "cmd-title", kind: "title", text: "Ship command palette" },
+        {
+          id: "cmd-prompt",
+          kind: "prompt",
+          text: "Add a command palette with global shortcut support, grouped actions, and fast route switching.",
+        },
+        {
+          id: "cmd-read-1",
+          kind: "activity",
+          text: "Read app/dashboard/layout.tsx",
+        },
+        {
+          id: "cmd-read-2",
+          kind: "activity",
+          text: "Inspect dialog primitive and navigation state",
+        },
+        { id: "cmd-thought", kind: "thought", text: "Thought for 4s" },
+        {
+          id: "cmd-message",
+          kind: "message",
+          text: "I'll wire a global shortcut into the dashboard shell and route actions through a searchable command menu component.",
+        },
+        {
+          id: "cmd-file-1",
+          kind: "file",
+          path: "components/command-menu.tsx",
+          text: "components/command-menu.tsx",
+          added: 27,
+          removed: 4,
+        },
+        {
+          id: "cmd-file-2",
+          kind: "file",
+          path: "app/dashboard/layout.tsx",
+          text: "app/dashboard/layout.tsx",
+          added: 9,
+          removed: 1,
+        },
+        {
+          id: "cmd-summary",
+          kind: "message",
+          text: "The palette now opens with the global shortcut, groups actions clearly, and lets users jump instantly across the dashboard.",
+        },
+      ],
+      composer: {
+        placeholder: "Ask the agent to search, wire, or ship...",
+        modeLabel: "Agent",
+        modelLabel: "Sonnet",
+      },
       highlights: [
         { id: "inspect-layout", label: "Inspect layout", tone: "info" },
         { id: "wire-shortcuts", label: "Add shortcuts", tone: "accent" },
