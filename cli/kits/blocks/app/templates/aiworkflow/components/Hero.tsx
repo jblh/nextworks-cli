@@ -8,44 +8,45 @@ const scenarios: ProductDemoScenario[] = [
     key: "fix-auth-flow",
     label: "Coding agent",
     description:
-      "Select a task and watch the agent inspect files, apply changes, and produce the result.",
+      "Choose a repo task and watch the agent inspect code, apply edits, and update the diff.",
     activeWindow: "workflowStudio",
     taskList: {
       window: {
         key: "taskList",
         title: "Tasks",
-        subtitle: "Agent queue",
-        status: { label: "3 open", tone: "info" },
+        subtitle: "Current workspace",
+        status: { label: "3 tasks", tone: "info" },
       },
-      title: "Open tasks",
-      subtitle: "Pick a coding task to inspect and run.",
+      title: "Agent tasks",
+      subtitle: "Select a coding task to inspect and execute.",
       activeItemId: "fix-auth-flow",
       items: [
         {
           id: "fix-auth-flow",
           title: "Fix auth flow",
-          description: "Resolve broken redirect after OAuth callback.",
-          meta: "apps/web / due now",
+          description: "Fix the post-login redirect after the OAuth callback.",
+          meta: "apps/web · active",
         },
         {
           id: "refactor-pricing-page",
           title: "Refactor pricing page",
-          description: "Split pricing blocks into reusable components.",
-          meta: "marketing site / queued",
+          description:
+            "Extract repeated pricing sections into reusable components.",
+          meta: "marketing site · queued",
         },
         {
           id: "ship-command-palette",
           title: "Ship command palette",
-          description: "Add keyboard search and action switching.",
-          meta: "dashboard / ready",
+          description: "Add global search, shortcuts, and action routing.",
+          meta: "dashboard · ready",
         },
       ],
     },
     workflowStudio: {
       window: {
         key: "workflowStudio",
-        title: "AI agent",
-        subtitle: "Working session",
+        title: "Agent",
+        subtitle: "Active session",
         status: { label: "Thinking", tone: "info" },
       },
       title: "Investigating redirect bug",
@@ -149,13 +150,13 @@ const scenarios: ProductDemoScenario[] = [
       window: {
         key: "runConsole",
         title: "Editor",
-        subtitle: "File diff",
+        subtitle: "Live diff",
         status: { label: "Updating", tone: "info" },
       },
       title: "app/auth/callback/page.tsx",
-      subtitle: "The output panel updates as the agent writes the patch.",
-      statusLabel: "Drafting patch",
-      progressLabel: "12 lines changed",
+      subtitle: "The diff updates as the agent writes the patch.",
+      statusLabel: "Applying patch",
+      progressLabel: "17 lines changed",
       progressPercent: 68,
       activeEntryId: "diff-3",
       editorTabLabel: "page.tsx",
@@ -165,14 +166,14 @@ const scenarios: ProductDemoScenario[] = [
       entries: [
         {
           id: "diff-1",
-          message: "Read callback page and redirect helper",
+          message: "Opened callback page and redirect helper",
           timestamp: "11:02",
           source: "agent",
           status: "success",
         },
         {
           id: "diff-2",
-          message: "Detected empty redirect path after OAuth completion",
+          message: "Found empty redirect path after OAuth callback",
           timestamp: "11:02",
           source: "analysis",
           status: "success",
@@ -181,7 +182,7 @@ const scenarios: ProductDemoScenario[] = [
         },
         {
           id: "diff-3",
-          message: "Writing guarded redirect with preserved returnTo value",
+          message: "Writing guarded redirect with preserved returnTo",
           timestamp: "11:03",
           source: "editor",
           status: "info",
@@ -198,7 +199,7 @@ const scenarios: ProductDemoScenario[] = [
         },
         {
           id: "diff-4",
-          message: "Previewing successful redirect to /dashboard/settings",
+          message: "Validated redirect to /dashboard/settings",
           timestamp: "11:03",
           source: "preview",
           status: "neutral",
@@ -255,44 +256,45 @@ const scenarios: ProductDemoScenario[] = [
     key: "refactor-pricing-page",
     label: "Coding agent",
     description:
-      "Select a task and watch the agent inspect files, apply changes, and produce the result.",
+      "Choose a repo task and watch the agent inspect code, apply edits, and update the diff.",
     activeWindow: "workflowStudio",
     taskList: {
       window: {
         key: "taskList",
         title: "Tasks",
-        subtitle: "Agent queue",
-        status: { label: "3 open", tone: "info" },
+        subtitle: "Current workspace",
+        status: { label: "3 tasks", tone: "info" },
       },
-      title: "Open tasks",
-      subtitle: "Pick a coding task to inspect and run.",
+      title: "Agent tasks",
+      subtitle: "Select a coding task to inspect and execute.",
       activeItemId: "refactor-pricing-page",
       items: [
         {
           id: "fix-auth-flow",
           title: "Fix auth flow",
-          description: "Resolve broken redirect after OAuth callback.",
-          meta: "apps/web / due now",
+          description: "Fix the post-login redirect after the OAuth callback.",
+          meta: "apps/web · active",
         },
         {
           id: "refactor-pricing-page",
           title: "Refactor pricing page",
-          description: "Split pricing blocks into reusable components.",
-          meta: "marketing site / queued",
+          description:
+            "Extract repeated pricing sections into reusable components.",
+          meta: "marketing site · queued",
         },
         {
           id: "ship-command-palette",
           title: "Ship command palette",
-          description: "Add keyboard search and action switching.",
-          meta: "dashboard / ready",
+          description: "Add global search, shortcuts, and action routing.",
+          meta: "dashboard · ready",
         },
       ],
     },
     workflowStudio: {
       window: {
         key: "workflowStudio",
-        title: "AI agent",
-        subtitle: "Working session",
+        title: "Agent",
+        subtitle: "Active session",
         status: { label: "Planning", tone: "info" },
       },
       title: "Extracting pricing sections",
@@ -398,9 +400,9 @@ const scenarios: ProductDemoScenario[] = [
         status: { label: "Updating", tone: "info" },
       },
       title: "components/pricing/PricingTiers.tsx",
-      subtitle: "The output panel shows the extracted component taking shape.",
-      statusLabel: "Extracting UI",
-      progressLabel: "3 components created",
+      subtitle: "The diff updates as the extracted component takes shape.",
+      statusLabel: "Extracting components",
+      progressLabel: "3 files updated",
       progressPercent: 59,
       activeEntryId: "pricing-3",
       editorTabLabel: "PricingTiers.tsx",
@@ -410,21 +412,21 @@ const scenarios: ProductDemoScenario[] = [
       entries: [
         {
           id: "pricing-1",
-          message: "Identified repeated tier cards and CTA footer",
+          message: "Found repeated tier markup and CTA footer",
           timestamp: "11:11",
           source: "agent",
           status: "success",
         },
         {
           id: "pricing-2",
-          message: "Created shared types for pricing tiers and features",
+          message: "Created shared types for pricing data and features",
           timestamp: "11:12",
           source: "editor",
           status: "success",
         },
         {
           id: "pricing-3",
-          message: "Extracting PricingTiers component and props",
+          message: "Extracting PricingTiers component and props shape",
           timestamp: "11:12",
           source: "editor",
           status: "info",
@@ -446,7 +448,7 @@ const scenarios: ProductDemoScenario[] = [
         },
         {
           id: "pricing-4",
-          message: "Updating page.tsx to compose extracted blocks",
+          message: "Updating page.tsx to compose extracted sections",
           timestamp: "11:13",
           source: "editor",
           status: "neutral",
@@ -503,44 +505,45 @@ const scenarios: ProductDemoScenario[] = [
     key: "ship-command-palette",
     label: "Coding agent",
     description:
-      "Select a task and watch the agent inspect files, apply changes, and produce the result.",
+      "Choose a repo task and watch the agent inspect code, apply edits, and update the diff.",
     activeWindow: "workflowStudio",
     taskList: {
       window: {
         key: "taskList",
         title: "Tasks",
-        subtitle: "Agent queue",
-        status: { label: "3 open", tone: "info" },
+        subtitle: "Current workspace",
+        status: { label: "3 tasks", tone: "info" },
       },
-      title: "Open tasks",
-      subtitle: "Pick a coding task to inspect and run.",
+      title: "Agent tasks",
+      subtitle: "Select a coding task to inspect and execute.",
       activeItemId: "ship-command-palette",
       items: [
         {
           id: "fix-auth-flow",
           title: "Fix auth flow",
-          description: "Resolve broken redirect after OAuth callback.",
-          meta: "apps/web / due now",
+          description: "Fix the post-login redirect after the OAuth callback.",
+          meta: "apps/web · active",
         },
         {
           id: "refactor-pricing-page",
           title: "Refactor pricing page",
-          description: "Split pricing blocks into reusable components.",
-          meta: "marketing site / queued",
+          description:
+            "Extract repeated pricing sections into reusable components.",
+          meta: "marketing site · queued",
         },
         {
           id: "ship-command-palette",
           title: "Ship command palette",
-          description: "Add keyboard search and action switching.",
-          meta: "dashboard / ready",
+          description: "Add global search, shortcuts, and action routing.",
+          meta: "dashboard · ready",
         },
       ],
     },
     workflowStudio: {
       window: {
         key: "workflowStudio",
-        title: "AI agent",
-        subtitle: "Working session",
+        title: "Agent",
+        subtitle: "Active session",
         status: { label: "Building", tone: "info" },
       },
       title: "Adding command palette",
@@ -650,9 +653,9 @@ const scenarios: ProductDemoScenario[] = [
       },
       title: "components/command-menu.tsx",
       subtitle:
-        "The output panel shows the new command palette interface being assembled.",
-      statusLabel: "Building palette",
-      progressLabel: "8 commands wired",
+        "The diff updates as the command palette is wired into the app shell.",
+      statusLabel: "Wiring command palette",
+      progressLabel: "8 commands indexed",
       progressPercent: 73,
       activeEntryId: "cmd-3",
       editorTabLabel: "command-menu.tsx",
@@ -662,14 +665,14 @@ const scenarios: ProductDemoScenario[] = [
       entries: [
         {
           id: "cmd-1",
-          message: "Found dialog primitive and dashboard nav state",
+          message: "Opened dialog primitive and dashboard nav state",
           timestamp: "11:21",
           source: "agent",
           status: "success",
         },
         {
           id: "cmd-2",
-          message: "Generated searchable command list with grouped actions",
+          message: "Generated grouped command list and action search",
           timestamp: "11:22",
           source: "editor",
           status: "success",
@@ -699,7 +702,7 @@ const scenarios: ProductDemoScenario[] = [
         },
         {
           id: "cmd-4",
-          message: "Previewing route jump and quick action execution",
+          message: "Validated route jump and quick action execution",
           timestamp: "11:23",
           source: "preview",
           status: "neutral",
@@ -757,10 +760,10 @@ const scenarios: ProductDemoScenario[] = [
 export function Hero() {
   return (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,theme(colors.cyan.500/0.14),transparent_28%),radial-gradient(circle_at_bottom_right,theme(colors.blue.500/0.14),transparent_30%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#f5f5f2_48%,#ecece8_100%)] dark:bg-[linear-gradient(180deg,#020202_0%,#060606_56%,#020202_100%)]" />
 
       <HeroProductDemo
-        className="bg-[linear-gradient(180deg,#f8fafc_0%,#eef4ff_44%,#f8fafc_100%)] dark:bg-[linear-gradient(180deg,#020617_0%,#061120_50%,#020617_100%)]"
+        className="bg-transparent"
         heading={{
           text: "Code with agents.",
           className:
@@ -777,10 +780,10 @@ export function Hero() {
           variant: "default",
           size: "lg",
           className: [
-            "px-7 py-3 text-sm font-semibold shadow-lg shadow-cyan-500/20",
-            "[--btn-bg:theme(colors.cyan.500)]",
-            "hover:[--btn-hover-bg:theme(colors.cyan.400)]",
-            "[--btn-fg:theme(colors.slate.950)]",
+            "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10",
+            "[--btn-bg:theme(colors.slate.950)]",
+            "hover:[--btn-hover-bg:theme(colors.slate.800)]",
+            "[--btn-fg:white]",
           ].join(" "),
         }}
         cta2={{
@@ -791,32 +794,32 @@ export function Hero() {
           className: [
             "border px-7 py-3 text-sm font-semibold shadow-sm",
             "[--btn-bg:transparent]",
-            "[--btn-fg:theme(colors.cyan.700)]",
-            "[--btn-border:theme(colors.cyan.300)]",
-            "hover:[--btn-hover-bg:theme(colors.cyan.50)]",
-            "dark:[--btn-fg:theme(colors.cyan.300)]",
-            "dark:[--btn-border:theme(colors.cyan.700)]",
+            "[--btn-fg:theme(colors.slate.800)]",
+            "[--btn-border:rgba(15,23,42,0.12)]",
+            "hover:[--btn-hover-bg:rgba(15,23,42,0.03)]",
+            "dark:[--btn-fg:white]",
+            "dark:[--btn-border:rgba(255,255,255,0.12)]",
           ].join(" "),
         }}
         stage={{
           scenarios,
           initialScenarioIndex: 0,
-          className: "mt-2",
+          className: "mt-0",
         }}
         section={{
-          className: "px-6 py-12 sm:px-8 lg:px-10 lg:py-16",
+          className: "px-6 py-10 sm:px-8 lg:px-10 lg:py-12",
         }}
         container={{
           className: "relative z-10 max-w-[88rem]",
         }}
         textContainer={{
-          className: "max-w-3xl",
+          className: "max-w-3xl pt-1 lg:pt-0",
         }}
         demoContainer={{
-          className: "relative min-h-[32rem] lg:min-h-[39rem]",
+          className: "relative min-h-[32rem] lg:min-h-[38rem]",
         }}
         buttonsContainer={{
-          className: "mt-5 flex-col items-start sm:flex-row sm:items-center",
+          className: "mt-4 flex-col items-start sm:flex-row sm:items-center",
         }}
         demoBelowText
         ariaLabel="AI workflow automation hero section"

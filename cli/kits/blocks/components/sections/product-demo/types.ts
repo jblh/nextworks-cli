@@ -119,6 +119,7 @@ export interface ProductDemoWorkflowStudioState {
   highlights?: ProductDemoHighlightTarget[];
   transcript?: Array<string | ProductDemoWorkflowTranscriptEntry>;
   composer?: ProductDemoWorkflowComposerState;
+  playbackMs?: number;
 }
 
 export interface ProductDemoRunConsoleEntry {
@@ -154,6 +155,7 @@ export interface ProductDemoRunConsoleState {
   editorLanguage?: string;
   editorSummary?: string;
   highlights?: ProductDemoHighlightTarget[];
+  playbackMs?: number;
 }
 
 export interface ProductDemoApprovalAction {

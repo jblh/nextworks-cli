@@ -146,7 +146,8 @@ export function HeroProductDemo({
   const renderButtons = (
     <div
       className={cn(
-        "mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center",
+        "mt-4 flex flex-col items-start gap-4 sm:flex-row sm:items-center",
+
         buttonsContainer?.className,
       )}
     >
@@ -203,7 +204,7 @@ export function HeroProductDemo({
     <section
       id={id}
       className={cn(
-        "relative overflow-hidden px-6 py-16 sm:px-8 lg:px-10 lg:py-24",
+        "relative overflow-hidden px-6 py-12 sm:px-8 lg:px-10 lg:py-18",
         section?.className,
         className,
       )}
@@ -212,7 +213,7 @@ export function HeroProductDemo({
       <div
         className={cn(
           demoBelowText
-            ? "mx-auto flex max-w-7xl flex-col gap-8"
+            ? "mx-auto flex max-w-7xl flex-col gap-6"
             : "mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:gap-12 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]",
           container?.className,
         )}
