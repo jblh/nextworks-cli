@@ -120,6 +120,7 @@ export interface ProductDemoWorkflowStudioState {
   transcript?: Array<string | ProductDemoWorkflowTranscriptEntry>;
   composer?: ProductDemoWorkflowComposerState;
   playbackMs?: number;
+  playbackStep?: number;
 }
 
 export interface ProductDemoRunConsoleEntry {
@@ -156,6 +157,7 @@ export interface ProductDemoRunConsoleState {
   editorSummary?: string;
   highlights?: ProductDemoHighlightTarget[];
   playbackMs?: number;
+  playbackStep?: number;
 }
 
 export interface ProductDemoApprovalAction {

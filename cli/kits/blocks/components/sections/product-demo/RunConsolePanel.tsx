@@ -31,6 +31,15 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
       (entry) => entry.id === state.activeEntryId || entry.highlighted,
     );
 
+    if (typeof state.playbackStep === "number") {
+      const syncedIndex = Math.min(
+        Math.max(state.playbackStep - 2, 0),
+        Math.max(state.entries.length - 1, 0),
+      );
+      setActiveIndex(syncedIndex);
+      return;
+    }
+
     setActiveIndex(Math.max(0, preferredIndex));
 
     if (state.entries.length <= 1) {
@@ -42,17 +51,40 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     }, playbackMs);
 
     return () => window.clearInterval(interval);
-  }, [playbackMs, state.activeEntryId, state.entries, state.title]);
+  }, [
+    playbackMs,
+    state.activeEntryId,
+    state.entries,
+    state.title,
+    state.playbackStep,
+  ]);
 
+  const fallbackCodeEntry =
+    state.entries.find((entry) => (entry.code?.length ?? 0) > 0) ??
+    state.entries[0];
   const activeEntry = state.entries[activeIndex] ?? state.entries[0];
-  const activeCode = activeEntry?.code ?? [];
-  const startLine = Number(activeEntry?.lineNumber ?? 24);
+  const displayEntry =
+    (activeEntry?.code?.length ?? 0) > 0 ? activeEntry : fallbackCodeEntry;
+  const activeCode = displayEntry?.code ?? [];
+  const startLine = Number(
+    displayEntry?.lineNumber ?? activeEntry?.lineNumber ?? 24,
+  );
   const activeLineCount = Math.max(1, activeCode.length || 1);
   const [visibleLineCount, setVisibleLineCount] = React.useState(
     Math.max(1, Math.min(2, activeCode.length || 1)),
   );
 
   React.useEffect(() => {
+    if (typeof state.playbackStep === "number") {
+      const revealFromStep = Math.max(state.playbackStep - 1, 1);
+      const syncedVisibleCount = Math.min(
+        activeCode.length || 1,
+        Math.max(1, revealFromStep * 2),
+      );
+      setVisibleLineCount(syncedVisibleCount);
+      return;
+    }
+
     setVisibleLineCount(Math.max(1, Math.min(2, activeCode.length || 1)));
 
     if (activeCode.length <= 2) {
@@ -76,20 +108,26 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     );
 
     return () => window.clearInterval(interval);
-  }, [activeCode, playbackMs, activeEntry?.id]);
+  }, [activeCode, playbackMs, activeEntry?.id, state.playbackStep]);
 
   const visibleCode = activeCode.slice(0, visibleLineCount);
 
   return (
-    <div className="flex h-full flex-col text-slate-900 dark:text-white/95">
-      <div className="mb-2 flex items-center justify-between gap-3 text-[11px]">
+    <div className="flex h-full flex-col text-slate-900 [text-rendering:geometricPrecision] dark:text-white/95">
+      <div className="mb-2 flex items-center justify-between gap-3 text-[11px] tracking-[0.01em]">
         <div className="min-w-0 truncate font-mono text-slate-500 dark:text-slate-400">
           <span className="mr-2 uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
-            {activeEntry?.source ?? state.statusLabel ?? "active"}
+            {activeEntry?.source ??
+              displayEntry?.source ??
+              state.statusLabel ??
+              "active"}
           </span>
 
           <span className="truncate text-slate-700 dark:text-slate-300/95">
-            {activeEntry?.message ?? state.editorSummary ?? state.subtitle}
+            {activeEntry?.message ??
+              displayEntry?.message ??
+              state.editorSummary ??
+              state.subtitle}
           </span>
         </div>
         <div className="flex shrink-0 items-center gap-3 text-slate-400 dark:text-slate-500">
@@ -105,7 +143,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
         </div>
       </div>
 
-      <div className="flex min-h-0 flex-1 overflow-hidden rounded-lg border border-black/10 bg-[#f7f7f5] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-[#0b0b0b] dark:shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
+      <div className="flex min-h-0 flex-1 overflow-hidden rounded-[8px] border border-black/10 bg-[#f7f7f5] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-[#0b0b0b] dark:shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           <div className="flex items-center gap-2 border-b border-black/8 bg-black/[0.025] px-3 py-2 dark:border-white/8 dark:bg-white/[0.03]">
             <span className="h-2.5 w-2.5 rounded-full bg-white/75 dark:bg-white/65" />
@@ -159,7 +197,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                       !isAdded &&
                         !isRemoved &&
                         "text-slate-700 dark:text-slate-300",
-                      activeEntry?.highlighted &&
+                      displayEntry?.highlighted &&
                         index === Math.min(1, visibleCode.length - 1) &&
                         "animate-pulse",
                     )}
@@ -183,7 +221,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                 );
               })}
 
-              {activeEntry?.highlighted &&
+              {displayEntry?.highlighted &&
               visibleLineCount < activeLineCount ? (
                 <div className="mt-2 flex items-center gap-2 pl-3 text-[11px] text-slate-400 dark:text-slate-500">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />

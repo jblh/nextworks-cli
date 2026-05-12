@@ -38,10 +38,17 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   const composer = state.composer;
   const playbackMs = state.playbackMs ?? 1800;
   const [visibleCount, setVisibleCount] = React.useState(
-    Math.max(1, Math.min(2, transcript.length)),
+    state.playbackStep ?? Math.max(1, Math.min(2, transcript.length)),
   );
 
   React.useEffect(() => {
+    if (typeof state.playbackStep === "number") {
+      setVisibleCount(
+        Math.max(1, Math.min(state.playbackStep, transcript.length)),
+      );
+      return;
+    }
+
     setVisibleCount(Math.max(1, Math.min(2, transcript.length)));
 
     if (transcript.length <= 2) {
@@ -59,23 +66,23 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
     }, playbackMs);
 
     return () => window.clearInterval(interval);
-  }, [playbackMs, transcript.length, state.window.title]);
+  }, [playbackMs, transcript.length, state.window.title, state.playbackStep]);
 
   const visibleTranscript = transcript.slice(0, visibleCount);
   const isRunning = visibleCount < transcript.length;
 
   return (
-    <div className="flex h-full flex-col overflow-hidden bg-[#f6f6f4] text-slate-900 dark:bg-[#0a0a0a] dark:text-slate-100">
+    <div className="flex h-full flex-col overflow-hidden bg-[#f6f6f4] text-slate-900 [text-rendering:geometricPrecision] dark:bg-[#0a0a0a] dark:text-slate-100">
       <div className="border-b border-black/8 px-4 py-3 dark:border-white/8">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             {state.title && (
-              <h4 className="text-[13px] font-medium text-slate-900 dark:text-white/92">
+              <h4 className="text-[13px] font-semibold tracking-[-0.01em] text-slate-900 dark:text-white/96">
                 {state.title}
               </h4>
             )}
             {state.subtitle && (
-              <p className="mt-1 max-w-sm text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
+              <p className="mt-1 max-w-sm text-[11px] leading-relaxed text-slate-500 dark:text-slate-400/90">
                 {state.subtitle}
               </p>
             )}
