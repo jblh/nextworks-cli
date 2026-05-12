@@ -214,7 +214,46 @@ export function DemoStage({
     );
   }
 
-  const windows = getWindowRenderData(activeScenario, (taskId) => {
+  const workflowPlaybackMs = activeScenario.workflowStudio.playbackMs ?? 1800;
+  const transcriptLength = Math.max(
+    1,
+    activeScenario.workflowStudio.transcript?.length ?? 1,
+  );
+  const [playbackStep, setPlaybackStep] = React.useState(1);
+
+  React.useEffect(() => {
+    setPlaybackStep(Math.max(1, Math.min(2, transcriptLength)));
+
+    if (transcriptLength <= 2) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setPlaybackStep((current) => {
+        if (current >= transcriptLength) {
+          return 2;
+        }
+
+        return current + 1;
+      });
+    }, workflowPlaybackMs);
+
+    return () => window.clearInterval(interval);
+  }, [workflowPlaybackMs, transcriptLength, activeScenario.key]);
+
+  const scenarioWithPlayback: ProductDemoScenario = {
+    ...activeScenario,
+    workflowStudio: {
+      ...activeScenario.workflowStudio,
+      playbackStep,
+    },
+    runConsole: {
+      ...activeScenario.runConsole,
+      playbackStep,
+    },
+  };
+
+  const windows = getWindowRenderData(scenarioWithPlayback, (taskId) => {
     const nextIndex = scenarios.findIndex(
       (scenario) => scenario.key === taskId,
     );
@@ -232,14 +271,14 @@ export function DemoStage({
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
       className={cn(
-        "relative isolate min-h-[33rem] w-full overflow-hidden rounded-[10px] border border-black/10 bg-[linear-gradient(135deg,rgba(59,130,246,0.12),rgba(255,255,255,0.92)_42%,rgba(239,68,68,0.12))] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.22)] dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.16),rgba(255,255,255,0.08)_42%,rgba(239,68,68,0.16))] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.75)]",
+        "relative isolate min-h-[33rem] w-full overflow-hidden rounded-[10px] bg-[#e9e8e3] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.18)] dark:bg-[#111113] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.62)]",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(245,245,242,0.92)_100%)] dark:bg-[linear-gradient(180deg,rgba(14,14,16,0.92)_0%,rgba(8,8,9,0.96)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.06),transparent_32%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.05),transparent_30%),linear-gradient(180deg,#f1f0eb_0%,#e4e3dc_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_32%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.08),transparent_30%),linear-gradient(180deg,#141416_0%,#0f0f11_100%)]" />
 
-      <div className="relative z-10 flex min-h-[33rem] flex-col gap-3 p-4 sm:p-5 lg:p-5">
+      <div className="relative z-10 flex min-h-[33rem] flex-col gap-3 p-0 sm:p-0 lg:p-0">
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
             if (getWindowShellClass(windowData.key) === "hidden") {
@@ -302,16 +341,16 @@ export function DemoStage({
                   showControls={false}
                   showResizeHandle={false}
                   className={cn(
-                    "h-full border border-black/10 bg-white/58 shadow-none dark:border-white/10 dark:bg-[#060606]",
+                    "h-full border-y border-black/8 bg-white/96 shadow-none dark:border-white/8 dark:bg-[#050505]",
                     windowData.key === "taskList" &&
-                      "rounded-l-[6px] border-r-0",
+                      "rounded-none border-l-0 border-r-0",
                     windowData.key === "runConsole" &&
-                      "rounded-r-[6px] border-l-0",
+                      "rounded-none border-l-0 border-r-0",
                     windowData.key === "workflowStudio" &&
                       "border-l-0 border-r-0 rounded-none",
                   )}
                   chromeClassName={cn(
-                    "border-black/10 bg-white/68 dark:border-white/10 dark:bg-[#080808]",
+                    "border-black/8 bg-white/96 dark:border-white/8 dark:bg-[#060606]",
                     windowData.key === "taskList" && "rounded-none",
                     windowData.key === "workflowStudio" &&
                       "border-l-0 border-r-0 rounded-none",

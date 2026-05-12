@@ -47,7 +47,7 @@ export function DemoWindow({
   return (
     <section
       className={cn(
-        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/8 bg-white/92 shadow-[0_28px_80px_-34px_rgba(15,23,42,0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-[#0a0a0a] dark:shadow-[0_24px_70px_-32px_rgba(2,8,23,0.82)]",
+        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/8 bg-white/96 shadow-[0_28px_80px_-34px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-[#050505] dark:shadow-[0_24px_70px_-32px_rgba(2,8,23,0.82)]",
 
         enableMotion &&
           "transition-[transform,opacity,box-shadow,border-color] duration-500 ease-out motion-reduce:transition-none",
@@ -63,7 +63,7 @@ export function DemoWindow({
     >
       <header
         className={cn(
-          "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/8 px-4 py-2.5 sm:px-5 dark:border-white/10",
+          "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/8 px-4 py-2.5 [text-rendering:geometricPrecision] sm:px-5 dark:border-white/10",
 
           chromeClassName,
         )}
@@ -79,7 +79,7 @@ export function DemoWindow({
 
           <div className="min-w-0 flex items-center gap-2 overflow-hidden">
             <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
-              <h3 className="shrink-0 text-sm font-semibold text-slate-900 sm:text-[0.95rem] dark:text-slate-100">
+              <h3 className="shrink-0 text-sm font-semibold tracking-[-0.01em] text-slate-900 sm:text-[0.95rem] dark:text-slate-100">
                 {window.title}
               </h3>
               {window.badge && (
@@ -88,7 +88,7 @@ export function DemoWindow({
                 </span>
               )}
               {window.subtitle && (
-                <p className="min-w-0 truncate text-[11px] leading-5 text-slate-500 dark:text-slate-400 sm:text-[0.8rem]">
+                <p className="min-w-0 truncate text-[11px] leading-5 tracking-[0.01em] text-slate-500 dark:text-slate-400 sm:text-[0.8rem]">
                   {window.subtitle}
                 </p>
               )}
