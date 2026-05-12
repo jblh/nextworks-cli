@@ -47,6 +47,38 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
   const activeEntry = state.entries[activeIndex] ?? state.entries[0];
   const activeCode = activeEntry?.code ?? [];
   const startLine = Number(activeEntry?.lineNumber ?? 24);
+  const activeLineCount = Math.max(1, activeCode.length || 1);
+  const [visibleLineCount, setVisibleLineCount] = React.useState(
+    Math.max(1, Math.min(2, activeCode.length || 1)),
+  );
+
+  React.useEffect(() => {
+    setVisibleLineCount(Math.max(1, Math.min(2, activeCode.length || 1)));
+
+    if (activeCode.length <= 2) {
+      return;
+    }
+
+    const interval = window.setInterval(
+      () => {
+        setVisibleLineCount((current) => {
+          if (current >= activeCode.length) {
+            return Math.max(1, Math.min(2, activeCode.length));
+          }
+
+          return current + 1;
+        });
+      },
+      Math.max(
+        520,
+        Math.round(playbackMs / Math.max(activeCode.length - 1, 1)),
+      ),
+    );
+
+    return () => window.clearInterval(interval);
+  }, [activeCode, playbackMs, activeEntry?.id]);
+
+  const visibleCode = activeCode.slice(0, visibleLineCount);
 
   return (
     <div className="flex h-full flex-col text-slate-900 dark:text-white/95">
@@ -91,7 +123,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
 
           <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f7f7f5] dark:bg-[#0b0b0b]">
             <div className="border-r border-black/8 bg-black/[0.018] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400 dark:border-white/8 dark:bg-white/[0.02] dark:text-slate-600">
-              {activeCode.map((line, index) => {
+              {visibleCode.map((line, index) => {
                 const isAdded = line.trimStart().startsWith("+");
                 const isRemoved = line.trimStart().startsWith("-");
 
@@ -110,8 +142,8 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
               })}
             </div>
 
-            <div className="px-3 py-3 font-mono text-[12px] leading-7 text-slate-700 dark:text-slate-300">
-              {activeCode.map((line, index) => {
+            <div className="relative px-3 py-3 font-mono text-[12px] leading-7 text-slate-700 dark:text-slate-300">
+              {visibleCode.map((line, index) => {
                 const isAdded = line.trimStart().startsWith("+");
                 const isRemoved = line.trimStart().startsWith("-");
 
@@ -124,8 +156,12 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                         "border-[#3b82f6]/80 bg-[#3b82f6]/8 text-slate-900 dark:text-[#dbeafe]",
                       isRemoved &&
                         "border-[#ef4444]/80 bg-[#ef4444]/8 text-slate-900 dark:text-[#fecdd3]",
-                      !isAdded && !isRemoved && "text-slate-700 dark:text-slate-300",
-                      activeEntry?.highlighted && index === 1 && "animate-pulse",
+                      !isAdded &&
+                        !isRemoved &&
+                        "text-slate-700 dark:text-slate-300",
+                      activeEntry?.highlighted &&
+                        index === Math.min(1, visibleCode.length - 1) &&
+                        "animate-pulse",
                     )}
                   >
                     <span
@@ -146,6 +182,14 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                   </div>
                 );
               })}
+
+              {activeEntry?.highlighted &&
+              visibleLineCount < activeLineCount ? (
+                <div className="mt-2 flex items-center gap-2 pl-3 text-[11px] text-slate-400 dark:text-slate-500">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
+                  Applying change...
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
