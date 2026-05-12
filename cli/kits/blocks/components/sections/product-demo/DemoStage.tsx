@@ -232,15 +232,14 @@ export function DemoStage({
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
       className={cn(
-        "relative isolate min-h-[31rem] w-full overflow-hidden rounded-[5px] border border-black/10 bg-[#f3f3f1] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.22)] dark:border-white/10 dark:bg-[#050505] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.75)]",
+        "relative isolate min-h-[33rem] w-full overflow-hidden rounded-[10px] border border-black/10 bg-[linear-gradient(135deg,rgba(59,130,246,0.12),rgba(255,255,255,0.92)_42%,rgba(239,68,68,0.12))] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.22)] dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.16),rgba(255,255,255,0.08)_42%,rgba(239,68,68,0.16))] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.75)]",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,#f7f7f5_0%,#efefec_100%)] dark:bg-[linear-gradient(180deg,#090909_0%,#050505_100%)]" />
-      <div className="absolute inset-x-0 top-0 h-12 border-b border-black/10 bg-white/40 dark:border-white/10 dark:bg-white/[0.02]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(245,245,242,0.92)_100%)] dark:bg-[linear-gradient(180deg,rgba(14,14,16,0.92)_0%,rgba(8,8,9,0.96)_100%)]" />
 
-      <div className="relative z-10 flex min-h-[31rem] flex-col gap-3 p-3.5 sm:p-4 lg:p-4">
+      <div className="relative z-10 flex min-h-[33rem] flex-col gap-3 p-4 sm:p-5 lg:p-5">
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
             if (getWindowShellClass(windowData.key) === "hidden") {
@@ -267,7 +266,7 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:grid lg:h-[35rem] lg:grid-cols-10 lg:gap-0 xl:h-[37rem]">
+        <div className="hidden lg:grid lg:h-[36.5rem] lg:grid-cols-10 lg:gap-0 xl:h-[38.5rem]">
           {windows.map((windowData) => {
             const shellClass = getWindowShellClass(windowData.key);
 
@@ -303,15 +302,16 @@ export function DemoStage({
                   showControls={false}
                   showResizeHandle={false}
                   className={cn(
-                    "h-full border-y border-black/10 bg-white/40 shadow-none dark:border-white/10 dark:bg-white/[0.02]",
-                    windowData.key === "taskList" && "rounded-l-[5px] border-l",
+                    "h-full border border-black/10 bg-white/58 shadow-none dark:border-white/10 dark:bg-[#060606]",
+                    windowData.key === "taskList" &&
+                      "rounded-l-[6px] border-r-0",
                     windowData.key === "runConsole" &&
-                      "rounded-r-[5px] border-r",
+                      "rounded-r-[6px] border-l-0",
                     windowData.key === "workflowStudio" &&
                       "border-l-0 border-r-0 rounded-none",
                   )}
                   chromeClassName={cn(
-                    "border-black/10 bg-white/46 dark:border-white/10 dark:bg-white/[0.02]",
+                    "border-black/10 bg-white/68 dark:border-white/10 dark:bg-[#080808]",
                     windowData.key === "taskList" && "rounded-none",
                     windowData.key === "workflowStudio" &&
                       "border-l-0 border-r-0 rounded-none",

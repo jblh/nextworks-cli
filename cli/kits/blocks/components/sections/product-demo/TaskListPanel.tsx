@@ -34,13 +34,20 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
               type="button"
               onClick={() => onSelect?.(item.id)}
               className={cn(
-                "w-full rounded-[5px] border px-3 py-3 text-left transition-colors duration-200",
+                "relative isolate w-full overflow-hidden rounded-[5px] border px-3 py-3 text-left transition-colors duration-200",
                 "border-black/8 bg-white/88 hover:border-black/16 hover:bg-black/[0.02] dark:border-white/8 dark:bg-white/[0.02] dark:hover:border-white/14 dark:hover:bg-white/[0.035]",
                 isActive &&
-                  "border-transparent bg-[linear-gradient(135deg,rgba(59,130,246,0.16),rgba(255,255,255,0.88),rgba(239,68,68,0.14))] shadow-[0_16px_36px_-24px_rgba(15,23,42,0.2)] dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.18),rgba(255,255,255,0.04),rgba(239,68,68,0.18))] dark:shadow-[0_12px_30px_-22px_rgba(255,255,255,0.06)]",
+                  "border-black/12 bg-white/[0.96] shadow-[0_16px_36px_-24px_rgba(15,23,42,0.16)] dark:border-white/12 dark:bg-white/[0.045] dark:shadow-[0_12px_30px_-22px_rgba(255,255,255,0.05)]",
               )}
             >
-              <div className="flex items-start gap-3">
+              {isActive ? (
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-[1px] rounded-[4px] bg-[linear-gradient(135deg,rgba(59,130,246,0.12),rgba(255,255,255,0)_42%,rgba(239,68,68,0.12))] dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.16),rgba(255,255,255,0)_42%,rgba(239,68,68,0.16))]"
+                />
+              ) : null}
+
+              <div className="relative z-10 flex items-start gap-3">
                 <span
                   className={cn(
                     "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold",
