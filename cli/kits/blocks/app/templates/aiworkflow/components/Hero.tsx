@@ -827,7 +827,7 @@ export function Hero() {
         }}
         demoContainer={{
           className:
-            "relative mx-auto min-h-[32rem] w-full max-w-[90%] lg:min-h-[38rem]",
+            "relative mx-auto min-h-[36rem] w-full max-w-[88%] lg:min-h-[44rem]",
         }}
         buttonsContainer={{
           className: "mt-4 flex-col items-start sm:flex-row sm:items-center",

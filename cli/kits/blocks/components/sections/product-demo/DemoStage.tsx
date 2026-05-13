@@ -271,15 +271,15 @@ export function DemoStage({
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
       className={cn(
-        "relative isolate min-h-[33rem] w-full overflow-hidden rounded-[14px] border border-black/6 bg-[#dcdad4] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.18)] dark:border-white/8 dark:bg-[#151518] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.62)]",
+        "relative isolate min-h-[36rem] w-full overflow-hidden rounded-[14px] border border-black/6 bg-[#d8d5ce] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.18)] dark:border-white/8 dark:bg-[#151518] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.62)] lg:min-h-[44rem]",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.05),transparent_34%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.04),transparent_32%),linear-gradient(180deg,#e7e4de_0%,#d8d5ce_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.07),transparent_34%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.06),transparent_32%),linear-gradient(180deg,#19191c_0%,#121215_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.05),transparent_38%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.04),transparent_36%),linear-gradient(180deg,#e9e6df_0%,#d8d5ce_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.07),transparent_38%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.06),transparent_36%),linear-gradient(180deg,#19191c_0%,#121215_100%)]" />
       <div className="pointer-events-none absolute inset-[1px] rounded-[13px] ring-1 ring-white/28 dark:ring-white/6" />
 
-      <div className="relative z-10 flex min-h-[33rem] flex-col gap-3 p-3 sm:p-3 lg:p-3">
+      <div className="relative z-10 flex min-h-[36rem] flex-col gap-3 p-5 sm:p-5 lg:min-h-[44rem] lg:p-6">
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
             if (getWindowShellClass(windowData.key) === "hidden") {
@@ -306,7 +306,7 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:grid lg:h-[36.5rem] lg:grid-cols-10 lg:gap-0 xl:h-[38.5rem]">
+        <div className="hidden lg:grid lg:min-h-[30rem] lg:grid-cols-10 lg:gap-0 xl:min-h-[32rem]">
           {windows.map((windowData) => {
             const shellClass = getWindowShellClass(windowData.key);
 
@@ -342,7 +342,7 @@ export function DemoStage({
                   showControls={false}
                   showResizeHandle={false}
                   className={cn(
-                    "h-full border-y border-black/8 bg-white/96 shadow-none dark:border-white/8 dark:bg-[#050505]",
+                    "min-h-[30rem] h-full border-y border-black/8 bg-white/96 shadow-none dark:border-white/8 dark:bg-[#050505] xl:min-h-[32rem]",
                     windowData.key === "taskList" &&
                       "rounded-none border-l-0 border-r-0",
                     windowData.key === "runConsole" &&
