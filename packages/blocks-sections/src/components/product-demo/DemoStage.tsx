@@ -7,15 +7,14 @@ import React from "react";
 import { motion } from "motion/react";
 import { cn } from "@nextworks/blocks-core";
 import { DemoWindow } from "./DemoWindow";
-import { ApprovalInboxPanel } from "./ApprovalInboxPanel";
 import { KnowledgePanel } from "./KnowledgePanel";
 import { RunConsolePanel } from "./RunConsolePanel";
+import { TaskListPanel } from "./TaskListPanel";
 import { WorkflowStudioPanel } from "./WorkflowStudioPanel";
 import type {
   ProductDemoHighlightTarget,
   ProductDemoHighlightTone,
   ProductDemoScenario,
-  ProductDemoStatusTone,
   ProductDemoWindowKey,
   ProductDemoWindowMeta,
 } from "./types";
@@ -38,10 +37,10 @@ type WindowRenderData = {
 };
 
 const WINDOW_ORDER: ProductDemoWindowKey[] = [
+  "taskList",
   "workflowStudio",
-  "knowledgePanel",
   "runConsole",
-  "approvalInbox",
+  "knowledgePanel",
 ];
 
 const HIGHLIGHT_TONE_CLASSES: Record<ProductDemoHighlightTone, string> = {
@@ -56,16 +55,6 @@ const HIGHLIGHT_TONE_CLASSES: Record<ProductDemoHighlightTone, string> = {
   muted: "border-border/60 bg-background/70 text-muted-foreground",
 };
 
-const STATUS_TONE_CLASSES: Record<ProductDemoStatusTone, string> = {
-  neutral: "border-border/60 bg-muted/55 text-muted-foreground",
-  info: "border-sky-500/30 bg-sky-500/10 text-sky-600 dark:text-sky-300",
-  success:
-    "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300",
-  warning:
-    "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
-  danger: "border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-300",
-};
-
 function clampInitialScenarioIndex(index: number | undefined, count: number) {
   if (count <= 0) {
     return 0;
@@ -78,22 +67,14 @@ function getHighlightClass(tone: ProductDemoHighlightTone = "accent") {
   return HIGHLIGHT_TONE_CLASSES[tone];
 }
 
-function getStatusClass(tone: ProductDemoStatusTone = "neutral") {
-  return STATUS_TONE_CLASSES[tone];
-}
-
 function useActiveScenario({
   scenarios,
   initialScenarioIndex,
   activeScenarioKey,
-  autoCycle,
-  cycleIntervalMs,
 }: {
   scenarios: ProductDemoScenario[];
   initialScenarioIndex?: number;
   activeScenarioKey?: string;
-  autoCycle?: boolean;
-  cycleIntervalMs?: number;
 }) {
   const fallbackIndex = React.useMemo(
     () => clampInitialScenarioIndex(initialScenarioIndex, scenarios.length),
@@ -120,20 +101,11 @@ function useActiveScenario({
     }
   }, [activeScenarioKey, controlledIndex]);
 
-  React.useEffect(() => {
-    if (activeScenarioKey || !autoCycle || scenarios.length <= 1) {
-      return;
-    }
-
-    const intervalMs = Math.max(cycleIntervalMs ?? 4500, 1200);
-    const timer = window.setInterval(() => {
-      setInternalIndex((currentIndex) => (currentIndex + 1) % scenarios.length);
-    }, intervalMs);
-
-    return () => window.clearInterval(timer);
-  }, [activeScenarioKey, autoCycle, cycleIntervalMs, scenarios.length]);
-
-  return scenarios[activeIndex] ?? scenarios[0];
+  return {
+    activeScenario: scenarios[activeIndex] ?? scenarios[0],
+    activeIndex,
+    setActiveIndex: setInternalIndex,
+  };
 }
 
 function HighlightPills({
@@ -164,17 +136,25 @@ function HighlightPills({
 
 function getWindowRenderData(
   scenario: ProductDemoScenario,
+  onSelectTask: (taskId: string) => void,
 ): WindowRenderData[] {
   return [
     {
+      key: "taskList",
+      meta: scenario.taskList.window,
+      content: (
+        <TaskListPanel state={scenario.taskList} onSelect={onSelectTask} />
+      ),
+    },
+    {
       key: "workflowStudio",
       meta: scenario.workflowStudio.window,
-      content: (
-        <>
-          <HighlightPills highlights={scenario.workflowStudio.highlights} />
-          <WorkflowStudioPanel state={scenario.workflowStudio} />
-        </>
-      ),
+      content: <WorkflowStudioPanel state={scenario.workflowStudio} />,
+    },
+    {
+      key: "runConsole",
+      meta: scenario.runConsole.window,
+      content: <RunConsolePanel state={scenario.runConsole} />,
     },
     {
       key: "knowledgePanel",
@@ -186,90 +166,38 @@ function getWindowRenderData(
         </>
       ),
     },
-    {
-      key: "runConsole",
-      meta: scenario.runConsole.window,
-      content: (
-        <>
-          <HighlightPills highlights={scenario.runConsole.highlights} />
-          <RunConsolePanel state={scenario.runConsole} />
-        </>
-      ),
-    },
-    {
-      key: "approvalInbox",
-      meta: scenario.approvalInbox.window,
-      content: (
-        <>
-          <HighlightPills highlights={scenario.approvalInbox.highlights} />
-          <ApprovalInboxPanel state={scenario.approvalInbox} />
-        </>
-      ),
-    },
   ];
 }
 
 function getWindowShellClass(key: ProductDemoWindowKey) {
   switch (key) {
+    case "taskList":
+      return "lg:col-span-2";
     case "workflowStudio":
-      return "lg:absolute lg:left-[2%] lg:top-[9%] lg:h-[66%] lg:w-[46%]";
-    case "knowledgePanel":
-      return "lg:absolute lg:left-[50%] lg:top-[10%] lg:h-[34%] lg:w-[30%] xl:left-[49%] xl:w-[29%]";
+      return "lg:col-span-3";
     case "runConsole":
-      return "lg:absolute lg:left-[50%] lg:bottom-[10%] lg:h-[33%] lg:w-[32%] xl:left-[49%] xl:w-[31%]";
+      return "lg:col-span-5";
+    case "knowledgePanel":
     case "approvalInbox":
-      return "lg:absolute lg:right-[1%] lg:top-[17%] lg:h-[45%] lg:w-[24%] xl:right-[2%] xl:h-[44%] xl:w-[23%]";
+      return "hidden";
     default:
       return "";
   }
-}
-
-function getTransformStyle(
-  meta: ProductDemoWindowMeta,
-): React.CSSProperties | undefined {
-  const layoutHint = meta.layoutHint;
-
-  if (!layoutHint) {
-    return undefined;
-  }
-
-  const translateX = layoutHint.x ?? 0;
-  const translateY = layoutHint.y ?? 0;
-  const rotate = layoutHint.rotateDeg ?? 0;
-
-  return {
-    zIndex: layoutHint.zIndex,
-    transform: `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`,
-  };
 }
 
 export function DemoStage({
   scenarios = [],
   initialScenarioIndex,
   activeScenarioKey,
-  autoCycle = false,
-  cycleIntervalMs = 4500,
   className,
   enableMotion = true,
   ariaLabel = "Product demo stage",
 }: DemoStageProps) {
-  const activeScenario = useActiveScenario({
+  const { activeScenario, activeIndex, setActiveIndex } = useActiveScenario({
     scenarios,
     initialScenarioIndex,
     activeScenarioKey,
-    autoCycle,
-    cycleIntervalMs,
   });
-
-  const activeIndex = React.useMemo(() => {
-    if (!activeScenario) {
-      return 0;
-    }
-
-    return scenarios.findIndex(
-      (scenario) => scenario.key === activeScenario.key,
-    );
-  }, [activeScenario, scenarios]);
 
   if (!activeScenario) {
     return (
@@ -289,48 +217,78 @@ export function DemoStage({
     );
   }
 
-  const windows = getWindowRenderData(activeScenario).sort(
-    (a, b) => WINDOW_ORDER.indexOf(a.key) - WINDOW_ORDER.indexOf(b.key),
+  const workflowPlaybackMs = activeScenario.workflowStudio.playbackMs ?? 1800;
+  const transcriptLength = Math.max(
+    1,
+    activeScenario.workflowStudio.transcript?.length ?? 1,
   );
+  const [playbackStep, setPlaybackStep] = React.useState(1);
+
+  React.useEffect(() => {
+    setPlaybackStep(Math.max(1, Math.min(2, transcriptLength)));
+
+    if (transcriptLength <= 2) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setPlaybackStep((current) => {
+        if (current >= transcriptLength) {
+          return 2;
+        }
+
+        return current + 1;
+      });
+    }, workflowPlaybackMs);
+
+    return () => window.clearInterval(interval);
+  }, [workflowPlaybackMs, transcriptLength, activeScenario.key]);
+
+  const scenarioWithPlayback: ProductDemoScenario = {
+    ...activeScenario,
+    workflowStudio: {
+      ...activeScenario.workflowStudio,
+      playbackStep,
+    },
+    runConsole: {
+      ...activeScenario.runConsole,
+      playbackStep,
+    },
+  };
+
+  const windows = getWindowRenderData(scenarioWithPlayback, (taskId) => {
+    const nextIndex = scenarios.findIndex(
+      (scenario) => scenario.key === taskId,
+    );
+
+    if (nextIndex >= 0) {
+      setActiveIndex(nextIndex);
+    }
+  }).sort((a, b) => WINDOW_ORDER.indexOf(a.key) - WINDOW_ORDER.indexOf(b.key));
 
   return (
     <div
       data-product-demo-stage
-      data-auto-cycle={autoCycle ? "true" : "false"}
       data-enable-motion={enableMotion ? "true" : "false"}
       data-scenario-count={scenarios.length}
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
-      data-cycle-interval-ms={cycleIntervalMs}
       className={cn(
-        "relative isolate min-h-[30rem] w-full overflow-hidden rounded-[2rem] border border-border/60 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.13),transparent_35%),linear-gradient(135deg,rgba(15,23,42,0.04),transparent_55%)] shadow-2xl",
+        "relative isolate min-h-[36rem] w-full overflow-hidden rounded-[14px] border border-black/6 bg-[#d8d5ce] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.18)] dark:border-white/8 dark:bg-[#151518] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.62)] lg:min-h-[44rem]",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background/96 to-muted/45" />
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-primary/8 to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.05),transparent_38%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.04),transparent_36%),linear-gradient(180deg,#e9e6df_0%,#d8d5ce_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.07),transparent_38%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.06),transparent_36%),linear-gradient(180deg,#19191c_0%,#121215_100%)]" />
+      <div className="pointer-events-none absolute inset-[1px] rounded-[13px] ring-1 ring-white/28 dark:ring-white/6" />
 
-      <div className="relative z-10 flex min-h-[30rem] flex-col gap-4 p-4 sm:p-5 lg:block lg:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-1">
-          <div>
-            {activeScenario.label && (
-              <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-primary/80">
-                {activeScenario.label}
-              </div>
-            )}
-            {activeScenario.description && (
-              <p className="mt-1 max-w-xl text-xs leading-relaxed text-muted-foreground">
-                {activeScenario.description}
-              </p>
-            )}
-          </div>
-
-          <HighlightPills highlights={activeScenario.highlights} />
-        </div>
-
+      <div className="relative z-10 flex min-h-[36rem] flex-col gap-3 p-5 sm:p-5 lg:min-h-[44rem] lg:p-6">
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
+            if (getWindowShellClass(windowData.key) === "hidden") {
+              return null;
+            }
+
             const activeWindow =
               activeScenario.activeWindow === windowData.key ||
               (!activeScenario.activeWindow &&
@@ -342,6 +300,8 @@ export function DemoStage({
                 window={windowData.meta}
                 active={activeWindow}
                 enableMotion={enableMotion}
+                showControls={false}
+                showResizeHandle={false}
               >
                 {windowData.content}
               </DemoWindow>
@@ -349,8 +309,14 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:block lg:h-[34rem] xl:h-[36rem]">
+        <div className="hidden lg:grid lg:min-h-[30rem] lg:grid-cols-10 lg:gap-0 xl:min-h-[32rem]">
           {windows.map((windowData) => {
+            const shellClass = getWindowShellClass(windowData.key);
+
+            if (shellClass === "hidden") {
+              return null;
+            }
+
             const activeWindow =
               activeScenario.activeWindow === windowData.key ||
               (!activeScenario.activeWindow &&
@@ -359,34 +325,47 @@ export function DemoStage({
             return (
               <motion.div
                 key={windowData.key}
-                initial={
-                  enableMotion ? { opacity: 0, y: 18, scale: 0.98 } : false
-                }
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: activeWindow ? 1 : 0.985,
-                }}
+                initial={enableMotion ? { opacity: 0, y: 10 } : false}
+                animate={{ opacity: 1, y: 0 }}
                 transition={
                   enableMotion
                     ? {
                         type: "tween",
-                        duration: 0.45,
+                        duration: 0.3,
                       }
                     : { duration: 0 }
                 }
-                className={cn(
-                  "will-change-transform",
-                  getWindowShellClass(windowData.key),
-                )}
-                style={getTransformStyle(windowData.meta)}
+                className={cn("will-change-transform", shellClass)}
               >
                 <DemoWindow
                   window={windowData.meta}
                   active={activeWindow}
-                  dimmed={!activeWindow}
+                  dimmed={false}
                   enableMotion={enableMotion}
-                  className="h-full"
+                  showControls={false}
+                  showResizeHandle={false}
+                  className={cn(
+                    "min-h-[30rem] h-full border-y border-black/8 bg-white/96 shadow-none dark:border-white/8 dark:bg-[#050505] xl:min-h-[32rem]",
+                    windowData.key === "taskList" &&
+                      "rounded-none border-l-0 border-r-0",
+                    windowData.key === "runConsole" &&
+                      "rounded-none border-l-0 border-r-0",
+                    windowData.key === "workflowStudio" &&
+                      "border-l-0 border-r-0 rounded-none",
+                  )}
+                  chromeClassName={cn(
+                    "border-black/8 bg-white/96 dark:border-white/8 dark:bg-[#060606]",
+                    windowData.key === "taskList" && "rounded-none",
+                    windowData.key === "workflowStudio" &&
+                      "border-l-0 border-r-0 rounded-none",
+                    windowData.key === "runConsole" &&
+                      "px-3 py-2.5 sm:px-3 rounded-none",
+                  )}
+                  bodyClassName={cn(
+                    "px-4 py-4 sm:px-4 sm:py-4",
+                    windowData.key === "runConsole" &&
+                      "px-2 py-2 sm:px-2 sm:py-2",
+                  )}
                 >
                   {windowData.content}
                 </DemoWindow>

@@ -23,7 +23,8 @@ export interface DemoWindowProps {
 
 const STATUS_TONE_CLASSES: Record<ProductDemoStatusTone, string> = {
   neutral: "border-border/60 bg-muted/60 text-muted-foreground",
-  info: "border-sky-500/30 bg-sky-500/10 text-sky-600 dark:text-sky-300",
+  info: "border-black/10 bg-black/[0.045] text-slate-700 dark:border-white/12 dark:bg-white/[0.045] dark:text-slate-200",
+
   success:
     "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300",
   warning:
@@ -49,11 +50,13 @@ export function DemoWindow({
   return (
     <section
       className={cn(
-        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden rounded-[1.5rem] border border-border/60 bg-card/92 shadow-[0_18px_48px_-24px_rgba(15,23,42,0.45)] backdrop-blur-xl",
+        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/8 bg-[#fcfcfa] shadow-[0_28px_80px_-34px_rgba(15,23,42,0.18)] [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:border-white/10 dark:bg-[#050505] dark:shadow-[0_24px_70px_-32px_rgba(2,8,23,0.82)]",
+
         enableMotion &&
           "transition-[transform,opacity,box-shadow,border-color] duration-500 ease-out motion-reduce:transition-none",
         active &&
-          "border-primary/45 shadow-[0_24px_60px_-26px_rgba(59,130,246,0.45)]",
+          "border-black/14 shadow-[0_28px_84px_-36px_rgba(15,23,42,0.14)] dark:border-white/14 dark:shadow-[0_24px_60px_-26px_rgba(255,255,255,0.06)]",
+
         dimmed && "opacity-90",
         className,
       )}
@@ -63,35 +66,36 @@ export function DemoWindow({
     >
       <header
         className={cn(
-          "relative flex items-start justify-between gap-3 border-b border-border/50 px-4 py-3 sm:px-5",
+          "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/8 px-4 py-2.5 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased sm:px-5 dark:border-white/10",
+
           chromeClassName,
         )}
       >
-        <div className="flex items-start gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           {showControls && (
-            <div className="mt-1 flex items-center gap-1.5 opacity-75 transition-opacity duration-200 group-hover:opacity-100">
+            <div className="flex items-center gap-1.5 opacity-75 transition-opacity duration-200 group-hover:opacity-100">
               <span className="h-2.5 w-2.5 rounded-full bg-rose-400/90" />
               <span className="h-2.5 w-2.5 rounded-full bg-amber-400/90" />
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/90" />
             </div>
           )}
 
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <h3 className="truncate text-sm font-semibold text-card-foreground sm:text-[0.95rem]">
+          <div className="min-w-0 flex items-center gap-2 overflow-hidden">
+            <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
+              <h3 className="shrink-0 text-sm font-semibold tracking-[-0.02em] text-slate-950 sm:text-[0.95rem] dark:text-slate-100">
                 {window.title}
               </h3>
               {window.badge && (
-                <span className="rounded-full border border-border/60 bg-muted/70 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                <span className="rounded-full border border-slate-200 bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.16em] text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400">
                   {window.badge}
                 </span>
               )}
+              {window.subtitle && (
+                <p className="min-w-0 truncate text-[11px] leading-5 tracking-[0.005em] text-slate-600 dark:text-slate-400 sm:text-[0.8rem]">
+                  {window.subtitle}
+                </p>
+              )}
             </div>
-            {window.subtitle && (
-              <p className="mt-1 truncate text-xs text-muted-foreground sm:text-[0.8rem]">
-                {window.subtitle}
-              </p>
-            )}
           </div>
         </div>
 
@@ -100,6 +104,7 @@ export function DemoWindow({
             className={cn(
               "shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em]",
               STATUS_TONE_CLASSES[statusTone],
+              "hidden sm:inline-flex",
             )}
           >
             {window.status.label}

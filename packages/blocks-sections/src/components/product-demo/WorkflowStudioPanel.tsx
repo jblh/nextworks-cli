@@ -4,188 +4,226 @@
 import React from "react";
 import { cn } from "@nextworks/blocks-core";
 import type {
-  ProductDemoStatusTone,
-  ProductDemoWorkflowRegion,
   ProductDemoWorkflowStudioState,
+  ProductDemoWorkflowTranscriptEntry,
 } from "./types";
 
 export interface WorkflowStudioPanelProps {
   state: ProductDemoWorkflowStudioState;
 }
 
-const STATUS_TONE_CLASSES: Record<ProductDemoStatusTone, string> = {
-  neutral: "border-border/60 bg-muted/55 text-muted-foreground",
-  info: "border-sky-500/30 bg-sky-500/10 text-sky-600 dark:text-sky-300",
-  success:
-    "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300",
-  warning:
-    "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
-  danger: "border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-300",
-};
+function normalizeEntry(
+  entry: string | ProductDemoWorkflowTranscriptEntry,
+  index: number,
+): ProductDemoWorkflowTranscriptEntry {
+  if (typeof entry !== "string") {
+    return entry;
+  }
 
-function getStatusClass(tone: ProductDemoStatusTone = "neutral") {
-  return STATUS_TONE_CLASSES[tone];
-}
+  if (index === 0) {
+    return { id: `entry-${index}`, kind: "title", text: entry };
+  }
 
-function getRegionState(
-  region: ProductDemoWorkflowRegion,
-  activeRegionId: string | undefined,
-) {
-  const isActive = region.id === activeRegionId || region.active;
-  const isHighlighted = region.highlighted || isActive;
+  if (/^thought/i.test(entry)) {
+    return { id: `entry-${index}`, kind: "thought", text: entry };
+  }
 
-  return { isActive, isHighlighted };
+  return { id: `entry-${index}`, kind: "activity", text: entry };
 }
 
 export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
+  const activeIndex = state.nodes.findIndex(
+    (node) => node.id === state.activeNodeId || node.active,
+  );
+  const activeStep = activeIndex >= 0 ? activeIndex + 1 : undefined;
+  const activeNode = activeIndex >= 0 ? state.nodes[activeIndex] : undefined;
+  const transcript = (state.transcript ?? []).map(normalizeEntry);
+  const composer = state.composer;
+  const playbackMs = state.playbackMs ?? 1800;
+  const [visibleCount, setVisibleCount] = React.useState(
+    state.playbackStep ?? Math.max(1, Math.min(2, transcript.length)),
+  );
+
+  React.useEffect(() => {
+    if (typeof state.playbackStep === "number") {
+      setVisibleCount(
+        Math.max(1, Math.min(state.playbackStep, transcript.length)),
+      );
+      return;
+    }
+
+    setVisibleCount(Math.max(1, Math.min(2, transcript.length)));
+
+    if (transcript.length <= 2) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setVisibleCount((current) => {
+        if (current >= transcript.length) {
+          return 2;
+        }
+
+        return current + 1;
+      });
+    }, playbackMs);
+
+    return () => window.clearInterval(interval);
+  }, [playbackMs, transcript.length, state.window.title, state.playbackStep]);
+
+  const visibleTranscript = transcript.slice(0, visibleCount);
+  const isRunning = visibleCount < transcript.length;
+
   return (
-    <div className="flex h-full flex-col gap-4">
-      <div className="space-y-1.5">
-        {state.title && (
-          <h4 className="text-sm font-semibold text-card-foreground">
-            {state.title}
-          </h4>
-        )}
-        {state.subtitle && (
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            {state.subtitle}
-          </p>
-        )}
+    <div className="flex h-full flex-col overflow-hidden bg-[#f5f5f2] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
+      <div className="border-b border-black/8 px-4 py-3 dark:border-white/8">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            {state.title && (
+              <h4 className="text-[13px] font-semibold tracking-[-0.02em] text-slate-950 dark:text-white/96">
+                {state.title}
+              </h4>
+            )}
+            {state.subtitle && (
+              <p className="mt-1 max-w-sm text-[11px] leading-relaxed text-slate-600 dark:text-slate-400/90">
+                {state.subtitle}
+              </p>
+            )}
+          </div>
+
+          {typeof activeStep === "number" ? (
+            <div className="flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.04] px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-slate-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-400">
+              <span
+                className={cn(
+                  "h-1.5 w-1.5 rounded-full",
+                  activeNode?.status === "success"
+                    ? "bg-emerald-400"
+                    : "bg-[#3b82f6]",
+                )}
+              />
+              Step {activeStep}/{state.nodes.length}
+            </div>
+          ) : null}
+        </div>
       </div>
 
-      {state.regions?.length ? (
-        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-          {state.regions.map((region) => {
-            const { isActive, isHighlighted } = getRegionState(
-              region,
-              state.activeRegionId,
-            );
+      <div className="flex-1 overflow-auto px-4 py-4">
+        <div className="space-y-3.5">
+          {visibleTranscript.map((entry, index) => {
+            if (entry.kind === "title") {
+              return (
+                <div key={entry.id} className="space-y-2">
+                  <div className="text-[11px] font-medium tracking-[0.02em] text-slate-500 dark:text-slate-500">
+                    {entry.text}
+                  </div>
+                  {activeNode?.description ? (
+                    <div className="rounded-lg border border-black/10 bg-black/[0.03] px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.08)] dark:border-white/8 dark:bg-white/[0.035] dark:text-slate-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                      {activeNode.description}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            }
+
+            if (entry.kind === "prompt") {
+              return (
+                <div
+                  key={entry.id}
+                  className="rounded-lg border border-black/10 bg-black/[0.03] px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 dark:border-white/8 dark:bg-white/[0.03] dark:text-slate-300"
+                >
+                  {entry.text}
+                </div>
+              );
+            }
+
+            if (entry.kind === "message") {
+              return (
+                <div
+                  key={entry.id}
+                  className="max-w-[92%] text-[12px] leading-relaxed text-slate-800 dark:text-slate-200"
+                >
+                  {entry.text}
+                </div>
+              );
+            }
+
+            if (entry.kind === "file") {
+              return (
+                <div
+                  key={entry.id}
+                  className="flex items-center justify-between gap-3 rounded-md border border-black/10 bg-black/[0.025] px-3 py-2 text-[11px] text-slate-700 dark:border-white/7 dark:bg-white/[0.025] dark:text-slate-300"
+                >
+                  <span className="truncate font-mono text-[11px] text-slate-700 dark:text-slate-300">
+                    {entry.path ?? entry.text}
+                  </span>
+                  <div className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
+                    {typeof entry.added === "number" ? (
+                      <span className="text-[#3b82f6]">+{entry.added}</span>
+                    ) : null}
+                    {typeof entry.removed === "number" ? (
+                      <span className="text-[#ef4444]">-{entry.removed}</span>
+                    ) : null}
+                  </div>
+                </div>
+              );
+            }
+
+            if (entry.kind === "thought") {
+              return (
+                <div
+                  key={entry.id}
+                  className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500"
+                >
+                  {entry.text}
+                </div>
+              );
+            }
+
+            const isLastActivity =
+              index === visibleTranscript.length - 1 ||
+              (index < visibleTranscript.length - 1 &&
+                visibleTranscript[index + 1]?.kind === "file");
 
             return (
-              <div
-                key={region.id}
-                className={cn(
-                  "rounded-2xl border border-border/60 bg-background/75 p-3",
-                  isActive && "border-primary/45 bg-primary/8 shadow-sm",
-                  isHighlighted && "ring-1 ring-primary/20",
-                )}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                      Region
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-card-foreground">
-                      {region.label}
-                    </div>
-                  </div>
-                  {region.status && (
-                    <span
-                      className={cn(
-                        "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                        getStatusClass(region.status),
-                      )}
-                    >
-                      {region.status}
-                    </span>
-                  )}
+              <div key={entry.id} className="space-y-1.5">
+                <div className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-500">
+                  {entry.text}
                 </div>
-                {region.description && (
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                    {region.description}
-                  </p>
-                )}
-                {region.nodeIds?.length ? (
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {region.nodeIds.map((nodeId) => {
-                      const node = state.nodes.find(
-                        (item) => item.id === nodeId,
-                      );
-
-                      return (
-                        <span
-                          key={nodeId}
-                          className="rounded-full border border-border/60 bg-background/80 px-2 py-0.5 text-[10px] text-muted-foreground"
-                        >
-                          {node?.label ?? nodeId}
-                        </span>
-                      );
-                    })}
+                {isLastActivity && activeNode?.metadata ? (
+                  <div className="pt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-300">
+                    {activeNode.metadata}
+                  </div>
+                ) : null}
+                {isRunning && index === visibleTranscript.length - 1 ? (
+                  <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-400 dark:text-slate-500">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
+                    Running
                   </div>
                 ) : null}
               </div>
             );
           })}
         </div>
-      ) : null}
-
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {state.nodes.map((node) => {
-          const isActive = node.id === state.activeNodeId || node.active;
-
-          return (
-            <div
-              key={node.id}
-              className={cn(
-                "rounded-2xl border border-border/60 bg-background/80 p-3 shadow-sm",
-                isActive && "border-primary/45 bg-primary/6 shadow-md",
-                node.emphasized && "ring-1 ring-primary/30",
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                    {node.type ?? "step"}
-                  </div>
-                  <div className="mt-1 text-sm font-semibold text-card-foreground">
-                    {node.label}
-                  </div>
-                </div>
-                {node.status && (
-                  <span
-                    className={cn(
-                      "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                      getStatusClass(node.status),
-                    )}
-                  >
-                    {node.status}
-                  </span>
-                )}
-              </div>
-              {node.description && (
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  {node.description}
-                </p>
-              )}
-              {node.metadata && (
-                <div className="mt-3 text-[11px] text-muted-foreground/90">
-                  {node.metadata}
-                </div>
-              )}
-            </div>
-          );
-        })}
       </div>
 
-      {state.branches?.length ? (
-        <div className="rounded-2xl border border-dashed border-border/60 bg-background/60 p-3">
-          <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-            Transitions
-          </div>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {state.branches.map((branch) => (
-              <div
-                key={branch.id}
-                className={cn(
-                  "rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                  getStatusClass(branch.status),
-                  branch.active &&
-                    "border-primary/45 bg-primary/10 text-primary",
-                )}
-              >
-                {branch.label ?? `${branch.fromNodeId} → ${branch.toNodeId}`}
-              </div>
-            ))}
+      {composer ? (
+        <div className="border-t border-black/8 px-4 py-3 dark:border-white/8">
+          <div className="rounded-lg border border-black/10 bg-white/80 px-3 py-3 shadow-[0_10px_30px_-22px_rgba(15,23,42,0.1)] dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+            <div className="text-[11px] text-slate-500 dark:text-slate-500">
+              {composer.placeholder ??
+                "Ask the agent to inspect, search, or build..."}
+            </div>
+            <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500 dark:text-slate-400">
+              <span className="rounded-full border border-black/10 bg-black/[0.035] px-2.5 py-1 text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
+                {composer.modeLabel ?? "Agent"}
+              </span>
+              <span className="rounded-full border border-black/10 bg-black/[0.035] px-2.5 py-1 text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
+                {composer.modelLabel ?? "Model 2"}
+              </span>
+              <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full border border-black/10 bg-black/[0.035] text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
+                ?
+              </span>
+            </div>
           </div>
         </div>
       ) : null}

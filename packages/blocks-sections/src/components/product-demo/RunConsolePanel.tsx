@@ -3,27 +3,10 @@
 
 import React from "react";
 import { cn } from "@nextworks/blocks-core";
-import type {
-  ProductDemoRunConsoleState,
-  ProductDemoStatusTone,
-} from "./types";
+import type { ProductDemoRunConsoleState } from "./types";
 
 export interface RunConsolePanelProps {
   state: ProductDemoRunConsoleState;
-}
-
-const STATUS_TONE_CLASSES: Record<ProductDemoStatusTone, string> = {
-  neutral: "border-border/60 bg-muted/55 text-muted-foreground",
-  info: "border-sky-500/30 bg-sky-500/10 text-sky-600 dark:text-sky-300",
-  success:
-    "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300",
-  warning:
-    "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
-  danger: "border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-300",
-};
-
-function getStatusClass(tone: ProductDemoStatusTone = "neutral") {
-  return STATUS_TONE_CLASSES[tone];
 }
 
 function getProgressPercent(value: number | undefined) {
@@ -36,117 +19,239 @@ function getProgressPercent(value: number | undefined) {
 
 export function RunConsolePanel({ state }: RunConsolePanelProps) {
   const progressPercent = getProgressPercent(state.progressPercent);
+  const playbackMs = state.playbackMs ?? 1800;
+  const [activeIndex, setActiveIndex] = React.useState(
+    Math.max(
+      0,
+      state.entries.findIndex(
+        (entry) => entry.id === state.activeEntryId || entry.highlighted,
+      ),
+    ),
+  );
+
+  React.useEffect(() => {
+    const preferredIndex = state.entries.findIndex(
+      (entry) => entry.id === state.activeEntryId || entry.highlighted,
+    );
+
+    if (typeof state.playbackStep === "number") {
+      const syncedIndex = Math.min(
+        Math.max(state.playbackStep - 2, 0),
+        Math.max(state.entries.length - 1, 0),
+      );
+      setActiveIndex(syncedIndex);
+      return;
+    }
+
+    setActiveIndex(Math.max(0, preferredIndex));
+
+    if (state.entries.length <= 1) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % state.entries.length);
+    }, playbackMs);
+
+    return () => window.clearInterval(interval);
+  }, [
+    playbackMs,
+    state.activeEntryId,
+    state.entries,
+    state.title,
+    state.playbackStep,
+  ]);
+
+  const fallbackCodeEntry =
+    state.entries.find((entry) => (entry.code?.length ?? 0) > 0) ??
+    state.entries[0];
+  const activeEntry = state.entries[activeIndex] ?? state.entries[0];
+  const displayEntry =
+    (activeEntry?.code?.length ?? 0) > 0 ? activeEntry : fallbackCodeEntry;
+  const activeCode = displayEntry?.code ?? [];
+  const startLine = Number(
+    displayEntry?.lineNumber ?? activeEntry?.lineNumber ?? 24,
+  );
+  const activeLineCount = Math.max(1, activeCode.length || 1);
+  const [visibleLineCount, setVisibleLineCount] = React.useState(
+    Math.max(1, Math.min(2, activeCode.length || 1)),
+  );
+
+  React.useEffect(() => {
+    if (typeof state.playbackStep === "number") {
+      const revealFromStep = Math.max(state.playbackStep - 1, 1);
+      const syncedVisibleCount = Math.min(
+        activeCode.length || 1,
+        Math.max(1, revealFromStep * 2),
+      );
+      setVisibleLineCount(syncedVisibleCount);
+      return;
+    }
+
+    setVisibleLineCount(Math.max(1, Math.min(2, activeCode.length || 1)));
+
+    if (activeCode.length <= 2) {
+      return;
+    }
+
+    const interval = window.setInterval(
+      () => {
+        setVisibleLineCount((current) => {
+          if (current >= activeCode.length) {
+            return Math.max(1, Math.min(2, activeCode.length));
+          }
+
+          return current + 1;
+        });
+      },
+      Math.max(
+        520,
+        Math.round(playbackMs / Math.max(activeCode.length - 1, 1)),
+      ),
+    );
+
+    return () => window.clearInterval(interval);
+  }, [activeCode, playbackMs, activeEntry?.id, state.playbackStep]);
+
+  const visibleCode = activeCode.slice(0, visibleLineCount);
 
   return (
-    <div className="flex h-full flex-col gap-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="space-y-1.5">
-          {state.title && (
-            <h4 className="text-sm font-semibold text-card-foreground">
-              {state.title}
-            </h4>
-          )}
-          {state.subtitle && (
-            <p className="text-xs leading-relaxed text-muted-foreground">
-              {state.subtitle}
-            </p>
-          )}
-        </div>
+    <div className="flex h-full flex-col text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:text-white/95">
+      <div className="mb-2 flex items-center justify-between gap-3 text-[11px] tracking-[0.005em]">
+        <div className="min-w-0 truncate font-mono text-slate-500 dark:text-slate-400">
+          <span className="mr-2 uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+            {activeEntry?.source ??
+              displayEntry?.source ??
+              state.statusLabel ??
+              "active"}
+          </span>
 
-        {(state.statusLabel || state.progressLabel) && (
-          <div className="space-y-1 text-right">
-            {state.statusLabel && (
-              <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                {state.statusLabel}
-              </div>
-            )}
-            {state.progressLabel && (
-              <div className="text-sm font-semibold text-card-foreground">
-                {state.progressLabel}
-              </div>
-            )}
-          </div>
-        )}
+          <span className="truncate text-slate-800 dark:text-slate-300/95">
+            {activeEntry?.message ??
+              displayEntry?.message ??
+              state.editorSummary ??
+              state.subtitle}
+          </span>
+        </div>
+        <div className="flex shrink-0 items-center gap-3 text-slate-400 dark:text-slate-500">
+          {state.progressLabel ? (
+            <span className="font-medium text-slate-500 dark:text-slate-400">
+              {state.progressLabel}
+            </span>
+          ) : null}
+          {typeof progressPercent === "number" ? (
+            <span>{progressPercent}%</span>
+          ) : null}
+          {activeEntry?.timestamp ? <span>{activeEntry.timestamp}</span> : null}
+        </div>
       </div>
 
-      {typeof progressPercent === "number" ? (
-        <div className="space-y-2">
-          <div className="h-2 overflow-hidden rounded-full bg-muted/70">
-            <div
-              className="h-full rounded-full bg-primary transition-[width] duration-500"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-          <div className="text-[11px] text-muted-foreground">
-            {progressPercent}% complete
-          </div>
-        </div>
-      ) : null}
-
-      {state.metrics?.length ? (
-        <div className="grid grid-cols-2 gap-2">
-          {state.metrics.map((metric) => (
-            <div
-              key={metric.id}
-              className={cn(
-                "rounded-xl border px-3 py-2",
-                getStatusClass(metric.tone),
-              )}
-            >
-              <div className="text-[10px] font-medium uppercase tracking-[0.14em] opacity-80">
-                {metric.label}
-              </div>
-              <div className="mt-1 text-sm font-semibold">{metric.value}</div>
+      <div className="flex min-h-0 flex-1 overflow-hidden rounded-[8px] border border-black/10 bg-[#f6f6f3] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-[#0b0b0b] dark:shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+          <div className="flex items-center gap-2 border-b border-black/8 bg-black/[0.035] px-3 py-2 dark:border-white/8 dark:bg-white/[0.03]">
+            <span className="h-2.5 w-2.5 rounded-full bg-white/75 dark:bg-white/65" />
+            <span className="h-2.5 w-2.5 rounded-full bg-white/35 dark:bg-white/25" />
+            <span className="h-2.5 w-2.5 rounded-full bg-white/20 dark:bg-white/15" />
+            <div className="ml-3 rounded-md border border-black/10 bg-white/88 px-2.5 py-1 font-mono text-[11px] text-slate-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
+              {state.editorTabLabel ?? state.title}
             </div>
-          ))}
-        </div>
-      ) : null}
+            {state.editorLanguage ? (
+              <div className="ml-auto font-mono text-[11px] uppercase tracking-[0.14em] text-slate-400 dark:text-slate-500">
+                {state.editorLanguage}
+              </div>
+            ) : null}
+          </div>
 
-      <div className="space-y-2">
-        {state.entries.map((entry) => {
-          const isActive =
-            entry.id === state.activeEntryId || entry.highlighted;
+          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f6f6f3] dark:bg-[#0b0b0b]">
+            <div className="border-r border-black/8 bg-black/[0.018] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400 dark:border-white/8 dark:bg-white/[0.02] dark:text-slate-600">
+              {visibleCode.map((line, index) => {
+                const isAdded = line.trimStart().startsWith("+");
+                const isRemoved = line.trimStart().startsWith("-");
 
-          return (
-            <div
-              key={entry.id}
-              className={cn(
-                "rounded-xl border border-border/60 bg-background/70 px-3 py-2.5",
-                isActive && "border-primary/40 bg-primary/6",
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <div className="text-sm text-card-foreground">
-                    {entry.message}
-                  </div>
-                  {(entry.source || entry.timestamp) && (
-                    <div className="mt-1 text-[11px] text-muted-foreground">
-                      {[entry.source, entry.timestamp]
-                        .filter(Boolean)
-                        .join(" • ")}
-                    </div>
-                  )}
-                  {entry.detail && (
-                    <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                      {entry.detail}
-                    </p>
-                  )}
-                </div>
-                {entry.status && (
-                  <span
+                return (
+                  <div
+                    key={`${startLine + index}`}
                     className={cn(
-                      "rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em]",
-                      getStatusClass(entry.status),
+                      "text-right",
+                      isAdded && "text-[#3b82f6]",
+                      isRemoved && "text-[#ef4444]",
                     )}
                   >
-                    {entry.status}
-                  </span>
-                )}
-              </div>
+                    {startLine + index}
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
+
+            <div className="relative px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:text-slate-300">
+              {visibleCode.map((line, index) => {
+                const isAdded = line.trimStart().startsWith("+");
+                const isRemoved = line.trimStart().startsWith("-");
+
+                return (
+                  <div
+                    key={`${line}-${index}`}
+                    className={cn(
+                      "flex rounded-r-md border-l border-transparent pl-3 transition-colors duration-300",
+                      isAdded &&
+                        "border-[#3b82f6]/80 bg-[#3b82f6]/10 text-slate-950 dark:text-[#dbeafe]",
+                      isRemoved &&
+                        "border-[#ef4444]/80 bg-[#ef4444]/10 text-slate-950 dark:text-[#fecdd3]",
+                      !isAdded &&
+                        !isRemoved &&
+                        "text-slate-800 dark:text-slate-300",
+                      displayEntry?.highlighted &&
+                        index === Math.min(1, visibleCode.length - 1) &&
+                        "animate-pulse",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "mr-3 w-3 shrink-0 text-center text-[11px]",
+                        isAdded
+                          ? "text-[#3b82f6]"
+                          : isRemoved
+                            ? "text-[#ef4444]"
+                            : "text-slate-400 dark:text-slate-600",
+                      )}
+                    >
+                      {isAdded ? "+" : isRemoved ? "-" : " "}
+                    </span>
+                    <span className="min-w-0 flex-1 whitespace-pre-wrap break-words">
+                      {isAdded || isRemoved ? line.slice(1).trimStart() : line}
+                    </span>
+                  </div>
+                );
+              })}
+
+              {displayEntry?.highlighted &&
+              visibleLineCount < activeLineCount ? (
+                <div className="mt-2 flex items-center gap-2 pl-3 text-[11px] text-slate-400 dark:text-slate-500">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
+                  Applying change...
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>
+
+        {state.metrics?.length ? (
+          <div className="hidden w-[6.75rem] shrink-0 border-l border-black/8 bg-black/[0.02] p-2 lg:flex lg:flex-col lg:gap-2 dark:border-white/8 dark:bg-white/[0.02]">
+            {state.metrics.map((metric) => (
+              <div
+                key={metric.id}
+                className="rounded-md border border-black/8 bg-white/65 px-2 py-2 text-center dark:border-white/8 dark:bg-white/[0.03]"
+              >
+                <div className="text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
+                  {metric.label}
+                </div>
+                <div className="mt-1 font-mono text-[12px] text-slate-800 dark:text-slate-200">
+                  {metric.value}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : null}
       </div>
     </div>
   );
