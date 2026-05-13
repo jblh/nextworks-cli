@@ -18,6 +18,7 @@ jobs:
         pm: [npm, pnpm, yarn]
 
     env:
+      NEXTWORKS_VERSION: 0.2.0-alpha.13
       # Pin Next.js for CI stability and security.
       # Keeping an explicit patched baseline (16.0.7) plus the latest stable line (16.1.4).
       # See: CVE-2025-66478 (React2Shell / RSC protocol).
@@ -66,10 +67,16 @@ jobs:
           npx --yes create-next-app@${{ matrix.next }} "${SANDBOX_DIR}" \
             --ts --eslint ${ROUTER_ARGS} --no-src-dir --no-tailwind ${PM_ARGS}
 
+      - name: Install pinned Nextworks alpha packages into fresh app
+        working-directory: ${{ env.SANDBOX_DIR }}
+        shell: bash
+        run: |
+          npm install --save-exact --registry=https://registry.npmjs.org nextworks@${{ env.NEXTWORKS_VERSION }} @nextworks/blocks-core@${{ env.NEXTWORKS_VERSION }} @nextworks/blocks-sections@${{ env.NEXTWORKS_VERSION }} @nextworks/blocks-templates@${{ env.NEXTWORKS_VERSION }}
+
       - name: Install blocks into fresh app
         working-directory: ${{ env.SANDBOX_DIR }}
         shell: bash
-        run: node "${GITHUB_WORKSPACE}/cli/dist/index.js" add blocks --sections --templates --yes
+        run: npx --yes nextworks@${{ env.NEXTWORKS_VERSION }} add blocks --sections --templates --yes
 
       - name: Install app dependencies
         working-directory: ${{ env.SANDBOX_DIR }}
