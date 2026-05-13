@@ -2,9 +2,6 @@ name: Smoke Test (Blocks install)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-  pull_request:
 
 jobs:
   blocks-smoke:
