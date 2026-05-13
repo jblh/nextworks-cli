@@ -113,7 +113,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
   const visibleCode = activeCode.slice(0, visibleLineCount);
 
   return (
-    <div className="flex h-full flex-col text-slate-900 [text-rendering:geometricPrecision] [font-synthesis-weight:none] dark:text-white/95">
+    <div className="flex h-full flex-col text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:text-white/95">
       <div className="mb-2 flex items-center justify-between gap-3 text-[11px] tracking-[0.005em]">
         <div className="min-w-0 truncate font-mono text-slate-500 dark:text-slate-400">
           <span className="mr-2 uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
@@ -145,7 +145,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
 
       <div className="flex min-h-0 flex-1 overflow-hidden rounded-[8px] border border-black/10 bg-[#f6f6f3] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-[#0b0b0b] dark:shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="flex items-center gap-2 border-b border-black/8 bg-black/[0.03] px-3 py-2 dark:border-white/8 dark:bg-white/[0.03]">
+          <div className="flex items-center gap-2 border-b border-black/8 bg-black/[0.035] px-3 py-2 dark:border-white/8 dark:bg-white/[0.03]">
             <span className="h-2.5 w-2.5 rounded-full bg-white/75 dark:bg-white/65" />
             <span className="h-2.5 w-2.5 rounded-full bg-white/35 dark:bg-white/25" />
             <span className="h-2.5 w-2.5 rounded-full bg-white/20 dark:bg-white/15" />

@@ -47,7 +47,7 @@ export function DemoWindow({
   return (
     <section
       className={cn(
-        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/8 bg-[#fcfcfa] shadow-[0_28px_80px_-34px_rgba(15,23,42,0.18)] [text-rendering:geometricPrecision] dark:border-white/10 dark:bg-[#050505] dark:shadow-[0_24px_70px_-32px_rgba(2,8,23,0.82)]",
+        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/8 bg-[#fcfcfa] shadow-[0_28px_80px_-34px_rgba(15,23,42,0.18)] [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:border-white/10 dark:bg-[#050505] dark:shadow-[0_24px_70px_-32px_rgba(2,8,23,0.82)]",
 
         enableMotion &&
           "transition-[transform,opacity,box-shadow,border-color] duration-500 ease-out motion-reduce:transition-none",
@@ -63,7 +63,7 @@ export function DemoWindow({
     >
       <header
         className={cn(
-          "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/8 px-4 py-2.5 [text-rendering:geometricPrecision] [font-synthesis-weight:none] sm:px-5 dark:border-white/10",
+          "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/8 px-4 py-2.5 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased sm:px-5 dark:border-white/10",
 
           chromeClassName,
         )}

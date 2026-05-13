@@ -72,7 +72,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   const isRunning = visibleCount < transcript.length;
 
   return (
-    <div className="flex h-full flex-col overflow-hidden bg-[#f5f5f2] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis-weight:none] dark:bg-[#090909] dark:text-slate-100">
+    <div className="flex h-full flex-col overflow-hidden bg-[#f5f5f2] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
       <div className="border-b border-black/8 px-4 py-3 dark:border-white/8">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
@@ -183,7 +183,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
 
             return (
               <div key={entry.id} className="space-y-1.5">
-                <div className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
+                <div className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-500">
                   {entry.text}
                 </div>
                 {isLastActivity && activeNode?.metadata ? (
