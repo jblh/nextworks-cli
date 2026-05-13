@@ -72,24 +72,24 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   const isRunning = visibleCount < transcript.length;
 
   return (
-    <div className="flex h-full flex-col overflow-hidden bg-[#f6f6f4] text-slate-900 [text-rendering:geometricPrecision] dark:bg-[#0a0a0a] dark:text-slate-100">
+    <div className="flex h-full flex-col overflow-hidden bg-[#f5f5f2] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis-weight:none] dark:bg-[#090909] dark:text-slate-100">
       <div className="border-b border-black/8 px-4 py-3 dark:border-white/8">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             {state.title && (
-              <h4 className="text-[13px] font-semibold tracking-[-0.01em] text-slate-900 dark:text-white/96">
+              <h4 className="text-[13px] font-semibold tracking-[-0.02em] text-slate-950 dark:text-white/96">
                 {state.title}
               </h4>
             )}
             {state.subtitle && (
-              <p className="mt-1 max-w-sm text-[11px] leading-relaxed text-slate-500 dark:text-slate-400/90">
+              <p className="mt-1 max-w-sm text-[11px] leading-relaxed text-slate-600 dark:text-slate-400/90">
                 {state.subtitle}
               </p>
             )}
           </div>
 
           {typeof activeStep === "number" ? (
-            <div className="flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.035] px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-slate-500 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-400">
+            <div className="flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.04] px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-slate-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-400">
               <span
                 className={cn(
                   "h-1.5 w-1.5 rounded-full",
@@ -114,7 +114,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                     {entry.text}
                   </div>
                   {activeNode?.description ? (
-                    <div className="rounded-lg border border-black/10 bg-black/[0.02] px-3 py-2.5 text-[12px] leading-relaxed text-slate-700 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.08)] dark:border-white/8 dark:bg-white/[0.035] dark:text-slate-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                    <div className="rounded-lg border border-black/10 bg-black/[0.03] px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.08)] dark:border-white/8 dark:bg-white/[0.035] dark:text-slate-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
                       {activeNode.description}
                     </div>
                   ) : null}
@@ -126,7 +126,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
               return (
                 <div
                   key={entry.id}
-                  className="rounded-lg border border-black/10 bg-black/[0.025] px-3 py-2.5 text-[12px] leading-relaxed text-slate-700 dark:border-white/8 dark:bg-white/[0.03] dark:text-slate-300"
+                  className="rounded-lg border border-black/10 bg-black/[0.03] px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 dark:border-white/8 dark:bg-white/[0.03] dark:text-slate-300"
                 >
                   {entry.text}
                 </div>
@@ -137,7 +137,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
               return (
                 <div
                   key={entry.id}
-                  className="max-w-[92%] text-[12px] leading-relaxed text-slate-700 dark:text-slate-200"
+                  className="max-w-[92%] text-[12px] leading-relaxed text-slate-800 dark:text-slate-200"
                 >
                   {entry.text}
                 </div>

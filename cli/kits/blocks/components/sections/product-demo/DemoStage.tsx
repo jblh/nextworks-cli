@@ -271,14 +271,15 @@ export function DemoStage({
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
       className={cn(
-        "relative isolate min-h-[33rem] w-full overflow-hidden rounded-[10px] bg-[#e9e8e3] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.18)] dark:bg-[#111113] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.62)]",
+        "relative isolate min-h-[33rem] w-full overflow-hidden rounded-[14px] border border-black/6 bg-[#dcdad4] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.18)] dark:border-white/8 dark:bg-[#151518] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.62)]",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.06),transparent_32%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.05),transparent_30%),linear-gradient(180deg,#f1f0eb_0%,#e4e3dc_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08),transparent_32%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.08),transparent_30%),linear-gradient(180deg,#141416_0%,#0f0f11_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.05),transparent_34%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.04),transparent_32%),linear-gradient(180deg,#e7e4de_0%,#d8d5ce_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.07),transparent_34%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.06),transparent_32%),linear-gradient(180deg,#19191c_0%,#121215_100%)]" />
+      <div className="pointer-events-none absolute inset-[1px] rounded-[13px] ring-1 ring-white/28 dark:ring-white/6" />
 
-      <div className="relative z-10 flex min-h-[33rem] flex-col gap-3 p-0 sm:p-0 lg:p-0">
+      <div className="relative z-10 flex min-h-[33rem] flex-col gap-3 p-3 sm:p-3 lg:p-3">
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
             if (getWindowShellClass(windowData.key) === "hidden") {
