@@ -12,10 +12,11 @@ type PresetOverrides = Partial<SharedNavbarProps>;
 const defaultProps: SharedNavbarProps = {
   brand: "FlowPilot AI",
   brandNode: (
-    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 via-sky-500 to-violet-500 font-bold text-slate-950 shadow-sm ring-1 ring-white/40">
+    <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-[linear-gradient(135deg,rgba(59,130,246,0.9),rgba(255,255,255,0.92)_52%,rgba(239,68,68,0.9))] font-bold text-slate-950 shadow-sm ring-1 ring-white/50 dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.9),rgba(255,255,255,0.82)_52%,rgba(239,68,68,0.88))] dark:text-black dark:ring-white/10">
       FP
     </div>
   ),
+
   menuItems: [
     { label: "Home", href: "#home" },
     { label: "Features", href: "#features" },
@@ -31,13 +32,13 @@ const defaultProps: SharedNavbarProps = {
   className: "",
   nav: {
     className:
-      "border-b border-slate-200/80 bg-white/80 text-slate-900 backdrop-blur supports-[backdrop-filter]:bg-white/80 " +
-      "dark:border-slate-800 dark:bg-slate-950/75 dark:text-white supports-[backdrop-filter]:dark:bg-slate-950/75 " +
-      "[--navbar-accent:theme(colors.cyan.600)] dark:[--navbar-accent:theme(colors.cyan.400)] " +
-      "[--navbar-toggle-bg:theme(colors.white)] dark:[--navbar-toggle-bg:theme(colors.slate.950)] " +
-      "[--navbar-hover-bg:theme(colors.cyan.50)] dark:[--navbar-hover-bg:color-mix(in_oklab,oklch(0.24_0.06_230)_24%,transparent)] " +
-      "[--navbar-ring:theme(colors.cyan.500)] dark:[--navbar-ring:theme(colors.cyan.400)] " +
-      "[--navbar-border:theme(colors.slate.200)] dark:[--navbar-border:theme(colors.slate.800)]",
+      "border-b border-black/8 bg-white/76 text-slate-900 backdrop-blur supports-[backdrop-filter]:bg-white/76 " +
+      "dark:border-white/10 dark:bg-black/72 dark:text-white supports-[backdrop-filter]:dark:bg-black/72 " +
+      "[--navbar-accent:theme(colors.slate.950)] dark:[--navbar-accent:theme(colors.white)] " +
+      "[--navbar-toggle-bg:theme(colors.white)] dark:[--navbar-toggle-bg:theme(colors.black)] " +
+      "[--navbar-hover-bg:color-mix(in_oklab,theme(colors.sky.500)_9%,white)] dark:[--navbar-hover-bg:color-mix(in_oklab,theme(colors.sky.500)_12%,transparent)] " +
+      "[--navbar-ring:theme(colors.sky.500)] dark:[--navbar-ring:theme(colors.sky.400)] " +
+      "[--navbar-border:rgba(15,23,42,0.08)] dark:[--navbar-border:rgba(255,255,255,0.1)]",
   },
   brandText: {
     className:
@@ -45,7 +46,7 @@ const defaultProps: SharedNavbarProps = {
   },
   links: {
     className:
-      "text-sm font-medium font-inter text-slate-700 hover:text-cyan-700 focus:ring-[var(--navbar-ring)] dark:text-slate-200 dark:hover:text-cyan-300",
+      "text-sm font-medium font-inter text-slate-700 hover:text-slate-950 focus:ring-[var(--navbar-ring)] dark:text-slate-200 dark:hover:text-white",
   },
   ctaButtonStyle: {
     variant: "default",
@@ -67,7 +68,7 @@ const defaultProps: SharedNavbarProps = {
   },
   toggleButton: {
     className:
-      "md:hidden flex items-center justify-center rounded-md p-2 transition-colors hover:bg-cyan-50 dark:hover:bg-cyan-950/30 focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400",
+      "md:hidden flex items-center justify-center rounded-md border border-black/8 bg-white/70 p-2 transition-colors hover:bg-[var(--navbar-hover-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--navbar-ring)] dark:border-white/10 dark:bg-white/[0.04]",
   },
   colorModeWrapper: {
     className: "ml-2",

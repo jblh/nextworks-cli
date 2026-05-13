@@ -14,6 +14,7 @@ export type ProductDemoHighlightTone =
   | "muted";
 
 export type ProductDemoWindowKey =
+  | "taskList"
   | "workflowStudio"
   | "runConsole"
   | "approvalInbox"
@@ -78,6 +79,37 @@ export interface ProductDemoWorkflowRegion {
   highlighted?: boolean;
 }
 
+export interface ProductDemoTaskItem {
+  id: string;
+  title: string;
+  description?: string;
+  meta?: string;
+}
+
+export interface ProductDemoTaskListState {
+  window: ProductDemoWindowMeta;
+  title?: string;
+  subtitle?: string;
+  items: ProductDemoTaskItem[];
+  activeItemId?: string;
+}
+
+export interface ProductDemoWorkflowTranscriptEntry {
+  id: string;
+  kind?: "title" | "prompt" | "activity" | "thought" | "message" | "file";
+  text: string;
+  path?: string;
+  added?: number;
+  removed?: number;
+  tone?: ProductDemoStatusTone;
+}
+
+export interface ProductDemoWorkflowComposerState {
+  placeholder?: string;
+  modeLabel?: string;
+  modelLabel?: string;
+}
+
 export interface ProductDemoWorkflowStudioState {
   window: ProductDemoWindowMeta;
   title?: string;
@@ -88,6 +120,10 @@ export interface ProductDemoWorkflowStudioState {
   activeNodeId?: string;
   activeRegionId?: string;
   highlights?: ProductDemoHighlightTarget[];
+  transcript?: Array<string | ProductDemoWorkflowTranscriptEntry>;
+  composer?: ProductDemoWorkflowComposerState;
+  playbackMs?: number;
+  playbackStep?: number;
 }
 
 export interface ProductDemoRunConsoleEntry {
@@ -97,6 +133,8 @@ export interface ProductDemoRunConsoleEntry {
   source?: string;
   status?: ProductDemoStatusTone;
   detail?: string;
+  lineNumber?: string;
+  code?: string[];
   highlighted?: boolean;
 }
 
@@ -117,7 +155,12 @@ export interface ProductDemoRunConsoleState {
   metrics?: ProductDemoRunConsoleMetric[];
   progressPercent?: number;
   activeEntryId?: string;
+  editorTabLabel?: string;
+  editorLanguage?: string;
+  editorSummary?: string;
   highlights?: ProductDemoHighlightTarget[];
+  playbackMs?: number;
+  playbackStep?: number;
 }
 
 export interface ProductDemoApprovalAction {
@@ -187,6 +230,7 @@ export interface ProductDemoScenario {
   key: string;
   label?: string;
   description?: string;
+  taskList: ProductDemoTaskListState;
   workflowStudio: ProductDemoWorkflowStudioState;
   runConsole: ProductDemoRunConsoleState;
   approvalInbox: ProductDemoApprovalInboxState;
