@@ -187,13 +187,23 @@ const scenarios: ProductDemoScenario[] = [
           source: "editor",
           status: "info",
           highlighted: true,
-          lineNumber: "42",
+          lineNumber: "38",
           code: [
             " const safeReturnTo = normalizeReturnTo(searchParams.get('returnTo'))",
+            "+const shouldTrackRedirect = safeReturnTo !== null",
+            "+const fallbackDestination = '/dashboard'",
             " const destination = safeReturnTo ?? '/dashboard'",
+            "+const nextPath = destination || fallbackDestination",
+            "+const redirectSource = safeReturnTo ? 'return_to' : 'fallback'",
+            " ",
+            "+if (!nextPath.startsWith('/')) {",
+            "+  router.replace(fallbackDestination)",
+            "+  return null",
+            "+}",
             "-router.replace('/dashboard')",
-            "+router.replace(destination)",
-            "+trackAuthRedirect(destination)",
+            "+router.replace(nextPath)",
+            "+if (shouldTrackRedirect) trackAuthRedirect(nextPath, redirectSource)",
+            "+logAuthNavigation('oauth_callback_redirect', { destination: nextPath })",
             " return null",
           ],
         },
@@ -816,7 +826,8 @@ export function Hero() {
           className: "max-w-3xl pt-1 lg:pt-0",
         }}
         demoContainer={{
-          className: "relative min-h-[32rem] lg:min-h-[38rem]",
+          className:
+            "relative mx-auto min-h-[32rem] w-full max-w-[90%] lg:min-h-[38rem]",
         }}
         buttonsContainer={{
           className: "mt-4 flex-col items-start sm:flex-row sm:items-center",
