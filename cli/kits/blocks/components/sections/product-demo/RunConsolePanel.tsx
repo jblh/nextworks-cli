@@ -114,51 +114,8 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
 
   return (
     <div className="flex h-full flex-col text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:text-white/95">
-      <div className="mb-2 flex items-center justify-between gap-3 text-[11px] tracking-[0.005em]">
-        <div className="min-w-0 truncate font-mono text-slate-500 dark:text-slate-400">
-          <span className="mr-2 uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
-            {activeEntry?.source ??
-              displayEntry?.source ??
-              state.statusLabel ??
-              "active"}
-          </span>
-
-          <span className="truncate text-slate-800 dark:text-slate-300/95">
-            {activeEntry?.message ??
-              displayEntry?.message ??
-              state.editorSummary ??
-              state.subtitle}
-          </span>
-        </div>
-        <div className="flex shrink-0 items-center gap-3 text-slate-400 dark:text-slate-500">
-          {state.progressLabel ? (
-            <span className="font-medium text-slate-500 dark:text-slate-400">
-              {state.progressLabel}
-            </span>
-          ) : null}
-          {typeof progressPercent === "number" ? (
-            <span>{progressPercent}%</span>
-          ) : null}
-          {activeEntry?.timestamp ? <span>{activeEntry.timestamp}</span> : null}
-        </div>
-      </div>
-
-      <div className="flex min-h-0 flex-1 overflow-hidden rounded-[8px] border border-black/10 bg-[#f6f6f3] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-[#0b0b0b] dark:shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
+      <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/10 bg-[#f6f6f3] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-[#0b0b0b] dark:shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="flex items-center gap-2 border-b border-black/8 bg-black/[0.035] px-3 py-2 dark:border-white/8 dark:bg-white/[0.03]">
-            <span className="h-2.5 w-2.5 rounded-full bg-white/75 dark:bg-white/65" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/35 dark:bg-white/25" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/20 dark:bg-white/15" />
-            <div className="ml-3 rounded-md border border-black/10 bg-white/88 px-2.5 py-1 font-mono text-[11px] text-slate-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
-              {state.editorTabLabel ?? state.title}
-            </div>
-            {state.editorLanguage ? (
-              <div className="ml-auto font-mono text-[11px] uppercase tracking-[0.14em] text-slate-400 dark:text-slate-500">
-                {state.editorLanguage}
-              </div>
-            ) : null}
-          </div>
-
           <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f6f6f3] dark:bg-[#0b0b0b]">
             <div className="border-r border-black/8 bg-black/[0.018] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400 dark:border-white/8 dark:bg-white/[0.02] dark:text-slate-600">
               {visibleCode.map((line, index) => {
@@ -189,7 +146,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                   <div
                     key={`${line}-${index}`}
                     className={cn(
-                      "flex rounded-r-md border-l border-transparent pl-3 transition-colors duration-300",
+                      "flex border-l border-transparent pl-3 transition-colors duration-300",
                       isAdded &&
                         "border-[#3b82f6]/80 bg-[#3b82f6]/10 text-slate-950 dark:text-[#dbeafe]",
                       isRemoved &&
