@@ -73,37 +73,6 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
 
   return (
     <div className="flex h-full flex-col overflow-hidden bg-[#f5f5f2] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
-      <div className="border-b border-black/8 px-4 py-3 dark:border-white/8">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            {state.title && (
-              <h4 className="text-[13px] font-semibold tracking-[-0.02em] text-slate-950 dark:text-white/96">
-                {state.title}
-              </h4>
-            )}
-            {state.subtitle && (
-              <p className="mt-1 max-w-sm text-[11px] leading-relaxed text-slate-600 dark:text-slate-400/90">
-                {state.subtitle}
-              </p>
-            )}
-          </div>
-
-          {typeof activeStep === "number" ? (
-            <div className="flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.04] px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-slate-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-400">
-              <span
-                className={cn(
-                  "h-1.5 w-1.5 rounded-full",
-                  activeNode?.status === "success"
-                    ? "bg-emerald-400"
-                    : "bg-[#3b82f6]",
-                )}
-              />
-              Step {activeStep}/{state.nodes.length}
-            </div>
-          ) : null}
-        </div>
-      </div>
-
       <div className="flex-1 overflow-auto px-4 py-4">
         <div className="space-y-3.5">
           {visibleTranscript.map((entry, index) => {

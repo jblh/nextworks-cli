@@ -271,15 +271,16 @@ export function DemoStage({
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
       className={cn(
-        "relative isolate min-h-[36rem] w-full overflow-hidden rounded-[14px] border border-black/6 bg-[#d8d5ce] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.18)] dark:border-white/8 dark:bg-[#151518] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.62)] lg:min-h-[44rem]",
+        "relative isolate min-h-[36rem] w-full overflow-hidden rounded-[14px] border border-black/8 bg-[#2a2a2d] shadow-[0_40px_120px_-56px_rgba(0,0,0,0.72)] dark:border-white/8 dark:bg-[#101012] dark:shadow-[0_28px_90px_-34px_rgba(0,0,0,0.82)] lg:min-h-[44rem]",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.05),transparent_38%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.04),transparent_36%),linear-gradient(180deg,#e9e6df_0%,#d8d5ce_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.07),transparent_38%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.06),transparent_36%),linear-gradient(180deg,#19191c_0%,#121215_100%)]" />
-      <div className="pointer-events-none absolute inset-[1px] rounded-[13px] ring-1 ring-white/28 dark:ring-white/6" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.07),transparent_28%),radial-gradient(circle_at_85%_8%,rgba(59,130,246,0.08),transparent_26%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.24),transparent_42%),linear-gradient(180deg,#313136_0%,#232327_100%)] dark:bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.04),transparent_28%),radial-gradient(circle_at_85%_8%,rgba(59,130,246,0.07),transparent_24%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.28),transparent_42%),linear-gradient(180deg,#18181b_0%,#0f0f11_100%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-soft-light [background-image:radial-gradient(rgba(255,255,255,0.85)_0.55px,transparent_0.55px)] [background-size:10px_10px] dark:opacity-[0.035]" />
+      <div className="pointer-events-none absolute inset-[1px] rounded-[13px] ring-1 ring-white/10 dark:ring-white/6" />
 
-      <div className="relative z-10 flex min-h-[36rem] flex-col gap-3 p-5 sm:p-5 lg:min-h-[44rem] lg:p-6">
+      <div className="relative z-10 flex min-h-[36rem] flex-col gap-3 p-4 sm:p-4 lg:min-h-[44rem] lg:p-5">
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
             if (getWindowShellClass(windowData.key) === "hidden") {
@@ -299,6 +300,7 @@ export function DemoStage({
                 enableMotion={enableMotion}
                 showControls={false}
                 showResizeHandle={false}
+                showHeader={false}
               >
                 {windowData.content}
               </DemoWindow>
@@ -306,69 +308,90 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:grid lg:min-h-[30rem] lg:grid-cols-10 lg:gap-0 xl:min-h-[32rem]">
-          {windows.map((windowData) => {
-            const shellClass = getWindowShellClass(windowData.key);
+        <div className="hidden lg:flex lg:min-h-[30rem] lg:flex-col xl:min-h-[32rem]">
+          <div className="flex min-h-[3.25rem] items-center justify-between border border-black/10 border-b-0 bg-black/[0.34] px-4 py-2.5 backdrop-blur-md dark:border-white/8 dark:bg-white/[0.03] sm:px-5">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-md border border-white/10 bg-white/[0.06] text-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                <span className="grid grid-cols-2 gap-[2px]">
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-white/90" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-white/55" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-white/55" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-white/90" />
+                </span>
+              </div>
+              <div className="min-w-0">
+                <div className="text-[12px] font-semibold tracking-[-0.02em] text-white/94">
+                  Agent workspace
+                </div>
+                <div className="text-[10px] uppercase tracking-[0.16em] text-white/40">
+                  Live session
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-white/42">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-white/58">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Active
+              </span>
+            </div>
+          </div>
 
-            if (shellClass === "hidden") {
-              return null;
-            }
+          <div className="grid flex-1 lg:grid-cols-10 lg:gap-0">
+            {windows.map((windowData) => {
+              const shellClass = getWindowShellClass(windowData.key);
 
-            const activeWindow =
-              activeScenario.activeWindow === windowData.key ||
-              (!activeScenario.activeWindow &&
-                windowData.key === "workflowStudio");
+              if (shellClass === "hidden") {
+                return null;
+              }
 
-            return (
-              <motion.div
-                key={windowData.key}
-                initial={enableMotion ? { opacity: 0, y: 10 } : false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={
-                  enableMotion
-                    ? {
-                        type: "tween",
-                        duration: 0.3,
-                      }
-                    : { duration: 0 }
-                }
-                className={cn("will-change-transform", shellClass)}
-              >
-                <DemoWindow
-                  window={windowData.meta}
-                  active={activeWindow}
-                  dimmed={false}
-                  enableMotion={enableMotion}
-                  showControls={false}
-                  showResizeHandle={false}
-                  className={cn(
-                    "min-h-[30rem] h-full border-y border-black/8 bg-white/96 shadow-none dark:border-white/8 dark:bg-[#050505] xl:min-h-[32rem]",
-                    windowData.key === "taskList" &&
-                      "rounded-none border-l-0 border-r-0",
-                    windowData.key === "runConsole" &&
-                      "rounded-none border-l-0 border-r-0",
-                    windowData.key === "workflowStudio" &&
-                      "border-l-0 border-r-0 rounded-none",
-                  )}
-                  chromeClassName={cn(
-                    "border-black/8 bg-white/96 dark:border-white/8 dark:bg-[#060606]",
-                    windowData.key === "taskList" && "rounded-none",
-                    windowData.key === "workflowStudio" &&
-                      "border-l-0 border-r-0 rounded-none",
-                    windowData.key === "runConsole" &&
-                      "px-3 py-2.5 sm:px-3 rounded-none",
-                  )}
-                  bodyClassName={cn(
-                    "px-4 py-4 sm:px-4 sm:py-4",
-                    windowData.key === "runConsole" &&
-                      "px-2 py-2 sm:px-2 sm:py-2",
-                  )}
+              const activeWindow =
+                activeScenario.activeWindow === windowData.key ||
+                (!activeScenario.activeWindow &&
+                  windowData.key === "workflowStudio");
+
+              return (
+                <motion.div
+                  key={windowData.key}
+                  initial={enableMotion ? { opacity: 0, y: 10 } : false}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={
+                    enableMotion
+                      ? {
+                          type: "tween",
+                          duration: 0.3,
+                        }
+                      : { duration: 0 }
+                  }
+                  className={cn("will-change-transform", shellClass)}
                 >
-                  {windowData.content}
-                </DemoWindow>
-              </motion.div>
-            );
-          })}
+                  <DemoWindow
+                    window={windowData.meta}
+                    active={activeWindow}
+                    dimmed={false}
+                    enableMotion={enableMotion}
+                    showControls={false}
+                    showResizeHandle={false}
+                    showHeader={false}
+                    className={cn(
+                      "min-h-[30rem] h-full border border-black/10 bg-[#060606]/96 shadow-none dark:border-white/8 dark:bg-[#050505] xl:min-h-[32rem]",
+                      windowData.key === "taskList" &&
+                        "rounded-none border-r-0",
+                      windowData.key === "workflowStudio" &&
+                        "rounded-none border-r-0",
+                      windowData.key === "runConsole" && "rounded-none",
+                    )}
+                    bodyClassName={cn(
+                      "px-4 py-4 sm:px-4 sm:py-4",
+                      windowData.key === "runConsole" &&
+                        "px-2 py-2 sm:px-2 sm:py-2",
+                    )}
+                  >
+                    {windowData.content}
+                  </DemoWindow>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
