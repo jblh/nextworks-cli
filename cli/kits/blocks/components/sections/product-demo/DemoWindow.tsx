@@ -15,6 +15,7 @@ export interface DemoWindowProps {
   enableMotion?: boolean;
   showControls?: boolean;
   showResizeHandle?: boolean;
+  showHeader?: boolean;
   children?: React.ReactNode;
 }
 
@@ -40,6 +41,7 @@ export function DemoWindow({
   enableMotion = true,
   showControls = true,
   showResizeHandle = true,
+  showHeader = true,
   children,
 }: DemoWindowProps) {
   const statusTone = window.status?.tone ?? "neutral";
@@ -61,53 +63,54 @@ export function DemoWindow({
       data-active={active ? "true" : "false"}
       aria-label={window.title}
     >
-      <header
-        className={cn(
-          "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/8 px-4 py-2.5 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased sm:px-5 dark:border-white/10",
-
-          chromeClassName,
-        )}
-      >
-        <div className="flex min-w-0 items-center gap-3">
-          {showControls && (
-            <div className="flex items-center gap-1.5 opacity-75 transition-opacity duration-200 group-hover:opacity-100">
-              <span className="h-2.5 w-2.5 rounded-full bg-rose-400/90" />
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-400/90" />
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/90" />
-            </div>
+      {showHeader ? (
+        <header
+          className={cn(
+            "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/8 px-4 py-2.5 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased sm:px-5 dark:border-white/10",
+            chromeClassName,
           )}
+        >
+          <div className="flex min-w-0 items-center gap-3">
+            {showControls && (
+              <div className="flex items-center gap-1.5 opacity-75 transition-opacity duration-200 group-hover:opacity-100">
+                <span className="h-2.5 w-2.5 rounded-full bg-rose-400/90" />
+                <span className="h-2.5 w-2.5 rounded-full bg-amber-400/90" />
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/90" />
+              </div>
+            )}
 
-          <div className="min-w-0 flex items-center gap-2 overflow-hidden">
-            <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
-              <h3 className="shrink-0 text-sm font-semibold tracking-[-0.02em] text-slate-950 sm:text-[0.95rem] dark:text-slate-100">
-                {window.title}
-              </h3>
-              {window.badge && (
-                <span className="rounded-full border border-slate-200 bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.16em] text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400">
-                  {window.badge}
-                </span>
-              )}
-              {window.subtitle && (
-                <p className="min-w-0 truncate text-[11px] leading-5 tracking-[0.005em] text-slate-600 dark:text-slate-400 sm:text-[0.8rem]">
-                  {window.subtitle}
-                </p>
-              )}
+            <div className="min-w-0 flex items-center gap-2 overflow-hidden">
+              <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
+                <h3 className="shrink-0 text-sm font-semibold tracking-[-0.02em] text-slate-950 sm:text-[0.95rem] dark:text-slate-100">
+                  {window.title}
+                </h3>
+                {window.badge && (
+                  <span className="rounded-full border border-slate-200 bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.16em] text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400">
+                    {window.badge}
+                  </span>
+                )}
+                {window.subtitle && (
+                  <p className="min-w-0 truncate text-[11px] leading-5 tracking-[0.005em] text-slate-600 dark:text-slate-400 sm:text-[0.8rem]">
+                    {window.subtitle}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {window.status?.label && (
-          <span
-            className={cn(
-              "shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em]",
-              STATUS_TONE_CLASSES[statusTone],
-              "hidden sm:inline-flex",
-            )}
-          >
-            {window.status.label}
-          </span>
-        )}
-      </header>
+          {window.status?.label && (
+            <span
+              className={cn(
+                "shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em]",
+                STATUS_TONE_CLASSES[statusTone],
+                "hidden sm:inline-flex",
+              )}
+            >
+              {window.status.label}
+            </span>
+          )}
+        </header>
+      ) : null}
 
       <div
         className={cn(

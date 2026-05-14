@@ -10,21 +10,8 @@ export interface TaskListPanelProps {
 
 export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
   return (
-    <div className="flex h-full flex-col gap-4 text-slate-900 dark:text-slate-100">
-      <div className="space-y-1.5">
-        {state.title && (
-          <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-            {state.title}
-          </h4>
-        )}
-        {state.subtitle && (
-          <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-            {state.subtitle}
-          </p>
-        )}
-      </div>
-
-      <div className="space-y-2.5">
+    <div className="flex h-full flex-col text-slate-900 dark:text-slate-100">
+      <div className="space-y-2">
         {state.items.map((item, index) => {
           const isActive = item.id === state.activeItemId;
 

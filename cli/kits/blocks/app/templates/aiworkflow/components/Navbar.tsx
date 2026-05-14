@@ -9,8 +9,13 @@ type PresetOverrides = Partial<SharedNavbarProps>;
 const defaultProps: SharedNavbarProps = {
   brand: "FlowPilot AI",
   brandNode: (
-    <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-[linear-gradient(135deg,rgba(59,130,246,0.9),rgba(255,255,255,0.92)_52%,rgba(239,68,68,0.9))] font-bold text-slate-950 shadow-sm ring-1 ring-white/50 dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.9),rgba(255,255,255,0.82)_52%,rgba(239,68,68,0.88))] dark:text-black dark:ring-white/10">
-      FP
+    <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-black/10 bg-slate-950 text-white shadow-sm ring-1 ring-white/20 dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:ring-white/10">
+      <span className="grid grid-cols-2 gap-[2px]">
+        <span className="h-[4px] w-[4px] rounded-[1px] bg-white/95" />
+        <span className="h-[4px] w-[4px] rounded-[1px] bg-white/55" />
+        <span className="h-[4px] w-[4px] rounded-[1px] bg-white/55" />
+        <span className="h-[4px] w-[4px] rounded-[1px] bg-white/95" />
+      </span>
     </div>
   ),
 
