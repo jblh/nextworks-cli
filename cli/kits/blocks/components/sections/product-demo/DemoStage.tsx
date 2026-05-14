@@ -377,14 +377,11 @@ export function DemoStage({
                       windowData.key === "taskList" &&
                         "rounded-none border-r-0",
                       windowData.key === "workflowStudio" &&
-                        "rounded-none border-r-0",
-                      windowData.key === "runConsole" && "rounded-none",
-                    )}
-                    bodyClassName={cn(
-                      "px-4 py-4 sm:px-4 sm:py-4",
+                        "rounded-none border-l-0 border-r-0",
                       windowData.key === "runConsole" &&
-                        "px-2 py-2 sm:px-2 sm:py-2",
+                        "rounded-none border-l-0",
                     )}
+                    bodyClassName="px-0 py-0 sm:px-0 sm:py-0"
                   >
                     {windowData.content}
                   </DemoWindow>
