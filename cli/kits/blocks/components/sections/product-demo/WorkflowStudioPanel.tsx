@@ -85,17 +85,12 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   }, [playbackMs, transcript.length, state.window.title, state.playbackStep]);
 
   const visibleTranscript = transcript.slice(0, visibleCount);
-  const placeholderCount = Math.max(transcript.length, 8);
-  const hiddenTranscriptCount = Math.max(
-    placeholderCount - visibleTranscript.length,
-    0,
-  );
   const isRunning = visibleCount < transcript.length;
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#f6f4ee] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
-      <div className="min-h-0 flex-1 overflow-hidden px-4 py-4">
-        <div className="flex min-h-full flex-col">
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 [scrollbar-color:rgba(100,116,139,0.32)_transparent] [scrollbar-width:thin] dark:[scrollbar-color:rgba(148,163,184,0.22)_transparent]">
+        <div className="flex min-h-full flex-col pr-1">
           <div className="space-y-3">
             {visibleTranscript.map((entry, index) => {
               if (entry.kind === "title") {
@@ -219,20 +214,6 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
           </div>
 
           <div className="flex-1" />
-
-          {hiddenTranscriptCount > 0 ? (
-            <div
-              aria-hidden="true"
-              className="pointer-events-none mt-3 space-y-3.5 opacity-[0.16]"
-            >
-              {Array.from({ length: hiddenTranscriptCount }).map((_, index) => (
-                <div
-                  key={`transcript-placeholder-${index}`}
-                  className="h-4 rounded bg-black/[0.045] dark:bg-white/[0.05]"
-                />
-              ))}
-            </div>
-          ) : null}
         </div>
       </div>
 

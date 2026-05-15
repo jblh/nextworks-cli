@@ -61,7 +61,6 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     displayEntry?.lineNumber ?? activeEntry?.lineNumber ?? 24,
   );
   const activeLineCount = Math.max(1, activeCode.length || 1);
-  const hiddenLineCount = Math.max(activeLineCount, 14);
   const [visibleLineCount, setVisibleLineCount] = React.useState(
     Math.max(1, Math.min(2, activeCode.length || 1)),
   );
@@ -109,7 +108,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
       <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/[0.07] bg-[#f8f8f6] shadow-none dark:border-white/[0.08] dark:bg-[#0a0a0a] dark:shadow-none">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f8f8f6] dark:bg-[#0a0a0a]">
-            <div className="border-r border-black/[0.06] bg-[#f1f0eb] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400 dark:border-white/[0.07] dark:bg-white/[0.03] dark:text-slate-600">
+            <div className="border-r border-black/[0.055] bg-[#f2f1ec] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400/88 dark:border-white/[0.06] dark:bg-[#0d0d0d] dark:text-slate-600/88">
               {visibleCode.map((line, index) => {
                 const isAdded = line.trimStart().startsWith("+");
                 const isRemoved = line.trimStart().startsWith("-");
@@ -119,8 +118,8 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                     key={`${startLine + index}`}
                     className={cn(
                       "text-right",
-                      isAdded && "text-[#3b82f6]",
-                      isRemoved && "text-[#ef4444]",
+                      isAdded && "text-[#2563eb] dark:text-[#3b82f6]",
+                      isRemoved && "text-[#dc2626] dark:text-[#f87171]",
                     )}
                   >
                     {startLine + index}
@@ -129,7 +128,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
               })}
             </div>
 
-            <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[#fbfbf9] px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:bg-[#0b0b0b] dark:text-slate-300">
+            <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[#f9f8f4] px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:bg-[#0b0b0b] dark:text-slate-300/92">
               <div>
                 {visibleCode.map((line, index) => {
                   const isAdded = line.trimStart().startsWith("+");
@@ -141,12 +140,12 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                       className={cn(
                         "flex border-l border-transparent pl-3 transition-colors duration-300",
                         isAdded &&
-                          "border-[#3b82f6]/60 bg-[#3b82f6]/8 text-slate-950 dark:text-[#dbeafe]",
+                          "border-[#2563eb]/45 bg-[#2563eb]/[0.055] text-slate-950 dark:border-[#3b82f6]/38 dark:bg-[#3b82f6]/[0.08] dark:text-[#dbeafe]",
                         isRemoved &&
-                          "border-[#ef4444]/55 bg-[#ef4444]/8 text-slate-950 dark:text-[#fecdd3]",
+                          "border-[#dc2626]/40 bg-[#dc2626]/[0.05] text-slate-950 dark:border-[#f87171]/34 dark:bg-[#f87171]/[0.08] dark:text-[#fecdd3]",
                         !isAdded &&
                           !isRemoved &&
-                          "text-slate-800 dark:text-slate-300",
+                          "text-slate-700 dark:text-slate-300/90",
                         displayEntry?.highlighted &&
                           index === Math.min(1, visibleCode.length - 1) &&
                           "animate-pulse",
@@ -156,10 +155,10 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                         className={cn(
                           "mr-3 w-3 shrink-0 text-center text-[11px]",
                           isAdded
-                            ? "text-[#3b82f6]"
+                            ? "text-[#2563eb] dark:text-[#60a5fa]"
                             : isRemoved
-                              ? "text-[#ef4444]"
-                              : "text-slate-400 dark:text-slate-600",
+                              ? "text-[#dc2626] dark:text-[#f87171]"
+                              : "text-slate-400/90 dark:text-slate-600/90",
                         )}
                       >
                         {isAdded ? "+" : isRemoved ? "-" : " "}
@@ -183,24 +182,6 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
               </div>
 
               <div className="flex-1" />
-
-              {hiddenLineCount > visibleCode.length ? (
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none mt-2 space-y-0 opacity-[0.16]"
-                >
-                  {Array.from({
-                    length: hiddenLineCount - visibleCode.length,
-                  }).map((_, index) => (
-                    <div
-                      key={`code-placeholder-${index}`}
-                      className="h-7 border-l border-transparent pl-3"
-                    >
-                      <div className="h-4 rounded bg-black/[0.045] dark:bg-white/[0.05]" />
-                    </div>
-                  ))}
-                </div>
-              ) : null}
             </div>
           </div>
         </div>
