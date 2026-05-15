@@ -68,106 +68,129 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   }, [playbackMs, transcript.length, state.window.title, state.playbackStep]);
 
   const visibleTranscript = transcript.slice(0, visibleCount);
+  const placeholderCount = Math.max(transcript.length, 8);
+  const hiddenTranscriptCount = Math.max(
+    placeholderCount - visibleTranscript.length,
+    0,
+  );
   const isRunning = visibleCount < transcript.length;
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#f7f6f1] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
-      <div className="min-h-0 flex-1 overflow-auto px-4 py-4">
-        <div className="space-y-3.5">
-          {visibleTranscript.map((entry, index) => {
-            if (entry.kind === "title") {
-              return (
-                <div key={entry.id} className="space-y-2">
-                  <div className="text-[11px] font-medium tracking-[0.02em] text-slate-500 dark:text-slate-500">
+      <div className="min-h-0 flex-1 overflow-hidden px-4 py-4">
+        <div className="flex min-h-full flex-col">
+          <div className="space-y-3.5">
+            {visibleTranscript.map((entry, index) => {
+              if (entry.kind === "title") {
+                return (
+                  <div key={entry.id} className="space-y-2">
+                    <div className="text-[11px] font-medium tracking-[0.02em] text-slate-500 dark:text-slate-500">
+                      {entry.text}
+                    </div>
+                    {activeNode?.description ? (
+                      <div className="rounded-lg border border-black/10 bg-white/88 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.06)] dark:border-white/8 dark:bg-white/[0.035] dark:text-slate-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                        {activeNode.description}
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              }
+
+              if (entry.kind === "prompt") {
+                return (
+                  <div
+                    key={entry.id}
+                    className="rounded-lg border border-black/10 bg-white/88 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 dark:border-white/8 dark:bg-white/[0.03] dark:text-slate-300"
+                  >
                     {entry.text}
                   </div>
-                  {activeNode?.description ? (
-                    <div className="rounded-lg border border-black/10 bg-white/88 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.06)] dark:border-white/8 dark:bg-white/[0.035] dark:text-slate-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
-                      {activeNode.description}
+                );
+              }
+
+              if (entry.kind === "message") {
+                return (
+                  <div
+                    key={entry.id}
+                    className="max-w-[92%] text-[12px] leading-relaxed text-slate-800 dark:text-slate-200"
+                  >
+                    {entry.text}
+                  </div>
+                );
+              }
+
+              if (entry.kind === "file") {
+                return (
+                  <div
+                    key={entry.id}
+                    className="flex items-center justify-between gap-3 rounded-md border border-black/10 bg-white/76 px-3 py-2 text-[11px] text-slate-700 dark:border-white/7 dark:bg-white/[0.025] dark:text-slate-300"
+                  >
+                    <span className="truncate font-mono text-[11px] text-slate-700 dark:text-slate-300">
+                      {entry.path ?? entry.text}
+                    </span>
+                    <div className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
+                      {typeof entry.added === "number" ? (
+                        <span className="text-[#3b82f6]">+{entry.added}</span>
+                      ) : null}
+                      {typeof entry.removed === "number" ? (
+                        <span className="text-[#ef4444]">-{entry.removed}</span>
+                      ) : null}
+                    </div>
+                  </div>
+                );
+              }
+
+              if (entry.kind === "thought") {
+                return (
+                  <div
+                    key={entry.id}
+                    className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500"
+                  >
+                    {entry.text}
+                  </div>
+                );
+              }
+
+              const isLastActivity =
+                index === visibleTranscript.length - 1 ||
+                (index < visibleTranscript.length - 1 &&
+                  visibleTranscript[index + 1]?.kind === "file");
+
+              return (
+                <div key={entry.id} className="space-y-1.5">
+                  <div className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-500">
+                    {entry.text}
+                  </div>
+                  {isLastActivity && activeNode?.metadata ? (
+                    <div className="pt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-300">
+                      {activeNode.metadata}
+                    </div>
+                  ) : null}
+                  {isRunning && index === visibleTranscript.length - 1 ? (
+                    <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-400 dark:text-slate-500">
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
+                      Running
                     </div>
                   ) : null}
                 </div>
               );
-            }
+            })}
+          </div>
 
-            if (entry.kind === "prompt") {
-              return (
+          <div className="flex-1" />
+
+          {hiddenTranscriptCount > 0 ? (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none mt-3 space-y-3.5 opacity-[0.16]"
+            >
+              {Array.from({ length: hiddenTranscriptCount }).map((_, index) => (
                 <div
-                  key={entry.id}
-                  className="rounded-lg border border-black/10 bg-white/88 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 dark:border-white/8 dark:bg-white/[0.03] dark:text-slate-300"
-                >
-                  {entry.text}
-                </div>
-              );
-            }
-
-            if (entry.kind === "message") {
-              return (
-                <div
-                  key={entry.id}
-                  className="max-w-[92%] text-[12px] leading-relaxed text-slate-800 dark:text-slate-200"
-                >
-                  {entry.text}
-                </div>
-              );
-            }
-
-            if (entry.kind === "file") {
-              return (
-                <div
-                  key={entry.id}
-                  className="flex items-center justify-between gap-3 rounded-md border border-black/10 bg-white/76 px-3 py-2 text-[11px] text-slate-700 dark:border-white/7 dark:bg-white/[0.025] dark:text-slate-300"
-                >
-                  <span className="truncate font-mono text-[11px] text-slate-700 dark:text-slate-300">
-                    {entry.path ?? entry.text}
-                  </span>
-                  <div className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
-                    {typeof entry.added === "number" ? (
-                      <span className="text-[#3b82f6]">+{entry.added}</span>
-                    ) : null}
-                    {typeof entry.removed === "number" ? (
-                      <span className="text-[#ef4444]">-{entry.removed}</span>
-                    ) : null}
-                  </div>
-                </div>
-              );
-            }
-
-            if (entry.kind === "thought") {
-              return (
-                <div
-                  key={entry.id}
-                  className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500"
-                >
-                  {entry.text}
-                </div>
-              );
-            }
-
-            const isLastActivity =
-              index === visibleTranscript.length - 1 ||
-              (index < visibleTranscript.length - 1 &&
-                visibleTranscript[index + 1]?.kind === "file");
-
-            return (
-              <div key={entry.id} className="space-y-1.5">
-                <div className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-500">
-                  {entry.text}
-                </div>
-                {isLastActivity && activeNode?.metadata ? (
-                  <div className="pt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-300">
-                    {activeNode.metadata}
-                  </div>
-                ) : null}
-                {isRunning && index === visibleTranscript.length - 1 ? (
-                  <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-400 dark:text-slate-500">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
-                    Running
-                  </div>
-                ) : null}
-              </div>
-            );
-          })}
+                  key={`transcript-placeholder-${index}`}
+                  className="h-4 rounded bg-black/[0.045] dark:bg-white/[0.05]"
+                />
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
 
