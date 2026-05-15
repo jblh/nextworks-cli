@@ -96,7 +96,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
               if (entry.kind === "title") {
                 return (
                   <div key={entry.id} className="space-y-2.5">
-                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
+                    <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
                       <span>{getEntryLabel(entry.kind)}</span>
                       <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
                       <span>{entry.text}</span>
@@ -116,7 +116,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                     key={entry.id}
                     className="space-y-1.5 rounded-lg border border-black/[0.08] bg-white/72 px-3 py-2.5 dark:border-white/[0.08] dark:bg-white/[0.028]"
                   >
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
+                    <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
                       {getEntryLabel(entry.kind)}
                     </div>
                     <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-300">
@@ -129,7 +129,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
               if (entry.kind === "message") {
                 return (
                   <div key={entry.id} className="max-w-[92%] space-y-1">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
+                    <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
                       {getEntryLabel(entry.kind)}
                     </div>
                     <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-200">
@@ -145,7 +145,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                     key={entry.id}
                     className="space-y-1.5 rounded-md border border-black/[0.075] bg-white/68 px-3 py-2 dark:border-white/[0.075] dark:bg-white/[0.022]"
                   >
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
+                    <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
                       {getEntryLabel(entry.kind)}
                     </div>
                     <div className="flex items-center justify-between gap-3 text-[11px] text-slate-700 dark:text-slate-300">
@@ -170,7 +170,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
               if (entry.kind === "thought") {
                 return (
                   <div key={entry.id} className="space-y-1">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+                    <div className="text-[9px] uppercase tracking-[0.15em] text-slate-400/90 dark:text-slate-500/90">
                       {getEntryLabel(entry.kind)}
                     </div>
                     <div className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
@@ -187,7 +187,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
 
               return (
                 <div key={entry.id} className="space-y-1.5">
-                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+                  <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-slate-400/90 dark:text-slate-500/90">
                     <span>{getEntryLabel(entry.kind)}</span>
                     <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
                     <span className="truncate">

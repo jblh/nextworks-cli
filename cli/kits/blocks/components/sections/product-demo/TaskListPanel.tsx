@@ -64,10 +64,10 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
                     </div>
                     <div
                       className={cn(
-                        "shrink-0 text-[10px] uppercase tracking-[0.16em]",
+                        "shrink-0 text-[9px] uppercase tracking-[0.14em]",
                         isActive
-                          ? "text-slate-600 dark:text-slate-300"
-                          : "text-slate-400 dark:text-slate-500",
+                          ? "text-slate-500 dark:text-slate-400"
+                          : "text-slate-400/90 dark:text-slate-500/90",
                       )}
                     >
                       {isActive ? "Open" : "Queued"}
