@@ -304,8 +304,8 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden overflow-hidden rounded-[0.45rem] border border-black/[0.07] bg-[#faf9f4] shadow-[0_34px_90px_-40px_rgba(15,23,42,0.32)] dark:border-white/[0.07] dark:bg-[#050505] dark:shadow-[0_36px_110px_-48px_rgba(0,0,0,0.82)] lg:flex lg:h-full lg:min-h-0 lg:flex-col">
-          <div className="flex h-[3.25rem] items-center justify-between border-b border-black/[0.07] bg-[#faf9f4] px-4 py-2.5 dark:border-white/[0.07] dark:bg-[#050505] sm:px-5">
+        <div className="hidden overflow-hidden rounded-[0.4rem] border border-black/[0.06] bg-[#faf9f4] shadow-[0_24px_80px_-44px_rgba(15,23,42,0.32)] ring-1 ring-black/[0.02] dark:border-white/[0.07] dark:bg-[#050505] dark:shadow-[0_30px_100px_-52px_rgba(0,0,0,0.82)] dark:ring-white/[0.03] lg:flex lg:h-full lg:min-h-0 lg:flex-col">
+          <div className="relative flex h-[3.2rem] items-center justify-between border-b border-black/[0.06] bg-[#f7f6f1] px-4 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] dark:border-white/[0.065] dark:bg-[#060606] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:px-5">
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-[0.4rem] border border-black/[0.07] bg-white text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] dark:border-white/[0.07] dark:bg-white/[0.06] dark:text-white/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                 <span className="grid grid-cols-2 gap-[2px]">
@@ -319,13 +319,13 @@ export function DemoStage({
                 <div className="text-[12px] font-semibold tracking-[-0.02em] text-slate-900 dark:text-white/94">
                   Agent workspace
                 </div>
-                <div className="text-[10px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/40">
-                  Live session
+                <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-white/40">
+                  Session · live repo
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/42">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.07] bg-white px-2.5 py-1 text-slate-600 dark:border-white/[0.07] dark:bg-white/[0.04] dark:text-white/58">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.06] bg-white/90 px-2.5 py-1 text-slate-600 dark:border-white/[0.07] dark:bg-white/[0.04] dark:text-white/58">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 Active
               </span>
@@ -369,13 +369,12 @@ export function DemoStage({
                     showResizeHandle={false}
                     showHeader={false}
                     className={cn(
-                      "h-full min-h-0 border border-black/[0.07] bg-[#faf9f4] shadow-none dark:border-white/[0.07] dark:bg-[#050505]",
+                      "h-full min-h-0 border-0 shadow-none",
                       windowData.key === "taskList" &&
-                        "rounded-none border-r-0",
+                        "rounded-none border-r border-black/[0.055] dark:border-white/[0.06]",
                       windowData.key === "workflowStudio" &&
-                        "rounded-none border-l-0 border-r-0",
-                      windowData.key === "runConsole" &&
-                        "rounded-none border-l-0 border-r-0 border-t-0",
+                        "rounded-none border-r border-black/[0.055] dark:border-white/[0.06]",
+                      windowData.key === "runConsole" && "rounded-none",
                     )}
                     bodyClassName="px-0 py-0 sm:px-0 sm:py-0"
                   >
