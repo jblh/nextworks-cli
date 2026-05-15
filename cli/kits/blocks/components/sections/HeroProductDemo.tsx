@@ -185,18 +185,21 @@ export function HeroProductDemo({
 
   const renderDemo = (
     <div className={cn("relative", demoContainer?.className)}>
-      {demo ?? (
-        <DemoStage
-          scenarios={stage?.scenarios}
-          initialScenarioIndex={stage?.initialScenarioIndex}
-          activeScenarioKey={stage?.activeScenarioKey}
-          autoCycle={stage?.autoCycle}
-          cycleIntervalMs={stage?.cycleIntervalMs}
-          className={stage?.className}
-          enableMotion={enableMotion}
-          ariaLabel="Layered product demo"
-        />
-      )}
+      <div className="pointer-events-none absolute inset-y-0 left-1/2 z-0 w-screen -translate-x-1/2 bg-[#faf9f4] dark:bg-[#050505]" />
+      <div className="relative z-10">
+        {demo ?? (
+          <DemoStage
+            scenarios={stage?.scenarios}
+            initialScenarioIndex={stage?.initialScenarioIndex}
+            activeScenarioKey={stage?.activeScenarioKey}
+            autoCycle={stage?.autoCycle}
+            cycleIntervalMs={stage?.cycleIntervalMs}
+            className={stage?.className}
+            enableMotion={enableMotion}
+            ariaLabel="Layered product demo"
+          />
+        )}
+      </div>
     </div>
   );
 
