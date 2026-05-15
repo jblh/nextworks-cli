@@ -5,6 +5,77 @@ import type {
   ProductDemoWorkflowTranscriptEntry,
 } from "./types";
 
+function useAnimatedPatchCount(target: number | undefined, visible: boolean) {
+  const safeTarget =
+    typeof target === "number" ? Math.max(target, 0) : undefined;
+  const [displayValue, setDisplayValue] = React.useState(safeTarget ?? 0);
+
+  React.useEffect(() => {
+    if (typeof safeTarget !== "number") {
+      return;
+    }
+
+    if (!visible) {
+      setDisplayValue(safeTarget);
+      return;
+    }
+
+    if (safeTarget <= 2) {
+      setDisplayValue(safeTarget);
+      return;
+    }
+
+    let frameId = 0;
+    const duration = Math.min(900, Math.max(520, safeTarget * 26));
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const nextValue = Math.max(1, Math.round(safeTarget * eased));
+
+      setDisplayValue(nextValue);
+
+      if (progress < 1) {
+        frameId = window.requestAnimationFrame(tick);
+      }
+    };
+
+    setDisplayValue(1);
+    frameId = window.requestAnimationFrame(tick);
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [safeTarget, visible]);
+
+  return typeof safeTarget === "number" ? displayValue : undefined;
+}
+
+function PatchCount({
+  prefix,
+  value,
+  visible,
+  className,
+}: {
+  prefix: "+" | "-";
+  value?: number;
+  visible: boolean;
+  className: string;
+}) {
+  const animatedValue = useAnimatedPatchCount(value, visible);
+
+  if (typeof value !== "number" || typeof animatedValue !== "number") {
+    return null;
+  }
+
+  return (
+    <span className={className}>
+      {prefix}
+      {animatedValue}
+    </span>
+  );
+}
+
 export interface WorkflowStudioPanelProps {
   state: ProductDemoWorkflowStudioState;
 }
@@ -140,6 +211,13 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
               }
 
               if (entry.kind === "file") {
+                const isNewestVisibleFile =
+                  entry.id ===
+                  [...visibleTranscript]
+                    .reverse()
+                    .find((transcriptEntry) => transcriptEntry.kind === "file")
+                    ?.id;
+
                 return (
                   <div
                     key={entry.id}
@@ -153,14 +231,18 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                         {entry.path ?? entry.text}
                       </span>
                       <div className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
-                        {typeof entry.added === "number" ? (
-                          <span className="text-[#3b82f6]">+{entry.added}</span>
-                        ) : null}
-                        {typeof entry.removed === "number" ? (
-                          <span className="text-[#ef4444]">
-                            -{entry.removed}
-                          </span>
-                        ) : null}
+                        <PatchCount
+                          prefix="+"
+                          value={entry.added}
+                          visible={isNewestVisibleFile}
+                          className="text-[#3b82f6]"
+                        />
+                        <PatchCount
+                          prefix="-"
+                          value={entry.removed}
+                          visible={isNewestVisibleFile}
+                          className="text-[#ef4444]"
+                        />
                       </div>
                     </div>
                   </div>
