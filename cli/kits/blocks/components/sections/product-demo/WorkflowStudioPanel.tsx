@@ -159,7 +159,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   const isRunning = visibleCount < transcript.length;
 
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#f6f4ee] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#f4f5f1] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
       <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 [scrollbar-color:rgba(100,116,139,0.32)_transparent] [scrollbar-width:thin] dark:[scrollbar-color:rgba(148,163,184,0.22)_transparent]">
         <div className="flex min-h-full flex-col pr-1">
           <div className="space-y-3">
@@ -173,7 +173,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                       <span>{entry.text}</span>
                     </div>
                     {activeNode?.description ? (
-                      <div className="rounded-lg border border-black/[0.08] bg-white/72 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-none dark:border-white/[0.08] dark:bg-white/[0.028] dark:text-slate-200 dark:shadow-none">
+                      <div className="rounded-lg border border-black/[0.07] bg-white/62 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-none dark:border-white/[0.08] dark:bg-white/[0.028] dark:text-slate-200 dark:shadow-none">
                         {activeNode.description}
                       </div>
                     ) : null}
@@ -185,7 +185,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                 return (
                   <div
                     key={entry.id}
-                    className="space-y-1.5 rounded-lg border border-black/[0.08] bg-white/72 px-3 py-2.5 dark:border-white/[0.08] dark:bg-white/[0.028]"
+                    className="space-y-1.5 rounded-lg border border-black/[0.07] bg-white/62 px-3 py-2.5 dark:border-white/[0.08] dark:bg-white/[0.028]"
                   >
                     <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
                       {getEntryLabel(entry.kind)}
@@ -221,7 +221,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                 return (
                   <div
                     key={entry.id}
-                    className="space-y-1.5 rounded-md border border-black/[0.075] bg-white/68 px-3 py-2 dark:border-white/[0.075] dark:bg-white/[0.022]"
+                    className="space-y-1.5 rounded-md border border-black/[0.07] bg-white/58 px-3 py-2 dark:border-white/[0.075] dark:bg-white/[0.022]"
                   >
                     <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
                       {getEntryLabel(entry.kind)}
@@ -300,20 +300,20 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
       </div>
 
       {composer ? (
-        <div className="border-t border-black/[0.06] bg-[#f1efe8] px-4 py-3 dark:border-white/[0.07] dark:bg-[#090909]">
-          <div className="rounded-lg border border-black/[0.08] bg-white/82 px-3 py-3 shadow-none dark:border-white/[0.08] dark:bg-white/[0.03] dark:shadow-none">
+        <div className="border-t border-black/[0.055] bg-[#eef0eb] px-4 py-3 dark:border-white/[0.07] dark:bg-[#090909]">
+          <div className="rounded-lg border border-black/[0.07] bg-white/72 px-3 py-3 shadow-none dark:border-white/[0.08] dark:bg-white/[0.03] dark:shadow-none">
             <div className="text-[11px] text-slate-500 dark:text-slate-500">
               {composer.placeholder ??
                 "Ask the agent to inspect, search, or build..."}
             </div>
             <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500 dark:text-slate-400">
-              <span className="rounded-full border border-black/[0.08] bg-[#f6f4ed] px-2.5 py-1 text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
+              <span className="rounded-full border border-black/[0.07] bg-[#f5f6f2] px-2.5 py-1 text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
                 {composer.modeLabel ?? "Agent"}
               </span>
-              <span className="rounded-full border border-black/[0.08] bg-[#f6f4ed] px-2.5 py-1 text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
+              <span className="rounded-full border border-black/[0.07] bg-[#f5f6f2] px-2.5 py-1 text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
                 {composer.modelLabel ?? "Model 2"}
               </span>
-              <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full border border-black/[0.08] bg-[#f6f4ed] text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
+              <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full border border-black/[0.07] bg-[#f5f6f2] text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
                 ?
               </span>
             </div>

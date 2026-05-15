@@ -105,10 +105,10 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
 
   return (
     <div className="flex h-full min-h-0 flex-col text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:text-white/95">
-      <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/[0.07] bg-[#f8f8f6] shadow-none dark:border-white/[0.08] dark:bg-[#0a0a0a] dark:shadow-none">
+      <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/[0.065] bg-[#f6f7f4] shadow-none dark:border-white/[0.08] dark:bg-[#0a0a0a] dark:shadow-none">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f8f8f6] dark:bg-[#0a0a0a]">
-            <div className="border-r border-black/[0.055] bg-[#f2f1ec] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400/88 dark:border-white/[0.06] dark:bg-[#0d0d0d] dark:text-slate-600/88">
+          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f6f7f4] dark:bg-[#0a0a0a]">
+            <div className="border-r border-black/[0.05] bg-[#eff1ec] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400/88 dark:border-white/[0.06] dark:bg-[#0d0d0d] dark:text-slate-600/88">
               {visibleCode.map((line, index) => {
                 const isAdded = line.trimStart().startsWith("+");
                 const isRemoved = line.trimStart().startsWith("-");
@@ -128,7 +128,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
               })}
             </div>
 
-            <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[#f9f8f4] px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:bg-[#0b0b0b] dark:text-slate-300/92">
+            <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[#f7f7f4] px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:bg-[#0b0b0b] dark:text-slate-300/92">
               <div>
                 {visibleCode.map((line, index) => {
                   const isAdded = line.trimStart().startsWith("+");
@@ -140,9 +140,9 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                       className={cn(
                         "flex border-l border-transparent pl-3 transition-colors duration-300",
                         isAdded &&
-                          "border-[#2563eb]/45 bg-[#2563eb]/[0.055] text-slate-950 dark:border-[#3b82f6]/38 dark:bg-[#3b82f6]/[0.08] dark:text-[#dbeafe]",
+                          "border-[#2563eb]/38 bg-[#2563eb]/[0.045] text-slate-950 dark:border-[#3b82f6]/38 dark:bg-[#3b82f6]/[0.08] dark:text-[#dbeafe]",
                         isRemoved &&
-                          "border-[#dc2626]/40 bg-[#dc2626]/[0.05] text-slate-950 dark:border-[#f87171]/34 dark:bg-[#f87171]/[0.08] dark:text-[#fecdd3]",
+                          "border-[#dc2626]/34 bg-[#dc2626]/[0.042] text-slate-950 dark:border-[#f87171]/34 dark:bg-[#f87171]/[0.08] dark:text-[#fecdd3]",
                         !isAdded &&
                           !isRemoved &&
                           "text-slate-700 dark:text-slate-300/90",
@@ -187,11 +187,11 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
         </div>
 
         {state.metrics?.length ? (
-          <div className="hidden w-[6.75rem] shrink-0 border-l border-black/[0.06] bg-[#f3f2ed] p-2 lg:flex lg:flex-col lg:gap-2 dark:border-white/[0.07] dark:bg-white/[0.025]">
+          <div className="hidden w-[6.75rem] shrink-0 border-l border-black/[0.05] bg-[#f1f3ee] p-2 lg:flex lg:flex-col lg:gap-2 dark:border-white/[0.07] dark:bg-white/[0.025]">
             {state.metrics.map((metric) => (
               <div
                 key={metric.id}
-                className="rounded-md border border-black/[0.07] bg-white/88 px-2 py-2 text-center dark:border-white/[0.08] dark:bg-white/[0.03]"
+                className="rounded-md border border-black/[0.065] bg-white/76 px-2 py-2 text-center dark:border-white/[0.08] dark:bg-white/[0.03]"
               >
                 <div className="text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
                   {metric.label}

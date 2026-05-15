@@ -10,7 +10,7 @@ export interface TaskListPanelProps {
 
 export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
   return (
-    <div className="flex h-full min-h-0 flex-col bg-[#f2f1eb] text-slate-900 dark:bg-[#070707] dark:text-slate-100">
+    <div className="flex h-full min-h-0 flex-col bg-[#f1f2ee] text-slate-900 dark:bg-[#070707] dark:text-slate-100">
       <div className="border-b border-black/[0.06] px-3 py-2.5 dark:border-white/[0.07]">
         <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
           Task navigator
@@ -31,15 +31,15 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
               onClick={() => onSelect?.(item.id)}
               className={cn(
                 "relative isolate w-full overflow-hidden rounded-none border-x-0 border-y border-b-0 px-3 py-3 text-left transition-colors duration-200 first:border-t-0",
-                "border-black/[0.055] bg-white/66 hover:border-black/[0.08] hover:bg-white/82 dark:border-white/[0.065] dark:bg-white/[0.016] dark:hover:border-white/[0.08] dark:hover:bg-white/[0.028]",
+                "border-black/[0.05] bg-white/58 hover:border-black/[0.07] hover:bg-white/74 dark:border-white/[0.065] dark:bg-white/[0.016] dark:hover:border-white/[0.08] dark:hover:bg-white/[0.028]",
                 isActive &&
-                  "border-black/[0.08] bg-white/90 dark:border-white/[0.085] dark:bg-white/[0.04]",
+                  "border-black/[0.072] bg-white/84 dark:border-white/[0.085] dark:bg-white/[0.04]",
               )}
             >
               {isActive ? (
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 rounded-none bg-[linear-gradient(135deg,rgba(59,130,246,0.1),rgba(255,255,255,0)_42%,rgba(239,68,68,0.1))] dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.12),rgba(255,255,255,0)_42%,rgba(239,68,68,0.12))]"
+                  className="pointer-events-none absolute inset-y-0 left-0 w-px bg-slate-900/18 dark:bg-white/18"
                 />
               ) : null}
 
@@ -48,8 +48,8 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
                   className={cn(
                     "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold",
                     isActive
-                      ? "border-black/[0.08] bg-[#f7f5ee] text-slate-900 dark:border-white/[0.14] dark:bg-white/[0.07] dark:text-white"
-                      : "border-black/[0.08] bg-[#ebe8df] text-slate-500 dark:border-white/[0.08] dark:bg-white/[0.035] dark:text-slate-400",
+                      ? "border-black/[0.075] bg-[#f6f6f2] text-slate-900 dark:border-white/[0.14] dark:bg-white/[0.07] dark:text-white"
+                      : "border-black/[0.075] bg-[#e9ebe5] text-slate-500 dark:border-white/[0.08] dark:bg-white/[0.035] dark:text-slate-400",
                   )}
                 >
                   {index + 1}
