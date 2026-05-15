@@ -106,10 +106,10 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
 
   return (
     <div className="flex h-full min-h-0 flex-col text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:text-white/95">
-      <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/10 bg-[#fcfbf7] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.1)] dark:border-white/10 dark:bg-[#0b0b0b] dark:shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
+      <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/[0.07] bg-[#f8f8f6] shadow-none dark:border-white/[0.08] dark:bg-[#0a0a0a] dark:shadow-none">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#fcfbf7] dark:bg-[#0b0b0b]">
-            <div className="border-r border-black/8 bg-[#f2f0ea] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400 dark:border-white/8 dark:bg-white/[0.02] dark:text-slate-600">
+          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f8f8f6] dark:bg-[#0a0a0a]">
+            <div className="border-r border-black/[0.06] bg-[#f1f0eb] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400 dark:border-white/[0.07] dark:bg-white/[0.03] dark:text-slate-600">
               {visibleCode.map((line, index) => {
                 const isAdded = line.trimStart().startsWith("+");
                 const isRemoved = line.trimStart().startsWith("-");
@@ -129,7 +129,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
               })}
             </div>
 
-            <div className="relative flex h-full min-h-0 flex-col overflow-hidden px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:text-slate-300">
+            <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[#fbfbf9] px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:bg-[#0b0b0b] dark:text-slate-300">
               <div>
                 {visibleCode.map((line, index) => {
                   const isAdded = line.trimStart().startsWith("+");
@@ -141,9 +141,9 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                       className={cn(
                         "flex border-l border-transparent pl-3 transition-colors duration-300",
                         isAdded &&
-                          "border-[#3b82f6]/80 bg-[#3b82f6]/10 text-slate-950 dark:text-[#dbeafe]",
+                          "border-[#3b82f6]/60 bg-[#3b82f6]/8 text-slate-950 dark:text-[#dbeafe]",
                         isRemoved &&
-                          "border-[#ef4444]/80 bg-[#ef4444]/10 text-slate-950 dark:text-[#fecdd3]",
+                          "border-[#ef4444]/55 bg-[#ef4444]/8 text-slate-950 dark:text-[#fecdd3]",
                         !isAdded &&
                           !isRemoved &&
                           "text-slate-800 dark:text-slate-300",
@@ -206,11 +206,11 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
         </div>
 
         {state.metrics?.length ? (
-          <div className="hidden w-[6.75rem] shrink-0 border-l border-black/8 bg-[#f4f2ec] p-2 lg:flex lg:flex-col lg:gap-2 dark:border-white/8 dark:bg-white/[0.02]">
+          <div className="hidden w-[6.75rem] shrink-0 border-l border-black/[0.06] bg-[#f3f2ed] p-2 lg:flex lg:flex-col lg:gap-2 dark:border-white/[0.07] dark:bg-white/[0.025]">
             {state.metrics.map((metric) => (
               <div
                 key={metric.id}
-                className="rounded-md border border-black/8 bg-white px-2 py-2 text-center dark:border-white/8 dark:bg-white/[0.03]"
+                className="rounded-md border border-black/[0.07] bg-white/88 px-2 py-2 text-center dark:border-white/[0.08] dark:bg-white/[0.03]"
               >
                 <div className="text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
                   {metric.label}
