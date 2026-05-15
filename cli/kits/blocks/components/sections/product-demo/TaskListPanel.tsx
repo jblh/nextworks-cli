@@ -11,6 +11,15 @@ export interface TaskListPanelProps {
 export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
   return (
     <div className="flex h-full min-h-0 flex-col bg-[#f2f1eb] text-slate-900 dark:bg-[#070707] dark:text-slate-100">
+      <div className="border-b border-black/[0.06] px-3 py-2.5 dark:border-white/[0.07]">
+        <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
+          Task navigator
+        </div>
+        <div className="mt-1 text-[11px] text-slate-600 dark:text-slate-400">
+          Choose a task to inspect and run.
+        </div>
+      </div>
+
       <div className="space-y-0 overflow-hidden">
         {state.items.map((item, index) => {
           const isActive = item.id === state.activeItemId;
@@ -22,9 +31,9 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
               onClick={() => onSelect?.(item.id)}
               className={cn(
                 "relative isolate w-full overflow-hidden rounded-none border-x-0 border-y border-b-0 px-3 py-3 text-left transition-colors duration-200 first:border-t-0",
-                "border-black/[0.06] bg-white/72 hover:border-black/[0.08] hover:bg-white/86 dark:border-white/[0.07] dark:bg-white/[0.018] dark:hover:border-white/[0.08] dark:hover:bg-white/[0.03]",
+                "border-black/[0.055] bg-white/66 hover:border-black/[0.08] hover:bg-white/82 dark:border-white/[0.065] dark:bg-white/[0.016] dark:hover:border-white/[0.08] dark:hover:bg-white/[0.028]",
                 isActive &&
-                  "border-black/[0.08] bg-white/92 shadow-none dark:border-white/[0.09] dark:bg-white/[0.045] dark:shadow-none",
+                  "border-black/[0.08] bg-white/90 dark:border-white/[0.085] dark:bg-white/[0.04]",
               )}
             >
               {isActive ? (
@@ -47,17 +56,32 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
                 </span>
 
                 <div className="min-w-0 flex-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                    {item.title}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                        {item.title}
+                      </div>
+                    </div>
+                    <div
+                      className={cn(
+                        "shrink-0 text-[10px] uppercase tracking-[0.16em]",
+                        isActive
+                          ? "text-slate-600 dark:text-slate-300"
+                          : "text-slate-400 dark:text-slate-500",
+                      )}
+                    >
+                      {isActive ? "Open" : "Queued"}
+                    </div>
                   </div>
                   {item.description && (
-                    <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                    <p className="mt-1.5 max-w-[22ch] text-xs leading-relaxed text-slate-600 dark:text-slate-400">
                       {item.description}
                     </p>
                   )}
                   {item.meta && (
-                    <div className="mt-2 text-[11px] text-slate-500 dark:text-slate-400/90">
-                      {item.meta}
+                    <div className="mt-2.5 flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400/90">
+                      <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+                      <span>{item.meta}</span>
                     </div>
                   )}
                 </div>
