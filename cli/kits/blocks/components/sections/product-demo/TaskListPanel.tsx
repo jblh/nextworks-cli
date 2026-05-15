@@ -10,8 +10,8 @@ export interface TaskListPanelProps {
 
 export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
   return (
-    <div className="flex h-full flex-col text-slate-900 dark:text-slate-100">
-      <div className="space-y-0">
+    <div className="flex h-full min-h-0 flex-col bg-[#f6f5ef] text-slate-900 dark:bg-[#080808] dark:text-slate-100">
+      <div className="space-y-0 overflow-hidden">
         {state.items.map((item, index) => {
           const isActive = item.id === state.activeItemId;
 
@@ -22,9 +22,9 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
               onClick={() => onSelect?.(item.id)}
               className={cn(
                 "relative isolate w-full overflow-hidden rounded-none border px-3 py-3 text-left transition-colors duration-200",
-                "border-black/8 bg-white/88 hover:border-black/16 hover:bg-black/[0.02] dark:border-white/8 dark:bg-white/[0.02] dark:hover:border-white/14 dark:hover:bg-white/[0.035]",
+                "border-black/8 bg-white/84 hover:border-black/16 hover:bg-white dark:border-white/8 dark:bg-white/[0.02] dark:hover:border-white/14 dark:hover:bg-white/[0.035]",
                 isActive &&
-                  "border-black/12 bg-white/[0.96] shadow-[0_16px_36px_-24px_rgba(15,23,42,0.16)] dark:border-white/12 dark:bg-white/[0.045] dark:shadow-[0_12px_30px_-22px_rgba(255,255,255,0.05)]",
+                  "border-black/12 bg-white shadow-[0_16px_36px_-24px_rgba(15,23,42,0.12)] dark:border-white/12 dark:bg-white/[0.045] dark:shadow-[0_12px_30px_-22px_rgba(255,255,255,0.05)]",
               )}
             >
               {isActive ? (
@@ -39,8 +39,8 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
                   className={cn(
                     "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold",
                     isActive
-                      ? "border-white/60 bg-white/80 text-slate-900 dark:border-white/16 dark:bg-white/[0.08] dark:text-white"
-                      : "border-black/10 bg-black/[0.04] text-slate-500 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400",
+                      ? "border-black/10 bg-[#f8f7f2] text-slate-900 dark:border-white/16 dark:bg-white/[0.08] dark:text-white"
+                      : "border-black/10 bg-[#efede6] text-slate-500 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400",
                   )}
                 >
                   {index + 1}

@@ -49,7 +49,7 @@ export function DemoWindow({
   return (
     <section
       className={cn(
-        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/8 bg-[#fcfcfa] shadow-[0_28px_80px_-34px_rgba(15,23,42,0.18)] [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:border-white/10 dark:bg-[#050505] dark:shadow-[0_24px_70px_-32px_rgba(2,8,23,0.82)]",
+        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/8 bg-[#fcfcfa] shadow-[0_28px_80px_-34px_rgba(15,23,42,0.12)] [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:border-white/10 dark:bg-[#050505] dark:shadow-[0_24px_70px_-32px_rgba(2,8,23,0.82)]",
 
         enableMotion &&
           "transition-[transform,opacity,box-shadow,border-color] duration-500 ease-out motion-reduce:transition-none",
@@ -114,7 +114,8 @@ export function DemoWindow({
 
       <div
         className={cn(
-          "relative flex-1 px-4 py-4 sm:px-5 sm:py-5",
+          "relative flex-1 min-h-0 px-4 py-4 sm:px-5 sm:py-5",
+
           bodyClassName,
         )}
       >

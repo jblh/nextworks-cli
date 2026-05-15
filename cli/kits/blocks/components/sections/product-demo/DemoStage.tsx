@@ -271,14 +271,14 @@ export function DemoStage({
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
       className={cn(
-        "relative isolate min-h-[36rem] w-full overflow-hidden rounded-[14px] border border-black/8 bg-[#2a2a2d] shadow-[0_40px_120px_-56px_rgba(0,0,0,0.72)] dark:border-white/8 dark:bg-[#101012] dark:shadow-[0_28px_90px_-34px_rgba(0,0,0,0.82)] lg:min-h-[44rem]",
+        "relative isolate min-h-[36rem] w-full overflow-hidden rounded-[14px] border border-black/8 bg-[#e9e8e2] shadow-[0_40px_120px_-56px_rgba(0,0,0,0.18)] dark:border-white/8 dark:bg-[#101012] dark:shadow-[0_28px_90px_-34px_rgba(0,0,0,0.82)] lg:min-h-[44rem]",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.07),transparent_28%),radial-gradient(circle_at_85%_8%,rgba(59,130,246,0.08),transparent_26%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.24),transparent_42%),linear-gradient(180deg,#313136_0%,#232327_100%)] dark:bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.04),transparent_28%),radial-gradient(circle_at_85%_8%,rgba(59,130,246,0.07),transparent_24%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.28),transparent_42%),linear-gradient(180deg,#18181b_0%,#0f0f11_100%)]" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-soft-light [background-image:radial-gradient(rgba(255,255,255,0.85)_0.55px,transparent_0.55px)] [background-size:10px_10px] dark:opacity-[0.035]" />
-      <div className="pointer-events-none absolute inset-[1px] rounded-[13px] ring-1 ring-white/10 dark:ring-white/6" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.7),transparent_28%),radial-gradient(circle_at_85%_8%,rgba(59,130,246,0.06),transparent_26%),radial-gradient(circle_at_50%_100%,rgba(15,23,42,0.08),transparent_42%),linear-gradient(180deg,#f1f0ea_0%,#e4e2db_100%)] dark:bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.04),transparent_28%),radial-gradient(circle_at_85%_8%,rgba(59,130,246,0.07),transparent_24%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.28),transparent_42%),linear-gradient(180deg,#18181b_0%,#0f0f11_100%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.035] mix-blend-soft-light [background-image:radial-gradient(rgba(255,255,255,0.85)_0.55px,transparent_0.55px)] [background-size:10px_10px] dark:opacity-[0.035]" />
+      <div className="pointer-events-none absolute inset-[1px] rounded-[13px] ring-1 ring-black/5 dark:ring-white/6" />
 
       <div className="relative z-10 flex min-h-[36rem] flex-col gap-3 p-4 sm:p-4 lg:min-h-[44rem] lg:p-5">
         <div className="grid gap-4 lg:hidden">
@@ -308,35 +308,35 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:flex lg:min-h-[30rem] lg:flex-col xl:min-h-[32rem]">
-          <div className="flex min-h-[3.25rem] items-center justify-between border border-black/10 border-b-0 bg-black/[0.34] px-4 py-2.5 backdrop-blur-md dark:border-white/8 dark:bg-white/[0.03] sm:px-5">
+        <div className="hidden lg:flex lg:h-[34rem] lg:min-h-[34rem] lg:flex-col xl:h-[36rem] xl:min-h-[36rem]">
+          <div className="flex h-[3.25rem] items-center justify-between border border-black/10 border-b-0 bg-white/72 px-4 py-2.5 backdrop-blur-md dark:border-white/8 dark:bg-white/[0.03] sm:px-5">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md border border-white/10 bg-white/[0.06] text-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-md border border-black/10 bg-white text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] dark:border-white/10 dark:bg-white/[0.06] dark:text-white/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                 <span className="grid grid-cols-2 gap-[2px]">
-                  <span className="h-[3px] w-[3px] rounded-[1px] bg-white/90" />
-                  <span className="h-[3px] w-[3px] rounded-[1px] bg-white/55" />
-                  <span className="h-[3px] w-[3px] rounded-[1px] bg-white/55" />
-                  <span className="h-[3px] w-[3px] rounded-[1px] bg-white/90" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-900 dark:bg-white/90" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-500 dark:bg-white/55" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-500 dark:bg-white/55" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-900 dark:bg-white/90" />
                 </span>
               </div>
               <div className="min-w-0">
-                <div className="text-[12px] font-semibold tracking-[-0.02em] text-white/94">
+                <div className="text-[12px] font-semibold tracking-[-0.02em] text-slate-900 dark:text-white/94">
                   Agent workspace
                 </div>
-                <div className="text-[10px] uppercase tracking-[0.16em] text-white/40">
+                <div className="text-[10px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/40">
                   Live session
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-white/42">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-white/58">
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/42">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-white px-2.5 py-1 text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/58">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 Active
               </span>
             </div>
           </div>
 
-          <div className="grid flex-1 lg:grid-cols-10 lg:gap-0">
+          <div className="grid h-[calc(100%-3.25rem)] flex-1 lg:grid-cols-10 lg:gap-0">
             {windows.map((windowData) => {
               const shellClass = getWindowShellClass(windowData.key);
 
@@ -373,7 +373,7 @@ export function DemoStage({
                     showResizeHandle={false}
                     showHeader={false}
                     className={cn(
-                      "min-h-[30rem] h-full border border-black/10 bg-[#060606]/96 shadow-none dark:border-white/8 dark:bg-[#050505] xl:min-h-[32rem]",
+                      "h-full min-h-0 border border-black/10 bg-[#faf9f4] shadow-none dark:border-white/8 dark:bg-[#050505]",
                       windowData.key === "taskList" &&
                         "rounded-none border-r-0",
                       windowData.key === "workflowStudio" &&
