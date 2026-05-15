@@ -21,7 +21,7 @@ export interface DemoWindowProps {
 
 const STATUS_TONE_CLASSES: Record<ProductDemoStatusTone, string> = {
   neutral: "border-border/60 bg-muted/60 text-muted-foreground",
-  info: "border-black/10 bg-black/[0.045] text-slate-700 dark:border-white/12 dark:bg-white/[0.045] dark:text-slate-200",
+  info: "border-black/[0.07] bg-black/[0.045] text-slate-700 dark:border-white/[0.09] dark:bg-white/[0.045] dark:text-slate-200",
 
   success:
     "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300",
@@ -49,12 +49,12 @@ export function DemoWindow({
   return (
     <section
       className={cn(
-        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/8 bg-[#fcfcfa] shadow-[0_28px_80px_-34px_rgba(15,23,42,0.12)] [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:border-white/10 dark:bg-[#050505] dark:shadow-[0_24px_70px_-32px_rgba(2,8,23,0.82)]",
+        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/[0.07] bg-[#fcfcfa] shadow-[0_28px_80px_-34px_rgba(15,23,42,0.12)] [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:border-white/[0.07] dark:bg-[#050505] dark:shadow-[0_24px_70px_-32px_rgba(2,8,23,0.82)]",
 
         enableMotion &&
           "transition-[transform,opacity,box-shadow,border-color] duration-500 ease-out motion-reduce:transition-none",
         active &&
-          "border-black/14 shadow-[0_28px_84px_-36px_rgba(15,23,42,0.14)] dark:border-white/14 dark:shadow-[0_24px_60px_-26px_rgba(255,255,255,0.06)]",
+          "border-black/[0.09] shadow-[0_28px_84px_-36px_rgba(15,23,42,0.14)] dark:border-white/[0.09] dark:shadow-[0_24px_60px_-26px_rgba(255,255,255,0.06)]",
 
         dimmed && "opacity-90",
         className,
@@ -66,7 +66,8 @@ export function DemoWindow({
       {showHeader ? (
         <header
           className={cn(
-            "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/8 px-4 py-2.5 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased sm:px-5 dark:border-white/10",
+            "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/[0.07] px-4 py-2.5 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased sm:px-5 dark:border-white/[0.07]",
+
             chromeClassName,
           )}
         >
