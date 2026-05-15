@@ -21,16 +21,16 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
               type="button"
               onClick={() => onSelect?.(item.id)}
               className={cn(
-                "relative isolate w-full overflow-hidden rounded-none border px-3 py-3 text-left transition-colors duration-200",
-                "border-black/8 bg-white/84 hover:border-black/16 hover:bg-white dark:border-white/8 dark:bg-white/[0.02] dark:hover:border-white/14 dark:hover:bg-white/[0.035]",
+                "relative isolate w-full overflow-hidden rounded-none border-x-0 border-y border-b-0 px-3 py-3 text-left transition-colors duration-200 first:border-t-0",
+                "border-black/8 bg-white/84 hover:border-black/8 hover:bg-white dark:border-white/8 dark:bg-white/[0.02] dark:hover:border-white/8 dark:hover:bg-white/[0.035]",
                 isActive &&
-                  "border-black/12 bg-white shadow-[0_16px_36px_-24px_rgba(15,23,42,0.12)] dark:border-white/12 dark:bg-white/[0.045] dark:shadow-[0_12px_30px_-22px_rgba(255,255,255,0.05)]",
+                  "border-black/8 bg-white shadow-none dark:border-white/8 dark:bg-white/[0.045] dark:shadow-none",
               )}
             >
               {isActive ? (
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-[1px] rounded-none bg-[linear-gradient(135deg,rgba(59,130,246,0.12),rgba(255,255,255,0)_42%,rgba(239,68,68,0.12))] dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.16),rgba(255,255,255,0)_42%,rgba(239,68,68,0.16))]"
+                  className="pointer-events-none absolute inset-0 rounded-none bg-[linear-gradient(135deg,rgba(59,130,246,0.1),rgba(255,255,255,0)_42%,rgba(239,68,68,0.1))] dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.12),rgba(255,255,255,0)_42%,rgba(239,68,68,0.12))]"
                 />
               ) : null}
 
