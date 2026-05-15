@@ -6,14 +6,6 @@ export interface RunConsolePanelProps {
   state: ProductDemoRunConsoleState;
 }
 
-function getProgressPercent(value: number | undefined) {
-  if (typeof value !== "number" || Number.isNaN(value)) {
-    return undefined;
-  }
-
-  return Math.min(100, Math.max(0, value));
-}
-
 export function RunConsolePanel({ state }: RunConsolePanelProps) {
   const playbackMs = state.playbackMs ?? 1800;
   const [activeIndex, setActiveIndex] = React.useState(
@@ -69,6 +61,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     displayEntry?.lineNumber ?? activeEntry?.lineNumber ?? 24,
   );
   const activeLineCount = Math.max(1, activeCode.length || 1);
+  const hiddenLineCount = Math.max(activeLineCount, 14);
   const [visibleLineCount, setVisibleLineCount] = React.useState(
     Math.max(1, Math.min(2, activeCode.length || 1)),
   );
@@ -136,52 +129,76 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
               })}
             </div>
 
-            <div className="relative px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:text-slate-300">
-              {visibleCode.map((line, index) => {
-                const isAdded = line.trimStart().startsWith("+");
-                const isRemoved = line.trimStart().startsWith("-");
+            <div className="relative flex h-full min-h-0 flex-col overflow-hidden px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:text-slate-300">
+              <div>
+                {visibleCode.map((line, index) => {
+                  const isAdded = line.trimStart().startsWith("+");
+                  const isRemoved = line.trimStart().startsWith("-");
 
-                return (
-                  <div
-                    key={`${line}-${index}`}
-                    className={cn(
-                      "flex border-l border-transparent pl-3 transition-colors duration-300",
-                      isAdded &&
-                        "border-[#3b82f6]/80 bg-[#3b82f6]/10 text-slate-950 dark:text-[#dbeafe]",
-                      isRemoved &&
-                        "border-[#ef4444]/80 bg-[#ef4444]/10 text-slate-950 dark:text-[#fecdd3]",
-                      !isAdded &&
-                        !isRemoved &&
-                        "text-slate-800 dark:text-slate-300",
-                      displayEntry?.highlighted &&
-                        index === Math.min(1, visibleCode.length - 1) &&
-                        "animate-pulse",
-                    )}
-                  >
-                    <span
+                  return (
+                    <div
+                      key={`${line}-${index}`}
                       className={cn(
-                        "mr-3 w-3 shrink-0 text-center text-[11px]",
-                        isAdded
-                          ? "text-[#3b82f6]"
-                          : isRemoved
-                            ? "text-[#ef4444]"
-                            : "text-slate-400 dark:text-slate-600",
+                        "flex border-l border-transparent pl-3 transition-colors duration-300",
+                        isAdded &&
+                          "border-[#3b82f6]/80 bg-[#3b82f6]/10 text-slate-950 dark:text-[#dbeafe]",
+                        isRemoved &&
+                          "border-[#ef4444]/80 bg-[#ef4444]/10 text-slate-950 dark:text-[#fecdd3]",
+                        !isAdded &&
+                          !isRemoved &&
+                          "text-slate-800 dark:text-slate-300",
+                        displayEntry?.highlighted &&
+                          index === Math.min(1, visibleCode.length - 1) &&
+                          "animate-pulse",
                       )}
                     >
-                      {isAdded ? "+" : isRemoved ? "-" : " "}
-                    </span>
-                    <span className="min-w-0 flex-1 whitespace-pre-wrap break-words">
-                      {isAdded || isRemoved ? line.slice(1).trimStart() : line}
-                    </span>
-                  </div>
-                );
-              })}
+                      <span
+                        className={cn(
+                          "mr-3 w-3 shrink-0 text-center text-[11px]",
+                          isAdded
+                            ? "text-[#3b82f6]"
+                            : isRemoved
+                              ? "text-[#ef4444]"
+                              : "text-slate-400 dark:text-slate-600",
+                        )}
+                      >
+                        {isAdded ? "+" : isRemoved ? "-" : " "}
+                      </span>
+                      <span className="min-w-0 flex-1 whitespace-pre-wrap break-words">
+                        {isAdded || isRemoved
+                          ? line.slice(1).trimStart()
+                          : line}
+                      </span>
+                    </div>
+                  );
+                })}
 
-              {displayEntry?.highlighted &&
-              visibleLineCount < activeLineCount ? (
-                <div className="mt-2 flex items-center gap-2 pl-3 text-[11px] text-slate-400 dark:text-slate-500">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
-                  Applying change...
+                {displayEntry?.highlighted &&
+                visibleLineCount < activeLineCount ? (
+                  <div className="mt-2 flex items-center gap-2 pl-3 text-[11px] text-slate-400 dark:text-slate-500">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
+                    Applying change...
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="flex-1" />
+
+              {hiddenLineCount > visibleCode.length ? (
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none mt-2 space-y-0 opacity-[0.16]"
+                >
+                  {Array.from({
+                    length: hiddenLineCount - visibleCode.length,
+                  }).map((_, index) => (
+                    <div
+                      key={`code-placeholder-${index}`}
+                      className="h-7 border-l border-transparent pl-3"
+                    >
+                      <div className="h-4 rounded bg-black/[0.045] dark:bg-white/[0.05]" />
+                    </div>
+                  ))}
                 </div>
               ) : null}
             </div>

@@ -280,7 +280,7 @@ export function DemoStage({
       <div className="pointer-events-none absolute inset-0 opacity-[0.035] mix-blend-soft-light [background-image:radial-gradient(rgba(255,255,255,0.85)_0.55px,transparent_0.55px)] [background-size:10px_10px] dark:opacity-[0.035]" />
       <div className="pointer-events-none absolute inset-[1px] rounded-[13px] ring-1 ring-black/5 dark:ring-white/6" />
 
-      <div className="relative z-10 flex min-h-[36rem] flex-col gap-3 p-4 sm:p-4 lg:min-h-[44rem] lg:p-5">
+      <div className="relative z-10 flex h-[36rem] min-h-[36rem] flex-col gap-3 p-4 sm:p-4 lg:h-[44rem] lg:min-h-[44rem] lg:p-5">
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
             if (getWindowShellClass(windowData.key) === "hidden") {
@@ -308,7 +308,7 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:flex lg:h-[34rem] lg:min-h-[34rem] lg:flex-col xl:h-[36rem] xl:min-h-[36rem]">
+        <div className="hidden lg:flex lg:h-full lg:min-h-0 lg:flex-col">
           <div className="flex h-[3.25rem] items-center justify-between border border-black/10 border-b-0 bg-white/72 px-4 py-2.5 backdrop-blur-md dark:border-white/8 dark:bg-white/[0.03] sm:px-5">
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-md border border-black/10 bg-white text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] dark:border-white/10 dark:bg-white/[0.06] dark:text-white/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
@@ -336,7 +336,7 @@ export function DemoStage({
             </div>
           </div>
 
-          <div className="grid h-[calc(100%-3.25rem)] flex-1 lg:grid-cols-10 lg:gap-0">
+          <div className="grid min-h-0 flex-1 lg:grid-cols-10 lg:gap-0 lg:pb-5">
             {windows.map((windowData) => {
               const shellClass = getWindowShellClass(windowData.key);
 
@@ -362,7 +362,7 @@ export function DemoStage({
                         }
                       : { duration: 0 }
                   }
-                  className={cn("will-change-transform", shellClass)}
+                  className={cn("min-h-0 will-change-transform", shellClass)}
                 >
                   <DemoWindow
                     window={windowData.meta}
