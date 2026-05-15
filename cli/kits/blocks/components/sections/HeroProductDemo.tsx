@@ -185,7 +185,8 @@ export function HeroProductDemo({
 
   const renderDemo = (
     <div className={cn("relative", demoContainer?.className)}>
-      <div className="pointer-events-none absolute inset-y-0 left-1/2 z-0 w-screen -translate-x-1/2 bg-[#faf9f4] dark:bg-[#050505]" />
+      <div className="pointer-events-none absolute inset-y-0 left-1/2 z-0 w-screen -translate-x-1/2 bg-[linear-gradient(135deg,rgba(59,130,246,0.1),rgba(255,255,255,0)_42%,rgba(239,68,68,0.1))] dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.12),rgba(255,255,255,0)_42%,rgba(239,68,68,0.12))]" />
+
       <div className="relative z-10">
         {demo ?? (
           <DemoStage
