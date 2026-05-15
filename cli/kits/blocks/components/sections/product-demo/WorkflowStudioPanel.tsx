@@ -100,7 +100,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                 return (
                   <div
                     key={entry.id}
-                    className="rounded-lg border border-black/[0.08] bg-white/7 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 dark:border-white/[0.08] dark:bg-white/[0.024] dark:text-slate-300"
+                    className="rounded-lg border border-black/[0.08] bg-white/72 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 dark:border-white/[0.08] dark:bg-white/[0.028] dark:text-slate-300"
                   >
                     {entry.text}
                   </div>
