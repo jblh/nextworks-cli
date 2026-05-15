@@ -271,14 +271,12 @@ export function DemoStage({
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
       className={cn(
-        "relative isolate min-h-[36rem] w-full overflow-hidden rounded-[14px] border border-black/8 bg-[#e9e8e2] shadow-[0_40px_120px_-56px_rgba(0,0,0,0.18)] dark:border-white/8 dark:bg-[#101012] dark:shadow-[0_28px_90px_-34px_rgba(0,0,0,0.82)] lg:min-h-[44rem]",
+        "relative isolate min-h-[36rem] w-full overflow-hidden rounded-none border-0 bg-[#faf9f4] shadow-none dark:bg-[#050505] lg:min-h-[44rem]",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.7),transparent_28%),radial-gradient(circle_at_85%_8%,rgba(59,130,246,0.06),transparent_26%),radial-gradient(circle_at_50%_100%,rgba(15,23,42,0.08),transparent_42%),linear-gradient(180deg,#f1f0ea_0%,#e4e2db_100%)] dark:bg-[radial-gradient(circle_at_20%_0%,rgba(255,255,255,0.04),transparent_28%),radial-gradient(circle_at_85%_8%,rgba(59,130,246,0.07),transparent_24%),radial-gradient(circle_at_50%_100%,rgba(0,0,0,0.28),transparent_42%),linear-gradient(180deg,#18181b_0%,#0f0f11_100%)]" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.035] mix-blend-soft-light [background-image:radial-gradient(rgba(255,255,255,0.85)_0.55px,transparent_0.55px)] [background-size:10px_10px] dark:opacity-[0.035]" />
-      <div className="pointer-events-none absolute inset-[1px] rounded-[13px] ring-1 ring-black/5 dark:ring-white/6" />
+      <div className="absolute inset-0 bg-[#faf9f4] dark:bg-[#050505]" />
 
       <div className="relative z-10 flex h-[36rem] min-h-[36rem] flex-col gap-3 p-4 sm:p-4 lg:h-[44rem] lg:min-h-[44rem] lg:p-5">
         <div className="grid gap-4 lg:hidden">
@@ -309,7 +307,7 @@ export function DemoStage({
         </div>
 
         <div className="hidden lg:flex lg:h-full lg:min-h-0 lg:flex-col">
-          <div className="flex h-[3.25rem] items-center justify-between border border-black/10 border-b-0 bg-white/72 px-4 py-2.5 backdrop-blur-md dark:border-white/8 dark:bg-white/[0.03] sm:px-5">
+          <div className="flex h-[3.25rem] items-center justify-between border border-black/10 border-b-0 bg-[#faf9f4] px-4 py-2.5 dark:border-white/8 dark:bg-[#050505] sm:px-5">
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-md border border-black/10 bg-white text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] dark:border-white/10 dark:bg-white/[0.06] dark:text-white/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                 <span className="grid grid-cols-2 gap-[2px]">
