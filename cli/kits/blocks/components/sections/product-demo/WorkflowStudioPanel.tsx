@@ -28,6 +28,23 @@ function normalizeEntry(
   return { id: `entry-${index}`, kind: "activity", text: entry };
 }
 
+function getEntryLabel(kind?: ProductDemoWorkflowTranscriptEntry["kind"]) {
+  switch (kind) {
+    case "prompt":
+      return "Task";
+    case "activity":
+      return "Action";
+    case "thought":
+      return "Reasoning";
+    case "message":
+      return "Update";
+    case "file":
+      return "Patch";
+    default:
+      return "Session";
+  }
+}
+
 export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   const activeIndex = state.nodes.findIndex(
     (node) => node.id === state.activeNodeId || node.active,
@@ -79,13 +96,15 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
     <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#f6f4ee] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
       <div className="min-h-0 flex-1 overflow-hidden px-4 py-4">
         <div className="flex min-h-full flex-col">
-          <div className="space-y-3.5">
+          <div className="space-y-3">
             {visibleTranscript.map((entry, index) => {
               if (entry.kind === "title") {
                 return (
-                  <div key={entry.id} className="space-y-2">
-                    <div className="text-[11px] font-medium tracking-[0.02em] text-slate-500 dark:text-slate-500">
-                      {entry.text}
+                  <div key={entry.id} className="space-y-2.5">
+                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
+                      <span>{getEntryLabel(entry.kind)}</span>
+                      <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+                      <span>{entry.text}</span>
                     </div>
                     {activeNode?.description ? (
                       <div className="rounded-lg border border-black/[0.08] bg-white/72 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-none dark:border-white/[0.08] dark:bg-white/[0.028] dark:text-slate-200 dark:shadow-none">
@@ -100,20 +119,27 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                 return (
                   <div
                     key={entry.id}
-                    className="rounded-lg border border-black/[0.08] bg-white/72 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 dark:border-white/[0.08] dark:bg-white/[0.028] dark:text-slate-300"
+                    className="space-y-1.5 rounded-lg border border-black/[0.08] bg-white/72 px-3 py-2.5 dark:border-white/[0.08] dark:bg-white/[0.028]"
                   >
-                    {entry.text}
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
+                      {getEntryLabel(entry.kind)}
+                    </div>
+                    <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-300">
+                      {entry.text}
+                    </div>
                   </div>
                 );
               }
 
               if (entry.kind === "message") {
                 return (
-                  <div
-                    key={entry.id}
-                    className="max-w-[92%] text-[12px] leading-relaxed text-slate-800 dark:text-slate-200"
-                  >
-                    {entry.text}
+                  <div key={entry.id} className="max-w-[92%] space-y-1">
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
+                      {getEntryLabel(entry.kind)}
+                    </div>
+                    <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-200">
+                      {entry.text}
+                    </div>
                   </div>
                 );
               }
@@ -122,18 +148,25 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                 return (
                   <div
                     key={entry.id}
-                    className="flex items-center justify-between gap-3 rounded-md border border-black/[0.075] bg-white/68 px-3 py-2 text-[11px] text-slate-700 dark:border-white/[0.075] dark:bg-white/[0.022] dark:text-slate-300"
+                    className="space-y-1.5 rounded-md border border-black/[0.075] bg-white/68 px-3 py-2 dark:border-white/[0.075] dark:bg-white/[0.022]"
                   >
-                    <span className="truncate font-mono text-[11px] text-slate-700 dark:text-slate-300">
-                      {entry.path ?? entry.text}
-                    </span>
-                    <div className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
-                      {typeof entry.added === "number" ? (
-                        <span className="text-[#3b82f6]">+{entry.added}</span>
-                      ) : null}
-                      {typeof entry.removed === "number" ? (
-                        <span className="text-[#ef4444]">-{entry.removed}</span>
-                      ) : null}
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
+                      {getEntryLabel(entry.kind)}
+                    </div>
+                    <div className="flex items-center justify-between gap-3 text-[11px] text-slate-700 dark:text-slate-300">
+                      <span className="truncate font-mono text-[11px] text-slate-700 dark:text-slate-300">
+                        {entry.path ?? entry.text}
+                      </span>
+                      <div className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
+                        {typeof entry.added === "number" ? (
+                          <span className="text-[#3b82f6]">+{entry.added}</span>
+                        ) : null}
+                        {typeof entry.removed === "number" ? (
+                          <span className="text-[#ef4444]">
+                            -{entry.removed}
+                          </span>
+                        ) : null}
+                      </div>
                     </div>
                   </div>
                 );
@@ -141,11 +174,13 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
 
               if (entry.kind === "thought") {
                 return (
-                  <div
-                    key={entry.id}
-                    className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500"
-                  >
-                    {entry.text}
+                  <div key={entry.id} className="space-y-1">
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+                      {getEntryLabel(entry.kind)}
+                    </div>
+                    <div className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
+                      {entry.text}
+                    </div>
                   </div>
                 );
               }
@@ -157,6 +192,13 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
 
               return (
                 <div key={entry.id} className="space-y-1.5">
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+                    <span>{getEntryLabel(entry.kind)}</span>
+                    <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+                    <span className="truncate">
+                      {activeNode?.type ?? "Agent"}
+                    </span>
+                  </div>
                   <div className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-500">
                     {entry.text}
                   </div>
