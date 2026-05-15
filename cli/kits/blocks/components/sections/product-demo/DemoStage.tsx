@@ -271,14 +271,12 @@ export function DemoStage({
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
       className={cn(
-        "relative isolate min-h-[36rem] w-full overflow-hidden rounded-none border-0 bg-[#faf9f4] shadow-none dark:bg-[#050505] lg:min-h-[44rem]",
+        "relative isolate min-h-[36rem] w-full overflow-visible rounded-none border-0 bg-transparent shadow-none lg:min-h-[44rem]",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-[#faf9f4] dark:bg-[#050505]" />
-
-      <div className="relative z-10 flex h-[36rem] min-h-[36rem] flex-col gap-3 p-4 sm:p-4 lg:h-[44rem] lg:min-h-[44rem] lg:p-5">
+      <div className="relative z-10 flex h-[36rem] min-h-[36rem] flex-col gap-0 lg:h-[44rem] lg:min-h-[44rem]">
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
             if (getWindowShellClass(windowData.key) === "hidden") {
@@ -306,10 +304,10 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:flex lg:h-full lg:min-h-0 lg:flex-col">
-          <div className="flex h-[3.25rem] items-center justify-between border border-black/10 border-b-0 bg-[#faf9f4] px-4 py-2.5 dark:border-white/8 dark:bg-[#050505] sm:px-5">
+        <div className="hidden overflow-hidden rounded-[0.45rem] border border-black/[0.07] bg-[#faf9f4] shadow-[0_34px_90px_-40px_rgba(15,23,42,0.32)] dark:border-white/[0.07] dark:bg-[#050505] dark:shadow-[0_36px_110px_-48px_rgba(0,0,0,0.82)] lg:flex lg:h-full lg:min-h-0 lg:flex-col">
+          <div className="flex h-[3.25rem] items-center justify-between border-b border-black/[0.07] bg-[#faf9f4] px-4 py-2.5 dark:border-white/[0.07] dark:bg-[#050505] sm:px-5">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md border border-black/10 bg-white text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] dark:border-white/10 dark:bg-white/[0.06] dark:text-white/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-[0.4rem] border border-black/[0.07] bg-white text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] dark:border-white/[0.07] dark:bg-white/[0.06] dark:text-white/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                 <span className="grid grid-cols-2 gap-[2px]">
                   <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-900 dark:bg-white/90" />
                   <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-500 dark:bg-white/55" />
@@ -327,14 +325,14 @@ export function DemoStage({
               </div>
             </div>
             <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/42">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-white px-2.5 py-1 text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/58">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.07] bg-white px-2.5 py-1 text-slate-600 dark:border-white/[0.07] dark:bg-white/[0.04] dark:text-white/58">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 Active
               </span>
             </div>
           </div>
 
-          <div className="grid min-h-0 flex-1 lg:grid-cols-10 lg:gap-0 lg:pb-5">
+          <div className="grid min-h-0 flex-1 lg:grid-cols-10 lg:gap-0">
             {windows.map((windowData) => {
               const shellClass = getWindowShellClass(windowData.key);
 
@@ -371,13 +369,13 @@ export function DemoStage({
                     showResizeHandle={false}
                     showHeader={false}
                     className={cn(
-                      "h-full min-h-0 border border-black/10 bg-[#faf9f4] shadow-none dark:border-white/8 dark:bg-[#050505]",
+                      "h-full min-h-0 border border-black/[0.07] bg-[#faf9f4] shadow-none dark:border-white/[0.07] dark:bg-[#050505]",
                       windowData.key === "taskList" &&
                         "rounded-none border-r-0",
                       windowData.key === "workflowStudio" &&
                         "rounded-none border-l-0 border-r-0",
                       windowData.key === "runConsole" &&
-                        "rounded-none border-l-0",
+                        "rounded-none border-l-0 border-r-0 border-t-0",
                     )}
                     bodyClassName="px-0 py-0 sm:px-0 sm:py-0"
                   >
