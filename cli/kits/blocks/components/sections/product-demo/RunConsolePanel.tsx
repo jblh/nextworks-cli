@@ -15,7 +15,6 @@ function getProgressPercent(value: number | undefined) {
 }
 
 export function RunConsolePanel({ state }: RunConsolePanelProps) {
-  const progressPercent = getProgressPercent(state.progressPercent);
   const playbackMs = state.playbackMs ?? 1800;
   const [activeIndex, setActiveIndex] = React.useState(
     Math.max(
@@ -113,11 +112,11 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
   const visibleCode = activeCode.slice(0, visibleLineCount);
 
   return (
-    <div className="flex h-full flex-col text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:text-white/95">
-      <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/10 bg-[#f6f6f3] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-[#0b0b0b] dark:shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
+    <div className="flex h-full min-h-0 flex-col text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:text-white/95">
+      <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/10 bg-[#fcfbf7] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.1)] dark:border-white/10 dark:bg-[#0b0b0b] dark:shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f6f6f3] dark:bg-[#0b0b0b]">
-            <div className="border-r border-black/8 bg-black/[0.018] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400 dark:border-white/8 dark:bg-white/[0.02] dark:text-slate-600">
+          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#fcfbf7] dark:bg-[#0b0b0b]">
+            <div className="border-r border-black/8 bg-[#f2f0ea] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400 dark:border-white/8 dark:bg-white/[0.02] dark:text-slate-600">
               {visibleCode.map((line, index) => {
                 const isAdded = line.trimStart().startsWith("+");
                 const isRemoved = line.trimStart().startsWith("-");
@@ -190,11 +189,11 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
         </div>
 
         {state.metrics?.length ? (
-          <div className="hidden w-[6.75rem] shrink-0 border-l border-black/8 bg-black/[0.02] p-2 lg:flex lg:flex-col lg:gap-2 dark:border-white/8 dark:bg-white/[0.02]">
+          <div className="hidden w-[6.75rem] shrink-0 border-l border-black/8 bg-[#f4f2ec] p-2 lg:flex lg:flex-col lg:gap-2 dark:border-white/8 dark:bg-white/[0.02]">
             {state.metrics.map((metric) => (
               <div
                 key={metric.id}
-                className="rounded-md border border-black/8 bg-white/65 px-2 py-2 text-center dark:border-white/8 dark:bg-white/[0.03]"
+                className="rounded-md border border-black/8 bg-white px-2 py-2 text-center dark:border-white/8 dark:bg-white/[0.03]"
               >
                 <div className="text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
                   {metric.label}

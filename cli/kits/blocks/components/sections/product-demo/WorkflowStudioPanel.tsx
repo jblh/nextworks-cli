@@ -32,7 +32,6 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   const activeIndex = state.nodes.findIndex(
     (node) => node.id === state.activeNodeId || node.active,
   );
-  const activeStep = activeIndex >= 0 ? activeIndex + 1 : undefined;
   const activeNode = activeIndex >= 0 ? state.nodes[activeIndex] : undefined;
   const transcript = (state.transcript ?? []).map(normalizeEntry);
   const composer = state.composer;
@@ -72,8 +71,8 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   const isRunning = visibleCount < transcript.length;
 
   return (
-    <div className="flex h-full flex-col overflow-hidden bg-[#f5f5f2] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
-      <div className="flex-1 overflow-auto px-4 py-4">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#f7f6f1] text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
+      <div className="min-h-0 flex-1 overflow-auto px-4 py-4">
         <div className="space-y-3.5">
           {visibleTranscript.map((entry, index) => {
             if (entry.kind === "title") {
@@ -83,7 +82,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                     {entry.text}
                   </div>
                   {activeNode?.description ? (
-                    <div className="rounded-lg border border-black/10 bg-black/[0.03] px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.08)] dark:border-white/8 dark:bg-white/[0.035] dark:text-slate-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                    <div className="rounded-lg border border-black/10 bg-white/88 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.06)] dark:border-white/8 dark:bg-white/[0.035] dark:text-slate-200 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
                       {activeNode.description}
                     </div>
                   ) : null}
@@ -95,7 +94,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
               return (
                 <div
                   key={entry.id}
-                  className="rounded-lg border border-black/10 bg-black/[0.03] px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 dark:border-white/8 dark:bg-white/[0.03] dark:text-slate-300"
+                  className="rounded-lg border border-black/10 bg-white/88 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 dark:border-white/8 dark:bg-white/[0.03] dark:text-slate-300"
                 >
                   {entry.text}
                 </div>
@@ -117,7 +116,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
               return (
                 <div
                   key={entry.id}
-                  className="flex items-center justify-between gap-3 rounded-md border border-black/10 bg-black/[0.025] px-3 py-2 text-[11px] text-slate-700 dark:border-white/7 dark:bg-white/[0.025] dark:text-slate-300"
+                  className="flex items-center justify-between gap-3 rounded-md border border-black/10 bg-white/76 px-3 py-2 text-[11px] text-slate-700 dark:border-white/7 dark:bg-white/[0.025] dark:text-slate-300"
                 >
                   <span className="truncate font-mono text-[11px] text-slate-700 dark:text-slate-300">
                     {entry.path ?? entry.text}
@@ -173,20 +172,20 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
       </div>
 
       {composer ? (
-        <div className="border-t border-black/8 px-4 py-3 dark:border-white/8">
-          <div className="rounded-lg border border-black/10 bg-white/80 px-3 py-3 shadow-[0_10px_30px_-22px_rgba(15,23,42,0.1)] dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+        <div className="border-t border-black/8 bg-[#f3f2ec] px-4 py-3 dark:border-white/8 dark:bg-[#090909]">
+          <div className="rounded-lg border border-black/10 bg-white px-3 py-3 shadow-[0_10px_30px_-22px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
             <div className="text-[11px] text-slate-500 dark:text-slate-500">
               {composer.placeholder ??
                 "Ask the agent to inspect, search, or build..."}
             </div>
             <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500 dark:text-slate-400">
-              <span className="rounded-full border border-black/10 bg-black/[0.035] px-2.5 py-1 text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
+              <span className="rounded-full border border-black/10 bg-[#f6f5ef] px-2.5 py-1 text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
                 {composer.modeLabel ?? "Agent"}
               </span>
-              <span className="rounded-full border border-black/10 bg-black/[0.035] px-2.5 py-1 text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
+              <span className="rounded-full border border-black/10 bg-[#f6f5ef] px-2.5 py-1 text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
                 {composer.modelLabel ?? "Model 2"}
               </span>
-              <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full border border-black/10 bg-black/[0.035] text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
+              <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full border border-black/10 bg-[#f6f5ef] text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
                 ?
               </span>
             </div>
