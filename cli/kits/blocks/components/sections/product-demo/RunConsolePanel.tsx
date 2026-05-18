@@ -8,6 +8,9 @@ export interface RunConsolePanelProps {
 
 export function RunConsolePanel({ state }: RunConsolePanelProps) {
   const playbackMs = state.playbackMs ?? 1800;
+  const playbackStepEntryIndices = state.playbackStepEntryIndices ?? [];
+  const playbackStepVisibleLineCounts =
+    state.playbackStepVisibleLineCounts ?? [];
   const [activeIndex, setActiveIndex] = React.useState(
     Math.max(
       0,
@@ -23,8 +26,14 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     );
 
     if (typeof state.playbackStep === "number") {
+      const mappedIndex = playbackStepEntryIndices[state.playbackStep - 1];
       const syncedIndex = Math.min(
-        Math.max(state.playbackStep - 2, 0),
+        Math.max(
+          typeof mappedIndex === "number"
+            ? mappedIndex
+            : state.playbackStep - 2,
+          0,
+        ),
         Math.max(state.entries.length - 1, 0),
       );
       setActiveIndex(syncedIndex);
@@ -44,6 +53,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     return () => window.clearInterval(interval);
   }, [
     playbackMs,
+    playbackStepEntryIndices,
     state.activeEntryId,
     state.entries,
     state.title,
@@ -67,10 +77,17 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
 
   React.useEffect(() => {
     if (typeof state.playbackStep === "number") {
+      const mappedVisibleCount =
+        playbackStepVisibleLineCounts[state.playbackStep - 1];
       const revealFromStep = Math.max(state.playbackStep - 1, 1);
       const syncedVisibleCount = Math.min(
         activeCode.length || 1,
-        Math.max(1, revealFromStep * 2),
+        Math.max(
+          1,
+          typeof mappedVisibleCount === "number"
+            ? mappedVisibleCount
+            : revealFromStep * 2,
+        ),
       );
       setVisibleLineCount(syncedVisibleCount);
       return;
@@ -99,7 +116,13 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     );
 
     return () => window.clearInterval(interval);
-  }, [activeCode, playbackMs, activeEntry?.id, state.playbackStep]);
+  }, [
+    activeCode,
+    playbackMs,
+    playbackStepVisibleLineCounts,
+    activeEntry?.id,
+    state.playbackStep,
+  ]);
 
   const visibleCode = activeCode.slice(0, visibleLineCount);
 

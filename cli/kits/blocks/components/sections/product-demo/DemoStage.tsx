@@ -105,6 +105,79 @@ function useActiveScenario({
   };
 }
 
+type PlaybackTimelineConfig = {
+  stepCount: number;
+  playbackMs?: number;
+  playbackStepDurationsMs?: number[];
+  playbackResetDelayMs?: number;
+  scenarioKey: string;
+};
+
+function useDeterministicPlaybackStep({
+  stepCount,
+  playbackMs,
+  playbackStepDurationsMs,
+  playbackResetDelayMs,
+  scenarioKey,
+}: PlaybackTimelineConfig) {
+  const basePlaybackMs = playbackMs ?? 1800;
+  const stepDurations = playbackStepDurationsMs ?? [];
+  const resetDelayMs =
+    playbackResetDelayMs ?? Math.max(basePlaybackMs + 240, 1600);
+  const [playbackStep, setPlaybackStep] = React.useState(1);
+
+  React.useEffect(() => {
+    const initialStep = Math.max(1, Math.min(2, stepCount));
+    setPlaybackStep(initialStep);
+
+    if (stepCount <= 2) {
+      return;
+    }
+
+    let timeoutId = 0;
+    let cancelled = false;
+
+    const scheduleStep = (step: number) => {
+      const delay = Math.max(260, stepDurations[step - 3] ?? basePlaybackMs);
+
+      timeoutId = window.setTimeout(() => {
+        if (cancelled) {
+          return;
+        }
+
+        setPlaybackStep(step);
+
+        if (step >= stepCount) {
+          timeoutId = window.setTimeout(
+            () => {
+              if (cancelled) {
+                return;
+              }
+
+              setPlaybackStep(initialStep);
+              scheduleStep(initialStep + 1);
+            },
+            Math.max(600, resetDelayMs),
+          );
+
+          return;
+        }
+
+        scheduleStep(step + 1);
+      }, delay);
+    };
+
+    scheduleStep(initialStep + 1);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [basePlaybackMs, stepCount, resetDelayMs, stepDurations, scenarioKey]);
+
+  return playbackStep;
+}
+
 function HighlightPills({
   highlights,
 }: {
@@ -214,42 +287,40 @@ export function DemoStage({
     );
   }
 
-  const workflowPlaybackMs = activeScenario.workflowStudio.playbackMs ?? 1800;
-  const transcriptLength = Math.max(
-    1,
-    activeScenario.workflowStudio.transcript?.length ?? 1,
-  );
-  const [playbackStep, setPlaybackStep] = React.useState(1);
+  const workflowPlaybackStep = useDeterministicPlaybackStep({
+    stepCount: Math.max(
+      1,
+      activeScenario.workflowStudio.transcript?.length ?? 1,
+    ),
+    playbackMs: activeScenario.workflowStudio.playbackMs,
+    playbackStepDurationsMs:
+      activeScenario.workflowStudio.playbackStepDurationsMs,
+    playbackResetDelayMs: activeScenario.workflowStudio.playbackResetDelayMs,
+    scenarioKey: `${activeScenario.key}-workflowStudio`,
+  });
 
-  React.useEffect(() => {
-    setPlaybackStep(Math.max(1, Math.min(2, transcriptLength)));
-
-    if (transcriptLength <= 2) {
-      return;
-    }
-
-    const interval = window.setInterval(() => {
-      setPlaybackStep((current) => {
-        if (current >= transcriptLength) {
-          return 2;
-        }
-
-        return current + 1;
-      });
-    }, workflowPlaybackMs);
-
-    return () => window.clearInterval(interval);
-  }, [workflowPlaybackMs, transcriptLength, activeScenario.key]);
+  const runConsolePlaybackStep = useDeterministicPlaybackStep({
+    stepCount: Math.max(
+      1,
+      activeScenario.runConsole.playbackStepEntryIndices?.length ?? 0,
+      activeScenario.runConsole.playbackStepVisibleLineCounts?.length ?? 0,
+      activeScenario.runConsole.entries.length,
+    ),
+    playbackMs: activeScenario.runConsole.playbackMs,
+    playbackStepDurationsMs: activeScenario.runConsole.playbackStepDurationsMs,
+    playbackResetDelayMs: activeScenario.runConsole.playbackResetDelayMs,
+    scenarioKey: `${activeScenario.key}-runConsole`,
+  });
 
   const scenarioWithPlayback: ProductDemoScenario = {
     ...activeScenario,
     workflowStudio: {
       ...activeScenario.workflowStudio,
-      playbackStep,
+      playbackStep: workflowPlaybackStep,
     },
     runConsole: {
       ...activeScenario.runConsole,
-      playbackStep,
+      playbackStep: runConsolePlaybackStep,
     },
   };
 

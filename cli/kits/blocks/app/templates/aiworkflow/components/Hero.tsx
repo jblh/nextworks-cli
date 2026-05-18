@@ -103,6 +103,8 @@ const scenarios: ProductDemoScenario[] = [
         modeLabel: "Agent",
         modelLabel: "Sonnet",
       },
+      playbackStepDurationsMs: [780, 860, 1480, 1120, 940, 760, 1720],
+      playbackResetDelayMs: 2200,
       highlights: [
         { id: "inspect-route", label: "Read files", tone: "info" },
         { id: "edit-callback", label: "Write patch", tone: "accent" },
@@ -221,6 +223,10 @@ const scenarios: ProductDemoScenario[] = [
         { id: "m3", label: "Checks", value: "1/2", tone: "warning" },
       ],
       highlights: [],
+      playbackStepDurationsMs: [1260, 1540, 980, 760, 680, 620, 1380],
+      playbackResetDelayMs: 2200,
+      playbackStepEntryIndices: [0, 0, 1, 1, 2, 2, 2, 2, 3],
+      playbackStepVisibleLineCounts: [2, 2, 3, 4, 6, 9, 12, 15, 16],
     },
     approvalInbox: {
       window: {
@@ -361,6 +367,8 @@ const scenarios: ProductDemoScenario[] = [
         modeLabel: "Agent",
         modelLabel: "Sonnet",
       },
+      playbackStepDurationsMs: [820, 920, 1380, 1180, 980, 840, 1640],
+      playbackResetDelayMs: 2200,
       highlights: [
         { id: "scan-page", label: "Find repetition", tone: "info" },
         { id: "create-blocks", label: "Extract components", tone: "accent" },
@@ -470,6 +478,10 @@ const scenarios: ProductDemoScenario[] = [
         { id: "pm3", label: "Dupes", value: "-38%", tone: "success" },
       ],
       highlights: [],
+      playbackStepDurationsMs: [1320, 1480, 920, 760, 700, 660, 1320],
+      playbackResetDelayMs: 2200,
+      playbackStepEntryIndices: [0, 0, 1, 1, 2, 2, 2, 3, 3],
+      playbackStepVisibleLineCounts: [2, 2, 3, 4, 5, 7, 9, 11, 11],
     },
     approvalInbox: {
       window: {
@@ -610,6 +622,8 @@ const scenarios: ProductDemoScenario[] = [
         modeLabel: "Agent",
         modelLabel: "Sonnet",
       },
+      playbackStepDurationsMs: [760, 900, 1320, 1160, 920, 820, 1560],
+      playbackResetDelayMs: 2200,
       highlights: [
         { id: "inspect-layout", label: "Inspect layout", tone: "info" },
         { id: "wire-shortcuts", label: "Add shortcuts", tone: "accent" },
@@ -724,6 +738,10 @@ const scenarios: ProductDemoScenario[] = [
         { id: "cm3", label: "Shortcut", value: "Cmd+K", tone: "success" },
       ],
       highlights: [],
+      playbackStepDurationsMs: [1180, 1420, 940, 780, 700, 660, 1280],
+      playbackResetDelayMs: 2200,
+      playbackStepEntryIndices: [0, 0, 1, 1, 2, 2, 2, 3, 3],
+      playbackStepVisibleLineCounts: [2, 2, 3, 4, 6, 8, 10, 12, 12],
     },
     approvalInbox: {
       window: {
