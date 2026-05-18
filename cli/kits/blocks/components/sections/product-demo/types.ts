@@ -121,6 +121,8 @@ export interface ProductDemoWorkflowStudioState {
   composer?: ProductDemoWorkflowComposerState;
   playbackMs?: number;
   playbackStep?: number;
+  playbackStepDurationsMs?: number[];
+  playbackResetDelayMs?: number;
 }
 
 export interface ProductDemoRunConsoleEntry {
@@ -158,6 +160,10 @@ export interface ProductDemoRunConsoleState {
   highlights?: ProductDemoHighlightTarget[];
   playbackMs?: number;
   playbackStep?: number;
+  playbackStepDurationsMs?: number[];
+  playbackResetDelayMs?: number;
+  playbackStepEntryIndices?: number[];
+  playbackStepVisibleLineCounts?: number[];
 }
 
 export interface ProductDemoApprovalAction {
