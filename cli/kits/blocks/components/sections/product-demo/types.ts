@@ -107,6 +107,24 @@ export interface ProductDemoWorkflowComposerState {
   modelLabel?: string;
 }
 
+export interface ProductDemoPlaybackTimeline {
+  playbackMs?: number;
+  playbackStepDurationsMs?: number[];
+  playbackResetDelayMs?: number;
+}
+
+export interface ProductDemoWorkflowPlaybackConfig extends ProductDemoPlaybackTimeline {}
+
+export interface ProductDemoRunConsolePlaybackConfig extends ProductDemoPlaybackTimeline {
+  playbackStepEntryIndices?: number[];
+  playbackStepVisibleLineCounts?: number[];
+}
+
+export interface ProductDemoScenarioPlayback {
+  workflowStudio?: ProductDemoWorkflowPlaybackConfig;
+  runConsole?: ProductDemoRunConsolePlaybackConfig;
+}
+
 export interface ProductDemoWorkflowStudioState {
   window: ProductDemoWindowMeta;
   title?: string;
@@ -238,6 +256,7 @@ export interface ProductDemoScenario {
   runConsole: ProductDemoRunConsoleState;
   approvalInbox: ProductDemoApprovalInboxState;
   knowledgePanel: ProductDemoKnowledgePanelState;
+  playback?: ProductDemoScenarioPlayback;
   activeWindow?: ProductDemoWindowKey;
   highlights?: ProductDemoHighlightTarget[];
 }

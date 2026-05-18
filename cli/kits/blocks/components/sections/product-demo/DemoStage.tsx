@@ -11,9 +11,11 @@ import { WorkflowStudioPanel } from "./WorkflowStudioPanel";
 import type {
   ProductDemoHighlightTarget,
   ProductDemoHighlightTone,
+  ProductDemoRunConsolePlaybackConfig,
   ProductDemoScenario,
   ProductDemoWindowKey,
   ProductDemoWindowMeta,
+  ProductDemoWorkflowPlaybackConfig,
 } from "./types";
 
 export interface DemoStageProps {
@@ -112,6 +114,44 @@ type PlaybackTimelineConfig = {
   playbackResetDelayMs?: number;
   scenarioKey: string;
 };
+
+function getWorkflowPlaybackConfig(
+  scenario: ProductDemoScenario,
+): ProductDemoWorkflowPlaybackConfig {
+  return {
+    playbackMs:
+      scenario.playback?.workflowStudio?.playbackMs ??
+      scenario.workflowStudio.playbackMs,
+    playbackStepDurationsMs:
+      scenario.playback?.workflowStudio?.playbackStepDurationsMs ??
+      scenario.workflowStudio.playbackStepDurationsMs,
+    playbackResetDelayMs:
+      scenario.playback?.workflowStudio?.playbackResetDelayMs ??
+      scenario.workflowStudio.playbackResetDelayMs,
+  };
+}
+
+function getRunConsolePlaybackConfig(
+  scenario: ProductDemoScenario,
+): ProductDemoRunConsolePlaybackConfig {
+  return {
+    playbackMs:
+      scenario.playback?.runConsole?.playbackMs ??
+      scenario.runConsole.playbackMs,
+    playbackStepDurationsMs:
+      scenario.playback?.runConsole?.playbackStepDurationsMs ??
+      scenario.runConsole.playbackStepDurationsMs,
+    playbackResetDelayMs:
+      scenario.playback?.runConsole?.playbackResetDelayMs ??
+      scenario.runConsole.playbackResetDelayMs,
+    playbackStepEntryIndices:
+      scenario.playback?.runConsole?.playbackStepEntryIndices ??
+      scenario.runConsole.playbackStepEntryIndices,
+    playbackStepVisibleLineCounts:
+      scenario.playback?.runConsole?.playbackStepVisibleLineCounts ??
+      scenario.runConsole.playbackStepVisibleLineCounts,
+  };
+}
 
 function useDeterministicPlaybackStep({
   stepCount,
@@ -287,28 +327,30 @@ export function DemoStage({
     );
   }
 
+  const workflowPlayback = getWorkflowPlaybackConfig(activeScenario);
+  const runConsolePlayback = getRunConsolePlaybackConfig(activeScenario);
+
   const workflowPlaybackStep = useDeterministicPlaybackStep({
     stepCount: Math.max(
       1,
       activeScenario.workflowStudio.transcript?.length ?? 1,
     ),
-    playbackMs: activeScenario.workflowStudio.playbackMs,
-    playbackStepDurationsMs:
-      activeScenario.workflowStudio.playbackStepDurationsMs,
-    playbackResetDelayMs: activeScenario.workflowStudio.playbackResetDelayMs,
+    playbackMs: workflowPlayback.playbackMs,
+    playbackStepDurationsMs: workflowPlayback.playbackStepDurationsMs,
+    playbackResetDelayMs: workflowPlayback.playbackResetDelayMs,
     scenarioKey: `${activeScenario.key}-workflowStudio`,
   });
 
   const runConsolePlaybackStep = useDeterministicPlaybackStep({
     stepCount: Math.max(
       1,
-      activeScenario.runConsole.playbackStepEntryIndices?.length ?? 0,
-      activeScenario.runConsole.playbackStepVisibleLineCounts?.length ?? 0,
+      runConsolePlayback.playbackStepEntryIndices?.length ?? 0,
+      runConsolePlayback.playbackStepVisibleLineCounts?.length ?? 0,
       activeScenario.runConsole.entries.length,
     ),
-    playbackMs: activeScenario.runConsole.playbackMs,
-    playbackStepDurationsMs: activeScenario.runConsole.playbackStepDurationsMs,
-    playbackResetDelayMs: activeScenario.runConsole.playbackResetDelayMs,
+    playbackMs: runConsolePlayback.playbackMs,
+    playbackStepDurationsMs: runConsolePlayback.playbackStepDurationsMs,
+    playbackResetDelayMs: runConsolePlayback.playbackResetDelayMs,
     scenarioKey: `${activeScenario.key}-runConsole`,
   });
 
@@ -316,10 +358,12 @@ export function DemoStage({
     ...activeScenario,
     workflowStudio: {
       ...activeScenario.workflowStudio,
+      ...workflowPlayback,
       playbackStep: workflowPlaybackStep,
     },
     runConsole: {
       ...activeScenario.runConsole,
+      ...runConsolePlayback,
       playbackStep: runConsolePlaybackStep,
     },
   };
