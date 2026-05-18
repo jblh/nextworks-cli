@@ -342,12 +342,12 @@ export function DemoStage({
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
       className={cn(
-        "relative isolate min-h-[36rem] w-full overflow-visible rounded-none border-0 bg-transparent shadow-none lg:min-h-[44rem]",
+        "relative isolate min-h-[36rem] w-full overflow-visible rounded-none border-0 bg-transparent shadow-none lg:h-full lg:min-h-0",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="relative z-10 flex h-[36rem] min-h-[36rem] flex-col gap-0 lg:h-[44rem] lg:min-h-[44rem]">
+      <div className="relative z-10 flex h-[36rem] min-h-[36rem] flex-col gap-0 lg:h-full lg:min-h-0">
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
             if (getWindowShellClass(windowData.key) === "hidden") {
