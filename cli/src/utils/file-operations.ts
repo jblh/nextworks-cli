@@ -597,10 +597,12 @@ const poppins = Poppins({
 
       // Try string literal style: className="..."
       if (attrs.includes('className="')) {
-        return match.replace(
-          /className="([^"]*)"/,
-          (_m, existing) => `className="${existing} ${fontExpr}"`,
-        );
+        return match.replace(/className="([^"]*)"/, (_m, existing) => {
+          const merged = `${existing} ${fontExpr}`;
+          return merged.includes("${")
+            ? `className={\`${merged}\`}`
+            : `className="${merged}"`;
+        });
       }
 
       // Unknown className shape; leave it unchanged.
