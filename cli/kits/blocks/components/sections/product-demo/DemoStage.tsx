@@ -419,10 +419,10 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden overflow-hidden rounded-[0.4rem] border border-black/[0.055] bg-[#f7f7f3] shadow-[0_24px_80px_-44px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.018] dark:border-white/[0.07] dark:bg-[#050505] dark:shadow-[0_30px_100px_-52px_rgba(0,0,0,0.82)] dark:ring-white/[0.03] lg:flex lg:h-full lg:min-h-0 lg:flex-col">
-          <div className="relative flex h-[3.2rem] items-center justify-between border-b border-black/[0.055] bg-[#f4f4f1] px-4 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.62)] dark:border-white/[0.065] dark:bg-[#060606] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:px-5">
+        <div className="hidden overflow-hidden rounded-[0.4rem] border border-black/[0.055] bg-[#f9fbfe] shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] ring-1 ring-black/[0.018] dark:border-white/[0.07] dark:bg-[#050505] dark:shadow-[0_30px_100px_-52px_rgba(0,0,0,0.82)] dark:ring-white/[0.03] lg:flex lg:h-full lg:min-h-0 lg:flex-col">
+          <div className="relative flex h-[3.2rem] items-center justify-between border-b border-black/[0.055] bg-[#eef3f8] px-4 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] dark:border-white/[0.065] dark:bg-[#060606] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:px-5">
             <div className="flex min-w-0 items-center gap-3.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-[0.4rem] border border-black/[0.065] bg-[#fbfbf9] text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.62)] dark:border-white/[0.07] dark:bg-white/[0.06] dark:text-white/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-[0.4rem] border border-black/[0.065] bg-[#ffffff] text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] dark:border-white/[0.07] dark:bg-white/[0.06] dark:text-white/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                 <span className="grid grid-cols-2 gap-[2px]">
                   <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-900 dark:bg-white/90" />
                   <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-500 dark:bg-white/55" />
@@ -451,7 +451,7 @@ export function DemoStage({
                   apps/web
                 </span>
               </div>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.055] bg-white/76 px-2.5 py-1 text-slate-600 dark:border-white/[0.07] dark:bg-white/[0.04] dark:text-white/58">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.055] bg-white/82 px-2.5 py-1 text-slate-600 dark:border-white/[0.07] dark:bg-white/[0.04] dark:text-white/58">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 Active
               </span>
