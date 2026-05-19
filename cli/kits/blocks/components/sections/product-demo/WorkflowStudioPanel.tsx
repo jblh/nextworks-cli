@@ -8,7 +8,9 @@ import type {
 function useAnimatedPatchCount(target: number | undefined, visible: boolean) {
   const safeTarget =
     typeof target === "number" ? Math.max(target, 0) : undefined;
-  const [displayValue, setDisplayValue] = React.useState(safeTarget ?? 0);
+  const [displayValue, setDisplayValue] = React.useState(() =>
+    typeof safeTarget === "number" ? 1 : 0,
+  );
 
   React.useEffect(() => {
     if (typeof safeTarget !== "number") {
@@ -337,6 +339,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
 
                 return (
                   <div key={entry.id} className="space-y-1.5">
+                    {/*
                     <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-slate-400/90 dark:text-slate-500/90">
                       <span>{getEntryLabel(entry.kind)}</span>
                       <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
@@ -344,6 +347,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                         {activeNode?.type ?? "Agent"}
                       </span>
                     </div>
+                    */}
                     <div className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-500">
                       {entry.text}
                     </div>
