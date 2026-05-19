@@ -1,5 +1,4 @@
 import React from "react";
-import { cn } from "@/lib/utils";
 import type {
   ProductDemoWorkflowStudioState,
   ProductDemoWorkflowTranscriptEntry,
@@ -82,6 +81,10 @@ export interface WorkflowStudioPanelProps {
   state: ProductDemoWorkflowStudioState;
 }
 
+type SessionEntry = ProductDemoWorkflowTranscriptEntry & {
+  origin?: "user" | "system";
+};
+
 function normalizeEntry(
   entry: string | ProductDemoWorkflowTranscriptEntry,
   index: number,
@@ -144,6 +147,80 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
     scrollHeight: 1,
     clientHeight: 1,
   });
+  const [composerValue, setComposerValue] = React.useState("");
+  const [localEntries, setLocalEntries] = React.useState<SessionEntry[]>([]);
+  const submissionSeqRef = React.useRef(0);
+  const pendingTimeoutsRef = React.useRef<number[]>([]);
+
+  React.useEffect(() => {
+    setComposerValue("");
+    setLocalEntries([]);
+    submissionSeqRef.current = 0;
+
+    pendingTimeoutsRef.current.forEach((timeoutId) => {
+      window.clearTimeout(timeoutId);
+    });
+    pendingTimeoutsRef.current = [];
+  }, [state.title, state.subtitle, state.activeNodeId, state.window.key]);
+
+  React.useEffect(() => {
+    return () => {
+      pendingTimeoutsRef.current.forEach((timeoutId) => {
+        window.clearTimeout(timeoutId);
+      });
+      pendingTimeoutsRef.current = [];
+    };
+  }, []);
+
+  const scrollToBottom = React.useCallback(() => {
+    const viewport = scrollViewportRef.current;
+
+    if (!viewport) {
+      return;
+    }
+
+    viewport.scrollTop = viewport.scrollHeight;
+  }, []);
+
+  const handleComposerSubmit = React.useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      const trimmedValue = composerValue.trim();
+
+      if (!trimmedValue) {
+        return;
+      }
+
+      const submissionIndex = submissionSeqRef.current + 1;
+      submissionSeqRef.current = submissionIndex;
+
+      const promptEntry: SessionEntry = {
+        id: `local-prompt-${submissionIndex}`,
+        kind: "prompt",
+        text: trimmedValue,
+        origin: "user",
+      };
+      const responseEntry: SessionEntry = {
+        id: `local-response-${submissionIndex}`,
+        kind: "message",
+        text: "Demo mode · input captured locally. The scripted agent run continues.",
+        origin: "system",
+      };
+
+      setLocalEntries((currentEntries) => [...currentEntries, promptEntry]);
+      setComposerValue("");
+      window.requestAnimationFrame(scrollToBottom);
+
+      const timeoutId = window.setTimeout(() => {
+        setLocalEntries((currentEntries) => [...currentEntries, responseEntry]);
+        window.requestAnimationFrame(scrollToBottom);
+      }, 680);
+
+      pendingTimeoutsRef.current.push(timeoutId);
+    },
+    [composerValue, scrollToBottom],
+  );
 
   React.useEffect(() => {
     if (typeof state.playbackStep === "number") {
@@ -213,7 +290,9 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   }, [visibleCount, transcript.length]);
 
   const visibleTranscript = transcript.slice(0, visibleCount);
+  const sessionEntries = [...visibleTranscript, ...localEntries];
   const isRunning = visibleCount < transcript.length;
+
   const hasOverflow =
     scrollMetrics.scrollHeight > scrollMetrics.clientHeight + 1;
   const thumbHeight = hasOverflow
@@ -338,6 +417,171 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
     [],
   );
 
+  const renderSessionEntry = (
+    entry: SessionEntry,
+    index: number,
+    isLocalEntry = false,
+  ) => {
+    if (entry.kind === "title") {
+      return (
+        <div key={entry.id} className="space-y-2.5">
+          <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+            <span>{getEntryLabel(entry.kind)}</span>
+            <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+            <span>{entry.text}</span>
+          </div>
+          {activeNode?.description ? (
+            <div className="rounded-lg border border-black/[0.07] bg-white/62 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-none dark:border-white/[0.08] dark:bg-white/[0.028] dark:text-slate-200 dark:shadow-none">
+              {activeNode.description}
+            </div>
+          ) : null}
+        </div>
+      );
+    }
+
+    if (entry.kind === "prompt" && isLocalEntry) {
+      return (
+        <div
+          key={entry.id}
+          className="space-y-1.5 rounded-lg border border-black/[0.085] bg-white/72 px-3 py-2.5 dark:border-white/[0.08] dark:bg-white/[0.032]"
+        >
+          <div className="flex items-center justify-between gap-3 text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+            <span>Prompt</span>
+            <span className="text-[8px] tracking-[0.18em] text-slate-400 dark:text-slate-500">
+              Captured locally
+            </span>
+          </div>
+          <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-200">
+            {entry.text}
+          </div>
+        </div>
+      );
+    }
+
+    if (entry.kind === "prompt") {
+      return (
+        <div
+          key={entry.id}
+          className="space-y-1.5 rounded-lg border border-black/[0.07] bg-white/62 px-3 py-2.5 dark:border-white/[0.08] dark:bg-white/[0.028]"
+        >
+          <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+            {getEntryLabel(entry.kind)}
+          </div>
+          <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-300">
+            {entry.text}
+          </div>
+        </div>
+      );
+    }
+
+    if (entry.kind === "message") {
+      return (
+        <div key={entry.id} className="max-w-[92%] space-y-1">
+          <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+            {getEntryLabel(entry.kind)}
+          </div>
+          <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-200">
+            {isLocalEntry ? (
+              <span className="inline-flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#3b82f6]" />
+                <span>{entry.text}</span>
+              </span>
+            ) : (
+              entry.text
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (entry.kind === "file") {
+      const isNewestVisibleFile =
+        entry.id ===
+        [...visibleTranscript]
+          .reverse()
+          .find((transcriptEntry) => transcriptEntry.kind === "file")?.id;
+
+      return (
+        <div
+          key={entry.id}
+          className="space-y-1.5 rounded-md border border-black/[0.07] bg-white/58 px-3 py-2 dark:border-white/[0.075] dark:bg-white/[0.022]"
+        >
+          <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+            {getEntryLabel(entry.kind)}
+          </div>
+          <div className="flex items-center justify-between gap-3 text-[11px] text-slate-700 dark:text-slate-300">
+            <span className="truncate font-mono text-[11px] text-slate-700 dark:text-slate-300">
+              {entry.path ?? entry.text}
+            </span>
+            <div className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
+              <PatchCount
+                prefix="+"
+                value={entry.added}
+                visible={isNewestVisibleFile}
+                className="text-[#3b82f6]"
+              />
+              <PatchCount
+                prefix="-"
+                value={entry.removed}
+                visible={isNewestVisibleFile}
+                className="text-[#ef4444]"
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (entry.kind === "thought") {
+      return (
+        <div key={entry.id} className="space-y-1">
+          <div className="text-[9px] uppercase tracking-[0.15em] text-slate-400/90 dark:text-slate-500/90">
+            {getEntryLabel(entry.kind)}
+          </div>
+          <div className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
+            {entry.text}
+          </div>
+        </div>
+      );
+    }
+
+    const isLastActivity =
+      !isLocalEntry &&
+      (index === visibleTranscript.length - 1 ||
+        (index < visibleTranscript.length - 1 &&
+          visibleTranscript[index + 1]?.kind === "file"));
+
+    return (
+      <div key={entry.id} className="space-y-1.5">
+        {/*
+        <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-slate-400/90 dark:text-slate-500/90">
+          <span>{getEntryLabel(entry.kind)}</span>
+          <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+          <span className="truncate">
+            {activeNode?.type ?? "Agent"}
+          </span>
+        </div>
+        */}
+        <div className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-500">
+          {entry.text}
+        </div>
+        {isLastActivity && activeNode?.metadata ? (
+          <div className="pt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-300">
+            {activeNode.metadata}
+          </div>
+        ) : null}
+        {isRunning &&
+        !isLocalEntry &&
+        index === visibleTranscript.length - 1 ? (
+          <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-400 dark:text-slate-500">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
+            Running
+          </div>
+        ) : null}
+      </div>
+    );
+  };
+
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#f4f5f1] text-slate-900 [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
       <div className="relative min-h-0 flex-1">
@@ -347,139 +591,13 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
         >
           <div className="flex min-h-full flex-col pr-1.5">
             <div className="space-y-3">
-              {visibleTranscript.map((entry, index) => {
-                if (entry.kind === "title") {
-                  return (
-                    <div key={entry.id} className="space-y-2.5">
-                      <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
-                        <span>{getEntryLabel(entry.kind)}</span>
-                        <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
-                        <span>{entry.text}</span>
-                      </div>
-                      {activeNode?.description ? (
-                        <div className="rounded-lg border border-black/[0.07] bg-white/62 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-none dark:border-white/[0.08] dark:bg-white/[0.028] dark:text-slate-200 dark:shadow-none">
-                          {activeNode.description}
-                        </div>
-                      ) : null}
-                    </div>
-                  );
-                }
-
-                if (entry.kind === "prompt") {
-                  return (
-                    <div
-                      key={entry.id}
-                      className="space-y-1.5 rounded-lg border border-black/[0.07] bg-white/62 px-3 py-2.5 dark:border-white/[0.08] dark:bg-white/[0.028]"
-                    >
-                      <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
-                        {getEntryLabel(entry.kind)}
-                      </div>
-                      <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-300">
-                        {entry.text}
-                      </div>
-                    </div>
-                  );
-                }
-
-                if (entry.kind === "message") {
-                  return (
-                    <div key={entry.id} className="max-w-[92%] space-y-1">
-                      <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
-                        {getEntryLabel(entry.kind)}
-                      </div>
-                      <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-200">
-                        {entry.text}
-                      </div>
-                    </div>
-                  );
-                }
-
-                if (entry.kind === "file") {
-                  const isNewestVisibleFile =
-                    entry.id ===
-                    [...visibleTranscript]
-                      .reverse()
-                      .find(
-                        (transcriptEntry) => transcriptEntry.kind === "file",
-                      )?.id;
-
-                  return (
-                    <div
-                      key={entry.id}
-                      className="space-y-1.5 rounded-md border border-black/[0.07] bg-white/58 px-3 py-2 dark:border-white/[0.075] dark:bg-white/[0.022]"
-                    >
-                      <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
-                        {getEntryLabel(entry.kind)}
-                      </div>
-                      <div className="flex items-center justify-between gap-3 text-[11px] text-slate-700 dark:text-slate-300">
-                        <span className="truncate font-mono text-[11px] text-slate-700 dark:text-slate-300">
-                          {entry.path ?? entry.text}
-                        </span>
-                        <div className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
-                          <PatchCount
-                            prefix="+"
-                            value={entry.added}
-                            visible={isNewestVisibleFile}
-                            className="text-[#3b82f6]"
-                          />
-                          <PatchCount
-                            prefix="-"
-                            value={entry.removed}
-                            visible={isNewestVisibleFile}
-                            className="text-[#ef4444]"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-
-                if (entry.kind === "thought") {
-                  return (
-                    <div key={entry.id} className="space-y-1">
-                      <div className="text-[9px] uppercase tracking-[0.15em] text-slate-400/90 dark:text-slate-500/90">
-                        {getEntryLabel(entry.kind)}
-                      </div>
-                      <div className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
-                        {entry.text}
-                      </div>
-                    </div>
-                  );
-                }
-
-                const isLastActivity =
-                  index === visibleTranscript.length - 1 ||
-                  (index < visibleTranscript.length - 1 &&
-                    visibleTranscript[index + 1]?.kind === "file");
-
-                return (
-                  <div key={entry.id} className="space-y-1.5">
-                    {/*
-                    <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-slate-400/90 dark:text-slate-500/90">
-                      <span>{getEntryLabel(entry.kind)}</span>
-                      <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
-                      <span className="truncate">
-                        {activeNode?.type ?? "Agent"}
-                      </span>
-                    </div>
-                    */}
-                    <div className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-500">
-                      {entry.text}
-                    </div>
-                    {isLastActivity && activeNode?.metadata ? (
-                      <div className="pt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-300">
-                        {activeNode.metadata}
-                      </div>
-                    ) : null}
-                    {isRunning && index === visibleTranscript.length - 1 ? (
-                      <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-400 dark:text-slate-500">
-                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
-                        Running
-                      </div>
-                    ) : null}
-                  </div>
-                );
-              })}
+              {sessionEntries.map((entry, index) =>
+                renderSessionEntry(
+                  entry,
+                  index,
+                  index >= visibleTranscript.length,
+                ),
+              )}
             </div>
 
             <div className="flex-1" />
@@ -510,11 +628,27 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
 
       {composer ? (
         <div className="border-t border-black/[0.055] bg-[#eef0eb] px-4 py-3 dark:border-white/[0.07] dark:bg-[#090909]">
-          <div className="rounded-lg border border-black/[0.07] bg-white/72 px-3 py-3 shadow-none dark:border-white/[0.08] dark:bg-white/[0.03] dark:shadow-none">
-            <div className="text-[11px] text-slate-500 dark:text-slate-500">
-              {composer.placeholder ??
-                "Ask the agent to inspect, search, or build..."}
-            </div>
+          <form
+            className="rounded-lg border border-black/[0.07] bg-white/72 px-3 py-3 shadow-none dark:border-white/[0.08] dark:bg-white/[0.03] dark:shadow-none"
+            onSubmit={handleComposerSubmit}
+          >
+            <label className="block text-[11px] text-slate-500 dark:text-slate-500">
+              <span className="sr-only">
+                {composer.placeholder ??
+                  "Ask the agent to inspect, search, or build..."}
+              </span>
+              <input
+                type="text"
+                value={composerValue}
+                onChange={(event) => setComposerValue(event.target.value)}
+                placeholder={
+                  composer.placeholder ??
+                  "Ask the agent to inspect, search, or build..."
+                }
+                className="w-full bg-transparent text-[11px] leading-5 text-slate-700 outline-none placeholder:text-slate-500 dark:text-slate-200 dark:placeholder:text-slate-500"
+              />
+            </label>
+
             <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500 dark:text-slate-400">
               <span className="rounded-full border border-black/[0.07] bg-[#f5f6f2] px-2.5 py-1 text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
                 {composer.modeLabel ?? "Agent"}
@@ -522,11 +656,35 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
               <span className="rounded-full border border-black/[0.07] bg-[#f5f6f2] px-2.5 py-1 text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
                 {composer.modelLabel ?? "Model 2"}
               </span>
-              <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full border border-black/[0.07] bg-[#f5f6f2] text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
-                ?
+              <span className="ml-auto flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
+                <span>Demo mode</span>
+                <button
+                  type="submit"
+                  disabled={!composerValue.trim()}
+                  aria-label="Submit prompt"
+                  className="flex h-6 w-6 items-center justify-center rounded-full border border-black/[0.07] bg-[#f5f6f2] text-slate-600 transition hover:border-black/[0.11] hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07] dark:hover:text-white"
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 16 16"
+                    className="h-3.5 w-3.5"
+                    fill="none"
+                  >
+                    <path
+                      d="M8 3.25v9.5M8 3.25 4.75 6.5M8 3.25 11.25 6.5"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
               </span>
             </div>
-          </div>
+            <div className="mt-2 text-[10px] text-slate-400 dark:text-slate-500">
+              Input is captured locally and continues the scripted session.
+            </div>
+          </form>
         </div>
       ) : null}
     </div>
