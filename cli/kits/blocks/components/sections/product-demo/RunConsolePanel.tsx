@@ -127,7 +127,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
   const visibleCode = activeCode.slice(0, visibleLineCount);
 
   return (
-    <div className="flex h-full min-h-0 flex-col text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:text-white/95">
+    <div className="flex h-full min-h-0 flex-col text-slate-900 [font-synthesis:none] antialiased dark:text-white/95">
       <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/[0.065] bg-[#f6f7f4] shadow-none dark:border-white/[0.08] dark:bg-[#0a0a0a] dark:shadow-none">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f6f7f4] dark:bg-[#0a0a0a]">

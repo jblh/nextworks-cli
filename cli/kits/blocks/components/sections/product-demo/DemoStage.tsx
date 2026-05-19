@@ -474,17 +474,17 @@ export function DemoStage({
               return (
                 <motion.div
                   key={windowData.key}
-                  initial={enableMotion ? { opacity: 0, y: 10 } : false}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={enableMotion ? { opacity: 0 } : false}
+                  animate={{ opacity: 1 }}
                   transition={
                     enableMotion
                       ? {
                           type: "tween",
-                          duration: 0.3,
+                          duration: 0.24,
                         }
                       : { duration: 0 }
                   }
-                  className={cn("min-h-0 will-change-transform", shellClass)}
+                  className={cn("min-h-0", shellClass)}
                 >
                   <DemoWindow
                     window={windowData.meta}

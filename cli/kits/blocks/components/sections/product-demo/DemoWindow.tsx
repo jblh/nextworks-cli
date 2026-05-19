@@ -49,11 +49,11 @@ export function DemoWindow({
   return (
     <section
       className={cn(
-        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/[0.055] bg-[#fcfcfa] shadow-none [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:border-white/[0.065] dark:bg-[#050505]",
+        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/[0.055] bg-[#fcfcfa] shadow-none [font-synthesis:none] antialiased dark:border-white/[0.065] dark:bg-[#050505]",
         "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.68),transparent)] before:opacity-70 dark:before:bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.16),transparent)] dark:before:opacity-100",
         "after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-8 after:bg-[linear-gradient(180deg,transparent,rgba(15,23,42,0.03))] dark:after:bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.02))]",
         enableMotion &&
-          "transition-[transform,opacity,border-color,background-color] duration-500 ease-out motion-reduce:transition-none",
+          "transition-[opacity,border-color,background-color] duration-500 ease-out motion-reduce:transition-none",
         active && "border-black/[0.075] dark:border-white/[0.085]",
         dimmed && "opacity-90",
         className,
@@ -65,7 +65,7 @@ export function DemoWindow({
       {showHeader ? (
         <header
           className={cn(
-            "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/[0.06] px-4 py-2.5 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased sm:px-5 dark:border-white/[0.065]",
+            "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/[0.06] px-4 py-2.5 [font-synthesis:none] antialiased sm:px-5 dark:border-white/[0.065]",
 
             chromeClassName,
           )}
