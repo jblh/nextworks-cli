@@ -153,6 +153,9 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   >([]);
   const submissionSeqRef = React.useRef(0);
   const pendingTimeoutsRef = React.useRef<number[]>([]);
+  const previousPlaybackStepRef = React.useRef<number | undefined>(
+    state.playbackStep,
+  );
 
   React.useEffect(() => {
     setComposerValue("");
@@ -215,7 +218,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
       } = {
         id: `local-response-${submissionIndex}`,
         kind: "message",
-        text: "Demo mode · input captured locally. The scripted agent run continues.",
+        text: "Demo mode · input captured.",
         origin: "system",
         insertionIndex,
         order: 1,
@@ -237,6 +240,21 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
 
   React.useEffect(() => {
     if (typeof state.playbackStep === "number") {
+      const previousPlaybackStep = previousPlaybackStepRef.current;
+      const isPlaybackLoopReset =
+        typeof previousPlaybackStep === "number" &&
+        previousPlaybackStep > 2 &&
+        state.playbackStep <= 2;
+
+      if (isPlaybackLoopReset) {
+        setLocalItems([]);
+        pendingTimeoutsRef.current.forEach((timeoutId) => {
+          window.clearTimeout(timeoutId);
+        });
+        pendingTimeoutsRef.current = [];
+      }
+
+      previousPlaybackStepRef.current = state.playbackStep;
       setVisibleCount(
         Math.max(1, Math.min(state.playbackStep, transcript.length)),
       );
@@ -475,7 +493,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
           <div className="flex items-center justify-between gap-3 text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
             <span>Prompt</span>
             <span className="text-[8px] tracking-[0.18em] text-slate-400 dark:text-slate-500">
-              Captured locally
+              Captured
             </span>
           </div>
           <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-200">
