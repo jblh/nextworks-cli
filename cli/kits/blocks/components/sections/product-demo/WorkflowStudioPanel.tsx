@@ -148,13 +148,15 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
     clientHeight: 1,
   });
   const [composerValue, setComposerValue] = React.useState("");
-  const [localEntries, setLocalEntries] = React.useState<SessionEntry[]>([]);
+  const [localItems, setLocalItems] = React.useState<
+    Array<SessionEntry & { insertionIndex: number; order: number }>
+  >([]);
   const submissionSeqRef = React.useRef(0);
   const pendingTimeoutsRef = React.useRef<number[]>([]);
 
   React.useEffect(() => {
     setComposerValue("");
-    setLocalEntries([]);
+    setLocalItems([]);
     submissionSeqRef.current = 0;
 
     pendingTimeoutsRef.current.forEach((timeoutId) => {
@@ -194,32 +196,43 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
 
       const submissionIndex = submissionSeqRef.current + 1;
       submissionSeqRef.current = submissionIndex;
+      const insertionIndex = Math.max(visibleCount, 1);
 
-      const promptEntry: SessionEntry = {
+      const promptEntry: SessionEntry & {
+        insertionIndex: number;
+        order: number;
+      } = {
         id: `local-prompt-${submissionIndex}`,
         kind: "prompt",
         text: trimmedValue,
         origin: "user",
+        insertionIndex,
+        order: 0,
       };
-      const responseEntry: SessionEntry = {
+      const responseEntry: SessionEntry & {
+        insertionIndex: number;
+        order: number;
+      } = {
         id: `local-response-${submissionIndex}`,
         kind: "message",
         text: "Demo mode · input captured locally. The scripted agent run continues.",
         origin: "system",
+        insertionIndex,
+        order: 1,
       };
 
-      setLocalEntries((currentEntries) => [...currentEntries, promptEntry]);
+      setLocalItems((currentItems) => [...currentItems, promptEntry]);
       setComposerValue("");
       window.requestAnimationFrame(scrollToBottom);
 
       const timeoutId = window.setTimeout(() => {
-        setLocalEntries((currentEntries) => [...currentEntries, responseEntry]);
+        setLocalItems((currentItems) => [...currentItems, responseEntry]);
         window.requestAnimationFrame(scrollToBottom);
       }, 680);
 
       pendingTimeoutsRef.current.push(timeoutId);
     },
-    [composerValue, scrollToBottom],
+    [composerValue, scrollToBottom, visibleCount],
   );
 
   React.useEffect(() => {
@@ -290,7 +303,21 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   }, [visibleCount, transcript.length]);
 
   const visibleTranscript = transcript.slice(0, visibleCount);
-  const sessionEntries = [...visibleTranscript, ...localEntries];
+  const injectedItemsByIndex = React.useMemo(() => {
+    const map = new Map<number, Array<SessionEntry & { order: number }>>();
+
+    localItems.forEach((item) => {
+      const itemsAtIndex = map.get(item.insertionIndex) ?? [];
+      itemsAtIndex.push(item);
+      map.set(item.insertionIndex, itemsAtIndex);
+    });
+
+    for (const itemsAtIndex of map.values()) {
+      itemsAtIndex.sort((a, b) => a.order - b.order);
+    }
+
+    return map;
+  }, [localItems]);
   const isRunning = visibleCount < transcript.length;
 
   const hasOverflow =
@@ -570,9 +597,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
             {activeNode.metadata}
           </div>
         ) : null}
-        {isRunning &&
-        !isLocalEntry &&
-        index === visibleTranscript.length - 1 ? (
+        {isRunning && index === visibleTranscript.length - 1 ? (
           <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-400 dark:text-slate-500">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
             Running
@@ -591,13 +616,18 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
         >
           <div className="flex min-h-full flex-col pr-1.5">
             <div className="space-y-3">
-              {sessionEntries.map((entry, index) =>
-                renderSessionEntry(
-                  entry,
-                  index,
-                  index >= visibleTranscript.length,
-                ),
-              )}
+              {visibleTranscript.map((entry, index) => (
+                <React.Fragment key={entry.id}>
+                  {renderSessionEntry(entry, index)}
+                  {injectedItemsByIndex.has(index + 1)
+                    ? injectedItemsByIndex
+                        .get(index + 1)
+                        ?.map((item) =>
+                          renderSessionEntry(item, index + 0.5, true),
+                        )
+                    : null}
+                </React.Fragment>
+              ))}
             </div>
 
             <div className="flex-1" />
@@ -680,9 +710,6 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                   </svg>
                 </button>
               </span>
-            </div>
-            <div className="mt-2 text-[10px] text-slate-400 dark:text-slate-500">
-              Input is captured locally and continues the scripted session.
             </div>
           </form>
         </div>
