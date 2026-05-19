@@ -806,9 +806,10 @@ const scenarios: ProductDemoScenario[] = [
 export function Hero() {
   return (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] dark:bg-[linear-gradient(180deg,#151515_0%,#0f1012_52%,#171717_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.13),transparent_34%)] opacity-70 dark:opacity-100" />
-      <div className="pointer-events-none absolute left-1/2 top-[26rem] h-[32rem] w-[62rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.08)_18%,rgba(255,255,255,0.04)_34%,transparent_70%)] blur-3xl opacity-75 dark:opacity-100" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(112deg,transparent_18%,rgba(255,255,255,0.18)_28%,rgba(255,255,255,0.05)_37%,transparent_50%),linear-gradient(248deg,transparent_22%,rgba(255,255,255,0.14)_31%,rgba(255,255,255,0.04)_41%,transparent_56%)] opacity-70 dark:opacity-100" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_34%)] opacity-70 dark:opacity-100" />
+      <div className="pointer-events-none absolute left-1/2 top-[26rem] h-[32rem] w-[62rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.12)_12%,rgba(255,255,255,0.06)_24%,transparent_66%)] blur-3xl opacity-85 dark:opacity-100" />
 
       <HeroProductDemo
         className="bg-transparent"
