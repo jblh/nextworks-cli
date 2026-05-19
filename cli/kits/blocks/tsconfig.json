@@ -1,0 +1,13 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "noEmit": true
+  },
+  "include": ["app/**/*", "components/**/*", "lib/**/*", "next.config.ts"],
+  "exclude": [".nextworks/**/*", "public/**/*"]
+}
