@@ -494,11 +494,11 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
             onPointerMove={handleScrollbarPointerMove}
             onPointerUp={handleScrollbarPointerUp}
             onPointerCancel={handleScrollbarPointerUp}
-            className="absolute inset-y-3 right-1.5 w-[10px] cursor-pointer rounded-full bg-black/[0.045] dark:bg-white/[0.05]"
+            className="absolute inset-y-3 right-1.5 w-[10px] cursor-pointer overflow-hidden rounded-full bg-black/[0.045] dark:bg-white/[0.05]"
           >
             <div
               data-scrollbar-thumb="true"
-              className="absolute inset-x-1 rounded-full bg-[linear-gradient(180deg,rgba(15,23,42,0.26),rgba(15,23,42,0.42))] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] dark:bg-[linear-gradient(180deg,rgba(226,232,240,0.24),rgba(226,232,240,0.4))] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+              className="absolute inset-x-1 rounded-full bg-[linear-gradient(180deg,rgba(15,23,42,0.26),rgba(15,23,42,0.42))] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] dark:bg-[linear-gradient(180deg,rgba(226,232,240,0.24),rgba(226,232,240,0.4))] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] will-change-transform"
               style={{
                 height: `${thumbHeight}px`,
                 transform: `translateY(${thumbOffset}px)`,
