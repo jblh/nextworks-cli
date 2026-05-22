@@ -7,7 +7,7 @@ export function CTA() {
     <SharedCTA
       section={{
         className:
-          "bg-[linear-gradient(135deg,theme(colors.slate.950)_0%,theme(colors.cyan.950)_55%,theme(colors.violet.950)_100%)] [--heading-fg:white] [--subheading-fg:rgba(255,255,255,0.82)] [--description-fg:rgba(255,255,255,0.78)]",
+          "bg-[linear-gradient(135deg,theme(colors.slate.950)_0%,theme(colors.slate.900)_55%,theme(colors.slate.800)_100%)] [--heading-fg:white] [--subheading-fg:rgba(255,255,255,0.8)] [--description-fg:rgba(255,255,255,0.74)]",
       }}
       container={{
         className:
@@ -29,14 +29,14 @@ export function CTA() {
         variant: "default",
         size: "lg",
         className:
-          "font-inter font-semibold [--btn-bg:theme(colors.cyan.400)] [--btn-fg:theme(colors.slate.950)] [--btn-border:transparent] hover:[--btn-hover-bg:theme(colors.cyan.300)] hover:[--btn-hover-fg:theme(colors.slate.950)]",
+          "font-inter font-semibold [--btn-bg:theme(colors.white)] [--btn-fg:theme(colors.slate.950)] [--btn-border:transparent] hover:[--btn-hover-bg:theme(colors.slate.100)] hover:[--btn-hover-fg:theme(colors.slate.950)]",
       }}
       secondaryButton={{ label: "Review pricing", href: "#pricing" }}
       secondaryButtonStyle={{
         variant: "outline",
         size: "lg",
         className:
-          "border [--btn-bg:transparent] [--btn-fg:white] [--btn-border:rgba(255,255,255,0.55)] hover:[--btn-hover-bg:rgba(255,255,255,0.08)] hover:[--btn-hover-fg:white]",
+          "border [--btn-bg:transparent] [--btn-fg:white] [--btn-border:rgba(255,255,255,0.18)] hover:[--btn-hover-bg:rgba(255,255,255,0.08)] hover:[--btn-hover-fg:white]",
       }}
       ariaLabel="AI workflow call to action"
     />
