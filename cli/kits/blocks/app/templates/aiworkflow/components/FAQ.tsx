@@ -38,7 +38,10 @@ export function FAQ() {
             "The template story assumes common systems such as Slack, CRM platforms, ticketing tools, docs, and project trackers, with more connectors added as needed.",
         },
       ]}
-      section={{ className: "bg-background px-5 py-16" }}
+      section={{
+        className:
+          "bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] px-5 py-16 dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
+      }}
       container={{ className: "max-w-6xl mx-auto" }}
       heading={{
         className:
@@ -48,7 +51,7 @@ export function FAQ() {
       item={{ className: "mb-0 w-full" }}
       questionButton={{
         className:
-          "flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-white p-5 font-inter font-semibold text-slate-900 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-300 hover:bg-cyan-50 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:hover:border-cyan-700 dark:hover:bg-cyan-950/40",
+          "flex cursor-pointer items-center justify-between rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] p-5 font-inter font-semibold text-[var(--card-title-fg)] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 dark:hover:bg-white/[0.04]",
       }}
       answer={{
         className:

@@ -61,7 +61,7 @@ export function Contact() {
       className="w-full"
       section={{
         className:
-          "bg-[linear-gradient(180deg,rgba(241,245,249,1)_0%,rgba(224,242,254,0.55)_100%)] px-6 py-16 dark:bg-[linear-gradient(180deg,rgba(2,6,23,1)_0%,rgba(8,47,73,0.45)_100%)]",
+          "bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] px-6 py-16 dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
       }}
       container={{ className: "mx-auto max-w-4xl" }}
       headerWrapper={{ className: "mb-8 text-center" }}
@@ -96,7 +96,7 @@ export function Contact() {
         variant: "default",
         size: "lg",
         className:
-          "w-full font-inter font-semibold [--btn-bg:theme(colors.cyan.500)] [--btn-fg:theme(colors.slate.950)] [--btn-border:transparent] hover:[--btn-hover-bg:theme(colors.cyan.400)] hover:[--btn-hover-fg:theme(colors.slate.950)]",
+          "w-full font-inter font-semibold [--btn-bg:theme(colors.slate.950)] [--btn-fg:theme(colors.white)] [--btn-border:transparent] hover:[--btn-hover-bg:theme(colors.slate.800)] hover:[--btn-hover-fg:theme(colors.white)] dark:[--btn-bg:theme(colors.white)] dark:[--btn-fg:theme(colors.slate.950)] dark:hover:[--btn-hover-bg:theme(colors.slate.100)] dark:hover:[--btn-hover-fg:theme(colors.slate.950)]",
       }}
       submitButtonText="Request a demo"
       onSubmit={handleFormSubmit}

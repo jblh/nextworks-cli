@@ -39,7 +39,7 @@ export function ProcessTimeline() {
       subheading="Keep AI automation visible, governed, and operational across the systems your team already uses."
       section={{
         className:
-          "bg-[linear-gradient(180deg,rgba(248,250,252,1)_0%,rgba(240,249,255,0.7)_100%)] py-18 md:py-22 dark:bg-[linear-gradient(180deg,rgba(2,6,23,1)_0%,rgba(8,47,73,0.4)_100%)]",
+          "bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] py-18 md:py-22 dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
       }}
       container={{ className: "max-w-6xl mx-auto px-6 md:px-10" }}
       header={{ className: "mb-16 text-center" }}
@@ -57,14 +57,15 @@ export function ProcessTimeline() {
       }}
       connectingLine={{
         className:
-          "absolute left-16 right-16 top-8 h-px bg-gradient-to-r from-cyan-200 via-sky-400 to-violet-400 dark:from-cyan-900 dark:via-cyan-500 dark:to-violet-500",
+          "absolute left-16 right-16 top-8 h-px bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800",
       }}
       stepContainer={{
-        className: "relative z-10 flex max-w-56 flex-1 flex-col items-center gap-5",
+        className:
+          "relative z-10 flex max-w-56 flex-1 flex-col items-center gap-5",
       }}
       stepCircle={{
         className:
-          "flex h-16 w-16 items-center justify-center rounded-full bg-slate-950 text-white shadow-lg shadow-cyan-500/10 dark:bg-cyan-400 dark:text-slate-950",
+          "flex h-16 w-16 items-center justify-center rounded-full bg-slate-950 text-white shadow-lg shadow-black/10 dark:bg-white dark:text-slate-950",
       }}
       stepNumber={{ className: "font-outfit text-2xl font-bold" }}
       stepIcon={{ className: "text-3xl" }}
@@ -74,18 +75,17 @@ export function ProcessTimeline() {
           "font-inter text-lg font-semibold text-[var(--card-title-fg)]",
       }}
       stepDescription={{
-        className:
-          "font-inter text-sm leading-6 text-[var(--card-muted-fg)]",
+        className: "font-inter text-sm leading-6 text-[var(--card-muted-fg)]",
       }}
       mobileTimeline={{ className: "flex w-full flex-col gap-8 lg:hidden" }}
       mobileStep={{ className: "relative flex items-start" }}
       mobileVerticalLine={{
         className:
-          "absolute bottom-[-2rem] left-8 top-16 w-px bg-cyan-300 dark:bg-cyan-700",
+          "absolute bottom-[-2rem] left-8 top-16 w-px bg-slate-300 dark:bg-slate-700",
       }}
       mobileStepCircle={{
         className:
-          "mr-6 flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-slate-950 text-white shadow-lg dark:bg-cyan-400 dark:text-slate-950",
+          "mr-6 flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-slate-950 text-white shadow-lg shadow-black/10 dark:bg-white dark:text-slate-950",
       }}
       mobileStepContent={{ className: "flex-1 space-y-3 pt-2" }}
       mobileStepIcon={{ className: "text-3xl" }}
@@ -94,8 +94,7 @@ export function ProcessTimeline() {
           "font-inter text-lg font-semibold text-[var(--card-title-fg)]",
       }}
       mobileStepDescription={{
-        className:
-          "font-inter text-sm leading-6 text-[var(--card-muted-fg)]",
+        className: "font-inter text-sm leading-6 text-[var(--card-muted-fg)]",
       }}
       ariaLabel="AI workflow process timeline"
     />
