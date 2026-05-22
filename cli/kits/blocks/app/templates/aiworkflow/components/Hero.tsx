@@ -871,20 +871,20 @@ export function Hero() {
           className: "px-6 py-10 sm:px-8 lg:px-10 lg:py-12",
         }}
         container={{
-          className: "relative z-10 max-w-[88rem]",
+          className: "relative z-10 max-w-7xl",
         }}
         textContainer={{
-          className: "max-w-3xl pt-1 lg:pt-0",
+          className: "max-w-3xl pt-1 lg:pl-4 lg:pt-0",
         }}
         demoContainer={{
           className:
-            "relative mx-auto min-h-[36rem] w-full max-w-[88%] lg:h-[clamp(35rem,calc(100svh-7rem),48rem)] lg:min-h-0",
+            "relative min-h-[36rem] w-full max-w-full lg:px-4 lg:h-[clamp(35rem,calc(100svh-7rem),48rem)] lg:min-h-0",
         }}
         buttonsContainer={{
           className: "mt-4 flex-col items-start sm:flex-row sm:items-center",
         }}
         demoBelowText
-        ariaLabel="AI workflow automation hero section"
+        ariaLabel="AI coding agent hero section"
       />
     </div>
   );

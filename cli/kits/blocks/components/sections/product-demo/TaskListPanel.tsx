@@ -64,7 +64,7 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
                     </div>
                     <div
                       className={cn(
-                        "shrink-0 text-[9px] uppercase tracking-[0.14em]",
+                        "flex h-5 w-[4.5rem] shrink-0 items-center justify-end text-[9px] uppercase tracking-[0.14em]",
                         isActive
                           ? "text-slate-500 dark:text-slate-400"
                           : "text-slate-400/90 dark:text-slate-500/90",

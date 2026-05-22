@@ -218,7 +218,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
       } = {
         id: `local-response-${submissionIndex}`,
         kind: "message",
-        text: "Demo mode · input captured.",
+        text: "Added to session.",
         origin: "system",
         insertionIndex,
         order: 1,
@@ -470,10 +470,17 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
     if (entry.kind === "title") {
       return (
         <div key={entry.id} className="space-y-2.5">
-          <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
-            <span>{getEntryLabel(entry.kind)}</span>
-            <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
-            <span>{entry.text}</span>
+          <div className="flex items-center justify-between gap-3 text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+            <div className="flex min-w-0 items-center gap-2">
+              <span>Session focus</span>
+              <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+              <span className="truncate">{entry.text}</span>
+            </div>
+            {activeNode?.type ? (
+              <span className="rounded-full border border-black/[0.07] bg-white/72 px-2 py-1 text-[8px] tracking-[0.16em] text-slate-500 dark:border-white/[0.08] dark:bg-white/[0.032] dark:text-slate-400">
+                {activeNode.type}
+              </span>
+            ) : null}
           </div>
           {activeNode?.description ? (
             <div className="rounded-lg border border-black/[0.07] bg-white/62 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-none dark:border-white/[0.08] dark:bg-white/[0.028] dark:text-slate-200 dark:shadow-none">
@@ -493,7 +500,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
           <div className="flex items-center justify-between gap-3 text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
             <span>Prompt</span>
             <span className="text-[8px] tracking-[0.18em] text-slate-400 dark:text-slate-500">
-              Captured
+              Sent
             </span>
           </div>
           <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-200">
@@ -704,8 +711,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
               <span className="rounded-full border border-black/[0.07] bg-[#f5f6f2] px-2.5 py-1 text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
                 {composer.modelLabel ?? "Model 2"}
               </span>
-              <span className="ml-auto flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
-                <span>Demo mode</span>
+              <div className="ml-auto flex items-center gap-2">
                 <button
                   type="submit"
                   disabled={!composerValue.trim()}
@@ -727,7 +733,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                     />
                   </svg>
                 </button>
-              </span>
+              </div>
             </div>
           </form>
         </div>
