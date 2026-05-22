@@ -63,7 +63,7 @@ const defaultProps: SharedNavbarProps = {
     className: "max-w-7xl mx-auto",
   },
   brandWrapper: {
-    className: "",
+    className: "-ml-2",
   },
   desktopMenu: {
     className: "hidden items-center space-x-1 md:flex lg:space-x-6",
