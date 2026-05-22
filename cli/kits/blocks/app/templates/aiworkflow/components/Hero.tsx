@@ -82,7 +82,11 @@ const scenarios: ProductDemoScenario[] = [
           kind: "activity",
           text: "Read lib/auth/normalize-return-to.ts",
         },
-        { id: "auth-thought", kind: "thought", text: "Thought for 6s" },
+        {
+          id: "auth-thought",
+          kind: "thought",
+          text: "Reviewing redirect handling and fallback behavior",
+        },
         {
           id: "auth-message",
           kind: "message",
@@ -352,7 +356,11 @@ const scenarios: ProductDemoScenario[] = [
           kind: "activity",
           text: "Inspect repeated pricing tier markup",
         },
-        { id: "pricing-thought", kind: "thought", text: "Thought for 5s" },
+        {
+          id: "pricing-thought",
+          kind: "thought",
+          text: "Mapping repeated sections before extracting shared blocks",
+        },
         {
           id: "pricing-message",
           kind: "message",
@@ -613,7 +621,11 @@ const scenarios: ProductDemoScenario[] = [
           kind: "activity",
           text: "Inspect dialog primitive and navigation state",
         },
-        { id: "cmd-thought", kind: "thought", text: "Thought for 4s" },
+        {
+          id: "cmd-thought",
+          kind: "thought",
+          text: "Tracing shortcut handling and command menu state",
+        },
         {
           id: "cmd-message",
           kind: "message",
