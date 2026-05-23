@@ -10,28 +10,28 @@ const contactFields: ContactField[] = [
   {
     id: "name",
     label: "Full name",
-    placeholder: "Jordan Lee",
+    placeholder: "Avery Chen",
     required: true,
     type: "text",
   },
   {
     id: "email",
     label: "Work email",
-    placeholder: "jordan@company.com",
+    placeholder: "avery@company.com",
     required: true,
     type: "email",
   },
   {
     id: "company",
     label: "Company",
-    placeholder: "Acme Inc.",
+    placeholder: "Northstar Labs",
     required: true,
     type: "text",
   },
   {
     id: "workflow",
     label: "Workflow to automate",
-    placeholder: "Approvals, onboarding, launches, support escalations…",
+    placeholder: "Bug fixes, refactors, releases, or repo cleanup…",
     required: true,
     type: "text",
   },
@@ -39,7 +39,7 @@ const contactFields: ContactField[] = [
     id: "message",
     label: "What should the workflow coordinate?",
     placeholder:
-      "Tell us which systems, approvals, or handoffs are slowing the team down.",
+      "Tell us which files, checks, or handoffs are slowing the team down.",
     required: true,
     type: "textarea",
   },
@@ -54,10 +54,10 @@ export function Contact() {
   return (
     <SharedContact
       id="contact"
-      ariaLabel="AI workflow contact section"
+      ariaLabel="AI coding agent contact section"
       fields={contactFields}
-      contactHeaderText="Bring your messiest workflow."
-      contactSubHeaderText="We’ll map the approvals, systems, and execution steps that AI can automate first."
+      contactHeaderText="Bring your messiest codebase issue."
+      contactSubHeaderText="We’ll map the reads, edits, checks, and reviews the agent should handle first."
       className="w-full"
       section={{
         className:
@@ -98,7 +98,7 @@ export function Contact() {
         className:
           "w-full font-inter font-semibold [--btn-bg:theme(colors.slate.950)] [--btn-fg:theme(colors.white)] [--btn-border:transparent] hover:[--btn-hover-bg:theme(colors.slate.800)] hover:[--btn-hover-fg:theme(colors.white)] dark:[--btn-bg:theme(colors.white)] dark:[--btn-fg:theme(colors.slate.950)] dark:hover:[--btn-hover-bg:theme(colors.slate.100)] dark:hover:[--btn-hover-fg:theme(colors.slate.950)]",
       }}
-      submitButtonText="Request a demo"
+      submitButtonText="Book an agent demo"
       onSubmit={handleFormSubmit}
     />
   );

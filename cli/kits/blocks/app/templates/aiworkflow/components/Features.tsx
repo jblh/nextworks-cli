@@ -5,32 +5,32 @@ import { Features as SharedFeatures } from "@/components/sections/Features";
 const featuresData = [
   {
     imageSrc: "/placeholders/saas_dashboard/projectBoard.png",
-    imageAlt: "Workflow builder and orchestration canvas",
-    headingText: "Design workflows from plain-language requests",
+    imageAlt: "Task navigator and repo context view",
+    headingText: "Turn plain-language tasks into code changes",
     subheadingText:
-      "AI turns a request into a structured workflow with triggers, conditions, tool actions, and approval checkpoints.",
+      "The agent reads the repo, traces the issue, and shapes a safe patch with clear context.",
   },
   {
     imageSrc: "/placeholders/saas_dashboard/analytics.png",
-    imageAlt: "Live execution feed and analytics dashboard",
-    headingText: "See every step as it runs",
+    imageAlt: "Transcript, live diff, and editor output",
+    headingText: "Watch the transcript and diff move independently",
     subheadingText:
-      "Track execution state, latency, retries, and downstream updates in a live run feed your team can actually follow.",
+      "The agent can keep reading, edit the file, and land a result without forcing both panes to move in lockstep.",
   },
   {
     imageSrc: "/placeholders/saas_dashboard/chat.png",
-    imageAlt: "Approval inbox and team collaboration interface",
-    headingText: "Route approvals only where they matter",
+    imageAlt: "Review queue and patch summary panel",
+    headingText: "Review only the changes that matter",
     subheadingText:
-      "Let policy decide when humans need to review while routine decisions stay automated and fully auditable.",
+      "Keep the agent moving on routine edits while exceptions surface only when a human needs to step in.",
   },
 ];
 
 export function Features() {
   return (
     <SharedFeatures
-      sectionHeading="One system for requests, approvals, execution, and visibility"
-      sectionSubheading="Compose AI-assisted workflows that pull in context, coordinate teams, and keep every system in sync."
+      sectionHeading="One system for requests, code, execution, and visibility"
+      sectionSubheading="Turn a task into context, a patch, and a live result without losing the thread."
       featuresData={featuresData}
       section={{
         className:
@@ -62,7 +62,7 @@ export function Features() {
         className:
           "font-inter text-sm leading-6 text-[var(--card-muted-fg)] md:text-base",
       }}
-      ariaLabel="AI workflow features"
+      ariaLabel="AI coding agent features"
     />
   );
 }

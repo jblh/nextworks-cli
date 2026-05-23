@@ -8,35 +8,35 @@ export function ProcessTimeline() {
       steps={[
         {
           stepNumber: 1,
-          title: "Capture the request",
+          title: "Capture the issue",
           description:
-            "AI turns messages, tickets, and forms into structured workflow inputs with clear intent and metadata.",
+            "A plain-language report becomes a structured task with intent, files, and context.",
           icon: "✉️",
         },
         {
           stepNumber: 2,
-          title: "Ground the decision",
+          title: "Read the codebase",
           description:
-            "Policies, playbooks, and account context are pulled in before the workflow takes action.",
+            "The agent inspects the relevant files, notes patterns, and checks surrounding context before editing.",
           icon: "🧠",
         },
         {
           stepNumber: 3,
-          title: "Route approvals and actions",
+          title: "Patch and preview",
           description:
-            "Human review appears only when thresholds or policy require it, while approved actions continue automatically.",
+            "Edits land in the diff, and the preview updates once the patch is applied.",
           icon: "✅",
         },
         {
           stepNumber: 4,
-          title: "Sync every tool",
+          title: "Validate and ship",
           description:
-            "CRM records, project tasks, team updates, and audit logs stay aligned from one execution graph.",
+            "Checks, reviews, and logs stay aligned before the change is ready to merge.",
           icon: "🔄",
         },
       ]}
-      heading="From request to completed workflow in four clear stages"
-      subheading="Keep AI automation visible, governed, and operational across the systems your team already uses."
+      heading="From issue to merged fix in four clear stages"
+      subheading="Keep the coding agent visible, governed, and steady across the tools your team already uses."
       section={{
         className:
           "bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] py-18 md:py-22 dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
@@ -96,7 +96,7 @@ export function ProcessTimeline() {
       mobileStepDescription={{
         className: "font-inter text-sm leading-6 text-[var(--card-muted-fg)]",
       }}
-      ariaLabel="AI workflow process timeline"
+      ariaLabel="AI coding agent process timeline"
     />
   );
 }

@@ -6,26 +6,26 @@ export function TrustBadges() {
   return (
     <SharedTrustBadges
       id="trust-badges"
-      trustBadgesSectionHeader="Teams replacing manual ops with AI workflows"
+      trustBadgesSectionHeader="Teams shipping code with agents in the loop"
       badges={[
         {
-          badgeText: "72% faster routing",
-          badgeDescription: "Workflow handoffs",
+          badgeText: "Faster fixes, fewer handoffs",
+          badgeDescription: "Code handoffs",
           badgeIcon: "⚡",
         },
         {
-          badgeText: "40+ integrations",
-          badgeDescription: "Connected systems",
+          badgeText: "GitHub-native",
+          badgeDescription: "Repo + CI aware",
           badgeIcon: "🔌",
         },
         {
-          badgeText: "SOC 2 ready",
-          badgeDescription: "Security posture",
+          badgeText: "Review gates ready",
+          badgeDescription: "Approval posture",
           badgeIcon: "🔒",
         },
         {
-          badgeText: "Full audit trail",
-          badgeDescription: "Approvals + logs",
+          badgeText: "Full change trail",
+          badgeDescription: "Reads + edits + reviews",
           badgeIcon: "🧾",
         },
       ]}
@@ -56,7 +56,7 @@ export function TrustBadges() {
           "font-inter text-base font-semibold text-[var(--card-title-fg)]",
       }}
       layout="horizontal"
-      ariaLabel="AI workflow trust badges"
+      ariaLabel="AI coding agent trust badges"
     />
   );
 }
