@@ -6,16 +6,16 @@ export function Pricing() {
   return (
     <SharedPricing
       id="pricing"
-      pricingHeadingText="Pricing for teams automating real operational work"
+      pricingHeadingText="Pricing for teams shipping with coding agents"
       pricingPlans={[
         {
           pricingPlanHeaderText: "Starter",
           pricingPlanPrice: "$49/mo",
           pricingPlanFeatures: [
-            "3 active workflows",
-            "Slack and email intake",
-            "Shared approval inbox",
-            "Core analytics",
+            "3 active repos",
+            "GitHub and docs intake",
+            "Shared review queue",
+            "Patch analytics",
           ],
           pricingPlanCTALabel: "Start free",
           pricingPlanCTAHref: "#contact",
@@ -24,11 +24,11 @@ export function Pricing() {
           pricingPlanHeaderText: "Growth",
           pricingPlanPrice: "$149/mo",
           pricingPlanFeatures: [
-            "Unlimited workflows",
-            "CRM and project tool sync",
-            "Advanced approval routing",
-            "Live execution dashboards",
-            "Role-based governance",
+            "Unlimited agent runs",
+            "Repo, issue tracker, and CI sync",
+            "Review gates and approvals",
+            "Live diff dashboards",
+            "Role-based code governance",
           ],
           pricingPlanCTALabel: "Book a demo",
           pricingPlanCTAHref: "#contact",
@@ -38,13 +38,13 @@ export function Pricing() {
           pricingPlanHeaderText: "Enterprise",
           pricingPlanPrice: "Custom",
           pricingPlanFeatures: [
-            "Private deployment options",
-            "Custom policy and knowledge connectors",
-            "SSO and audit exports",
-            "Dedicated onboarding",
-            "Priority support",
+            "Private agent deployment options",
+            "Custom repo and context connectors",
+            "SSO and change exports",
+            "Dedicated rollout support",
+            "Priority agent support",
           ],
-          pricingPlanCTALabel: "Talk to sales",
+          pricingPlanCTALabel: "Talk to the team",
           pricingPlanCTAHref: "#contact",
         },
       ]}
@@ -86,7 +86,7 @@ export function Pricing() {
         className:
           "absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-[var(--badge-active-border)] bg-[var(--badge-active-bg)] px-4 py-1 text-xs font-semibold text-[var(--badge-active-fg)] shadow-sm shadow-black/5",
       }}
-      ariaLabel="AI workflow pricing"
+      ariaLabel="AI coding agent pricing"
     />
   );
 }

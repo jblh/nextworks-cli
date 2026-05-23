@@ -841,10 +841,10 @@ export function Hero() {
           variant: "default",
           size: "lg",
           className: [
-            "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10",
-            "[--btn-bg:theme(colors.slate.950)]",
-            "hover:[--btn-hover-bg:theme(colors.slate.800)]",
-            "[--btn-fg:white]",
+            "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30",
+            "[--btn-bg:theme(colors.slate.950)] dark:[--btn-bg:theme(colors.white)]",
+            "hover:[--btn-hover-bg:theme(colors.slate.800)] dark:hover:[--btn-hover-bg:theme(colors.slate.100)]",
+            "[--btn-fg:white] dark:[--btn-fg:theme(colors.slate.950)]",
           ].join(" "),
         }}
         cta2={{
@@ -853,13 +853,11 @@ export function Hero() {
           variant: "outline",
           size: "lg",
           className: [
-            "border px-7 py-3 text-sm font-semibold shadow-sm",
+            "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20",
             "[--btn-bg:transparent]",
-            "[--btn-fg:theme(colors.slate.800)]",
-            "[--btn-border:rgba(15,23,42,0.12)]",
-            "hover:[--btn-hover-bg:rgba(15,23,42,0.03)]",
-            "dark:[--btn-fg:white]",
-            "dark:[--btn-border:rgba(255,255,255,0.12)]",
+            "[--btn-fg:theme(colors.slate.800)] dark:[--btn-fg:theme(colors.slate.100)]",
+            "[--btn-border:rgba(15,23,42,0.12)] dark:[--btn-border:rgba(255,255,255,0.12)]",
+            "hover:[--btn-hover-bg:rgba(15,23,42,0.03)] dark:hover:[--btn-hover-bg:rgba(255,255,255,0.05)]",
           ].join(" "),
         }}
         stage={{

@@ -8,34 +8,34 @@ export function FAQ() {
       faqSectionHeaderText="Frequently asked questions"
       faqData={[
         {
-          question: "What kinds of workflows can I automate?",
+          question: "What kinds of coding tasks can the agent handle?",
           answer:
-            "Teams use FlowPilot AI for intake routing, approvals, CRM and ticket updates, launch coordination, support escalations, and other repeatable cross-tool processes.",
+            "Teams use FlowPilot AI for bug fixes, refactors, routine maintenance, release prep, and other repeatable code changes.",
         },
         {
-          question: "How do approvals work?",
+          question: "How do reviews and approvals work?",
           answer:
-            "You define thresholds and policy rules once. The workflow requests human approval only when conditions match, while lower-risk steps continue automatically.",
+            "You define the rules once. The agent keeps moving on low-risk work and pauses only when a review or approval is required.",
         },
         {
-          question: "Can AI use our internal documentation and policies?",
+          question: "Can the agent use our codebase and docs?",
           answer:
-            "Yes. The knowledge layer can reference playbooks, policies, runbooks, and other connected sources so actions stay grounded in current context.",
+            "Yes. It can read repo files, docs, and internal notes so changes stay grounded in current project context.",
         },
         {
-          question: "Will we be able to audit every action?",
+          question: "Will we be able to audit every change?",
           answer:
-            "Yes. Each workflow run records decisions, approvals, tool updates, and execution logs so teams can trace what happened and why.",
+            "Yes. Each run records reads, edits, approvals, and output so teams can trace what changed and why.",
         },
         {
           question: "Do we need engineering support to start?",
           answer:
-            "Most teams start with business-owned workflows using existing integrations and preset patterns. Engineering can extend the system later when needed.",
+            "Most teams start with a few high-signal tasks, then expand the agent into more of the codebase as confidence grows.",
         },
         {
           question: "Which tools can it connect to?",
           answer:
-            "The template story assumes common systems such as Slack, CRM platforms, ticketing tools, docs, and project trackers, with more connectors added as needed.",
+            "The template story assumes common tools like GitHub, docs, issue trackers, CI, and chat, with more connectors added as needed.",
         },
       ]}
       section={{
@@ -60,7 +60,7 @@ export function FAQ() {
       answerText={{
         className: "font-inter text-sm leading-7 text-[var(--card-fg)]",
       }}
-      ariaLabel="AI workflow frequently asked questions"
+      ariaLabel="AI coding agent frequently asked questions"
     />
   );
 }

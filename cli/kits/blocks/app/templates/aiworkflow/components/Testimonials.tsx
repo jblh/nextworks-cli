@@ -5,24 +5,24 @@ import { Testimonials as SharedTestimonials } from "@/components/sections/Testim
 export function Testimonials() {
   return (
     <SharedTestimonials
-      testimonialSectionHeader="Operators, RevOps, and IT teams keep the loop closed"
+      testimonialSectionHeader="Engineers keep the loop closed"
       testimonials={[
         {
           testimonialText:
-            "We replaced manual intake, Slack follow-up, and CRM updates with one workflow that now runs end-to-end in minutes.",
-          testimonialAuthor: "- Maya Chen, RevOps Lead at Northstar",
+            "We replaced ticket triage, hand-written follow-up, and repetitive patching with one agent flow that now lands fixes in minutes.",
+          testimonialAuthor: "- Maya Chen, Platform Lead at Northstar",
           testimonialAuthorInitials: "MC",
         },
         {
           testimonialText:
-            "Approvals used to stall launches for hours. Now legal only sees the exceptions and everyone else gets live status automatically.",
-          testimonialAuthor: "- Daniel Ruiz, GTM Systems Manager",
+            "Reviews used to stall merges for hours. Now the team only sees the exceptions and everyone else gets live status automatically.",
+          testimonialAuthor: "- Daniel Ruiz, Engineering Manager",
           testimonialAuthorInitials: "DR",
         },
         {
           testimonialText:
-            "The audit trail made adoption easy. Teams trust the automations because every action is grounded, visible, and recoverable.",
-          testimonialAuthor: "- Priya Patel, Director of Operations",
+            "The audit trail made adoption easy. Teams trust the agent because every read, edit, and review is grounded, visible, and recoverable.",
+          testimonialAuthor: "- Priya Patel, Head of Developer Experience",
           testimonialAuthorInitials: "PP",
         },
       ]}
@@ -55,7 +55,7 @@ export function Testimonials() {
           "flex h-12 w-12 items-center justify-center rounded-full border border-[var(--badge-border)] bg-[var(--badge-bg)] text-[var(--badge-fg)]",
       }}
       avatarText={{ className: "font-inter text-sm font-bold" }}
-      ariaLabel="AI workflow customer testimonials"
+      ariaLabel="AI coding agent customer testimonials"
     />
   );
 }

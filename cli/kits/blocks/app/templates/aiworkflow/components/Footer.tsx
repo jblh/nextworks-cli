@@ -10,7 +10,7 @@ export function Footer() {
       footerBrandName="FlowPilot AI"
       footerNavLinks={[
         {
-          heading: "Platform",
+          heading: "Product",
           links: [
             { name: "Features", href: "#features" },
             { name: "Pricing", href: "#pricing" },
@@ -21,14 +21,14 @@ export function Footer() {
         {
           heading: "Use cases",
           links: [
-            { name: "Revenue operations", href: "#features" },
-            { name: "Launch workflows", href: "#features" },
-            { name: "Approvals", href: "#faq" },
-            { name: "Integrations", href: "#features" },
+            { name: "Bug fixes", href: "#features" },
+            { name: "Refactors", href: "#features" },
+            { name: "Reviews", href: "#faq" },
+            { name: "Tooling", href: "#features" },
           ],
         },
         {
-          heading: "Company",
+          heading: "Resources",
           links: [
             { name: "About", href: "#home" },
             { name: "Security", href: "#faq" },
@@ -107,7 +107,7 @@ export function Footer() {
         className:
           "border-t border-[var(--footer-border)] py-6 text-center font-inter text-sm text-[var(--footer-muted-fg)]",
       }}
-      ariaLabel="AI workflow footer"
+      ariaLabel="AI coding agent footer"
     />
   );
 }
