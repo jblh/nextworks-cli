@@ -828,12 +828,12 @@ export function Hero() {
         heading={{
           text: "Code with agents.",
           className:
-            "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-slate-950 sm:text-4xl lg:text-5xl dark:text-white",
+            "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
         }}
         subheading={{
           text: "Watch the agent read, edit, and update the result in real time.",
           className:
-            "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-300",
+            "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
         }}
         cta1={{
           label: "Start building",
@@ -842,9 +842,10 @@ export function Hero() {
           size: "lg",
           className: [
             "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30",
-            "[--btn-bg:theme(colors.slate.950)] dark:[--btn-bg:theme(colors.white)]",
-            "hover:[--btn-hover-bg:theme(colors.slate.800)] dark:hover:[--btn-hover-bg:theme(colors.slate.100)]",
-            "[--btn-fg:white] dark:[--btn-fg:theme(colors.slate.950)]",
+            "[--btn-bg:var(--hero-cta-primary-bg)]",
+            "hover:[--btn-hover-bg:var(--hero-cta-primary-hover-bg)]",
+            "[--btn-fg:var(--hero-cta-primary-fg)]",
+            "hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
           ].join(" "),
         }}
         cta2={{
@@ -854,10 +855,11 @@ export function Hero() {
           size: "lg",
           className: [
             "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20",
-            "[--btn-bg:transparent]",
-            "[--btn-fg:theme(colors.slate.800)] dark:[--btn-fg:theme(colors.slate.100)]",
-            "[--btn-border:rgba(15,23,42,0.12)] dark:[--btn-border:rgba(255,255,255,0.12)]",
-            "hover:[--btn-hover-bg:rgba(15,23,42,0.03)] dark:hover:[--btn-hover-bg:rgba(255,255,255,0.05)]",
+            "[--btn-bg:var(--hero-cta-secondary-bg)]",
+            "[--btn-fg:var(--hero-cta-secondary-fg)]",
+            "[--btn-border:var(--hero-cta-secondary-border)]",
+            "hover:[--btn-hover-bg:var(--hero-cta-secondary-hover-bg)]",
+            "hover:[--btn-hover-fg:var(--hero-cta-secondary-hover-fg)]",
           ].join(" "),
         }}
         stage={{

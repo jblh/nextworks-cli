@@ -65,7 +65,7 @@ export function ProcessTimeline() {
       }}
       stepCircle={{
         className:
-          "flex h-16 w-16 items-center justify-center rounded-full bg-slate-950 text-white shadow-lg shadow-black/10 dark:bg-white dark:text-slate-950",
+          "flex h-16 w-16 items-center justify-center rounded-full bg-[var(--process-step-bg)] text-[var(--process-step-fg)] shadow-lg shadow-black/10",
       }}
       stepNumber={{ className: "font-outfit text-2xl font-bold" }}
       stepIcon={{ className: "text-3xl" }}
@@ -81,11 +81,11 @@ export function ProcessTimeline() {
       mobileStep={{ className: "relative flex items-start" }}
       mobileVerticalLine={{
         className:
-          "absolute bottom-[-2rem] left-8 top-16 w-px bg-slate-300 dark:bg-slate-700",
+          "absolute bottom-[-2rem] left-8 top-16 w-px bg-[var(--process-connector)]",
       }}
       mobileStepCircle={{
         className:
-          "mr-6 flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-slate-950 text-white shadow-lg shadow-black/10 dark:bg-white dark:text-slate-950",
+          "mr-6 flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[var(--process-step-bg)] text-[var(--process-step-fg)] shadow-lg shadow-black/10",
       }}
       mobileStepContent={{ className: "flex-1 space-y-3 pt-2" }}
       mobileStepIcon={{ className: "text-3xl" }}
