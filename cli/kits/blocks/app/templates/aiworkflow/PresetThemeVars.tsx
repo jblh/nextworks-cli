@@ -9,6 +9,16 @@ export function PresetThemeVars({ className, children }: Props) {
       className={cn(
         "[--btn-ring:theme(colors.slate.950)] dark:[--btn-ring:theme(colors.white)]",
 
+        "[--navbar-bg:rgba(255,255,255,0.76)] dark:[--navbar-bg:rgba(0,0,0,0.72)]",
+        "[--navbar-fg:theme(colors.slate.900)] dark:[--navbar-fg:theme(colors.white)]",
+        "[--navbar-accent:theme(colors.slate.950)] dark:[--navbar-accent:theme(colors.white)]",
+        "[--navbar-link-fg:theme(colors.slate.700)] dark:[--navbar-link-fg:theme(colors.slate.200)]",
+        "[--navbar-link-hover-fg:theme(colors.slate.950)] dark:[--navbar-link-hover-fg:theme(colors.white)]",
+        "[--navbar-toggle-bg:theme(colors.white)] dark:[--navbar-toggle-bg:theme(colors.black)]",
+        "[--navbar-hover-bg:color-mix(in_oklab,theme(colors.sky.500)_9%,white)] dark:[--navbar-hover-bg:color-mix(in_oklab,theme(colors.sky.500)_12%,transparent)]",
+        "[--navbar-ring:theme(colors.sky.500)] dark:[--navbar-ring:theme(colors.sky.400)]",
+        "[--navbar-border:rgba(15,23,42,0.08)] dark:[--navbar-border:rgba(255,255,255,0.1)]",
+
         "[--input-bg:theme(colors.white)] dark:[--input-bg:theme(colors.slate.950)]",
         "[--input-fg:theme(colors.slate.900)] dark:[--input-fg:theme(colors.slate.100)]",
         "[--input-placeholder:theme(colors.slate.400)] dark:[--input-placeholder:theme(colors.slate.500)]",
@@ -33,6 +43,20 @@ export function PresetThemeVars({ className, children }: Props) {
         "[--heading-fg:theme(colors.slate.950)] dark:[--heading-fg:theme(colors.white)]",
         "[--subheading-fg:theme(colors.slate.600)] dark:[--subheading-fg:theme(colors.slate.300)]",
         "[--description-fg:theme(colors.slate.700)] dark:[--description-fg:theme(colors.slate.200)]",
+
+        "[--hero-cta-primary-bg:theme(colors.slate.950)] dark:[--hero-cta-primary-bg:theme(colors.white)]",
+        "[--hero-cta-primary-hover-bg:theme(colors.slate.800)] dark:[--hero-cta-primary-hover-bg:theme(colors.slate.100)]",
+        "[--hero-cta-primary-fg:theme(colors.white)] dark:[--hero-cta-primary-fg:theme(colors.slate.950)]",
+        "[--hero-cta-primary-hover-fg:theme(colors.white)] dark:[--hero-cta-primary-hover-fg:theme(colors.slate.950)]",
+        "[--hero-cta-secondary-bg:transparent]",
+        "[--hero-cta-secondary-fg:theme(colors.slate.800)] dark:[--hero-cta-secondary-fg:theme(colors.slate.100)]",
+        "[--hero-cta-secondary-border:rgba(15,23,42,0.12)] dark:[--hero-cta-secondary-border:rgba(255,255,255,0.12)]",
+        "[--hero-cta-secondary-hover-bg:rgba(15,23,42,0.03)] dark:[--hero-cta-secondary-hover-bg:rgba(255,255,255,0.05)]",
+        "[--hero-cta-secondary-hover-fg:theme(colors.slate.800)] dark:[--hero-cta-secondary-hover-fg:theme(colors.slate.100)]",
+
+        "[--process-step-bg:theme(colors.slate.950)] dark:[--process-step-bg:theme(colors.white)]",
+        "[--process-step-fg:theme(colors.white)] dark:[--process-step-fg:theme(colors.slate.950)]",
+        "[--process-connector:theme(colors.slate.300)] dark:[--process-connector:theme(colors.slate.700)]",
 
         "[--footer-bg:transparent] dark:[--footer-bg:transparent]",
         "[--footer-fg:theme(colors.slate.800)] dark:[--footer-fg:theme(colors.slate.100)]",
