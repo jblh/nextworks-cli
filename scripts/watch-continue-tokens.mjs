@@ -232,6 +232,32 @@ function parseTotals(fileContents) {
   return totals;
 }
 
+function parseLatestEntry(fileContents) {
+  const lines = fileContents.split(/\r?\n/);
+
+  for (let index = lines.length - 1; index >= 0; index -= 1) {
+    const trimmed = lines[index].trim();
+
+    if (!trimmed) {
+      continue;
+    }
+
+    try {
+      const entry = JSON.parse(trimmed);
+
+      if (!shouldIncludeEntry(entry)) {
+        continue;
+      }
+
+      return entry;
+    } catch {
+      continue;
+    }
+  }
+
+  return null;
+}
+
 function subtractModelTotals(modelTotals, baselineModelTotals) {
   return {
     entries: Math.max(0, modelTotals.entries - baselineModelTotals.entries),
@@ -287,6 +313,24 @@ function readCurrentTotals() {
   return parseTotals(fileContents);
 }
 
+function readLatestEntryData() {
+  if (!fs.existsSync(logPath)) {
+    return null;
+  }
+
+  const fileContents = fs.readFileSync(logPath, "utf8");
+  const latestEntry = parseLatestEntry(fileContents);
+
+  if (!latestEntry) {
+    return null;
+  }
+
+  return {
+    promptTokens: Number(latestEntry.promptTokens || 0),
+    model: String(latestEntry.model || "unknown"),
+  };
+}
+
 function ensureBaseline(currentTotals) {
   if (hasBaseline) {
     return;
@@ -319,14 +363,13 @@ function resetBaseline() {
   printTotals("after reset");
 }
 
-function printPerModelTotals(totals) {
+function getPerModelDisplayData(totals) {
   const modelEntries = Object.entries(totals.byModel)
     .filter(([, modelTotals]) => modelTotals.totalTokens > 0)
     .sort(([, left], [, right]) => right.totalTokens - left.totalTokens);
 
   if (modelEntries.length === 0) {
-    console.log(styleText("No token data", "gray"));
-    return;
+    return null;
   }
 
   const rows = modelEntries.map(([modelName, modelTotals]) => ({
@@ -334,14 +377,26 @@ function printPerModelTotals(totals) {
     total: formatNumber(modelTotals.totalTokens),
   }));
 
-  const modelWidth = Math.max(...rows.map((row) => row.modelName.length));
-  const totalWidth = Math.max(...rows.map((row) => row.total.length));
+  return {
+    rows,
+    modelWidth: Math.max(...rows.map((row) => row.modelName.length)),
+    totalWidth: Math.max(...rows.map((row) => row.total.length)),
+  };
+}
 
-  for (const row of rows) {
+function printPerModelTotals(displayData) {
+  if (!displayData) {
+    console.log(styleText("No token data", "gray"));
+    return;
+  }
+
+  const labelWidth = Math.max(displayData.modelWidth, "In prompt:".length);
+
+  for (const row of displayData.rows) {
     console.log(
       [
-        styleText(row.modelName.padEnd(modelWidth), "magenta"),
-        styleText(row.total.padStart(totalWidth), "green"),
+        styleText(row.modelName.padEnd(labelWidth), "magenta"),
+        styleText(row.total.padStart(displayData.totalWidth), "green"),
       ].join(" ".repeat(MODEL_COLUMN_GAP)),
     );
   }
@@ -393,8 +448,45 @@ function printTotals(reason) {
     );
   }
 
+  const displayData = getPerModelDisplayData(visibleTotals);
+
   console.log("");
-  printPerModelTotals(visibleTotals);
+  printPerModelTotals(displayData);
+
+  console.log("");
+
+  const latestEntryData = readLatestEntryData();
+  if (!latestEntryData) {
+    const promptLabelWidth = displayData
+      ? Math.max(displayData.modelWidth, "In prompt:".length)
+      : "In prompt:".length;
+    const promptValueWidth = displayData ? displayData.totalWidth : 1;
+
+    console.log(
+      [
+        styleText("In prompt:".padEnd(promptLabelWidth), "dim"),
+        styleText("-".padStart(promptValueWidth), "green"),
+      ].join(" ".repeat(MODEL_COLUMN_GAP)),
+    );
+  } else {
+    const promptLabelWidth = displayData
+      ? Math.max(displayData.modelWidth, "In prompt:".length)
+      : "In prompt:".length;
+    const promptValueWidth = displayData
+      ? displayData.totalWidth
+      : formatNumber(latestEntryData.promptTokens).length;
+
+    console.log(
+      [
+        styleText("In prompt:".padEnd(promptLabelWidth), "dim"),
+        styleText(
+          formatNumber(latestEntryData.promptTokens).padStart(promptValueWidth),
+          "green",
+        ),
+        styleText(latestEntryData.model, "magenta"),
+      ].join(" ".repeat(MODEL_COLUMN_GAP)),
+    );
+  }
 }
 
 function setupKeyboardShortcuts() {
