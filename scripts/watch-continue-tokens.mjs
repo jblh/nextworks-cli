@@ -67,9 +67,23 @@ const logPath = resolvePath(
   argPath || process.env.CONTINUE_TOKENS_FILE || DEFAULT_LOG_PATH,
 );
 
-let lastSignature = "";
 let baselineTotals = createEmptyTotals();
 let hasBaseline = false;
+
+const ANSI = {
+  reset: "\x1b[0m",
+  bold: "\x1b[1m",
+  dim: "\x1b[2m",
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  blue: "\x1b[34m",
+  magenta: "\x1b[35m",
+  cyan: "\x1b[36m",
+  gray: "\x1b[90m",
+};
+
+const MODEL_COLUMN_GAP = 2;
 
 function createEmptyTotals() {
   return {
@@ -110,6 +124,22 @@ function resolvePath(inputPath) {
 
 function formatNumber(value) {
   return new Intl.NumberFormat("en-US").format(value);
+}
+
+function styleText(text, ...styles) {
+  if (!process.stdout.isTTY || styles.length === 0) {
+    return text;
+  }
+
+  return `${styles.map((style) => ANSI[style]).join("")}${text}${ANSI.reset}`;
+}
+
+function clearTerminal() {
+  if (!process.stdout.isTTY) {
+    return;
+  }
+
+  process.stdout.write("\x1b[3J\x1b[H\x1b[2J");
 }
 
 function getModeLabel() {
@@ -248,26 +278,6 @@ function subtractTotals(totals, baseline) {
   };
 }
 
-function getSignature(totals) {
-  const modelSignature = Object.entries(totals.byModel)
-    .sort(([left], [right]) => left.localeCompare(right))
-    .map(
-      ([modelName, modelTotals]) =>
-        `${modelName}:${modelTotals.entries}:${modelTotals.promptTokens}:${modelTotals.generatedTokens}:${modelTotals.totalTokens}`,
-    )
-    .join("|");
-
-  return [
-    totals.entries,
-    totals.promptTokens,
-    totals.generatedTokens,
-    totals.totalTokens,
-    totals.lastTimestamp,
-    totals.invalidLines,
-    modelSignature,
-  ].join("|");
-}
-
 function readCurrentTotals() {
   if (!fs.existsSync(logPath)) {
     return null;
@@ -294,40 +304,45 @@ function ensureBaseline(currentTotals) {
 
 function resetBaseline() {
   if (options.day) {
-    console.log(`\n[${new Date().toLocaleTimeString()}] reset skipped`);
-    console.log("Manual reset is disabled in --day mode.");
     return;
   }
 
   const currentTotals = readCurrentTotals();
 
   if (!currentTotals) {
-    console.log(`\n[${new Date().toLocaleTimeString()}] reset skipped`);
-    console.log(`File not found: ${logPath}`);
+    printTotals("reset skipped");
     return;
   }
 
   baselineTotals = currentTotals;
   hasBaseline = true;
-  lastSignature = "";
-  console.log(`\n[${new Date().toLocaleTimeString()}] baseline reset`);
   printTotals("after reset");
 }
 
 function printPerModelTotals(totals) {
-  const modelEntries = Object.entries(totals.byModel).sort(
-    ([, left], [, right]) => right.totalTokens - left.totalTokens,
-  );
+  const modelEntries = Object.entries(totals.byModel)
+    .filter(([, modelTotals]) => modelTotals.totalTokens > 0)
+    .sort(([, left], [, right]) => right.totalTokens - left.totalTokens);
 
   if (modelEntries.length === 0) {
+    console.log(styleText("No token data", "gray"));
     return;
   }
 
-  console.log("By model:");
+  const rows = modelEntries.map(([modelName, modelTotals]) => ({
+    modelName,
+    total: formatNumber(modelTotals.totalTokens),
+  }));
 
-  for (const [modelName, modelTotals] of modelEntries) {
+  const modelWidth = Math.max(...rows.map((row) => row.modelName.length));
+  const totalWidth = Math.max(...rows.map((row) => row.total.length));
+
+  for (const row of rows) {
     console.log(
-      `  ${modelName}: total=${formatNumber(modelTotals.totalTokens)} prompt=${formatNumber(modelTotals.promptTokens)} generated=${formatNumber(modelTotals.generatedTokens)} entries=${formatNumber(modelTotals.entries)}`,
+      [
+        styleText(row.modelName.padEnd(modelWidth), "magenta"),
+        styleText(row.total.padStart(totalWidth), "green"),
+      ].join(" ".repeat(MODEL_COLUMN_GAP)),
     );
   }
 }
@@ -335,44 +350,51 @@ function printPerModelTotals(totals) {
 function printTotals(reason) {
   const currentTotals = readCurrentTotals();
 
+  clearTerminal();
+
+  console.log(styleText("Continue token watcher", "cyan", "bold"));
+  console.log(styleText(`File: ${logPath}`, "dim"));
+  console.log(styleText(`Mode: ${getModeLabel()}`, "dim"));
+  if (reason) {
+    console.log(styleText(`Update: ${reason}`, "dim"));
+  }
+  console.log("");
+
   if (!currentTotals) {
-    console.log(`[${reason}] File not found: ${logPath}`);
+    console.log(styleText("File not found", "red", "bold"));
     return;
   }
 
   ensureBaseline(currentTotals);
 
   const visibleTotals = subtractTotals(currentTotals, baselineTotals);
-  const signature = getSignature(visibleTotals);
 
-  if (signature === lastSignature) {
-    return;
-  }
-
-  lastSignature = signature;
-
-  console.log(`\n[${new Date().toLocaleTimeString()}] ${reason}`);
-  console.log(`File: ${logPath}`);
-  console.log(`Mode:              ${getModeLabel()}`);
-
-  if (options.day) {
-    console.log(`Window start:      ${getDailyWindowStart().toLocaleString()}`);
-  }
-
-  console.log(`Entries:           ${formatNumber(visibleTotals.entries)}`);
-  console.log(`Prompt tokens:     ${formatNumber(visibleTotals.promptTokens)}`);
   console.log(
-    `Generated tokens:  ${formatNumber(visibleTotals.generatedTokens)}`,
+    [
+      `Entries: ${formatNumber(visibleTotals.entries)}`,
+      `Prompt: ${formatNumber(visibleTotals.promptTokens)}`,
+      `Generated: ${formatNumber(visibleTotals.generatedTokens)}`,
+      `Total: ${formatNumber(visibleTotals.totalTokens)}`,
+    ].join("  "),
   );
-  console.log(`Total tokens:      ${formatNumber(visibleTotals.totalTokens)}`);
-  console.log(`Last timestamp:    ${visibleTotals.lastTimestamp}`);
-  printPerModelTotals(visibleTotals);
 
-  if (currentTotals.invalidLines > 0) {
+  if (visibleTotals.lastTimestamp && visibleTotals.lastTimestamp !== "-") {
     console.log(
-      `Invalid lines:     ${formatNumber(currentTotals.invalidLines)}`,
+      styleText(`Last timestamp: ${visibleTotals.lastTimestamp}`, "dim"),
     );
   }
+
+  if (visibleTotals.invalidLines > 0) {
+    console.log(
+      styleText(
+        `Invalid lines: ${formatNumber(visibleTotals.invalidLines)}`,
+        "yellow",
+      ),
+    );
+  }
+
+  console.log("");
+  printPerModelTotals(visibleTotals);
 }
 
 function setupKeyboardShortcuts() {
@@ -399,11 +421,6 @@ function setupKeyboardShortcuts() {
   });
 }
 
-console.log(`Watching Continue tokens: ${logPath}`);
-console.log(`Mode: ${getModeLabel()}`);
-console.log(
-  `Keys: r = ${options.day ? "disabled in day mode" : "reset baseline"}, q = quit\n`,
-);
 printTotals("initial");
 
 const watcher = chokidar.watch(logPath, {
@@ -419,11 +436,9 @@ setupKeyboardShortcuts();
 watcher.on("add", () => printTotals("file added"));
 watcher.on("change", () => printTotals("file changed"));
 watcher.on("unlink", () => {
-  lastSignature = "";
   hasBaseline = false;
   baselineTotals = createEmptyTotals();
-  console.log(`\n[${new Date().toLocaleTimeString()}] file removed`);
-  console.log(`File: ${logPath}`);
+  printTotals("file removed");
 });
 watcher.on("error", (error) => {
   console.error("Watcher error:", error);
