@@ -13,6 +13,13 @@ const DEFAULT_LOG_PATH = path.join(
 );
 const DAILY_RESET_HOUR = 2;
 
+// Edit this map to apply custom token multipliers per exact model name.
+// Example: { "gpt-5.4-mini": 1.2 }
+const MODEL_TOKEN_MULTIPLIERS = {
+  "gpt-5.4": 1.04,
+  "gpt-5.4-mini": 1.14,
+};
+
 const rawArgs = process.argv.slice(2);
 const options = {
   sinceStart: false,
@@ -106,6 +113,24 @@ function createEmptyModelTotals() {
   };
 }
 
+function getModelTokenMultiplier(modelName) {
+  if (!modelName) {
+    return 1;
+  }
+
+  if (
+    Object.prototype.hasOwnProperty.call(MODEL_TOKEN_MULTIPLIERS, modelName)
+  ) {
+    return MODEL_TOKEN_MULTIPLIERS[modelName];
+  }
+
+  return 1;
+}
+
+function scaleTokens(value, multiplier) {
+  return Math.round(Number(value || 0) * multiplier);
+}
+
 function resolvePath(inputPath) {
   if (!inputPath) {
     return DEFAULT_LOG_PATH;
@@ -184,10 +209,11 @@ function shouldIncludeEntry(entry) {
 }
 
 function addEntryToTotals(totals, entry) {
-  const promptTokens = Number(entry.promptTokens || 0);
-  const generatedTokens = Number(entry.generatedTokens || 0);
-  const totalTokens = promptTokens + generatedTokens;
   const modelName = String(entry.model || "unknown");
+  const multiplier = getModelTokenMultiplier(modelName);
+  const promptTokens = scaleTokens(entry.promptTokens, multiplier);
+  const generatedTokens = scaleTokens(entry.generatedTokens, multiplier);
+  const totalTokens = promptTokens + generatedTokens;
 
   totals.entries += 1;
   totals.promptTokens += promptTokens;
@@ -325,9 +351,12 @@ function readLatestEntryData() {
     return null;
   }
 
+  const model = String(latestEntry.model || "unknown");
+  const multiplier = getModelTokenMultiplier(model);
+
   return {
-    promptTokens: Number(latestEntry.promptTokens || 0),
-    model: String(latestEntry.model || "unknown"),
+    promptTokens: scaleTokens(latestEntry.promptTokens, multiplier),
+    model,
   };
 }
 
