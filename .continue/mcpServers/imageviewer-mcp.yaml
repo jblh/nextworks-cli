@@ -1,9 +1,0 @@
-name: Image Viewer MCP
-version: 0.0.1
-schema: v1
-mcpServers:
-  - name: Image Viewer
-    command: node
-    args:
-      - "C:/Users/Jakob/Documents/WareHouse/nextworks/1_nextworks-cli/image-viewer-mcp/dist/index.js"
-    env: {}
