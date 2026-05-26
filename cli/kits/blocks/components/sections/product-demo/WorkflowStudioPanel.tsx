@@ -470,20 +470,20 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
     if (entry.kind === "title") {
       return (
         <div key={entry.id} className="space-y-2.5">
-          <div className="flex items-center justify-between gap-3 text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+          <div className="flex items-center justify-between gap-3 text-[9px] uppercase tracking-[0.15em] text-[var(--demo-subtle-fg)]">
             <div className="flex min-w-0 items-center gap-2">
               <span>Session focus</span>
-              <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+              <span className="h-1 w-1 rounded-full bg-[var(--demo-border-strong)]" />
               <span className="truncate">{entry.text}</span>
             </div>
             {activeNode?.type ? (
-              <span className="rounded-full border border-black/[0.07] bg-white/72 px-2 py-1 text-[8px] tracking-[0.16em] text-slate-500 dark:border-white/[0.08] dark:bg-white/[0.032] dark:text-slate-400">
+              <span className="rounded-full border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] px-2 py-1 text-[8px] tracking-[0.16em] text-[var(--demo-muted-fg)]">
                 {activeNode.type}
               </span>
             ) : null}
           </div>
           {activeNode?.description ? (
-            <div className="rounded-lg border border-black/[0.07] bg-white/62 px-3 py-2.5 text-[12px] leading-relaxed text-slate-800 shadow-none dark:border-white/[0.08] dark:bg-white/[0.028] dark:text-slate-200 dark:shadow-none">
+            <div className="rounded-lg border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] px-3 py-2.5 text-[12px] leading-relaxed text-[var(--demo-fg)] shadow-none">
               {activeNode.description}
             </div>
           ) : null}
@@ -495,15 +495,15 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
       return (
         <div
           key={entry.id}
-          className="space-y-1.5 rounded-lg border border-black/[0.085] bg-white/72 px-3 py-2.5 dark:border-white/[0.08] dark:bg-white/[0.032]"
+          className="space-y-1.5 rounded-lg border border-[var(--demo-border-strong)] bg-[var(--demo-shell-strong-bg)] px-3 py-2.5"
         >
-          <div className="flex items-center justify-between gap-3 text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+          <div className="flex items-center justify-between gap-3 text-[9px] uppercase tracking-[0.15em] text-[var(--demo-subtle-fg)]">
             <span>Prompt</span>
-            <span className="text-[8px] tracking-[0.18em] text-slate-400 dark:text-slate-500">
+            <span className="text-[8px] tracking-[0.18em] text-[var(--demo-subtle-fg)]">
               Sent
             </span>
           </div>
-          <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-200">
+          <div className="text-[12px] leading-relaxed text-[var(--demo-fg)]">
             {entry.text}
           </div>
         </div>
@@ -514,12 +514,12 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
       return (
         <div
           key={entry.id}
-          className="space-y-1.5 rounded-lg border border-black/[0.07] bg-white/62 px-3 py-2.5 dark:border-white/[0.08] dark:bg-white/[0.028]"
+          className="space-y-1.5 rounded-lg border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] px-3 py-2.5"
         >
-          <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+          <div className="text-[9px] uppercase tracking-[0.15em] text-[var(--demo-subtle-fg)]">
             {getEntryLabel(entry.kind)}
           </div>
-          <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-300">
+          <div className="text-[12px] leading-relaxed text-[var(--demo-fg)]">
             {entry.text}
           </div>
         </div>
@@ -529,13 +529,14 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
     if (entry.kind === "message") {
       return (
         <div key={entry.id} className="max-w-[92%] space-y-1">
-          <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+          <div className="text-[9px] uppercase tracking-[0.15em] text-[var(--demo-subtle-fg)]">
             {getEntryLabel(entry.kind)}
           </div>
-          <div className="text-[12px] leading-relaxed text-slate-800 dark:text-slate-200">
+          <div className="text-[12px] leading-relaxed text-[var(--demo-fg)]">
             {isLocalEntry ? (
               <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#3b82f6]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--demo-accent)]" />
+
                 <span>{entry.text}</span>
               </span>
             ) : (
@@ -556,13 +557,13 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
       return (
         <div
           key={entry.id}
-          className="space-y-1.5 rounded-md border border-black/[0.07] bg-white/58 px-3 py-2 dark:border-white/[0.075] dark:bg-white/[0.022]"
+          className="space-y-1.5 rounded-md border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] px-3 py-2"
         >
-          <div className="text-[9px] uppercase tracking-[0.15em] text-slate-500/90 dark:text-slate-500/90">
+          <div className="text-[9px] uppercase tracking-[0.15em] text-[var(--demo-subtle-fg)]">
             {getEntryLabel(entry.kind)}
           </div>
-          <div className="flex items-center justify-between gap-3 text-[11px] text-slate-700 dark:text-slate-300">
-            <span className="truncate font-mono text-[11px] text-slate-700 dark:text-slate-300">
+          <div className="flex items-center justify-between gap-3 text-[11px] text-[var(--demo-fg)]">
+            <span className="truncate font-mono text-[11px] text-[var(--demo-fg)]">
               {entry.path ?? entry.text}
             </span>
             <div className="flex items-center gap-2 font-mono text-[11px] tabular-nums">
@@ -570,13 +571,13 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                 prefix="+"
                 value={entry.added}
                 visible={isNewestVisibleFile}
-                className="text-[#3b82f6]"
+                className="text-[var(--demo-info)]"
               />
               <PatchCount
                 prefix="-"
                 value={entry.removed}
                 visible={isNewestVisibleFile}
-                className="text-[#ef4444]"
+                className="text-[var(--demo-danger)]"
               />
             </div>
           </div>
@@ -587,10 +588,10 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
     if (entry.kind === "thought") {
       return (
         <div key={entry.id} className="space-y-1">
-          <div className="text-[9px] uppercase tracking-[0.15em] text-slate-400/90 dark:text-slate-500/90">
+          <div className="text-[9px] uppercase tracking-[0.15em] text-[var(--demo-subtle-fg)]">
             {getEntryLabel(entry.kind)}
           </div>
-          <div className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
+          <div className="text-[11px] leading-relaxed text-[var(--demo-muted-fg)]">
             {entry.text}
           </div>
         </div>
@@ -608,23 +609,23 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
         {/*
         <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.15em] text-slate-400/90 dark:text-slate-500/90">
           <span>{getEntryLabel(entry.kind)}</span>
-          <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+          <span className="h-1 w-1 rounded-full bg-[var(--demo-border-strong)]" />
           <span className="truncate">
             {activeNode?.type ?? "Agent"}
           </span>
         </div>
         */}
-        <div className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-500">
+        <div className="text-[11px] leading-relaxed text-[var(--demo-muted-fg)]">
           {entry.text}
         </div>
         {isLastActivity && activeNode?.metadata ? (
-          <div className="pt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-300">
+          <div className="pt-1 text-[11px] leading-relaxed text-[var(--demo-muted-fg)]">
             {activeNode.metadata}
           </div>
         ) : null}
         {isRunning && index === visibleTranscript.length - 1 ? (
-          <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-400 dark:text-slate-500">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
+          <div className="flex items-center gap-2 pt-1 text-[11px] text-[var(--demo-subtle-fg)]">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--demo-accent)]" />
             Running
           </div>
         ) : null}
@@ -633,7 +634,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
   };
 
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#f4f5f1] text-slate-900 [font-synthesis:none] antialiased dark:bg-[#090909] dark:text-slate-100">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[var(--demo-panel-muted-bg)] text-[var(--demo-fg)] [font-synthesis:none] antialiased">
       <div className="relative min-h-0 flex-1">
         <div
           ref={scrollViewportRef}
@@ -667,11 +668,11 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
             onPointerMove={handleScrollbarPointerMove}
             onPointerUp={handleScrollbarPointerUp}
             onPointerCancel={handleScrollbarPointerUp}
-            className="absolute inset-y-3 right-1.5 w-[10px] cursor-pointer overflow-hidden rounded-full bg-black/[0.045] dark:bg-white/[0.05]"
+            className="absolute inset-y-3 right-1.5 w-[10px] cursor-pointer overflow-hidden rounded-full bg-[var(--demo-scroll-track)]"
           >
             <div
               data-scrollbar-thumb="true"
-              className="absolute inset-x-1 rounded-full bg-[linear-gradient(180deg,rgba(15,23,42,0.26),rgba(15,23,42,0.42))] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] dark:bg-[linear-gradient(180deg,rgba(226,232,240,0.24),rgba(226,232,240,0.4))] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] will-change-transform"
+              className="absolute inset-x-1 rounded-full bg-[var(--demo-scroll-thumb)] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] will-change-transform"
               style={{
                 height: `${thumbHeight}px`,
                 transform: `translateY(${thumbOffset}px)`,
@@ -682,12 +683,12 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
       </div>
 
       {composer ? (
-        <div className="border-t border-black/[0.055] bg-[#eef0eb] px-4 py-3 dark:border-white/[0.07] dark:bg-[#090909]">
+        <div className="border-t border-[var(--demo-border)] bg-[var(--demo-panel-subtle-bg)] px-4 py-3">
           <form
-            className="rounded-lg border border-black/[0.07] bg-white/72 px-3 py-3 shadow-none dark:border-white/[0.08] dark:bg-white/[0.03] dark:shadow-none"
+            className="rounded-lg border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] px-3 py-3 shadow-none"
             onSubmit={handleComposerSubmit}
           >
-            <label className="block text-[11px] text-slate-500 dark:text-slate-500">
+            <label className="block text-[11px] text-[var(--demo-subtle-fg)]">
               <span className="sr-only">
                 {composer.placeholder ??
                   "Ask the agent to inspect, search, or build..."}
@@ -700,15 +701,15 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                   composer.placeholder ??
                   "Ask the agent to inspect, search, or build..."
                 }
-                className="w-full bg-transparent text-[11px] leading-5 text-slate-700 outline-none placeholder:text-slate-500 dark:text-slate-200 dark:placeholder:text-slate-500"
+                className="w-full bg-transparent text-[11px] leading-5 text-[var(--demo-fg)] outline-none placeholder:text-[var(--demo-subtle-fg)]"
               />
             </label>
 
-            <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500 dark:text-slate-400">
-              <span className="rounded-full border border-black/[0.07] bg-[#f5f6f2] px-2.5 py-1 text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
+            <div className="mt-3 flex items-center gap-2 text-[10px] text-[var(--demo-muted-fg)]">
+              <span className="rounded-full border border-[var(--demo-border)] bg-[var(--demo-shell-strong-bg)] px-2.5 py-1 text-[var(--demo-muted-fg)]">
                 {composer.modeLabel ?? "Agent"}
               </span>
-              <span className="rounded-full border border-black/[0.07] bg-[#f5f6f2] px-2.5 py-1 text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
+              <span className="rounded-full border border-[var(--demo-border)] bg-[var(--demo-shell-strong-bg)] px-2.5 py-1 text-[var(--demo-muted-fg)]">
                 {composer.modelLabel ?? "Model 2"}
               </span>
               <div className="ml-auto flex items-center gap-2">
@@ -716,7 +717,7 @@ export function WorkflowStudioPanel({ state }: WorkflowStudioPanelProps) {
                   type="submit"
                   disabled={!composerValue.trim()}
                   aria-label="Submit prompt"
-                  className="flex h-6 w-6 items-center justify-center rounded-full border border-black/[0.07] bg-[#f5f6f2] text-slate-600 transition hover:border-black/[0.11] hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.07] dark:hover:text-white"
+                  className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--demo-border)] bg-[var(--demo-shell-strong-bg)] text-[var(--demo-muted-fg)] transition hover:border-[var(--demo-border-strong)] hover:bg-[var(--demo-panel-bg)] hover:text-[var(--demo-fg)] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <svg
                     aria-hidden="true"
