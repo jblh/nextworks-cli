@@ -42,24 +42,24 @@ export function FAQ() {
         className:
           "bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] px-5 py-16 dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
       }}
-      container={{ className: "max-w-6xl mx-auto" }}
+      container={{ className: "mx-auto max-w-6xl" }}
       heading={{
         className:
           "mb-8 text-center font-outfit text-3xl font-semibold text-[var(--heading-fg)] md:text-4xl",
       }}
       grid={{ className: "grid grid-cols-1 gap-5 lg:grid-cols-2" }}
-      item={{ className: "mb-0 w-full" }}
+      item={{ className: "w-full" }}
       questionButton={{
         className:
-          "flex cursor-pointer items-center justify-between rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] p-5 font-inter font-semibold text-[var(--card-title-fg)] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 dark:hover:bg-white/[0.04]",
+          "flex cursor-pointer items-center justify-between rounded-xl border border-[var(--card-border)] bg-[var(--faq-btn-bg)] p-5 font-inter font-semibold text-[var(--faq-btn-fg)] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--faq-btn-hover-bg)] hover:text-[var(--faq-btn-hover-fg)] [--btn-border:var(--card-border)]",
       }}
+      questionText={{ className: "font-inter text-base" }}
       answer={{
         className:
-          "overflow-hidden rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--card-fg)] shadow-sm",
+          "overflow-hidden rounded-xl border border-[var(--card-border)] bg-[var(--faq-answer-bg)] text-[var(--faq-answer-fg)] shadow-sm",
       }}
-      answerText={{
-        className: "font-inter text-sm leading-7 text-[var(--card-fg)]",
-      }}
+      answerText={{ className: "font-inter text-sm leading-7" }}
+      allowMultipleOpen={true}
       ariaLabel="AI coding agent frequently asked questions"
     />
   );

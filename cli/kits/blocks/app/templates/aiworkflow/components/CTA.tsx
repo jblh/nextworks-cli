@@ -6,7 +6,8 @@ export function CTA() {
   return (
     <SharedCTA
       section={{
-        className: "bg-[var(--cta-section-bg)]",
+        className:
+          "bg-[var(--cta-section-bg)] px-6 py-16 [--cta-heading-fg:theme(colors.slate.950)] dark:[--cta-heading-fg:theme(colors.white)] [--cta-subheading-fg:theme(colors.slate.600)] dark:[--cta-subheading-fg:rgba(255,255,255,0.82)] [--cta-description-fg:theme(colors.slate.700)] dark:[--cta-description-fg:rgba(255,255,255,0.74)]",
       }}
       container={{
         className:
