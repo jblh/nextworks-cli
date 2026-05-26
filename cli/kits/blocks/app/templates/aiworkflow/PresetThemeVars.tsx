@@ -1,1 +1,1 @@
-export { PresetThemeVars } from "./themes/default";
+export { PresetThemeVars } from "./themes/animation";
