@@ -55,7 +55,11 @@ export function PresetThemeVars({ className, children }: Props) {
         "[--hero-cta-secondary-hover-bg:rgba(15,23,42,0.03)] dark:[--hero-cta-secondary-hover-bg:rgba(255,255,255,0.05)]",
         "[--hero-cta-secondary-hover-fg:theme(colors.slate.800)] dark:[--hero-cta-secondary-hover-fg:theme(colors.slate.100)]",
 
+        "[--section-bg:linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] dark:[--section-bg:linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
+        "[--section-border:rgba(226,232,240,0.8)] dark:[--section-border:theme(colors.slate.800)]",
+
         "[--contact-section-bg:linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] dark:[--contact-section-bg:linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
+
         "[--contact-submit-bg:theme(colors.slate.950)] dark:[--contact-submit-bg:theme(colors.white)]",
         "[--contact-submit-fg:theme(colors.white)] dark:[--contact-submit-fg:theme(colors.slate.950)]",
         "[--contact-submit-hover-bg:theme(colors.slate.800)] dark:[--contact-submit-hover-bg:theme(colors.slate.100)]",
@@ -81,7 +85,8 @@ export function PresetThemeVars({ className, children }: Props) {
         "[--process-step-fg:theme(colors.white)] dark:[--process-step-fg:theme(colors.slate.950)]",
         "[--process-connector:theme(colors.slate.300)] dark:[--process-connector:theme(colors.slate.700)]",
 
-        "[--footer-bg:transparent] dark:[--footer-bg:transparent]",
+        "[--footer-bg:linear-gradient(180deg,rgba(255,255,255,0.42)_0%,rgba(255,255,255,0.14)_100%)] dark:[--footer-bg:linear-gradient(180deg,rgba(0,0,0,0.22)_0%,rgba(0,0,0,0.04)_100%)]",
+
         "[--footer-fg:theme(colors.slate.800)] dark:[--footer-fg:theme(colors.slate.100)]",
         "[--footer-heading-fg:theme(colors.slate.950)] dark:[--footer-heading-fg:theme(colors.white)]",
         "[--footer-link-fg:theme(colors.slate.700)] dark:[--footer-link-fg:theme(colors.slate.300)]",
