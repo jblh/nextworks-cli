@@ -127,11 +127,11 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
   const visibleCode = activeCode.slice(0, visibleLineCount);
 
   return (
-    <div className="flex h-full min-h-0 flex-col text-slate-900 [font-synthesis:none] antialiased dark:text-white/95">
-      <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/[0.065] bg-[#f6f7f4] shadow-none dark:border-white/[0.08] dark:bg-[#0a0a0a] dark:shadow-none">
+    <div className="flex h-full min-h-0 flex-col text-[var(--demo-fg)] [font-synthesis:none] antialiased">
+      <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-[var(--demo-border)] bg-[var(--demo-code-bg)] shadow-none">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f6f7f4] dark:bg-[#0a0a0a]">
-            <div className="border-r border-black/[0.05] bg-[#eff1ec] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400/88 dark:border-white/[0.06] dark:bg-[#0d0d0d] dark:text-slate-600/88">
+          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[var(--demo-code-bg)]">
+            <div className="border-r border-[var(--demo-border)] bg-[var(--demo-code-gutter-bg)] px-2 py-3 font-mono text-[11px] leading-7 text-[var(--demo-subtle-fg)]">
               {visibleCode.map((line, index) => {
                 const isAdded = line.trimStart().startsWith("+");
                 const isRemoved = line.trimStart().startsWith("-");
@@ -141,8 +141,8 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                     key={`${startLine + index}`}
                     className={cn(
                       "text-right",
-                      isAdded && "text-[#2563eb] dark:text-[#3b82f6]",
-                      isRemoved && "text-[#dc2626] dark:text-[#f87171]",
+                      isAdded && "text-[var(--demo-info)]",
+                      isRemoved && "text-[var(--demo-danger)]",
                     )}
                   >
                     {startLine + index}
@@ -151,7 +151,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
               })}
             </div>
 
-            <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[#f7f7f4] px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:bg-[#0b0b0b] dark:text-slate-300/92">
+            <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[var(--demo-code-bg)] px-3 py-3 font-mono text-[12px] leading-7 text-[var(--demo-fg)]">
               <div>
                 {visibleCode.map((line, index) => {
                   const isAdded = line.trimStart().startsWith("+");
@@ -163,12 +163,11 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                       className={cn(
                         "flex border-l border-transparent pl-3 transition-colors duration-300",
                         isAdded &&
-                          "border-[#2563eb]/38 bg-[#2563eb]/[0.045] text-slate-950 dark:border-[#3b82f6]/38 dark:bg-[#3b82f6]/[0.08] dark:text-[#dbeafe]",
+                          "border-[var(--demo-info-border)] bg-[var(--demo-info-soft-bg)] text-[var(--demo-fg)]",
                         isRemoved &&
-                          "border-[#dc2626]/34 bg-[#dc2626]/[0.042] text-slate-950 dark:border-[#f87171]/34 dark:bg-[#f87171]/[0.08] dark:text-[#fecdd3]",
-                        !isAdded &&
-                          !isRemoved &&
-                          "text-slate-700 dark:text-slate-300/90",
+                          "border-[var(--demo-danger-border)] bg-[var(--demo-danger-soft-bg)] text-[var(--demo-fg)]",
+                        !isAdded && !isRemoved && "text-[var(--demo-muted-fg)]",
+
                         displayEntry?.highlighted &&
                           index === Math.min(1, visibleCode.length - 1) &&
                           "animate-pulse",
@@ -178,10 +177,10 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                         className={cn(
                           "mr-3 w-3 shrink-0 text-center text-[11px]",
                           isAdded
-                            ? "text-[#2563eb] dark:text-[#60a5fa]"
+                            ? "text-[var(--demo-info)]"
                             : isRemoved
-                              ? "text-[#dc2626] dark:text-[#f87171]"
-                              : "text-slate-400/90 dark:text-slate-600/90",
+                              ? "text-[var(--demo-danger)]"
+                              : "text-[var(--demo-subtle-fg)]",
                         )}
                       >
                         {isAdded ? "+" : isRemoved ? "-" : " "}
@@ -197,8 +196,8 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
 
                 {displayEntry?.highlighted &&
                 visibleLineCount < activeLineCount ? (
-                  <div className="mt-2 flex items-center gap-2 pl-3 text-[11px] text-slate-400 dark:text-slate-500">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
+                  <div className="mt-2 flex items-center gap-2 pl-3 text-[11px] text-[var(--demo-subtle-fg)]">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--demo-accent)]" />
                     Applying change...
                   </div>
                 ) : null}
@@ -210,16 +209,16 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
         </div>
 
         {state.metrics?.length ? (
-          <div className="hidden w-[6.75rem] shrink-0 border-l border-black/[0.05] bg-[#f1f3ee] p-2 lg:flex lg:flex-col lg:gap-2 dark:border-white/[0.07] dark:bg-white/[0.025]">
+          <div className="hidden w-[6.75rem] shrink-0 border-l border-[var(--demo-border)] bg-[var(--demo-panel-muted-bg)] p-2 lg:flex lg:flex-col lg:gap-2">
             {state.metrics.map((metric) => (
               <div
                 key={metric.id}
-                className="rounded-md border border-black/[0.065] bg-white/76 px-2 py-2 text-center dark:border-white/[0.08] dark:bg-white/[0.03]"
+                className="rounded-md border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] px-2 py-2 text-center"
               >
-                <div className="text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
+                <div className="text-[10px] uppercase tracking-[0.16em] text-[var(--demo-subtle-fg)]">
                   {metric.label}
                 </div>
-                <div className="mt-1 font-mono text-[12px] text-slate-800 dark:text-slate-200">
+                <div className="mt-1 font-mono text-[12px] text-[var(--demo-fg)]">
                   {metric.value}
                 </div>
               </div>

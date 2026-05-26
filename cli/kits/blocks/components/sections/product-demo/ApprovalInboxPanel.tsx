@@ -10,13 +10,15 @@ export interface ApprovalInboxPanelProps {
 }
 
 const STATUS_TONE_CLASSES: Record<ProductDemoStatusTone, string> = {
-  neutral: "border-border/60 bg-muted/55 text-muted-foreground",
-  info: "border-sky-500/30 bg-sky-500/10 text-sky-600 dark:text-sky-300",
+  neutral:
+    "border-[var(--demo-border)] bg-[var(--demo-panel-bg)] text-[var(--demo-muted-fg)]",
+  info: "border-[var(--demo-info-border)] bg-[var(--demo-info-soft-bg)] text-[var(--demo-info)]",
   success:
-    "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300",
+    "border-[var(--demo-success-border)] bg-[var(--demo-success-soft-bg)] text-[var(--demo-success)]",
   warning:
-    "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
-  danger: "border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-300",
+    "border-[var(--demo-warning-border)] bg-[var(--demo-warning-soft-bg)] text-[var(--demo-warning)]",
+  danger:
+    "border-[var(--demo-danger-border)] bg-[var(--demo-danger-soft-bg)] text-[var(--demo-danger)]",
 };
 
 function getStatusClass(tone: ProductDemoStatusTone = "neutral") {
@@ -25,15 +27,15 @@ function getStatusClass(tone: ProductDemoStatusTone = "neutral") {
 
 export function ApprovalInboxPanel({ state }: ApprovalInboxPanelProps) {
   return (
-    <div className="flex h-full flex-col gap-4">
+    <div className="flex h-full flex-col gap-4 text-[var(--demo-fg)]">
       <div className="space-y-1.5">
         {state.title && (
-          <h4 className="text-sm font-semibold text-card-foreground">
+          <h4 className="text-sm font-semibold text-[var(--demo-fg)]">
             {state.title}
           </h4>
         )}
         {state.subtitle && (
-          <p className="text-xs leading-relaxed text-muted-foreground">
+          <p className="text-xs leading-relaxed text-[var(--demo-muted-fg)]">
             {state.subtitle}
           </p>
         )}
@@ -66,17 +68,18 @@ export function ApprovalInboxPanel({ state }: ApprovalInboxPanelProps) {
             <div
               key={item.id}
               className={cn(
-                "rounded-2xl border border-border/60 bg-background/80 p-3",
-                isActive && "border-primary/45 bg-primary/6 shadow-sm",
+                "rounded-2xl border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] p-3",
+                isActive &&
+                  "border-[var(--demo-info-border)] bg-[var(--demo-info-soft-bg)] shadow-sm",
               )}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <div className="text-sm font-semibold text-card-foreground">
+                  <div className="text-sm font-semibold text-[var(--demo-fg)]">
                     {item.title}
                   </div>
                   {item.description && (
-                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                    <p className="mt-1 text-xs leading-relaxed text-[var(--demo-muted-fg)]">
                       {item.description}
                     </p>
                   )}
@@ -94,7 +97,7 @@ export function ApprovalInboxPanel({ state }: ApprovalInboxPanelProps) {
               </div>
 
               {(item.requester || item.priorityLabel || item.dueLabel) && (
-                <div className="mt-3 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
+                <div className="mt-3 flex flex-wrap gap-2 text-[11px] text-[var(--demo-muted-fg)]">
                   {item.requester && <span>By {item.requester}</span>}
                   {item.priorityLabel && <span>{item.priorityLabel}</span>}
                   {item.dueLabel && <span>{item.dueLabel}</span>}
