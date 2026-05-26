@@ -27,6 +27,9 @@ packages/**/*.tgz
 # Playwright
 .playwright-mcp/
 
+# Image viewer
+image-viewer-mcp/
+
 # TypeScript build info (already present in packages)
 **/*.tsbuildinfo
 
