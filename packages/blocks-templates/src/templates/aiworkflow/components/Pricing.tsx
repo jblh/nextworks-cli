@@ -9,16 +9,16 @@ export function Pricing() {
   return (
     <SharedPricing
       id="pricing"
-      pricingHeadingText="Pricing for teams automating real operational work"
+      pricingHeadingText="Pricing for teams shipping with coding agents"
       pricingPlans={[
         {
           pricingPlanHeaderText: "Starter",
           pricingPlanPrice: "$49/mo",
           pricingPlanFeatures: [
-            "3 active workflows",
-            "Slack and email intake",
-            "Shared approval inbox",
-            "Core analytics",
+            "3 active repos",
+            "GitHub and docs intake",
+            "Shared review queue",
+            "Patch analytics",
           ],
           pricingPlanCTALabel: "Start free",
           pricingPlanCTAHref: "#contact",
@@ -27,11 +27,11 @@ export function Pricing() {
           pricingPlanHeaderText: "Growth",
           pricingPlanPrice: "$149/mo",
           pricingPlanFeatures: [
-            "Unlimited workflows",
-            "CRM and project tool sync",
-            "Advanced approval routing",
-            "Live execution dashboards",
-            "Role-based governance",
+            "Unlimited agent runs",
+            "Repo, issue tracker, and CI sync",
+            "Review gates and approvals",
+            "Live diff dashboards",
+            "Role-based code governance",
           ],
           pricingPlanCTALabel: "Book a demo",
           pricingPlanCTAHref: "#contact",
@@ -41,23 +41,28 @@ export function Pricing() {
           pricingPlanHeaderText: "Enterprise",
           pricingPlanPrice: "Custom",
           pricingPlanFeatures: [
-            "Private deployment options",
-            "Custom policy and knowledge connectors",
-            "SSO and audit exports",
-            "Dedicated onboarding",
-            "Priority support",
+            "Private agent deployment options",
+            "Custom repo and context connectors",
+            "SSO and change exports",
+            "Dedicated rollout support",
+            "Priority agent support",
           ],
-          pricingPlanCTALabel: "Talk to sales",
+          pricingPlanCTALabel: "Talk to the team",
           pricingPlanCTAHref: "#contact",
         },
       ]}
-      section={{ className: "bg-background pt-18 pb-16" }}
+      section={{
+        className:
+          "bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] pt-18 pb-16 dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
+      }}
       container={{ className: "max-w-7xl mx-auto px-6" }}
       heading={{
         className:
           "mb-4 text-center font-outfit text-3xl font-semibold text-[var(--heading-fg)] md:text-4xl lg:text-5xl",
       }}
-      grid={{ className: "mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" }}
+      grid={{
+        className: "mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3",
+      }}
       card={{
         className:
           "relative rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--card-fg)] shadow-[var(--card-shadow)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl",
@@ -71,19 +76,20 @@ export function Pricing() {
           "font-outfit text-3xl font-semibold text-[var(--card-title-fg)]",
       }}
       featureItem={{
-        className: "font-inter text-sm text-[var(--card-muted-fg)] md:text-base",
+        className:
+          "font-inter text-sm text-[var(--card-muted-fg)] md:text-base",
       }}
       cta={{
         variant: "default",
         size: "lg",
         className:
-          "w-full font-inter font-semibold [--btn-bg:theme(colors.cyan.500)] [--btn-fg:theme(colors.slate.950)] [--btn-border:transparent] hover:[--btn-hover-bg:theme(colors.cyan.400)] hover:[--btn-hover-fg:theme(colors.slate.950)]",
+          "w-full font-inter font-semibold [--btn-bg:theme(colors.slate.950)] [--btn-fg:theme(colors.white)] [--btn-border:transparent] hover:[--btn-hover-bg:theme(colors.slate.800)] hover:[--btn-hover-fg:theme(colors.white)] dark:[--btn-bg:theme(colors.white)] dark:[--btn-fg:theme(colors.slate.950)] dark:hover:[--btn-hover-bg:theme(colors.slate.100)] dark:hover:[--btn-hover-fg:theme(colors.slate.950)]",
       }}
       popularBadge={{
         className:
-          "absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-[var(--badge-active-border)] bg-[var(--badge-active-bg)] px-4 py-1 text-xs font-semibold text-[var(--badge-active-fg)]",
+          "absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-[var(--badge-active-border)] bg-[var(--badge-active-bg)] px-4 py-1 text-xs font-semibold text-[var(--badge-active-fg)] shadow-sm shadow-black/5",
       }}
-      ariaLabel="AI workflow pricing"
+      ariaLabel="AI coding agent pricing"
     />
   );
 }

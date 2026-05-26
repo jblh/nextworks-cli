@@ -18,12 +18,13 @@ export interface DemoWindowProps {
   enableMotion?: boolean;
   showControls?: boolean;
   showResizeHandle?: boolean;
+  showHeader?: boolean;
   children?: React.ReactNode;
 }
 
 const STATUS_TONE_CLASSES: Record<ProductDemoStatusTone, string> = {
   neutral: "border-border/60 bg-muted/60 text-muted-foreground",
-  info: "border-black/10 bg-black/[0.045] text-slate-700 dark:border-white/12 dark:bg-white/[0.045] dark:text-slate-200",
+  info: "border-black/[0.07] bg-black/[0.045] text-slate-700 dark:border-white/[0.09] dark:bg-white/[0.045] dark:text-slate-200",
 
   success:
     "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300",
@@ -43,6 +44,7 @@ export function DemoWindow({
   enableMotion = true,
   showControls = true,
   showResizeHandle = true,
+  showHeader = true,
   children,
 }: DemoWindowProps) {
   const statusTone = window.status?.tone ?? "neutral";
@@ -50,13 +52,13 @@ export function DemoWindow({
   return (
     <section
       className={cn(
-        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/8 bg-[#fcfcfa] shadow-[0_28px_80px_-34px_rgba(15,23,42,0.18)] [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:border-white/10 dark:bg-[#050505] dark:shadow-[0_24px_70px_-32px_rgba(2,8,23,0.82)]",
+        "group relative flex h-full min-h-[14rem] flex-col overflow-hidden border border-black/[0.055] bg-[#fcfdff] shadow-none [font-synthesis:none] antialiased dark:border-white/[0.065] dark:bg-[#050505]",
 
+        "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.68),transparent)] before:opacity-70 dark:before:bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.16),transparent)] dark:before:opacity-100",
+        "after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-8 after:bg-[linear-gradient(180deg,transparent,rgba(15,23,42,0.03))] dark:after:bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.02))]",
         enableMotion &&
-          "transition-[transform,opacity,box-shadow,border-color] duration-500 ease-out motion-reduce:transition-none",
-        active &&
-          "border-black/14 shadow-[0_28px_84px_-36px_rgba(15,23,42,0.14)] dark:border-white/14 dark:shadow-[0_24px_60px_-26px_rgba(255,255,255,0.06)]",
-
+          "transition-[opacity,border-color,background-color] duration-500 ease-out motion-reduce:transition-none",
+        active && "border-black/[0.075] dark:border-white/[0.085]",
         dimmed && "opacity-90",
         className,
       )}
@@ -64,57 +66,60 @@ export function DemoWindow({
       data-active={active ? "true" : "false"}
       aria-label={window.title}
     >
-      <header
-        className={cn(
-          "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/8 px-4 py-2.5 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased sm:px-5 dark:border-white/10",
+      {showHeader ? (
+        <header
+          className={cn(
+            "relative flex min-h-[3.25rem] items-center justify-between gap-3 border-b border-black/[0.06] bg-[#f8fafc] px-4 py-2.5 [font-synthesis:none] antialiased sm:px-5 dark:border-white/[0.065] dark:bg-[#060606]",
 
-          chromeClassName,
-        )}
-      >
-        <div className="flex min-w-0 items-center gap-3">
-          {showControls && (
-            <div className="flex items-center gap-1.5 opacity-75 transition-opacity duration-200 group-hover:opacity-100">
-              <span className="h-2.5 w-2.5 rounded-full bg-rose-400/90" />
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-400/90" />
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/90" />
-            </div>
+            chromeClassName,
           )}
+        >
+          <div className="flex min-w-0 items-center gap-3">
+            {showControls && (
+              <div className="flex items-center gap-1.5 opacity-75 transition-opacity duration-200 group-hover:opacity-100">
+                <span className="h-2.5 w-2.5 rounded-full bg-rose-400/90" />
+                <span className="h-2.5 w-2.5 rounded-full bg-amber-400/90" />
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/90" />
+              </div>
+            )}
 
-          <div className="min-w-0 flex items-center gap-2 overflow-hidden">
-            <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
-              <h3 className="shrink-0 text-sm font-semibold tracking-[-0.02em] text-slate-950 sm:text-[0.95rem] dark:text-slate-100">
-                {window.title}
-              </h3>
-              {window.badge && (
-                <span className="rounded-full border border-slate-200 bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.16em] text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400">
-                  {window.badge}
-                </span>
-              )}
-              {window.subtitle && (
-                <p className="min-w-0 truncate text-[11px] leading-5 tracking-[0.005em] text-slate-600 dark:text-slate-400 sm:text-[0.8rem]">
-                  {window.subtitle}
-                </p>
-              )}
+            <div className="min-w-0 flex items-center gap-2 overflow-hidden">
+              <div className="flex min-w-0 items-center gap-2 whitespace-nowrap">
+                <h3 className="shrink-0 text-sm font-semibold tracking-[-0.02em] text-slate-950 sm:text-[0.95rem] dark:text-slate-100">
+                  {window.title}
+                </h3>
+                {window.badge && (
+                  <span className="rounded-full border border-slate-200 bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.16em] text-slate-600 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400">
+                    {window.badge}
+                  </span>
+                )}
+                {window.subtitle && (
+                  <p className="min-w-0 truncate text-[11px] leading-5 tracking-[0.005em] text-slate-600 dark:text-slate-400 sm:text-[0.8rem]">
+                    {window.subtitle}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {window.status?.label && (
-          <span
-            className={cn(
-              "shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em]",
-              STATUS_TONE_CLASSES[statusTone],
-              "hidden sm:inline-flex",
-            )}
-          >
-            {window.status.label}
-          </span>
-        )}
-      </header>
+          {window.status?.label && (
+            <span
+              className={cn(
+                "shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em]",
+                STATUS_TONE_CLASSES[statusTone],
+                "hidden sm:inline-flex",
+              )}
+            >
+              {window.status.label}
+            </span>
+          )}
+        </header>
+      ) : null}
 
       <div
         className={cn(
-          "relative flex-1 px-4 py-4 sm:px-5 sm:py-5",
+          "relative flex-1 min-h-0 px-4 py-4 sm:px-5 sm:py-5",
+
           bodyClassName,
         )}
       >

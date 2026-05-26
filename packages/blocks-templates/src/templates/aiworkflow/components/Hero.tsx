@@ -12,6 +12,18 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
     description:
       "Choose a repo task and watch the agent inspect code, apply edits, and update the diff.",
     activeWindow: "workflowStudio",
+    playback: {
+      workflowStudio: {
+        playbackStepDurationsMs: [780, 860, 1480, 1120, 940, 760, 1720],
+        playbackResetDelayMs: 2200,
+      },
+      runConsole: {
+        playbackStepDurationsMs: [1260, 1540, 980, 760, 680, 620, 1380],
+        playbackResetDelayMs: 2200,
+        playbackStepEntryIndices: [0, 0, 1, 1, 2, 2, 2, 2, 3],
+        playbackStepVisibleLineCounts: [2, 2, 3, 4, 6, 9, 12, 15, 16],
+      },
+    },
     taskList: {
       window: {
         key: "taskList",
@@ -72,7 +84,11 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           kind: "activity",
           text: "Read lib/auth/normalize-return-to.ts",
         },
-        { id: "auth-thought", kind: "thought", text: "Thought for 6s" },
+        {
+          id: "auth-thought",
+          kind: "thought",
+          text: "Reviewing redirect handling and fallback behavior",
+        },
         {
           id: "auth-message",
           kind: "message",
@@ -270,6 +286,18 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
     description:
       "Choose a repo task and watch the agent inspect code, apply edits, and update the diff.",
     activeWindow: "workflowStudio",
+    playback: {
+      workflowStudio: {
+        playbackStepDurationsMs: [820, 920, 1380, 1180, 980, 840, 1640],
+        playbackResetDelayMs: 2200,
+      },
+      runConsole: {
+        playbackStepDurationsMs: [1320, 1480, 920, 760, 700, 660, 1320],
+        playbackResetDelayMs: 2200,
+        playbackStepEntryIndices: [0, 0, 1, 1, 2, 2, 2, 3, 3],
+        playbackStepVisibleLineCounts: [2, 2, 3, 4, 5, 7, 9, 11, 11],
+      },
+    },
     taskList: {
       window: {
         key: "taskList",
@@ -330,7 +358,11 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           kind: "activity",
           text: "Inspect repeated pricing tier markup",
         },
-        { id: "pricing-thought", kind: "thought", text: "Thought for 5s" },
+        {
+          id: "pricing-thought",
+          kind: "thought",
+          text: "Mapping repeated sections before extracting shared blocks",
+        },
         {
           id: "pricing-message",
           kind: "message",
@@ -519,6 +551,18 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
     description:
       "Choose a repo task and watch the agent inspect code, apply edits, and update the diff.",
     activeWindow: "workflowStudio",
+    playback: {
+      workflowStudio: {
+        playbackStepDurationsMs: [760, 900, 1320, 1160, 920, 820, 1560],
+        playbackResetDelayMs: 2200,
+      },
+      runConsole: {
+        playbackStepDurationsMs: [1180, 1420, 940, 780, 700, 660, 1280],
+        playbackResetDelayMs: 2200,
+        playbackStepEntryIndices: [0, 0, 1, 1, 2, 2, 2, 3, 3],
+        playbackStepVisibleLineCounts: [2, 2, 3, 4, 6, 8, 10, 12, 12],
+      },
+    },
     taskList: {
       window: {
         key: "taskList",
@@ -579,7 +623,11 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           kind: "activity",
           text: "Inspect dialog primitive and navigation state",
         },
-        { id: "cmd-thought", kind: "thought", text: "Thought for 4s" },
+        {
+          id: "cmd-thought",
+          kind: "thought",
+          text: "Tracing shortcut handling and command menu state",
+        },
         {
           id: "cmd-message",
           kind: "message",
@@ -772,19 +820,22 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
 export function Hero() {
   return (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#f5f5f2_48%,#ecece8_100%)] dark:bg-[linear-gradient(180deg,#020202_0%,#060606_56%,#020202_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(112deg,transparent_18%,rgba(255,255,255,0.18)_28%,rgba(255,255,255,0.05)_37%,transparent_50%),linear-gradient(248deg,transparent_22%,rgba(255,255,255,0.14)_31%,rgba(255,255,255,0.04)_41%,transparent_56%)] opacity-70 dark:opacity-100" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_34%)] opacity-70 dark:opacity-100" />
+      <div className="pointer-events-none absolute left-1/2 top-[26rem] h-[32rem] w-[62rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.12)_12%,rgba(255,255,255,0.06)_24%,transparent_66%)] blur-3xl opacity-85 dark:opacity-100" />
 
       <HeroProductDemo
         className="bg-transparent"
         heading={{
           text: "Code with agents.",
           className:
-            "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-slate-950 sm:text-4xl lg:text-5xl dark:text-white",
+            "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
         }}
         subheading={{
           text: "Watch the agent read, edit, and update the result in real time.",
           className:
-            "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-300",
+            "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
         }}
         cta1={{
           label: "Start building",
@@ -792,10 +843,11 @@ export function Hero() {
           variant: "default",
           size: "lg",
           className: [
-            "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10",
-            "[--btn-bg:theme(colors.slate.950)]",
-            "hover:[--btn-hover-bg:theme(colors.slate.800)]",
-            "[--btn-fg:white]",
+            "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30",
+            "[--btn-bg:var(--hero-cta-primary-bg)]",
+            "hover:[--btn-hover-bg:var(--hero-cta-primary-hover-bg)]",
+            "[--btn-fg:var(--hero-cta-primary-fg)]",
+            "hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
           ].join(" "),
         }}
         cta2={{
@@ -804,13 +856,12 @@ export function Hero() {
           variant: "outline",
           size: "lg",
           className: [
-            "border px-7 py-3 text-sm font-semibold shadow-sm",
-            "[--btn-bg:transparent]",
-            "[--btn-fg:theme(colors.slate.800)]",
-            "[--btn-border:rgba(15,23,42,0.12)]",
-            "hover:[--btn-hover-bg:rgba(15,23,42,0.03)]",
-            "dark:[--btn-fg:white]",
-            "dark:[--btn-border:rgba(255,255,255,0.12)]",
+            "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20",
+            "[--btn-bg:var(--hero-cta-secondary-bg)]",
+            "[--btn-fg:var(--hero-cta-secondary-fg)]",
+            "[--btn-border:var(--hero-cta-secondary-border)]",
+            "hover:[--btn-hover-bg:var(--hero-cta-secondary-hover-bg)]",
+            "hover:[--btn-hover-fg:var(--hero-cta-secondary-hover-fg)]",
           ].join(" "),
         }}
         stage={{
@@ -822,20 +873,20 @@ export function Hero() {
           className: "px-6 py-10 sm:px-8 lg:px-10 lg:py-12",
         }}
         container={{
-          className: "relative z-10 max-w-[88rem]",
+          className: "relative z-10 max-w-7xl",
         }}
         textContainer={{
-          className: "max-w-3xl pt-1 lg:pt-0",
+          className: "max-w-3xl pt-1 lg:pl-4 lg:pt-0",
         }}
         demoContainer={{
           className:
-            "relative mx-auto min-h-[36rem] w-full max-w-[88%] lg:min-h-[44rem]",
+            "relative min-h-[36rem] w-full max-w-full lg:px-4 lg:h-[clamp(35rem,calc(100svh-7rem),48rem)] lg:min-h-0",
         }}
         buttonsContainer={{
           className: "mt-4 flex-col items-start sm:flex-row sm:items-center",
         }}
         demoBelowText
-        ariaLabel="AI workflow automation hero section"
+        ariaLabel="AI coding agent hero section"
       />
     </div>
   );

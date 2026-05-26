@@ -14,9 +14,11 @@ import { WorkflowStudioPanel } from "./WorkflowStudioPanel";
 import type {
   ProductDemoHighlightTarget,
   ProductDemoHighlightTone,
+  ProductDemoRunConsolePlaybackConfig,
   ProductDemoScenario,
   ProductDemoWindowKey,
   ProductDemoWindowMeta,
+  ProductDemoWorkflowPlaybackConfig,
 } from "./types";
 
 export interface DemoStageProps {
@@ -106,6 +108,117 @@ function useActiveScenario({
     activeIndex,
     setActiveIndex: setInternalIndex,
   };
+}
+
+type PlaybackTimelineConfig = {
+  stepCount: number;
+  playbackMs?: number;
+  playbackStepDurationsMs?: number[];
+  playbackResetDelayMs?: number;
+  scenarioKey: string;
+};
+
+function getWorkflowPlaybackConfig(
+  scenario: ProductDemoScenario,
+): ProductDemoWorkflowPlaybackConfig {
+  return {
+    playbackMs:
+      scenario.playback?.workflowStudio?.playbackMs ??
+      scenario.workflowStudio.playbackMs,
+    playbackStepDurationsMs:
+      scenario.playback?.workflowStudio?.playbackStepDurationsMs ??
+      scenario.workflowStudio.playbackStepDurationsMs,
+    playbackResetDelayMs:
+      scenario.playback?.workflowStudio?.playbackResetDelayMs ??
+      scenario.workflowStudio.playbackResetDelayMs,
+  };
+}
+
+function getRunConsolePlaybackConfig(
+  scenario: ProductDemoScenario,
+): ProductDemoRunConsolePlaybackConfig {
+  return {
+    playbackMs:
+      scenario.playback?.runConsole?.playbackMs ??
+      scenario.runConsole.playbackMs,
+    playbackStepDurationsMs:
+      scenario.playback?.runConsole?.playbackStepDurationsMs ??
+      scenario.runConsole.playbackStepDurationsMs,
+    playbackResetDelayMs:
+      scenario.playback?.runConsole?.playbackResetDelayMs ??
+      scenario.runConsole.playbackResetDelayMs,
+    playbackStepEntryIndices:
+      scenario.playback?.runConsole?.playbackStepEntryIndices ??
+      scenario.runConsole.playbackStepEntryIndices,
+    playbackStepVisibleLineCounts:
+      scenario.playback?.runConsole?.playbackStepVisibleLineCounts ??
+      scenario.runConsole.playbackStepVisibleLineCounts,
+  };
+}
+
+function useDeterministicPlaybackStep({
+  stepCount,
+  playbackMs,
+  playbackStepDurationsMs,
+  playbackResetDelayMs,
+  scenarioKey,
+}: PlaybackTimelineConfig) {
+  const basePlaybackMs = playbackMs ?? 1800;
+  const stepDurations = playbackStepDurationsMs ?? [];
+  const resetDelayMs =
+    playbackResetDelayMs ?? Math.max(basePlaybackMs + 240, 1600);
+  const [playbackStep, setPlaybackStep] = React.useState(1);
+
+  React.useEffect(() => {
+    const initialStep = Math.max(1, Math.min(2, stepCount));
+    setPlaybackStep(initialStep);
+
+    if (stepCount <= 2) {
+      return;
+    }
+
+    let timeoutId = 0;
+    let cancelled = false;
+
+    const scheduleStep = (step: number) => {
+      const delay = Math.max(260, stepDurations[step - 3] ?? basePlaybackMs);
+
+      timeoutId = window.setTimeout(() => {
+        if (cancelled) {
+          return;
+        }
+
+        setPlaybackStep(step);
+
+        if (step >= stepCount) {
+          timeoutId = window.setTimeout(
+            () => {
+              if (cancelled) {
+                return;
+              }
+
+              setPlaybackStep(initialStep);
+              scheduleStep(initialStep + 1);
+            },
+            Math.max(600, resetDelayMs),
+          );
+
+          return;
+        }
+
+        scheduleStep(step + 1);
+      }, delay);
+    };
+
+    scheduleStep(initialStep + 1);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [basePlaybackMs, stepCount, resetDelayMs, stepDurations, scenarioKey]);
+
+  return playbackStep;
 }
 
 function HighlightPills({
@@ -217,42 +330,44 @@ export function DemoStage({
     );
   }
 
-  const workflowPlaybackMs = activeScenario.workflowStudio.playbackMs ?? 1800;
-  const transcriptLength = Math.max(
-    1,
-    activeScenario.workflowStudio.transcript?.length ?? 1,
-  );
-  const [playbackStep, setPlaybackStep] = React.useState(1);
+  const workflowPlayback = getWorkflowPlaybackConfig(activeScenario);
+  const runConsolePlayback = getRunConsolePlaybackConfig(activeScenario);
 
-  React.useEffect(() => {
-    setPlaybackStep(Math.max(1, Math.min(2, transcriptLength)));
+  const workflowPlaybackStep = useDeterministicPlaybackStep({
+    stepCount: Math.max(
+      1,
+      activeScenario.workflowStudio.transcript?.length ?? 1,
+    ),
+    playbackMs: workflowPlayback.playbackMs,
+    playbackStepDurationsMs: workflowPlayback.playbackStepDurationsMs,
+    playbackResetDelayMs: workflowPlayback.playbackResetDelayMs,
+    scenarioKey: `${activeScenario.key}-workflowStudio`,
+  });
 
-    if (transcriptLength <= 2) {
-      return;
-    }
-
-    const interval = window.setInterval(() => {
-      setPlaybackStep((current) => {
-        if (current >= transcriptLength) {
-          return 2;
-        }
-
-        return current + 1;
-      });
-    }, workflowPlaybackMs);
-
-    return () => window.clearInterval(interval);
-  }, [workflowPlaybackMs, transcriptLength, activeScenario.key]);
+  const runConsolePlaybackStep = useDeterministicPlaybackStep({
+    stepCount: Math.max(
+      1,
+      runConsolePlayback.playbackStepEntryIndices?.length ?? 0,
+      runConsolePlayback.playbackStepVisibleLineCounts?.length ?? 0,
+      activeScenario.runConsole.entries.length,
+    ),
+    playbackMs: runConsolePlayback.playbackMs,
+    playbackStepDurationsMs: runConsolePlayback.playbackStepDurationsMs,
+    playbackResetDelayMs: runConsolePlayback.playbackResetDelayMs,
+    scenarioKey: `${activeScenario.key}-runConsole`,
+  });
 
   const scenarioWithPlayback: ProductDemoScenario = {
     ...activeScenario,
     workflowStudio: {
       ...activeScenario.workflowStudio,
-      playbackStep,
+      ...workflowPlayback,
+      playbackStep: workflowPlaybackStep,
     },
     runConsole: {
       ...activeScenario.runConsole,
-      playbackStep,
+      ...runConsolePlayback,
+      playbackStep: runConsolePlaybackStep,
     },
   };
 
@@ -274,15 +389,12 @@ export function DemoStage({
       data-active-scenario-key={activeScenario.key}
       data-active-scenario-index={activeIndex}
       className={cn(
-        "relative isolate min-h-[36rem] w-full overflow-hidden rounded-[14px] border border-black/6 bg-[#d8d5ce] shadow-[0_36px_100px_-48px_rgba(15,23,42,0.18)] dark:border-white/8 dark:bg-[#151518] dark:shadow-[0_24px_80px_-32px_rgba(15,23,42,0.62)] lg:min-h-[44rem]",
+        "relative isolate min-h-[36rem] w-full overflow-visible rounded-none border-0 bg-transparent shadow-none lg:h-full lg:min-h-0",
         className,
       )}
       aria-label={ariaLabel}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.05),transparent_38%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.04),transparent_36%),linear-gradient(180deg,#e9e6df_0%,#d8d5ce_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.07),transparent_38%),radial-gradient(circle_at_top_right,rgba(239,68,68,0.06),transparent_36%),linear-gradient(180deg,#19191c_0%,#121215_100%)]" />
-      <div className="pointer-events-none absolute inset-[1px] rounded-[13px] ring-1 ring-white/28 dark:ring-white/6" />
-
-      <div className="relative z-10 flex min-h-[36rem] flex-col gap-3 p-5 sm:p-5 lg:min-h-[44rem] lg:p-6">
+      <div className="relative z-10 flex h-[36rem] min-h-[36rem] flex-col gap-0 lg:h-full lg:min-h-0">
         <div className="grid gap-4 lg:hidden">
           {windows.map((windowData) => {
             if (getWindowShellClass(windowData.key) === "hidden") {
@@ -302,6 +414,7 @@ export function DemoStage({
                 enableMotion={enableMotion}
                 showControls={false}
                 showResizeHandle={false}
+                showHeader={false}
               >
                 {windowData.content}
               </DemoWindow>
@@ -309,69 +422,97 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden lg:grid lg:min-h-[30rem] lg:grid-cols-10 lg:gap-0 xl:min-h-[32rem]">
-          {windows.map((windowData) => {
-            const shellClass = getWindowShellClass(windowData.key);
+        <div className="hidden overflow-hidden rounded-[0.4rem] border border-black/[0.055] bg-[#f9fbfe] shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] ring-1 ring-black/[0.018] dark:border-white/[0.07] dark:bg-[#050505] dark:shadow-[0_30px_100px_-52px_rgba(0,0,0,0.82)] dark:ring-white/[0.03] lg:flex lg:h-full lg:min-h-0 lg:flex-col">
+          <div className="relative flex h-[3.2rem] items-center justify-between border-b border-black/[0.055] bg-[#eef3f8] px-4 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] dark:border-white/[0.065] dark:bg-[#060606] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:px-5">
+            <div className="flex min-w-0 items-center gap-3.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-[0.4rem] border border-black/[0.065] bg-[#ffffff] text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] dark:border-white/[0.07] dark:bg-white/[0.06] dark:text-white/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                <span className="grid grid-cols-2 gap-[2px]">
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-900 dark:bg-white/90" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-500 dark:bg-white/55" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-500 dark:bg-white/55" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-900 dark:bg-white/90" />
+                </span>
+              </div>
+              <div className="min-w-0 space-y-0.5">
+                <div className="flex min-w-0 items-center gap-2">
+                  <div className="truncate text-[12px] font-semibold tracking-[-0.02em] text-slate-900 dark:text-white/94">
+                    Agent workspace
+                  </div>
+                  <span className="hidden rounded-full border border-black/[0.055] bg-white/72 px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.14em] text-slate-500 dark:border-white/[0.07] dark:bg-white/[0.04] dark:text-white/42 xl:inline-flex">
+                    session 03
+                  </span>
+                </div>
+                <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-white/40">
+                  Session · live repo
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 text-[10px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/42">
+              <div className="hidden items-center gap-2 text-[10px] text-slate-500 dark:text-white/38 xl:flex">
+                <span>repo</span>
+                <span className="font-mono text-slate-600 dark:text-white/52">
+                  apps/web
+                </span>
+              </div>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.055] bg-white/82 px-2.5 py-1 text-slate-600 dark:border-white/[0.07] dark:bg-white/[0.04] dark:text-white/58">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Active
+              </span>
+            </div>
+          </div>
 
-            if (shellClass === "hidden") {
-              return null;
-            }
+          <div className="grid min-h-0 flex-1 lg:grid-cols-10 lg:gap-0">
+            {windows.map((windowData) => {
+              const shellClass = getWindowShellClass(windowData.key);
 
-            const activeWindow =
-              activeScenario.activeWindow === windowData.key ||
-              (!activeScenario.activeWindow &&
-                windowData.key === "workflowStudio");
+              if (shellClass === "hidden") {
+                return null;
+              }
 
-            return (
-              <motion.div
-                key={windowData.key}
-                initial={enableMotion ? { opacity: 0, y: 10 } : false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={
-                  enableMotion
-                    ? {
-                        type: "tween",
-                        duration: 0.3,
-                      }
-                    : { duration: 0 }
-                }
-                className={cn("will-change-transform", shellClass)}
-              >
-                <DemoWindow
-                  window={windowData.meta}
-                  active={activeWindow}
-                  dimmed={false}
-                  enableMotion={enableMotion}
-                  showControls={false}
-                  showResizeHandle={false}
-                  className={cn(
-                    "min-h-[30rem] h-full border-y border-black/8 bg-white/96 shadow-none dark:border-white/8 dark:bg-[#050505] xl:min-h-[32rem]",
-                    windowData.key === "taskList" &&
-                      "rounded-none border-l-0 border-r-0",
-                    windowData.key === "runConsole" &&
-                      "rounded-none border-l-0 border-r-0",
-                    windowData.key === "workflowStudio" &&
-                      "border-l-0 border-r-0 rounded-none",
-                  )}
-                  chromeClassName={cn(
-                    "border-black/8 bg-white/96 dark:border-white/8 dark:bg-[#060606]",
-                    windowData.key === "taskList" && "rounded-none",
-                    windowData.key === "workflowStudio" &&
-                      "border-l-0 border-r-0 rounded-none",
-                    windowData.key === "runConsole" &&
-                      "px-3 py-2.5 sm:px-3 rounded-none",
-                  )}
-                  bodyClassName={cn(
-                    "px-4 py-4 sm:px-4 sm:py-4",
-                    windowData.key === "runConsole" &&
-                      "px-2 py-2 sm:px-2 sm:py-2",
-                  )}
+              const activeWindow =
+                activeScenario.activeWindow === windowData.key ||
+                (!activeScenario.activeWindow &&
+                  windowData.key === "workflowStudio");
+
+              return (
+                <motion.div
+                  key={windowData.key}
+                  initial={enableMotion ? { opacity: 0 } : false}
+                  animate={{ opacity: 1 }}
+                  transition={
+                    enableMotion
+                      ? {
+                          type: "tween",
+                          duration: 0.24,
+                        }
+                      : { duration: 0 }
+                  }
+                  className={cn("min-h-0", shellClass)}
                 >
-                  {windowData.content}
-                </DemoWindow>
-              </motion.div>
-            );
-          })}
+                  <DemoWindow
+                    window={windowData.meta}
+                    active={activeWindow}
+                    dimmed={false}
+                    enableMotion={enableMotion}
+                    showControls={false}
+                    showResizeHandle={false}
+                    showHeader={false}
+                    className={cn(
+                      "h-full min-h-0 border-0 shadow-none",
+                      windowData.key === "taskList" &&
+                        "rounded-none border-r border-black/[0.055] dark:border-white/[0.06]",
+                      windowData.key === "workflowStudio" &&
+                        "rounded-none border-r border-black/[0.055] dark:border-white/[0.06]",
+                      windowData.key === "runConsole" && "rounded-none",
+                    )}
+                    bodyClassName="px-0 py-0 sm:px-0 sm:py-0"
+                  >
+                    {windowData.content}
+                  </DemoWindow>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
