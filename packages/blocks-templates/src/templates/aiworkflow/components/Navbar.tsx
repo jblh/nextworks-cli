@@ -12,8 +12,13 @@ type PresetOverrides = Partial<SharedNavbarProps>;
 const defaultProps: SharedNavbarProps = {
   brand: "FlowPilot AI",
   brandNode: (
-    <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-[linear-gradient(135deg,rgba(59,130,246,0.9),rgba(255,255,255,0.92)_52%,rgba(239,68,68,0.9))] font-bold text-slate-950 shadow-sm ring-1 ring-white/50 dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(59,130,246,0.9),rgba(255,255,255,0.82)_52%,rgba(239,68,68,0.88))] dark:text-black dark:ring-white/10">
-      FP
+    <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--navbar-border)] bg-[var(--navbar-accent)] text-[var(--navbar-toggle-bg)] shadow-sm ring-1 ring-white/20 dark:ring-white/10">
+      <span className="grid grid-cols-2 gap-[2px]">
+        <span className="h-[4px] w-[4px] rounded-[1px] bg-current/95" />
+        <span className="h-[4px] w-[4px] rounded-[1px] bg-current/55" />
+        <span className="h-[4px] w-[4px] rounded-[1px] bg-current/55" />
+        <span className="h-[4px] w-[4px] rounded-[1px] bg-current/95" />
+      </span>
     </div>
   ),
 
@@ -32,21 +37,14 @@ const defaultProps: SharedNavbarProps = {
   className: "",
   nav: {
     className:
-      "border-b border-black/8 bg-white/76 text-slate-900 backdrop-blur supports-[backdrop-filter]:bg-white/76 " +
-      "dark:border-white/10 dark:bg-black/72 dark:text-white supports-[backdrop-filter]:dark:bg-black/72 " +
-      "[--navbar-accent:theme(colors.slate.950)] dark:[--navbar-accent:theme(colors.white)] " +
-      "[--navbar-toggle-bg:theme(colors.white)] dark:[--navbar-toggle-bg:theme(colors.black)] " +
-      "[--navbar-hover-bg:color-mix(in_oklab,theme(colors.sky.500)_9%,white)] dark:[--navbar-hover-bg:color-mix(in_oklab,theme(colors.sky.500)_12%,transparent)] " +
-      "[--navbar-ring:theme(colors.sky.500)] dark:[--navbar-ring:theme(colors.sky.400)] " +
-      "[--navbar-border:rgba(15,23,42,0.08)] dark:[--navbar-border:rgba(255,255,255,0.1)]",
+      "border-b border-[var(--navbar-border)] bg-[var(--navbar-bg)] text-[var(--navbar-fg)] backdrop-blur supports-[backdrop-filter]:bg-[var(--navbar-bg)] supports-[backdrop-filter]:dark:bg-[var(--navbar-bg)]",
   },
   brandText: {
-    className:
-      "text-xl font-semibold font-outfit text-slate-950 dark:text-white",
+    className: "text-xl font-semibold font-outfit text-[var(--navbar-accent)]",
   },
   links: {
     className:
-      "text-sm font-medium font-inter text-slate-700 hover:text-slate-950 focus:ring-[var(--navbar-ring)] dark:text-slate-200 dark:hover:text-white",
+      "text-sm font-medium font-inter text-[var(--navbar-link-fg)] hover:text-[var(--navbar-link-hover-fg)] focus:ring-[var(--navbar-ring)]",
   },
   ctaButtonStyle: {
     variant: "default",
@@ -55,20 +53,20 @@ const defaultProps: SharedNavbarProps = {
       "shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg",
   },
   mobileMenu: {
-    className: "border-t border-slate-200 dark:border-slate-800",
+    className: "border-t border-[var(--navbar-border)]",
   },
   container: {
     className: "max-w-7xl mx-auto",
   },
   brandWrapper: {
-    className: "",
+    className: "-ml-2",
   },
   desktopMenu: {
     className: "hidden items-center space-x-1 md:flex lg:space-x-6",
   },
   toggleButton: {
     className:
-      "md:hidden flex items-center justify-center rounded-md border border-black/8 bg-white/70 p-2 transition-colors hover:bg-[var(--navbar-hover-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--navbar-ring)] dark:border-white/10 dark:bg-white/[0.04]",
+      "md:hidden flex items-center justify-center rounded-md border border-[var(--navbar-border)] bg-[var(--navbar-toggle-bg)] p-2 transition-colors hover:bg-[var(--navbar-hover-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--navbar-ring)]",
   },
   colorModeWrapper: {
     className: "ml-2",

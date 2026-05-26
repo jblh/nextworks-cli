@@ -13,7 +13,7 @@ export function Footer() {
       footerBrandName="FlowPilot AI"
       footerNavLinks={[
         {
-          heading: "Platform",
+          heading: "Product",
           links: [
             { name: "Features", href: "#features" },
             { name: "Pricing", href: "#pricing" },
@@ -24,14 +24,14 @@ export function Footer() {
         {
           heading: "Use cases",
           links: [
-            { name: "Revenue operations", href: "#features" },
-            { name: "Launch workflows", href: "#features" },
-            { name: "Approvals", href: "#faq" },
-            { name: "Integrations", href: "#features" },
+            { name: "Bug fixes", href: "#features" },
+            { name: "Refactors", href: "#features" },
+            { name: "Reviews", href: "#faq" },
+            { name: "Tooling", href: "#features" },
           ],
         },
         {
-          heading: "Company",
+          heading: "Resources",
           links: [
             { name: "About", href: "#home" },
             { name: "Security", href: "#faq" },
@@ -72,19 +72,23 @@ export function Footer() {
       ]}
       section={{
         className:
-          "w-full border-t border-[var(--footer-border)] bg-[var(--footer-bg)] text-[var(--footer-fg)]",
+          "w-full border-t border-[var(--footer-border)] bg-[linear-gradient(180deg,rgba(255,255,255,0.42)_0%,rgba(255,255,255,0.14)_100%)] text-[var(--footer-fg)] dark:bg-[linear-gradient(180deg,rgba(0,0,0,0.22)_0%,rgba(0,0,0,0.04)_100%)] [--footer-link-hover-fg:theme(colors.slate.950)] dark:[--footer-link-hover-fg:theme(colors.white)] [--footer-link-hover-bg:rgba(15,23,42,0.04)] dark:[--footer-link-hover-bg:rgba(255,255,255,0.05)]",
       }}
       container={{ className: "max-w-7xl mx-auto px-6" }}
       brand={{
         className:
           "font-outfit text-xl font-semibold text-[var(--footer-heading-fg)] md:text-2xl",
       }}
-      brandWrapper={{ className: "flex flex-col items-start text-left lg:pr-8" }}
+      brandWrapper={{
+        className: "flex flex-col items-start text-left lg:pr-8",
+      }}
       navSection={{
         className:
           "flex flex-col items-start justify-between gap-8 pt-10 pb-12 lg:flex-row",
       }}
-      navGroup={{ className: "flex min-w-[150px] flex-col items-start text-left" }}
+      navGroup={{
+        className: "flex min-w-[150px] flex-col items-start text-left",
+      }}
       navHeading={{
         className:
           "mb-4 font-inter text-sm font-semibold uppercase tracking-wider text-[var(--footer-heading-fg)]",
@@ -106,7 +110,7 @@ export function Footer() {
         className:
           "border-t border-[var(--footer-border)] py-6 text-center font-inter text-sm text-[var(--footer-muted-fg)]",
       }}
-      ariaLabel="AI workflow footer"
+      ariaLabel="AI coding agent footer"
     />
   );
 }

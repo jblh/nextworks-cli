@@ -9,17 +9,11 @@ export interface RunConsolePanelProps {
   state: ProductDemoRunConsoleState;
 }
 
-function getProgressPercent(value: number | undefined) {
-  if (typeof value !== "number" || Number.isNaN(value)) {
-    return undefined;
-  }
-
-  return Math.min(100, Math.max(0, value));
-}
-
 export function RunConsolePanel({ state }: RunConsolePanelProps) {
-  const progressPercent = getProgressPercent(state.progressPercent);
   const playbackMs = state.playbackMs ?? 1800;
+  const playbackStepEntryIndices = state.playbackStepEntryIndices ?? [];
+  const playbackStepVisibleLineCounts =
+    state.playbackStepVisibleLineCounts ?? [];
   const [activeIndex, setActiveIndex] = React.useState(
     Math.max(
       0,
@@ -35,8 +29,14 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     );
 
     if (typeof state.playbackStep === "number") {
+      const mappedIndex = playbackStepEntryIndices[state.playbackStep - 1];
       const syncedIndex = Math.min(
-        Math.max(state.playbackStep - 2, 0),
+        Math.max(
+          typeof mappedIndex === "number"
+            ? mappedIndex
+            : state.playbackStep - 2,
+          0,
+        ),
         Math.max(state.entries.length - 1, 0),
       );
       setActiveIndex(syncedIndex);
@@ -56,6 +56,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     return () => window.clearInterval(interval);
   }, [
     playbackMs,
+    playbackStepEntryIndices,
     state.activeEntryId,
     state.entries,
     state.title,
@@ -79,10 +80,17 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
 
   React.useEffect(() => {
     if (typeof state.playbackStep === "number") {
+      const mappedVisibleCount =
+        playbackStepVisibleLineCounts[state.playbackStep - 1];
       const revealFromStep = Math.max(state.playbackStep - 1, 1);
       const syncedVisibleCount = Math.min(
         activeCode.length || 1,
-        Math.max(1, revealFromStep * 2),
+        Math.max(
+          1,
+          typeof mappedVisibleCount === "number"
+            ? mappedVisibleCount
+            : revealFromStep * 2,
+        ),
       );
       setVisibleLineCount(syncedVisibleCount);
       return;
@@ -111,59 +119,22 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     );
 
     return () => window.clearInterval(interval);
-  }, [activeCode, playbackMs, activeEntry?.id, state.playbackStep]);
+  }, [
+    activeCode,
+    playbackMs,
+    playbackStepVisibleLineCounts,
+    activeEntry?.id,
+    state.playbackStep,
+  ]);
 
   const visibleCode = activeCode.slice(0, visibleLineCount);
 
   return (
-    <div className="flex h-full flex-col text-slate-900 [text-rendering:geometricPrecision] [font-synthesis:none] antialiased dark:text-white/95">
-      <div className="mb-2 flex items-center justify-between gap-3 text-[11px] tracking-[0.005em]">
-        <div className="min-w-0 truncate font-mono text-slate-500 dark:text-slate-400">
-          <span className="mr-2 uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
-            {activeEntry?.source ??
-              displayEntry?.source ??
-              state.statusLabel ??
-              "active"}
-          </span>
-
-          <span className="truncate text-slate-800 dark:text-slate-300/95">
-            {activeEntry?.message ??
-              displayEntry?.message ??
-              state.editorSummary ??
-              state.subtitle}
-          </span>
-        </div>
-        <div className="flex shrink-0 items-center gap-3 text-slate-400 dark:text-slate-500">
-          {state.progressLabel ? (
-            <span className="font-medium text-slate-500 dark:text-slate-400">
-              {state.progressLabel}
-            </span>
-          ) : null}
-          {typeof progressPercent === "number" ? (
-            <span>{progressPercent}%</span>
-          ) : null}
-          {activeEntry?.timestamp ? <span>{activeEntry.timestamp}</span> : null}
-        </div>
-      </div>
-
-      <div className="flex min-h-0 flex-1 overflow-hidden rounded-[8px] border border-black/10 bg-[#f6f6f3] shadow-[0_20px_60px_-30px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-[#0b0b0b] dark:shadow-[0_20px_60px_-30px_rgba(2,8,23,0.95)]">
+    <div className="flex h-full min-h-0 flex-col text-slate-900 [font-synthesis:none] antialiased dark:text-white/95">
+      <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-black/[0.065] bg-[#f6f7f4] shadow-none dark:border-white/[0.08] dark:bg-[#0a0a0a] dark:shadow-none">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="flex items-center gap-2 border-b border-black/8 bg-black/[0.035] px-3 py-2 dark:border-white/8 dark:bg-white/[0.03]">
-            <span className="h-2.5 w-2.5 rounded-full bg-white/75 dark:bg-white/65" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/35 dark:bg-white/25" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/20 dark:bg-white/15" />
-            <div className="ml-3 rounded-md border border-black/10 bg-white/88 px-2.5 py-1 font-mono text-[11px] text-slate-800 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
-              {state.editorTabLabel ?? state.title}
-            </div>
-            {state.editorLanguage ? (
-              <div className="ml-auto font-mono text-[11px] uppercase tracking-[0.14em] text-slate-400 dark:text-slate-500">
-                {state.editorLanguage}
-              </div>
-            ) : null}
-          </div>
-
-          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f6f6f3] dark:bg-[#0b0b0b]">
-            <div className="border-r border-black/8 bg-black/[0.018] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400 dark:border-white/8 dark:bg-white/[0.02] dark:text-slate-600">
+          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[#f6f7f4] dark:bg-[#0a0a0a]">
+            <div className="border-r border-black/[0.05] bg-[#eff1ec] px-2 py-3 font-mono text-[11px] leading-7 text-slate-400/88 dark:border-white/[0.06] dark:bg-[#0d0d0d] dark:text-slate-600/88">
               {visibleCode.map((line, index) => {
                 const isAdded = line.trimStart().startsWith("+");
                 const isRemoved = line.trimStart().startsWith("-");
@@ -173,8 +144,8 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                     key={`${startLine + index}`}
                     className={cn(
                       "text-right",
-                      isAdded && "text-[#3b82f6]",
-                      isRemoved && "text-[#ef4444]",
+                      isAdded && "text-[#2563eb] dark:text-[#3b82f6]",
+                      isRemoved && "text-[#dc2626] dark:text-[#f87171]",
                     )}
                   >
                     {startLine + index}
@@ -183,64 +154,70 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
               })}
             </div>
 
-            <div className="relative px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:text-slate-300">
-              {visibleCode.map((line, index) => {
-                const isAdded = line.trimStart().startsWith("+");
-                const isRemoved = line.trimStart().startsWith("-");
+            <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[#f7f7f4] px-3 py-3 font-mono text-[12px] leading-7 text-slate-800 dark:bg-[#0b0b0b] dark:text-slate-300/92">
+              <div>
+                {visibleCode.map((line, index) => {
+                  const isAdded = line.trimStart().startsWith("+");
+                  const isRemoved = line.trimStart().startsWith("-");
 
-                return (
-                  <div
-                    key={`${line}-${index}`}
-                    className={cn(
-                      "flex rounded-r-md border-l border-transparent pl-3 transition-colors duration-300",
-                      isAdded &&
-                        "border-[#3b82f6]/80 bg-[#3b82f6]/10 text-slate-950 dark:text-[#dbeafe]",
-                      isRemoved &&
-                        "border-[#ef4444]/80 bg-[#ef4444]/10 text-slate-950 dark:text-[#fecdd3]",
-                      !isAdded &&
-                        !isRemoved &&
-                        "text-slate-800 dark:text-slate-300",
-                      displayEntry?.highlighted &&
-                        index === Math.min(1, visibleCode.length - 1) &&
-                        "animate-pulse",
-                    )}
-                  >
-                    <span
+                  return (
+                    <div
+                      key={`${line}-${index}`}
                       className={cn(
-                        "mr-3 w-3 shrink-0 text-center text-[11px]",
-                        isAdded
-                          ? "text-[#3b82f6]"
-                          : isRemoved
-                            ? "text-[#ef4444]"
-                            : "text-slate-400 dark:text-slate-600",
+                        "flex border-l border-transparent pl-3 transition-colors duration-300",
+                        isAdded &&
+                          "border-[#2563eb]/38 bg-[#2563eb]/[0.045] text-slate-950 dark:border-[#3b82f6]/38 dark:bg-[#3b82f6]/[0.08] dark:text-[#dbeafe]",
+                        isRemoved &&
+                          "border-[#dc2626]/34 bg-[#dc2626]/[0.042] text-slate-950 dark:border-[#f87171]/34 dark:bg-[#f87171]/[0.08] dark:text-[#fecdd3]",
+                        !isAdded &&
+                          !isRemoved &&
+                          "text-slate-700 dark:text-slate-300/90",
+                        displayEntry?.highlighted &&
+                          index === Math.min(1, visibleCode.length - 1) &&
+                          "animate-pulse",
                       )}
                     >
-                      {isAdded ? "+" : isRemoved ? "-" : " "}
-                    </span>
-                    <span className="min-w-0 flex-1 whitespace-pre-wrap break-words">
-                      {isAdded || isRemoved ? line.slice(1).trimStart() : line}
-                    </span>
-                  </div>
-                );
-              })}
+                      <span
+                        className={cn(
+                          "mr-3 w-3 shrink-0 text-center text-[11px]",
+                          isAdded
+                            ? "text-[#2563eb] dark:text-[#60a5fa]"
+                            : isRemoved
+                              ? "text-[#dc2626] dark:text-[#f87171]"
+                              : "text-slate-400/90 dark:text-slate-600/90",
+                        )}
+                      >
+                        {isAdded ? "+" : isRemoved ? "-" : " "}
+                      </span>
+                      <span className="min-w-0 flex-1 whitespace-pre-wrap break-words">
+                        {isAdded || isRemoved
+                          ? line.slice(1).trimStart()
+                          : line}
+                      </span>
+                    </div>
+                  );
+                })}
 
-              {displayEntry?.highlighted &&
-              visibleLineCount < activeLineCount ? (
-                <div className="mt-2 flex items-center gap-2 pl-3 text-[11px] text-slate-400 dark:text-slate-500">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
-                  Applying change...
-                </div>
-              ) : null}
+                {displayEntry?.highlighted &&
+                visibleLineCount < activeLineCount ? (
+                  <div className="mt-2 flex items-center gap-2 pl-3 text-[11px] text-slate-400 dark:text-slate-500">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3b82f6]" />
+                    Applying change...
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="flex-1" />
             </div>
           </div>
         </div>
 
         {state.metrics?.length ? (
-          <div className="hidden w-[6.75rem] shrink-0 border-l border-black/8 bg-black/[0.02] p-2 lg:flex lg:flex-col lg:gap-2 dark:border-white/8 dark:bg-white/[0.02]">
+          <div className="hidden w-[6.75rem] shrink-0 border-l border-black/[0.05] bg-[#f1f3ee] p-2 lg:flex lg:flex-col lg:gap-2 dark:border-white/[0.07] dark:bg-white/[0.025]">
             {state.metrics.map((metric) => (
               <div
                 key={metric.id}
-                className="rounded-md border border-black/8 bg-white/65 px-2 py-2 text-center dark:border-white/8 dark:bg-white/[0.03]"
+                className="rounded-md border border-black/[0.065] bg-white/76 px-2 py-2 text-center dark:border-white/[0.08] dark:bg-white/[0.03]"
               >
                 <div className="text-[10px] uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
                   {metric.label}

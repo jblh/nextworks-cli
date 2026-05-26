@@ -13,28 +13,28 @@ const contactFields: ContactField[] = [
   {
     id: "name",
     label: "Full name",
-    placeholder: "Jordan Lee",
+    placeholder: "Avery Chen",
     required: true,
     type: "text",
   },
   {
     id: "email",
     label: "Work email",
-    placeholder: "jordan@company.com",
+    placeholder: "avery@company.com",
     required: true,
     type: "email",
   },
   {
     id: "company",
     label: "Company",
-    placeholder: "Acme Inc.",
+    placeholder: "Northstar Labs",
     required: true,
     type: "text",
   },
   {
     id: "workflow",
     label: "Workflow to automate",
-    placeholder: "Approvals, onboarding, launches, support escalations…",
+    placeholder: "Bug fixes, refactors, releases, or repo cleanup…",
     required: true,
     type: "text",
   },
@@ -42,7 +42,7 @@ const contactFields: ContactField[] = [
     id: "message",
     label: "What should the workflow coordinate?",
     placeholder:
-      "Tell us which systems, approvals, or handoffs are slowing the team down.",
+      "Tell us which files, checks, or handoffs are slowing the team down.",
     required: true,
     type: "textarea",
   },
@@ -57,14 +57,13 @@ export function Contact() {
   return (
     <SharedContact
       id="contact"
-      ariaLabel="AI workflow contact section"
+      ariaLabel="AI coding agent contact section"
       fields={contactFields}
-      contactHeaderText="Bring your messiest workflow."
-      contactSubHeaderText="We’ll map the approvals, systems, and execution steps that AI can automate first."
+      contactHeaderText="Bring your messiest codebase issue."
+      contactSubHeaderText="We’ll map the reads, edits, checks, and reviews the agent should handle first."
       className="w-full"
       section={{
-        className:
-          "bg-[linear-gradient(180deg,rgba(241,245,249,1)_0%,rgba(224,242,254,0.55)_100%)] px-6 py-16 dark:bg-[linear-gradient(180deg,rgba(2,6,23,1)_0%,rgba(8,47,73,0.45)_100%)]",
+        className: "bg-[var(--contact-section-bg)] px-6 py-16",
       }}
       container={{ className: "mx-auto max-w-4xl" }}
       headerWrapper={{ className: "mb-8 text-center" }}
@@ -99,9 +98,9 @@ export function Contact() {
         variant: "default",
         size: "lg",
         className:
-          "w-full font-inter font-semibold [--btn-bg:theme(colors.cyan.500)] [--btn-fg:theme(colors.slate.950)] [--btn-border:transparent] hover:[--btn-hover-bg:theme(colors.cyan.400)] hover:[--btn-hover-fg:theme(colors.slate.950)]",
+          "w-full font-inter font-semibold [--btn-bg:var(--contact-submit-bg)] [--btn-fg:var(--contact-submit-fg)] [--btn-border:var(--contact-submit-border)] hover:[--btn-hover-bg:var(--contact-submit-hover-bg)] hover:[--btn-hover-fg:var(--contact-submit-hover-fg)]",
       }}
-      submitButtonText="Request a demo"
+      submitButtonText="Book an agent demo"
       onSubmit={handleFormSubmit}
     />
   );

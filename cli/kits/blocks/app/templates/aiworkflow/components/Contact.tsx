@@ -60,14 +60,13 @@ export function Contact() {
       contactSubHeaderText="We’ll map the reads, edits, checks, and reviews the agent should handle first."
       className="w-full"
       section={{
-        className:
-          "bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] px-6 py-16 dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
+        className: "bg-[var(--contact-section-bg)] px-6 py-16",
       }}
       container={{ className: "mx-auto max-w-4xl" }}
       headerWrapper={{ className: "mb-8 text-center" }}
       headerText={{
         className:
-          "font-outfit text-3xl font-semibold text-[var(--heading-fg)] md:text-4xl",
+          "font-outfit text-3xl font-semibold !text-[var(--heading-fg)] md:text-4xl",
       }}
       subheaderText={{
         className:
@@ -96,7 +95,7 @@ export function Contact() {
         variant: "default",
         size: "lg",
         className:
-          "w-full font-inter font-semibold [--btn-bg:theme(colors.slate.950)] [--btn-fg:theme(colors.white)] [--btn-border:transparent] hover:[--btn-hover-bg:theme(colors.slate.800)] hover:[--btn-hover-fg:theme(colors.white)] dark:[--btn-bg:theme(colors.white)] dark:[--btn-fg:theme(colors.slate.950)] dark:hover:[--btn-hover-bg:theme(colors.slate.100)] dark:hover:[--btn-hover-fg:theme(colors.slate.950)]",
+          "w-full font-inter font-semibold [--btn-bg:var(--contact-submit-bg)] [--btn-fg:var(--contact-submit-fg)] [--btn-border:var(--contact-submit-border)] hover:[--btn-hover-bg:var(--contact-submit-hover-bg)] hover:[--btn-hover-fg:var(--contact-submit-hover-fg)]",
       }}
       submitButtonText="Book an agent demo"
       onSubmit={handleFormSubmit}

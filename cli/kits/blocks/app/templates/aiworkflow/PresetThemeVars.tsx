@@ -1,4 +1,5 @@
 import React from "react";
+
 import { cn } from "@/lib/utils";
 
 type Props = React.PropsWithChildren<{ className?: string }>;
@@ -53,6 +54,28 @@ export function PresetThemeVars({ className, children }: Props) {
         "[--hero-cta-secondary-border:rgba(15,23,42,0.12)] dark:[--hero-cta-secondary-border:rgba(255,255,255,0.12)]",
         "[--hero-cta-secondary-hover-bg:rgba(15,23,42,0.03)] dark:[--hero-cta-secondary-hover-bg:rgba(255,255,255,0.05)]",
         "[--hero-cta-secondary-hover-fg:theme(colors.slate.800)] dark:[--hero-cta-secondary-hover-fg:theme(colors.slate.100)]",
+
+        "[--contact-section-bg:linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] dark:[--contact-section-bg:linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
+        "[--contact-submit-bg:theme(colors.slate.950)] dark:[--contact-submit-bg:theme(colors.white)]",
+        "[--contact-submit-fg:theme(colors.white)] dark:[--contact-submit-fg:theme(colors.slate.950)]",
+        "[--contact-submit-hover-bg:theme(colors.slate.800)] dark:[--contact-submit-hover-bg:theme(colors.slate.100)]",
+        "[--contact-submit-hover-fg:theme(colors.white)] dark:[--contact-submit-hover-fg:theme(colors.slate.950)]",
+        "[--contact-submit-border:transparent]",
+
+        "[--cta-section-bg:linear-gradient(135deg,theme(colors.slate.950)_0%,theme(colors.black)_55%,theme(colors.slate.900)_100%)]",
+        "[--cta-heading-fg:theme(colors.white)]",
+        "[--cta-subheading-fg:rgba(255,255,255,0.82)]",
+        "[--cta-description-fg:rgba(255,255,255,0.74)]",
+        "[--cta-primary-bg:theme(colors.white)]",
+        "[--cta-primary-fg:theme(colors.slate.950)]",
+        "[--cta-primary-hover-bg:theme(colors.slate.100)]",
+        "[--cta-primary-hover-fg:theme(colors.slate.950)]",
+        "[--cta-primary-border:transparent]",
+        "[--cta-secondary-bg:transparent]",
+        "[--cta-secondary-fg:theme(colors.white)]",
+        "[--cta-secondary-border:rgba(255,255,255,0.18)]",
+        "[--cta-secondary-hover-bg:rgba(255,255,255,0.08)]",
+        "[--cta-secondary-hover-fg:theme(colors.white)]",
 
         "[--process-step-bg:theme(colors.slate.950)] dark:[--process-step-bg:theme(colors.white)]",
         "[--process-step-fg:theme(colors.white)] dark:[--process-step-fg:theme(colors.slate.950)]",
