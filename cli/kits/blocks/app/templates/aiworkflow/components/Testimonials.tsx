@@ -27,8 +27,7 @@ export function Testimonials() {
         },
       ]}
       section={{
-        className:
-          "bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] py-18 px-6 md:py-22 dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
+        className: "bg-[var(--section-bg)] py-18 px-6 md:py-22",
       }}
       container={{ className: "max-w-7xl mx-auto" }}
       header={{ className: "mb-12 text-center" }}
