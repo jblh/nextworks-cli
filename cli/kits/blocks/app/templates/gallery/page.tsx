@@ -21,8 +21,7 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { ThemeSelector } from "@/components/ui/theme-selector";
 import type { HeroProductDemoProps } from "@/components/sections/HeroProductDemo";
 import { TrustBadges } from "@/components/sections/TrustBadges";
-import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+
 import { PresetThemeVars } from "./PresetThemeVars";
 
 export default function Gallery() {
@@ -318,30 +317,6 @@ export default function Gallery() {
     </>
   );
 
-  const GallerySection = ({
-    label,
-    children,
-    className,
-    labelClassName,
-  }: {
-    label: string;
-    children: ReactNode;
-    className?: string;
-    labelClassName?: string;
-  }) => (
-    <div className={cn("relative pt-3 sm:pt-4", className)}>
-      <div
-        className={cn(
-          "pointer-events-none absolute left-6 top-2 z-20 inline-flex items-center rounded-full border border-border/30 bg-background/45 px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.18em] text-muted-foreground/70 shadow-none backdrop-blur-[2px] sm:left-8 sm:top-3",
-          labelClassName,
-        )}
-      >
-        {label}
-      </div>
-      {children}
-    </div>
-  );
-
   return (
     <PresetThemeVars>
       <div className="component-gallery">
@@ -380,7 +355,7 @@ export default function Gallery() {
         {/* Hero Sections */}
         <div id="hero-sections" className="scroll-mt-16">
           <div id="hero-product-demo" className="scroll-mt-16">
-            <GallerySection label="AI Workflow Hero" className="pt-0">
+            <div className="relative pt-0">
               <HeroProductDemo
                 className="bg-transparent"
                 heading={{
@@ -445,14 +420,10 @@ export default function Gallery() {
                 demoBelowText
                 ariaLabel="Gallery product demo hero section"
               />
-            </GallerySection>
+            </div>
           </div>
 
-          <GallerySection
-            label="Hero Overlay"
-            className="pt-4 sm:pt-5 mb-10"
-            labelClassName="top-3 sm:top-4"
-          >
+          <div className="relative pt-4 sm:pt-5 mb-10">
             <HeroOverlay
               heading="Forecast The Next Move"
               subheading="Predict demand, personalize journeys, and scale impact with AI-guided insights your team can use today."
@@ -485,8 +456,8 @@ export default function Gallery() {
                 src: "/placeholders/gallery/hero-pexels-broken-9945014.avif",
               }}
             />
-          </GallerySection>
-          <GallerySection label="Hero Motion" className="mb-10">
+          </div>
+          <div className="relative pt-3 sm:pt-4 mb-10">
             <HeroMotion
               actions={{
                 className:
@@ -515,13 +486,9 @@ export default function Gallery() {
               primaryCta={{ label: "Get Started", href: "#hero-sections" }}
               secondaryCta={{ label: "See Demo", href: "#hero-sections" }}
             />
-          </GallerySection>
+          </div>
 
-          <GallerySection
-            label="Hero Split"
-            className="pt-4 sm:pt-5"
-            labelClassName="top-3 sm:top-4"
-          >
+          <div className="relative pt-4 sm:pt-5">
             <HeroSplit
               section={{ className: "bg-muted" }}
               heading="Confident Decisions, On Demand"
@@ -555,97 +522,69 @@ export default function Gallery() {
               }}
               imageLayout="full-bleed"
             />
-          </GallerySection>
+          </div>
           {/*  */}
         </div>
 
         {/* Trust & Social Proof */}
         <div id="trust" className="scroll-mt-16">
-          <GallerySection
-            label="Trust Badges"
-            className="pt-4 sm:pt-5"
-            labelClassName="top-3 sm:top-4"
-          >
+          <div className="relative pt-4 sm:pt-5">
             <TrustBadges
               section={{
                 className:
                   "py-8 px-6 bg-[color-mix(in_oklab,var(--muted)_94%,black)] dark:bg-[color-mix(in_oklab,var(--muted)_90%,white)]",
               }}
             />
-          </GallerySection>
+          </div>
         </div>
 
         {/* Features & Services */}
         <div id="features" className="scroll-mt-16">
-          <GallerySection label="Features">
+          <div className="relative pt-3 sm:pt-4">
             <Features featuresData={defaultFeaturesData}></Features>
-          </GallerySection>
-          <GallerySection
-            label="Services Grid"
-            className="pt-4 sm:pt-5 mb-0"
-            labelClassName="top-3 sm:top-4"
-          >
+          </div>
+          <div className="relative pt-4 sm:pt-5 mb-0">
             <ServicesGrid />
-          </GallerySection>
+          </div>
         </div>
 
         {/* About & Process */}
         <div id="about-process" className="scroll-mt-16">
-          <GallerySection
-            label="About"
-            className="pt-4 sm:pt-5"
-            labelClassName="top-3 sm:top-4"
-          >
+          <div className="relative pt-4 sm:pt-5">
             <About animateStats={false} />
-          </GallerySection>
-          <GallerySection
-            label="Process Timeline"
-            className="pt-4 sm:pt-5 mb-0"
-            labelClassName="top-3 sm:top-4"
-          >
+          </div>
+          <div className="relative pt-4 sm:pt-5 mb-0">
             <ProcessTimeline />
-          </GallerySection>
+          </div>
         </div>
 
         {/* Portfolio & Team */}
         <div id="portfolio-team" className="scroll-mt-16">
-          <GallerySection label="Portfolio Simple">
+          <div className="relative pt-3 sm:pt-4">
             <PortfolioSimple />
-          </GallerySection>
-          <GallerySection
-            label="Team"
-            className="pt-4 sm:pt-5 mb-0"
-            labelClassName="top-3 sm:top-4"
-          >
+          </div>
+          <div className="relative pt-4 sm:pt-5 mb-0">
             <Team />
-          </GallerySection>
+          </div>
         </div>
 
         {/* Testimonials */}
         <div id="testimonials" className="scroll-mt-16">
-          <GallerySection
-            label="Testimonials"
-            className="pt-4 sm:pt-5 mb-0"
-            labelClassName="top-3 sm:top-4"
-          >
+          <div className="relative pt-4 sm:pt-5 mb-0">
             <Testimonials />
-          </GallerySection>
+          </div>
         </div>
 
         {/* Pricing */}
         <div id="pricing" className="scroll-mt-16">
-          <GallerySection label="Pricing" className="mb-0">
+          <div className="relative pt-3 sm:pt-4 mb-0">
             <Pricing />
-          </GallerySection>
+          </div>
         </div>
 
         {/* FAQ */}
         <div id="faq" className="scroll-mt-16">
-          <GallerySection
-            label="FAQ"
-            className="pt-4 sm:pt-5 mb-0"
-            labelClassName="top-3 sm:top-4"
-          >
+          <div className="relative pt-4 sm:pt-5 mb-0">
             <FAQ
               questionButton={{
                 className:
@@ -666,12 +605,12 @@ export default function Gallery() {
                   "from-[var(--secondary)] to-[color-mix(in_oklab,var(--secondary)_90%,white)] ",
               }}
             />
-          </GallerySection>
+          </div>
         </div>
 
         {/* Call to Action */}
         <div id="cta" className="scroll-mt-16">
-          <GallerySection label="Call to Action" className="mb-0">
+          <div className="relative pt-3 sm:pt-4 mb-0">
             <CTA
               ctaButton={{ label: "Sign Up Now", href: "#contact" }}
               actionsWrapper={{
@@ -688,16 +627,12 @@ export default function Gallery() {
                   "hover:[--btn-hover-fg:var(--primary-foreground)]",
               }}
             />
-          </GallerySection>
+          </div>
         </div>
 
         {/* Contact */}
         <div id="contact" className="scroll-mt-16">
-          <GallerySection
-            label="Contact"
-            className="pt-4 sm:pt-5 mb-0"
-            labelClassName="top-3 sm:top-4"
-          >
+          <div className="relative pt-4 sm:pt-5 mb-0">
             <Contact
               submitButtonStyle={{
                 variant: "default",
@@ -713,26 +648,26 @@ export default function Gallery() {
                   "[--btn-ring:var(--ring)] [--btn-border:var(--primary)] border [&:where(button)]:border",
               }}
             />
-          </GallerySection>
+          </div>
         </div>
 
         {/* Newsletter */}
         <div id="newsletter" className="scroll-mt-16">
-          <GallerySection label="Newsletter" className="mb-0">
+          <div className="relative pt-3 sm:pt-4 mb-0">
             <Newsletter
               button={{
                 className:
                   "!bg-[var(--primary)] hover:!bg-[color-mix(in_oklab,var(--primary)_90%,transparent)] !text-[var(--primary-foreground)] hover:!text-[var(--primary-background)]",
               }}
             />
-          </GallerySection>
+          </div>
         </div>
 
         {/* Footer */}
         <div id="footer">
-          <GallerySection label="Footer" className="mb-0">
+          <div className="relative pt-3 sm:pt-4 mb-0">
             <Footer />
-          </GallerySection>
+          </div>
         </div>
       </div>
     </PresetThemeVars>
