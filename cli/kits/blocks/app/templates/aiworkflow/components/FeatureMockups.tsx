@@ -1,0 +1,562 @@
+"use client";
+
+import type { ReactNode } from "react";
+
+function WindowFrame({
+  title,
+  eyebrow,
+  rightLabel,
+  children,
+}: {
+  title: string;
+  eyebrow?: string;
+  rightLabel?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="aspect-[16/10] w-full overflow-hidden rounded-[22px] border border-white/10 bg-[#050505] text-white shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
+      <div className="flex h-full flex-col bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_34%),linear-gradient(180deg,#0a0a0a_0%,#050505_100%)]">
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+          <div className="flex items-center gap-3">
+            <div className="grid h-8 w-8 place-items-center rounded-lg border border-white/10 bg-white/5">
+              <div className="grid grid-cols-2 gap-[3px]">
+                <span className="h-1 w-1 rounded-full bg-white/90" />
+                <span className="h-1 w-1 rounded-full bg-white/35" />
+                <span className="h-1 w-1 rounded-full bg-white/35" />
+                <span className="h-1 w-1 rounded-full bg-white/90" />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2">
+                <p className="text-[12px] font-semibold tracking-wide text-white/95">
+                  {title}
+                </p>
+                {eyebrow ? (
+                  <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[9px] uppercase tracking-[0.22em] text-white/45">
+                    {eyebrow}
+                  </span>
+                ) : null}
+              </div>
+              <p className="mt-0.5 text-[9px] uppercase tracking-[0.24em] text-white/35">
+                Session · live repo
+              </p>
+            </div>
+          </div>
+
+          {rightLabel ? (
+            <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.24em] text-white/40">
+              <span>{rightLabel}</span>
+              <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-1 text-white/65">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-300" />
+                active
+              </span>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="flex-1">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <p className="mb-3 text-[9px] font-medium uppercase tracking-[0.24em] text-white/30">
+      {children}
+    </p>
+  );
+}
+
+function CodeLine({
+  number,
+  text,
+  active = false,
+}: {
+  number: string;
+  text: string;
+  active?: boolean;
+}) {
+  return (
+    <div
+      className={`grid grid-cols-[22px_1fr] gap-3 px-4 py-1.5 text-[10px] ${
+        active ? "bg-cyan-300/10" : ""
+      }`}
+    >
+      <span className="text-right font-mono text-white/28">{number}</span>
+      <span className="font-mono text-white/78">{text}</span>
+    </div>
+  );
+}
+
+export function TaskToCodeMockup() {
+  return (
+    <WindowFrame
+      title="Agent workspace"
+      eyebrow="Session 03"
+      rightLabel="Repo apps/web"
+    >
+      <div className="grid h-full grid-cols-[1.1fr_1.4fr_1.8fr_72px]">
+        <div className="border-r border-white/10 p-3">
+          <SectionLabel>Task navigator</SectionLabel>
+
+          <div className="space-y-2.5">
+            {[
+              {
+                index: "1",
+                title: "Fix auth flow",
+                body: "Preserve intended destination after the OAuth callback.",
+                active: true,
+              },
+              {
+                index: "2",
+                title: "Refactor pricing page",
+                body: "Extract repeated pricing sections into reusable blocks.",
+              },
+              {
+                index: "3",
+                title: "Ship command palette",
+                body: "Add global search, shortcuts, and action routing.",
+              },
+            ].map((item) => (
+              <div
+                key={item.index}
+                className={`rounded-xl border p-3 ${
+                  item.active
+                    ? "border-cyan-300/50 bg-white/[0.04] shadow-[inset_2px_0_0_0_rgba(103,232,249,0.95)]"
+                    : "border-white/8 bg-white/[0.025]"
+                }`}
+              >
+                <div className="mb-2 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="grid h-5 w-5 place-items-center rounded-full border border-white/10 text-[9px] text-white/65">
+                      {item.index}
+                    </span>
+                    <p className="text-[11px] font-semibold text-white/90">
+                      {item.title}
+                    </p>
+                  </div>
+                  <span className="text-[8px] uppercase tracking-[0.22em] text-white/30">
+                    {item.active ? "open" : "queued"}
+                  </span>
+                </div>
+                <p className="text-[10px] leading-4 text-white/45">
+                  {item.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-r border-white/10 p-3">
+          <SectionLabel>Session focus · fix auth flow</SectionLabel>
+
+          <div className="space-y-2">
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-[8px] uppercase tracking-[0.22em] text-white/28">
+                  edit
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[8px] uppercase tracking-[0.22em] text-white/45">
+                  safe patch
+                </span>
+              </div>
+              <p className="text-[10px] leading-4 text-white/82">
+                Guard empty return paths and preserve intended destination.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+              <span className="text-[8px] uppercase tracking-[0.22em] text-white/28">
+                task
+              </span>
+              <p className="mt-2 text-[10px] leading-4 text-white/62">
+                Fix the OAuth callback redirect so the app preserves the
+                intended destination after sign-in.
+              </p>
+            </div>
+
+            <div className="space-y-1.5 pt-1 text-[10px] text-white/38">
+              <p>Read app/auth/callback/page.tsx</p>
+              <p>Read lib/auth/normalize-return.ts</p>
+              <p>Drafting change set</p>
+              <div className="mt-3 flex items-center gap-2 text-white/58">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-300" />
+                Running
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-r border-white/10 py-3">
+          <SectionLabel>
+            <span className="px-4">Patch preview</span>
+          </SectionLabel>
+
+          <div className="space-y-[1px]">
+            <CodeLine number="38" text="const safeReturnTo =" />
+            <CodeLine
+              number="39"
+              text="normalizeReturnTo(searchParams.get('returnTo'))"
+            />
+            <CodeLine
+              number="40"
+              text="const shouldTrackRedirect = safeReturnTo !== null"
+              active
+            />
+            <CodeLine
+              number="41"
+              text="const fallbackDestination = '/dashboard'"
+              active
+            />
+            <CodeLine
+              number="42"
+              text="const destination = safeReturnTo ?? '/dashboard'"
+            />
+            <div className="px-4 pt-3 text-[10px] text-white/32">
+              <span className="text-cyan-300">●</span> Applying change.
+            </div>
+          </div>
+        </div>
+
+        <div className="p-3">
+          <div className="space-y-2">
+            {[
+              ["Files", "2"],
+              ["Edits", "12"],
+              ["Checks", "3/2"],
+            ].map(([label, value]) => (
+              <div
+                key={label}
+                className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-3 text-center"
+              >
+                <p className="text-[8px] uppercase tracking-[0.22em] text-white/28">
+                  {label}
+                </p>
+                <p className="mt-1 text-[13px] font-semibold text-white/88">
+                  {value}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </WindowFrame>
+  );
+}
+
+export function TranscriptDiffMockup() {
+  return (
+    <WindowFrame
+      title="Live transcript"
+      eyebrow="Dual pane"
+      rightLabel="Diff linked"
+    >
+      <div className="grid h-full grid-cols-[1.05fr_1.4fr]">
+        <div className="border-r border-white/10 p-3">
+          <SectionLabel>Transcript</SectionLabel>
+
+          <div className="space-y-3">
+            {[
+              {
+                who: "U",
+                text: "Can you fix the callback so users return to the page they started from?",
+              },
+              {
+                who: "A",
+                text: "Reading the auth flow and tracing redirect handling now.",
+              },
+              {
+                who: "A",
+                text: "Found the issue: the fallback path replaces the intended return target when the param is missing or malformed.",
+              },
+              {
+                who: "A",
+                text: "Drafting a guarded patch and running checks.",
+              },
+            ].map((msg, i) => (
+              <div key={i} className="flex items-start gap-2.5">
+                <div
+                  className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[9px] font-semibold ${
+                    msg.who === "A"
+                      ? "bg-white/10 text-white/85"
+                      : "bg-cyan-300/15 text-cyan-200"
+                  }`}
+                >
+                  {msg.who}
+                </div>
+                <div className="max-w-[92%] rounded-2xl border border-white/10 bg-white/[0.035] px-3 py-2">
+                  <p className="text-[10px] leading-4 text-white/78">
+                    {msg.text}
+                  </p>
+                </div>
+              </div>
+            ))}
+
+            <div className="pt-1">
+              <div className="mb-1 flex items-center justify-between text-[8px] uppercase tracking-[0.22em] text-white/28">
+                <span>Agent activity</span>
+                <span>independent scroll</span>
+              </div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-white/8">
+                <div className="h-full w-[62%] rounded-full bg-cyan-300/85" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-rows-[auto_1fr]">
+          <div className="border-b border-white/10 px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <SectionLabel>Live diff</SectionLabel>
+              </div>
+              <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.22em] text-white/35">
+                <span>app/auth/callback/page.tsx</span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-white/55">
+                  +8 / -2
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2">
+            <div className="border-r border-white/10 py-3">
+              <div className="px-4 pb-2 text-[9px] uppercase tracking-[0.22em] text-white/25">
+                Before
+              </div>
+              <div className="space-y-[1px]">
+                <CodeLine number="18" text="const destination = '/dashboard'" />
+                <CodeLine number="19" text="" />
+                <CodeLine number="20" text="if (user) {" />
+                <CodeLine number="21" text="  redirect(destination)" />
+                <CodeLine number="22" text="}" />
+              </div>
+            </div>
+
+            <div className="py-3">
+              <div className="px-4 pb-2 text-[9px] uppercase tracking-[0.22em] text-white/25">
+                After
+              </div>
+              <div className="space-y-[1px]">
+                <CodeLine
+                  number="18"
+                  text="const safeReturnTo = normalizeReturnTo(...)"
+                  active
+                />
+                <CodeLine
+                  number="19"
+                  text="const destination = safeReturnTo ?? '/dashboard'"
+                  active
+                />
+                <CodeLine number="20" text="" />
+                <CodeLine number="21" text="if (user) {" />
+                <CodeLine number="22" text="  redirect(destination)" />
+              </div>
+
+              <div className="px-4 pt-4">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="text-[10px] font-semibold text-white/82">
+                      Checks running
+                    </p>
+                    <span className="text-[8px] uppercase tracking-[0.22em] text-white/35">
+                      2 passed · 1 in progress
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {["Typecheck", "Lint", "Route test"].map((item, i) => (
+                      <div
+                        key={item}
+                        className="rounded-xl border border-white/10 bg-black/20 px-2 py-2 text-center"
+                      >
+                        <p className="text-[9px] text-white/65">{item}</p>
+                        <p className="mt-1 text-[9px] font-medium text-white/85">
+                          {i < 2 ? "Passed" : "Running"}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </WindowFrame>
+  );
+}
+
+export function ReviewQueueMockup() {
+  return (
+    <WindowFrame
+      title="Review queue"
+      eyebrow="Human gate"
+      rightLabel="Patch summary"
+    >
+      <div className="grid h-full grid-cols-[1.1fr_1.35fr]">
+        <div className="border-r border-white/10 p-3">
+          <SectionLabel>Exceptions only</SectionLabel>
+
+          <div className="space-y-2.5">
+            {[
+              {
+                title: "Rename helper import",
+                status: "Auto-approved",
+                body: "No behavior change. Formatting only.",
+              },
+              {
+                title: "Guard malformed returnTo",
+                status: "Needs review",
+                body: "Redirect logic changed for invalid callback paths.",
+                active: true,
+              },
+              {
+                title: "Remove stale logger",
+                status: "Auto-approved",
+                body: "Unused debug output removed.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className={`rounded-2xl border p-3 ${
+                  item.active
+                    ? "border-cyan-300/45 bg-white/[0.045]"
+                    : "border-white/10 bg-white/[0.025]"
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-semibold text-white/88">
+                      {item.title}
+                    </p>
+                    <p className="mt-1 text-[10px] leading-4 text-white/46">
+                      {item.body}
+                    </p>
+                  </div>
+                  <span
+                    className={`shrink-0 rounded-full border px-2 py-1 text-[8px] uppercase tracking-[0.22em] ${
+                      item.active
+                        ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-100"
+                        : "border-white/10 bg-white/5 text-white/48"
+                    }`}
+                  >
+                    {item.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+            <div className="mb-3 flex items-center justify-between">
+              <p className="text-[10px] font-semibold text-white/82">
+                Queue policy
+              </p>
+              <span className="text-[8px] uppercase tracking-[0.22em] text-white/32">
+                Active
+              </span>
+            </div>
+            <div className="space-y-2 text-[10px] text-white/55">
+              <div className="flex items-center justify-between">
+                <span>Routine edits auto-ship</span>
+                <span className="text-white/82">On</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Behavior changes require review</span>
+                <span className="text-white/82">On</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-3">
+          <SectionLabel>Selected patch</SectionLabel>
+
+          <div className="rounded-[20px] border border-white/10 bg-white/[0.03] p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[12px] font-semibold text-white/92">
+                  Redirect safety patch
+                </p>
+                <p className="mt-1 text-[10px] text-white/42">
+                  auth callback · medium confidence impact
+                </p>
+              </div>
+              <span className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-2 py-1 text-[8px] uppercase tracking-[0.22em] text-cyan-100">
+                review required
+              </span>
+            </div>
+
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              {[
+                ["Files touched", "2"],
+                ["Risk", "Medium"],
+                ["Checks", "Passed"],
+              ].map(([label, value]) => (
+                <div
+                  key={label}
+                  className="rounded-xl border border-white/10 bg-black/20 px-3 py-3"
+                >
+                  <p className="text-[8px] uppercase tracking-[0.22em] text-white/28">
+                    {label}
+                  </p>
+                  <p className="mt-1 text-[11px] font-semibold text-white/86">
+                    {value}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-3">
+              <p className="text-[9px] uppercase tracking-[0.22em] text-white/28">
+                Summary
+              </p>
+              <ul className="mt-2 space-y-2 text-[10px] leading-4 text-white/68">
+                <li>• Normalizes callback return targets before redirect.</li>
+                <li>
+                  • Preserves intended destination when the value is valid.
+                </li>
+                <li>
+                  • Falls back to /dashboard only when the param is unsafe.
+                </li>
+              </ul>
+            </div>
+
+            <div className="mt-4 grid grid-cols-[1fr_auto] gap-3">
+              <div className="rounded-2xl border border-white/10 bg-black/20 p-3">
+                <p className="text-[9px] uppercase tracking-[0.22em] text-white/28">
+                  Reviewer note
+                </p>
+                <p className="mt-2 text-[10px] leading-4 text-white/74">
+                  This changes navigation behavior for malformed callback
+                  params. Requesting human confirmation before merge.
+                </p>
+              </div>
+
+              <div className="flex flex-col justify-end gap-2">
+                <button className="rounded-xl border border-white/12 bg-white/6 px-4 py-2 text-[10px] font-medium text-white/82">
+                  Send back
+                </button>
+                <button className="rounded-xl border border-cyan-300/30 bg-cyan-300/12 px-4 py-2 text-[10px] font-medium text-cyan-100">
+                  Approve patch
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </WindowFrame>
+  );
+}
+
+export function FeatureMockupsPreview() {
+  return (
+    <div className="space-y-8 bg-black p-8">
+      <TaskToCodeMockup />
+      <TranscriptDiffMockup />
+      <ReviewQueueMockup />
+    </div>
+  );
+}

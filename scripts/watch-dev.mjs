@@ -12,6 +12,10 @@ const MAPPINGS = [
     src: "C:/Users/Jakob/Documents/WareHouse/nextworks/1_nextworks-cli/cli/kits/blocks/app/templates",
     dest: "C:/Users/Jakob/Documents/WareHouse/nextworks/0_test_npm/app/templates",
   },
+  {
+    src: "C:/Users/Jakob/Documents/WareHouse/nextworks/1_nextworks-cli/cli/kits/blocks/public",
+    dest: "C:/Users/Jakob/Documents/WareHouse/nextworks/0_test_npm/public",
+  },
 ];
 
 for (const { src, dest } of MAPPINGS) {

@@ -1,0 +1,92 @@
+<svg width="960" height="600" viewBox="0 0 960 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="480" y1="0" x2="480" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111111"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#141414"/>
+      <stop offset="1" stop-color="#090909"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="600" rx="32" fill="url(#bg)"/>
+  <rect x="20" y="20" width="920" height="560" rx="28" fill="#070707" stroke="#222222"/>
+  <rect x="20" y="20" width="920" height="64" rx="28" fill="#0B0B0B"/>
+  <path d="M20 84H940" stroke="#1F1F1F"/>
+
+  <g transform="translate(44 40)">
+    <rect width="28" height="28" rx="8" fill="#F5F5F5"/>
+    <circle cx="10" cy="10" r="2" fill="#0A0A0A"/>
+    <circle cx="18" cy="10" r="2" fill="#0A0A0A"/>
+    <circle cx="10" cy="18" r="2" fill="#0A0A0A"/>
+    <circle cx="18" cy="18" r="2" fill="#0A0A0A"/>
+    <text x="42" y="12" fill="#F5F5F5" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Live transcript</text>
+    <rect x="170" y="0" width="98" height="28" rx="14" fill="#131313" stroke="#2A2A2A"/>
+    <text x="194" y="18" fill="#8A8A8A" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.8">LIVE DIFF</text>
+  </g> 
+  
+  <g transform="translate(760 40)">
+    <text x="0" y="12" fill="#777777" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.6">SCROLL STATE</text>
+    <rect x="96" y="0" width="72" height="28" rx="14" fill="#0F0F0F" stroke="#2A2A2A"/>
+    <circle cx="114" cy="14" r="5" fill="#2EE6FF"/>
+    <text x="125" y="18" fill="#D4D4D4" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.4">LIVE</text>
+  </g>
+
+  <rect x="56" y="118" width="848" height="412" rx="26" fill="url(#panel)" stroke="#212121"/>
+  <text x="82" y="154" fill="#6F6F6F" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="2.4">TRANSCRIPT AND DIFF</text>
+
+  <g transform="translate(82 178)">
+    <rect width="336" height="272" rx="18" fill="#101010" stroke="#232323"/>
+    <text x="20" y="28" fill="#7A7A7A" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="1.8">TRANSCRIPT</text>
+
+    <circle cx="24" cy="64" r="14" fill="#16343A"/>
+    <text x="24" y="69" text-anchor="middle" fill="#BFF7FF" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700">U</text>
+    <rect x="48" y="48" width="262" height="54" rx="14" fill="#131313" stroke="#232323"/>
+    <text x="64" y="70" fill="#F1F1F1" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">Can you fix callback</text>
+    <text x="64" y="91" fill="#D0D0D0" font-family="Arial, Helvetica, sans-serif" font-size="15">return behavior?</text>
+
+    <circle cx="24" cy="140" r="14" fill="#1E1E1E"/>
+    <text x="24" y="145" text-anchor="middle" fill="#F5F5F5" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700">A</text>
+    <rect x="48" y="124" width="262" height="54" rx="14" fill="#131313" stroke="#232323"/>
+    <text x="64" y="146" fill="#F1F1F1" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">Reading auth flow and</text>
+    <text x="64" y="167" fill="#D0D0D0" font-family="Arial, Helvetica, sans-serif" font-size="15">tracing redirect handling.</text>
+
+    <circle cx="24" cy="222" r="14" fill="#1E1E1E"/>
+    <text x="24" y="227" text-anchor="middle" fill="#F5F5F5" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700">A</text>
+    <rect x="48" y="206" width="262" height="54" rx="14" fill="#131313" stroke="#232323"/>
+    <text x="64" y="228" fill="#F1F1F1" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">Drafting guarded patch</text>
+    <text x="64" y="249" fill="#D0D0D0" font-family="Arial, Helvetica, sans-serif" font-size="15">and running checks now.</text>
+  </g>
+
+  <g transform="translate(442 178)">
+    <rect width="436" height="272" rx="18" fill="#101010" stroke="#232323"/>
+    <text x="20" y="28" fill="#7A7A7A" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="1.8">DIFF PREVIEW</text>
+    <rect x="20" y="44" width="396" height="54" rx="14" fill="#16343A"/>
+    <text x="36" y="66" fill="#D7FBFF" font-family="Courier New, monospace" font-size="16">+ const safeReturnTo = normalizeReturnTo(...)</text>
+    <text x="36" y="87" fill="#D7FBFF" font-family="Courier New, monospace" font-size="16">+ const destination = safeReturnTo ?? '/dashboard'</text>
+
+    <text x="22" y="134" fill="#7A7A7A" font-family="Courier New, monospace" font-size="14">21</text>
+    <text x="56" y="134" fill="#E3E3E3" font-family="Courier New, monospace" font-size="18">if (user) {</text>
+    <text x="22" y="166" fill="#7A7A7A" font-family="Courier New, monospace" font-size="14">22</text>
+    <text x="56" y="166" fill="#E3E3E3" font-family="Courier New, monospace" font-size="18">redirect(destination)</text>
+    <text x="22" y="198" fill="#7A7A7A" font-family="Courier New, monospace" font-size="14">23</text>
+    <text x="56" y="198" fill="#E3E3E3" font-family="Courier New, monospace" font-size="18">}</text>
+
+    <rect x="20" y="218" width="396" height="34" rx="12" fill="#121212" stroke="#232323"/>
+    <text x="36" y="240" fill="#F1F1F1" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">Checks running</text>
+    <text x="170" y="240" fill="#9D9D9D" font-family="Arial, Helvetica, sans-serif" font-size="14">2 passed · 1 in progress</text>
+  </g>
+
+  <g transform="translate(82 474)">
+    <text x="0" y="0" fill="#707070" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="2">TRANSCRIPT</text>
+    <rect y="12" width="280" height="8" rx="4" fill="#171717"/>
+    <rect y="12" width="176" height="8" rx="4" fill="#2EE6FF"/>
+  </g>
+
+  <g transform="translate(650 474)">
+    <text x="0" y="0" fill="#707070" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="2">DIFF</text>
+    <rect y="12" width="228" height="8" rx="4" fill="#171717"/>
+    <rect y="12" width="122" height="8" rx="4" fill="#2EE6FF"/>
+  </g>
+</svg>

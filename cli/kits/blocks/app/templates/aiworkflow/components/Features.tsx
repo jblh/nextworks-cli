@@ -4,21 +4,21 @@ import { Features as SharedFeatures } from "@/components/sections/Features";
 
 const featuresData = [
   {
-    imageSrc: "/placeholders/saas_dashboard/projectBoard.png",
+    imageSrc: "/placeholders/aiworkflow/task.svg",
     imageAlt: "Task navigator and repo context view",
     headingText: "Turn plain-language tasks into code changes",
     subheadingText:
       "The agent reads the repo, traces the issue, and shapes a safe patch with clear context.",
   },
   {
-    imageSrc: "/placeholders/saas_dashboard/analytics.png",
+    imageSrc: "/placeholders/aiworkflow/live.svg",
     imageAlt: "Transcript, live diff, and editor output",
     headingText: "Watch the transcript and diff move independently",
     subheadingText:
       "The agent can keep reading, edit the file, and land a result without forcing both panes to move in lockstep.",
   },
   {
-    imageSrc: "/placeholders/saas_dashboard/chat.png",
+    imageSrc: "/placeholders/aiworkflow/review.svg",
     imageAlt: "Review queue and patch summary panel",
     headingText: "Review only the changes that matter",
     subheadingText:

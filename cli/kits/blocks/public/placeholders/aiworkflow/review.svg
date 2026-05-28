@@ -1,0 +1,80 @@
+<svg width="960" height="600" viewBox="0 0 960 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="480" y1="0" x2="480" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111111"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#141414"/>
+      <stop offset="1" stop-color="#090909"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="600" rx="32" fill="url(#bg)"/>
+  <rect x="20" y="20" width="920" height="560" rx="28" fill="#070707" stroke="#222222"/>
+  <rect x="20" y="20" width="920" height="64" rx="28" fill="#0B0B0B"/>
+  <path d="M20 84H940" stroke="#1F1F1F"/>
+ 
+  <g transform="translate(44 40)">
+    <rect width="28" height="28" rx="8" fill="#F5F5F5"/>
+    <circle cx="10" cy="10" r="2" fill="#0A0A0A"/>
+    <circle cx="18" cy="10" r="2" fill="#0A0A0A"/>
+    <circle cx="10" cy="18" r="2" fill="#0A0A0A"/>
+    <circle cx="18" cy="18" r="2" fill="#0A0A0A"/>
+    <text x="42" y="12" fill="#F5F5F5" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Review queue</text>
+    <rect x="154" y="0" width="96" height="28" rx="14" fill="#131313" stroke="#2A2A2A"/>
+    <text x="177" y="18" fill="#8A8A8A" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.8">HUMAN GATE</text>
+  </g>
+
+  <g transform="translate(742 40)">
+    <text x="0" y="12" fill="#777777" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.6">PATCH STATE</text>
+    <rect x="96" y="0" width="86" height="28" rx="14" fill="#0F0F0F" stroke="#2A2A2A"/>
+    <circle cx="114" cy="14" r="5" fill="#2EE6FF"/>
+    <text x="125" y="18" fill="#D4D4D4" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.4">REVIEW</text>
+  </g>
+
+  <rect x="56" y="118" width="848" height="412" rx="26" fill="url(#panel)" stroke="#212121"/>
+  <text x="82" y="154" fill="#6F6F6F" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="2.4">SELECTED PATCH</text>
+
+  <g transform="translate(82 176)">
+    <rect width="796" height="84" rx="18" fill="#151515" stroke="#2EE6FF"/>
+    <rect width="5" height="84" rx="2.5" fill="#2EE6FF"/>
+    <text x="22" y="34" fill="#F8F8F8" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Guard malformed returnTo</text>
+    <text x="22" y="62" fill="#CFCFCF" font-family="Arial, Helvetica, sans-serif" font-size="18">Redirect logic changes when callback paths are invalid.</text>
+    <rect x="648" y="18" width="122" height="26" rx="13" fill="#16343A" stroke="#2EE6FF" stroke-opacity="0.35"/>
+    <text x="709" y="35" text-anchor="middle" fill="#D7FBFF" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="1.2">REVIEW REQUIRED</text>
+  </g>
+
+  <g transform="translate(82 286)">
+    <rect width="244" height="92" rx="18" fill="#101010" stroke="#232323"/>
+    <text x="22" y="28" fill="#7A7A7A" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="1.8">FILES TOUCHED</text>
+    <text x="22" y="66" fill="#F3F3F3" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700">2</text>
+
+    <rect x="276" y="0" width="244" height="92" rx="18" fill="#101010" stroke="#232323"/>
+    <text x="298" y="28" fill="#7A7A7A" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="1.8">RISK</text>
+    <text x="298" y="66" fill="#F3F3F3" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700">Medium</text>
+
+    <rect x="552" y="0" width="244" height="92" rx="18" fill="#101010" stroke="#232323"/>
+    <text x="574" y="28" fill="#7A7A7A" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="1.8">CHECKS</text>
+    <text x="574" y="66" fill="#F3F3F3" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700">Passed</text>
+  </g>
+
+  <g transform="translate(82 404)">
+    <rect width="796" height="78" rx="18" fill="#0D0D0D" stroke="#232323"/>
+    <text x="22" y="26" fill="#6F6F6F" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="2">SUMMARY</text>
+    <text x="22" y="48" fill="#D5D5D5" font-family="Arial, Helvetica, sans-serif" font-size="17">• Normalizes callback return targets before redirect.</text>
+    <text x="418" y="48" fill="#D5D5D5" font-family="Arial, Helvetica, sans-serif" font-size="17">• Preserves intended destination when valid.</text>
+    <text x="22" y="68" fill="#D5D5D5" font-family="Arial, Helvetica, sans-serif" font-size="17">• Falls back only when the param is unsafe.</text>
+  </g>
+
+  <g transform="translate(82 498)">
+    <rect width="498" height="32" rx="16" fill="#0D0D0D" stroke="#282828"/>
+    <text x="18" y="21" fill="#D4D4D4" font-family="Arial, Helvetica, sans-serif" font-size="14">Navigation behavior changes for malformed params.</text>
+
+    <rect x="610" y="0" width="88" height="32" rx="16" fill="#0D0D0D" stroke="#282828"/>
+    <text x="654" y="21" text-anchor="middle" fill="#AFAFAF" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="1.2">SEND BACK</text>
+
+    <rect x="708" y="0" width="88" height="32" rx="16" fill="#16343A" stroke="#2EE6FF" stroke-opacity="0.35"/>
+    <text x="752" y="21" text-anchor="middle" fill="#D7FBFF" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="1.2">APPROVE</text>
+  </g>
+</svg>
