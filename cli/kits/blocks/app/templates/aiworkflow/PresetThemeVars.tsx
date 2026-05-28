@@ -1,1 +1,1 @@
-export { PresetThemeVars } from "./themes/test";
+export { PresetThemeVars } from "./themes/default";
