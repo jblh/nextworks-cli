@@ -353,70 +353,76 @@ export default function Gallery() {
         />
         {/* Hero Preview */}
         <div id="hero-product-demo" className="scroll-mt-16">
-          <HeroProductDemo
-            className="bg-transparent"
-            heading={{
-              text: "Ship faster with an agent that knows your codebase.",
-              className:
-                "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
-            }}
-            subheading={{
-              text: "Describe the change you need. The agent reads, plans, edits, and verifies — across every affected file, in one run.",
-              className:
-                "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
-            }}
-            cta1={{
-              label: "Start for free",
-              href: "#features",
-              variant: "default",
-              size: "lg",
-              className:
-                "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
-                "[--btn-bg:var(--hero-cta-primary-bg)] " +
-                "hover:[--btn-hover-bg:var(--hero-cta-primary-hover-bg)] " +
-                "[--btn-fg:var(--hero-cta-primary-fg)] " +
-                "hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
-            }}
-            cta2={{
-              label: "See it in action",
-              href: "#trust",
-              variant: "outline",
-              size: "lg",
-              className:
-                "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20 " +
-                "[--btn-bg:var(--hero-cta-secondary-bg)] " +
-                "[--btn-fg:var(--hero-cta-secondary-fg)] " +
-                "[--btn-border:var(--hero-cta-secondary-border)] " +
-                "hover:[--btn-hover-bg:var(--hero-cta-secondary-hover-bg)] " +
-                "hover:[--btn-hover-fg:var(--hero-cta-secondary-hover-fg)]",
-            }}
-            stage={{
-              scenarios: heroProductDemoScenarios,
-              initialScenarioIndex: 0,
-              className: "mt-0",
-            }}
-            section={{
-              className: "px-6 pt-10 pb-6 sm:px-8 lg:px-10 lg:pt-12 lg:pb-8",
-            }}
-            container={{
-              className: "relative z-10 max-w-7xl gap-8",
-            }}
-            textContainer={{
-              className: "max-w-3xl pt-1 lg:pl-4 lg:pt-0",
-            }}
-            demoContainer={{
-              className:
-                "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[0.5rem] border border-border/0 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
-              // "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[2rem] border border-border/70 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
-            }}
-            buttonsContainer={{
-              className:
-                "mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center [--btn-ring:var(--ring)]",
-            }}
-            demoBelowText
-            ariaLabel="Gallery product demo hero section"
-          />
+          <div className="relative">
+            <div className="pointer-events-none absolute left-6 top-4 z-20 inline-flex items-center rounded-full border border-border/40 bg-background/50 px-2.5 py-0.5 text-[9px] font-medium uppercase tracking-[0.18em] text-muted-foreground/80 shadow-none backdrop-blur-[2px] sm:left-8 sm:top-6">
+              AI Workflow Hero
+            </div>
+            <HeroProductDemo
+              className="bg-transparent"
+              heading={{
+                text: "Ship faster with an agent that knows your codebase.",
+                className:
+                  "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
+              }}
+              subheading={{
+                text: "Describe the change you need. The agent reads, plans, edits, and verifies — across every affected file, in one run.",
+                className:
+                  "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
+              }}
+              cta1={{
+                label: "Start for free",
+                href: "#features",
+                variant: "default",
+                size: "lg",
+                className:
+                  "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
+                  "[--btn-bg:var(--hero-cta-primary-bg)] " +
+                  "hover:[--btn-hover-bg:var(--hero-cta-primary-hover-bg)] " +
+                  "[--btn-fg:var(--hero-cta-primary-fg)] " +
+                  "hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
+              }}
+              cta2={{
+                label: "See it in action",
+                href: "#trust",
+                variant: "outline",
+                size: "lg",
+                className:
+                  "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20 " +
+                  "[--btn-bg:var(--hero-cta-secondary-bg)] " +
+                  "[--btn-fg:var(--hero-cta-secondary-fg)] " +
+                  "[--btn-border:var(--hero-cta-secondary-border)] " +
+                  "hover:[--btn-hover-bg:var(--hero-cta-secondary-hover-bg)] " +
+                  "hover:[--btn-hover-fg:var(--hero-cta-secondary-hover-fg)]",
+              }}
+              stage={{
+                scenarios: heroProductDemoScenarios,
+                initialScenarioIndex: 0,
+                className: "mt-0",
+              }}
+              section={{
+                className: "px-6 pt-10 pb-6 sm:px-8 lg:px-10 lg:pt-12 lg:pb-8",
+              }}
+              container={{
+                className: "relative z-10 max-w-7xl gap-8",
+              }}
+              textContainer={{
+                className: "max-w-3xl pt-6 lg:pl-4 lg:pt-8",
+              }}
+              demoContainer={{
+                className:
+                  "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[0.5rem] border border-border/0 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
+                // "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[2rem] border border-border/70 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
+              }}
+              buttonsContainer={{
+                className:
+                  "mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center [--btn-ring:var(--ring)]",
+              }}
+              demoBelowText
+              ariaLabel="Gallery product demo hero section"
+            />
+          </div>
         </div>
+
         {/* Hero Sections */}
         <div id="hero-sections" className="scroll-mt-16">
           <HeroOverlay
