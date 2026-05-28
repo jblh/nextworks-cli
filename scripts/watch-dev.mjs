@@ -35,6 +35,6 @@ for (const { src, dest } of MAPPINGS) {
     }
   });
 
-  console.log(`Watching: ${src}`);
+  // console.log(`Watching: ${src}`);
   console.log(`      → : ${dest}\n`);
 }
