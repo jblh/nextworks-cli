@@ -13,13 +13,12 @@ export function PresetThemeVars({ className, children }: Props) {
         "[--navbar-bg:rgba(255,255,255,0.76)] dark:[--navbar-bg:rgba(0,0,0,0.72)]",
         "[--navbar-fg:theme(colors.slate.900)] dark:[--navbar-fg:theme(colors.white)]",
         "[--navbar-accent:theme(colors.slate.950)] dark:[--navbar-accent:theme(colors.white)]",
+
         "[--navbar-link-fg:theme(colors.slate.700)] dark:[--navbar-link-fg:theme(colors.slate.200)]",
         "[--navbar-link-hover-fg:theme(colors.slate.950)] dark:[--navbar-link-hover-fg:theme(colors.white)]",
         "[--navbar-toggle-bg:theme(colors.white)] dark:[--navbar-toggle-bg:theme(colors.black)]",
         "[--navbar-hover-bg:rgba(15,23,42,0.04)] dark:[--navbar-hover-bg:rgba(255,255,255,0.06)]",
-
-        "[--navbar-ring:theme(colors.slate.950)] dark:[--navbar-ring:theme(colors.white)]",
-
+        "[--navbar-ring:theme(colors.slate.950)] dark:[--navbar-ring:theme(colors.pink)]",
         "[--navbar-border:rgba(15,23,42,0.08)] dark:[--navbar-border:rgba(255,255,255,0.1)]",
 
         "[--input-bg:theme(colors.white)] dark:[--input-bg:#000000]",
