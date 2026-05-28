@@ -49,11 +49,8 @@ export function PresetThemeVars({ className, children }: Props) {
         // Hero product demo
         "[--hero-cta-primary-bg:var(--primary)]",
         "[--hero-cta-primary-fg:var(--primary-foreground)]",
-
         "[--hero-cta-primary-hover-bg:var(--primary-foreground)]",
         "[--hero-cta-primary-hover-fg:var(--primary)]]",
-        // "[--hero-cta-primary-hover-bg:var(--primary)]",
-        // "[--hero-cta-primary-hover-fg:var(--primary-foreground)]]",
 
         "[--hero-cta-secondary-bg:transparent]",
         "[--hero-cta-secondary-fg:var(--primary)]",
