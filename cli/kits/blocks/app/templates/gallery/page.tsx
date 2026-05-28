@@ -528,7 +528,7 @@ export default function Gallery() {
 
         {/* Trust & Social Proof */}
         <div id="trust" className="scroll-mt-16">
-          <div className="relative pt-4 sm:pt-5">
+          <div className="relative pt-0">
             <TrustBadges
               section={{
                 className:
@@ -550,10 +550,10 @@ export default function Gallery() {
 
         {/* About & Process */}
         <div id="about-process" className="scroll-mt-16">
-          <div className="relative pt-4 sm:pt-5">
+          <div className="relative pt-0">
             <About animateStats={false} />
           </div>
-          <div className="relative pt-4 sm:pt-5 mb-0">
+          <div className="relative pt-0 mb-0">
             <ProcessTimeline />
           </div>
         </div>
@@ -570,7 +570,7 @@ export default function Gallery() {
 
         {/* Testimonials */}
         <div id="testimonials" className="scroll-mt-16">
-          <div className="relative pt-4 sm:pt-5 mb-0">
+          <div className="relative pt-0 mb-0">
             <Testimonials />
           </div>
         </div>
