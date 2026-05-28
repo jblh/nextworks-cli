@@ -374,13 +374,23 @@ export default function Gallery() {
                   variant: "default",
                   size: "lg",
                   className:
-                    "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
+                    // "ml-4 px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
+                    // "!bg-[var(--hero-cta-primary-bg)] !text-[var(--hero-cta-primary-fg)] " +
+                    // "hover:!bg-[var(--hero-cta-primary-hover-bg)] hover:!text-[var(--hero-cta-primary-hover-fg)] " +
+                    // "active:!bg-[var(--hero-cta-primary-bg)] active:!text-[var(--hero-cta-primary-fg)] " +
+                    // "visited:!bg-[var(--hero-cta-primary-bg)] visited:!text-[var(--hero-cta-primary-fg)] " +
+                    // "dark:!bg-[var(--hero-cta-primary-bg)] dark:!text-[var(--hero-cta-primary-fg)] " +
+                    // "dark:hover:!bg-[var(--hero-cta-secondary-hover-bg)] dark:hover:!text-[var(--hero-cta-primary-hover-fg)] " +
+                    // "dark:active:!bg-[var(--hero-cta-primary-bg)] dark:active:!text-[var(--hero-cta-primary-fg)] " +
+                    // "dark:visited:!bg-[var(--hero-cta-primary-bg)] dark:visited:!text-[var(--hero-cta-primary-fg)]",
+                    "ml-4 border border-transparent px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
                     "!bg-[var(--hero-cta-primary-bg)] !text-[var(--hero-cta-primary-fg)] " +
                     "hover:!bg-[var(--hero-cta-primary-hover-bg)] hover:!text-[var(--hero-cta-primary-hover-fg)] " +
                     "active:!bg-[var(--hero-cta-primary-bg)] active:!text-[var(--hero-cta-primary-fg)] " +
                     "visited:!bg-[var(--hero-cta-primary-bg)] visited:!text-[var(--hero-cta-primary-fg)] " +
                     "dark:!bg-[var(--hero-cta-primary-bg)] dark:!text-[var(--hero-cta-primary-fg)] " +
-                    "dark:hover:!bg-[var(--hero-cta-primary-hover-bg)] dark:hover:!text-[var(--hero-cta-primary-hover-fg)] " +
+                    "dark:hover:!bg-[var(--hero-cta-secondary-hover-bg)] dark:hover:!text-[var(--hero-cta-primary-hover-fg)] " +
+                    "dark:hover:!border-white " +
                     "dark:active:!bg-[var(--hero-cta-primary-bg)] dark:active:!text-[var(--hero-cta-primary-fg)] " +
                     "dark:visited:!bg-[var(--hero-cta-primary-bg)] dark:visited:!text-[var(--hero-cta-primary-fg)]",
                 }}
