@@ -322,13 +322,20 @@ export default function Gallery() {
     label,
     children,
     className,
+    labelClassName,
   }: {
     label: string;
     children: ReactNode;
     className?: string;
+    labelClassName?: string;
   }) => (
     <div className={cn("relative pt-3 sm:pt-4", className)}>
-      <div className="pointer-events-none absolute left-6 top-2 z-20 inline-flex items-center rounded-full border border-border/30 bg-background/45 px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.18em] text-muted-foreground/70 shadow-none backdrop-blur-[2px] sm:left-8 sm:top-3">
+      <div
+        className={cn(
+          "pointer-events-none absolute left-6 top-2 z-20 inline-flex items-center rounded-full border border-border/30 bg-background/45 px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.18em] text-muted-foreground/70 shadow-none backdrop-blur-[2px] sm:left-8 sm:top-3",
+          labelClassName,
+        )}
+      >
         {label}
       </div>
       {children}
@@ -370,78 +377,82 @@ export default function Gallery() {
           }}
           ctaButton={null}
         />
-        {/* Hero Preview */}
-        <div id="hero-product-demo" className="scroll-mt-16">
-          <GallerySection label="AI Workflow Hero" className="pt-0">
-            <HeroProductDemo
-              className="bg-transparent"
-              heading={{
-                text: "Ship faster with an agent that knows your codebase.",
-                className:
-                  "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
-              }}
-              subheading={{
-                text: "Describe the change you need. The agent reads, plans, edits, and verifies — across every affected file, in one run.",
-                className:
-                  "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
-              }}
-              cta1={{
-                label: "Start for free",
-                href: "#features",
-                variant: "default",
-                size: "lg",
-                className:
-                  "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
-                  "[--btn-bg:var(--hero-cta-primary-bg)] " +
-                  "hover:[--btn-hover-bg:var(--hero-cta-primary-hover-bg)] " +
-                  "[--btn-fg:var(--hero-cta-primary-fg)] " +
-                  "hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
-              }}
-              cta2={{
-                label: "See it in action",
-                href: "#trust",
-                variant: "outline",
-                size: "lg",
-                className:
-                  "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20 " +
-                  "[--btn-bg:var(--hero-cta-secondary-bg)] " +
-                  "[--btn-fg:var(--hero-cta-secondary-fg)] " +
-                  "[--btn-border:var(--hero-cta-secondary-border)] " +
-                  "hover:[--btn-hover-bg:var(--hero-cta-secondary-hover-bg)] " +
-                  "hover:[--btn-hover-fg:var(--hero-cta-secondary-hover-fg)]",
-              }}
-              stage={{
-                scenarios: heroProductDemoScenarios,
-                initialScenarioIndex: 0,
-                className: "mt-0",
-              }}
-              section={{
-                className: "px-6 pt-10 pb-6 sm:px-8 lg:px-10 lg:pt-12 lg:pb-8",
-              }}
-              container={{
-                className: "relative z-10 max-w-7xl gap-8",
-              }}
-              textContainer={{
-                className: "max-w-3xl pt-6 lg:pl-4 lg:pt-8",
-              }}
-              demoContainer={{
-                className:
-                  "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[0.5rem] border border-border/0 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
-                // "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[2rem] border border-border/70 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
-              }}
-              buttonsContainer={{
-                className:
-                  "mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center [--btn-ring:var(--ring)]",
-              }}
-              demoBelowText
-              ariaLabel="Gallery product demo hero section"
-            />
-          </GallerySection>
-        </div>
-
         {/* Hero Sections */}
         <div id="hero-sections" className="scroll-mt-16">
-          <GallerySection label="Hero Overlay" className="mb-10">
+          <div id="hero-product-demo" className="scroll-mt-16">
+            <GallerySection label="AI Workflow Hero" className="pt-0">
+              <HeroProductDemo
+                className="bg-transparent"
+                heading={{
+                  text: "Ship faster with an agent that knows your codebase.",
+                  className:
+                    "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
+                }}
+                subheading={{
+                  text: "Describe the change you need. The agent reads, plans, edits, and verifies — across every affected file, in one run.",
+                  className:
+                    "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
+                }}
+                cta1={{
+                  label: "Start for free",
+                  href: "#features",
+                  variant: "default",
+                  size: "lg",
+                  className:
+                    "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
+                    "[--btn-bg:var(--hero-cta-primary-bg)] " +
+                    "hover:[--btn-hover-bg:var(--hero-cta-primary-hover-bg)] " +
+                    "[--btn-fg:var(--hero-cta-primary-fg)] " +
+                    "hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
+                }}
+                cta2={{
+                  label: "See it in action",
+                  href: "#trust",
+                  variant: "outline",
+                  size: "lg",
+                  className:
+                    "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20 " +
+                    "[--btn-bg:var(--hero-cta-secondary-bg)] " +
+                    "[--btn-fg:var(--hero-cta-secondary-fg)] " +
+                    "[--btn-border:var(--hero-cta-secondary-border)] " +
+                    "hover:[--btn-hover-bg:var(--hero-cta-secondary-hover-bg)] " +
+                    "hover:[--btn-hover-fg:var(--hero-cta-secondary-hover-fg)]",
+                }}
+                stage={{
+                  scenarios: heroProductDemoScenarios,
+                  initialScenarioIndex: 0,
+                  className: "mt-0",
+                }}
+                section={{
+                  className:
+                    "px-6 pt-10 pb-6 sm:px-8 lg:px-10 lg:pt-12 lg:pb-8",
+                }}
+                container={{
+                  className: "relative z-10 max-w-7xl gap-8",
+                }}
+                textContainer={{
+                  className: "max-w-3xl pt-6 lg:pl-4 lg:pt-8",
+                }}
+                demoContainer={{
+                  className:
+                    "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[0.5rem] border border-border/0 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
+                  // "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[2rem] border border-border/70 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
+                }}
+                buttonsContainer={{
+                  className:
+                    "mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center [--btn-ring:var(--ring)]",
+                }}
+                demoBelowText
+                ariaLabel="Gallery product demo hero section"
+              />
+            </GallerySection>
+          </div>
+
+          <GallerySection
+            label="Hero Overlay"
+            className="pt-4 sm:pt-5 mb-10"
+            labelClassName="top-3 sm:top-4"
+          >
             <HeroOverlay
               heading="Forecast The Next Move"
               subheading="Predict demand, personalize journeys, and scale impact with AI-guided insights your team can use today."
@@ -506,7 +517,11 @@ export default function Gallery() {
             />
           </GallerySection>
 
-          <GallerySection label="Hero Split">
+          <GallerySection
+            label="Hero Split"
+            className="pt-4 sm:pt-5"
+            labelClassName="top-3 sm:top-4"
+          >
             <HeroSplit
               section={{ className: "bg-muted" }}
               heading="Confident Decisions, On Demand"
@@ -546,7 +561,11 @@ export default function Gallery() {
 
         {/* Trust & Social Proof */}
         <div id="trust" className="scroll-mt-16">
-          <GallerySection label="Trust Badges">
+          <GallerySection
+            label="Trust Badges"
+            className="pt-4 sm:pt-5"
+            labelClassName="top-3 sm:top-4"
+          >
             <TrustBadges
               section={{
                 className:
@@ -561,17 +580,29 @@ export default function Gallery() {
           <GallerySection label="Features">
             <Features featuresData={defaultFeaturesData}></Features>
           </GallerySection>
-          <GallerySection label="Services Grid" className="mb-0">
+          <GallerySection
+            label="Services Grid"
+            className="pt-4 sm:pt-5 mb-0"
+            labelClassName="top-3 sm:top-4"
+          >
             <ServicesGrid />
           </GallerySection>
         </div>
 
         {/* About & Process */}
         <div id="about-process" className="scroll-mt-16">
-          <GallerySection label="About">
+          <GallerySection
+            label="About"
+            className="pt-4 sm:pt-5"
+            labelClassName="top-3 sm:top-4"
+          >
             <About animateStats={false} />
           </GallerySection>
-          <GallerySection label="Process Timeline" className="mb-0">
+          <GallerySection
+            label="Process Timeline"
+            className="pt-4 sm:pt-5 mb-0"
+            labelClassName="top-3 sm:top-4"
+          >
             <ProcessTimeline />
           </GallerySection>
         </div>
@@ -581,14 +612,22 @@ export default function Gallery() {
           <GallerySection label="Portfolio Simple">
             <PortfolioSimple />
           </GallerySection>
-          <GallerySection label="Team" className="mb-0">
+          <GallerySection
+            label="Team"
+            className="pt-4 sm:pt-5 mb-0"
+            labelClassName="top-3 sm:top-4"
+          >
             <Team />
           </GallerySection>
         </div>
 
         {/* Testimonials */}
         <div id="testimonials" className="scroll-mt-16">
-          <GallerySection label="Testimonials" className="mb-0">
+          <GallerySection
+            label="Testimonials"
+            className="pt-4 sm:pt-5 mb-0"
+            labelClassName="top-3 sm:top-4"
+          >
             <Testimonials />
           </GallerySection>
         </div>
@@ -602,7 +641,11 @@ export default function Gallery() {
 
         {/* FAQ */}
         <div id="faq" className="scroll-mt-16">
-          <GallerySection label="FAQ" className="mb-0">
+          <GallerySection
+            label="FAQ"
+            className="pt-4 sm:pt-5 mb-0"
+            labelClassName="top-3 sm:top-4"
+          >
             <FAQ
               questionButton={{
                 className:
@@ -650,7 +693,11 @@ export default function Gallery() {
 
         {/* Contact */}
         <div id="contact" className="scroll-mt-16">
-          <GallerySection label="Contact" className="mb-0">
+          <GallerySection
+            label="Contact"
+            className="pt-4 sm:pt-5 mb-0"
+            labelClassName="top-3 sm:top-4"
+          >
             <Contact
               submitButtonStyle={{
                 variant: "default",
