@@ -60,9 +60,9 @@ export default function Gallery() {
   >["scenarios"] = [
     {
       key: "gallery-product-demo",
-      label: "Product demo",
+      label: "Workflow overview",
       description:
-        "A full-width mockup that keeps the layered agent workspace readable at a glance.",
+        "An AI-powered coding agent that plans, edits, and verifies changes across your entire codebase — without breaking your flow.",
       activeWindow: "workflowStudio",
       playback: {
         workflowStudio: {
@@ -79,118 +79,109 @@ export default function Gallery() {
       taskList: {
         window: {
           key: "taskList",
-          title: "Scenes",
-          subtitle: "Gallery preview",
+          title: "Queues",
+          subtitle: "Active tasks",
           status: { label: "Ready", tone: "info" },
         },
-        title: "Demo scenes",
-        subtitle: "Pick a scenario to preview the product story.",
+        title: "Task queues",
+        subtitle: "Switch between in-progress agent runs.",
         activeItemId: "gallery-product-demo",
         items: [
           {
             id: "gallery-product-demo",
-            title: "Product demo hero",
+            title: "Refactor auth module",
             description:
-              "Show a clean, layered overview with readable workflow windows.",
-            meta: "gallery · active",
+              "Extract token logic into a dedicated service, add refresh handling, and update all call sites.",
+            meta: "in progress · 4 files",
           },
         ],
       },
       workflowStudio: {
         window: {
           key: "workflowStudio",
-          title: "Agent workspace",
-          subtitle: "Mockup flow",
-          status: { label: "Drafting", tone: "info" },
+          title: "Agent console",
+          subtitle: "Live run",
+          status: { label: "Running", tone: "info" },
         },
-        title: "Shaping the hero copy",
+        title: "Refactoring auth module",
         subtitle:
-          "The demo stays legible while still feeling like a live product workflow.",
+          "The agent reads existing logic, plans the extraction, and applies changes across all affected files.",
         activeNodeId: "polish-layout",
         transcript: [
-          { id: "gallery-title", kind: "title", text: "Product demo hero" },
+          { id: "gallery-title", kind: "title", text: "Refactor auth module" },
           {
             id: "gallery-prompt",
             kind: "prompt",
-            text: "Create a readable gallery hero that highlights a layered product demo without overwhelming the layout.",
+            text: "Extract token handling into an AuthService class, add silent refresh on 401, and update every call site.",
           },
           {
             id: "gallery-read-1",
             kind: "activity",
-            text: "Read gallery/page.tsx",
+            text: "Read auth/session.ts and api/client.ts",
           },
           {
             id: "gallery-read-2",
             kind: "activity",
-            text: "Inspect HeroProductDemo window layout",
-          },
-          {
-            id: "gallery-thought",
-            kind: "thought",
-            text: "Keep the shell airy and the text compact for fast scanning",
-          },
-          {
-            id: "gallery-message",
-            kind: "message",
-            text: "I'll keep the hero copy concise, open up the demo shell, and use the gallery theme tokens so the panels remain easy to read.",
+            text: "Scan for token usage across 12 files",
           },
           {
             id: "gallery-file-1",
             kind: "file",
-            path: "cli/kits/blocks/app/templates/gallery/page.tsx",
-            text: "cli/kits/blocks/app/templates/gallery/page.tsx",
-            added: 22,
-            removed: 4,
+            path: "src/services/auth-service.ts",
+            text: "src/services/auth-service.ts",
+            added: 74,
+            removed: 0,
           },
           {
             id: "gallery-summary",
             kind: "message",
-            text: "Done. The hero now leads the gallery with a readable mockup and a clear product story.",
+            text: "Done. Token logic is centralised in AuthService and silent refresh is active on every API call.",
           },
         ],
         composer: {
-          placeholder: "Plan the next gallery section...",
+          placeholder: "Describe your next change...",
           modeLabel: "Agent",
           modelLabel: "Sonnet",
         },
         highlights: [
-          { id: "read-copy", label: "Read copy", tone: "info" },
-          { id: "polish-layout", label: "Polish layout", tone: "accent" },
+          { id: "read-copy", label: "Read codebase", tone: "info" },
+          { id: "polish-layout", label: "Apply changes", tone: "accent" },
         ],
         nodes: [
           {
             id: "read-copy",
-            label: "Draft concise copy",
+            label: "Read existing auth logic",
             description:
-              "Keep the headline short and the subheading scannable.",
+              "Parse session handling and identify all token read/write paths.",
             type: "Read",
             status: "success",
-            metadata: "headline + subheading",
+            metadata: "auth/session.ts · api/client.ts",
           },
           {
             id: "layout-shell",
-            label: "Open up the shell",
-            description: "Give the demo area enough space to stay readable.",
+            label: "Plan the extraction",
+            description:
+              "Decide class boundaries and map which call sites need updating.",
             type: "Analyze",
             status: "success",
-            metadata: "demoContainer spacing",
+            metadata: "12 files affected",
           },
           {
             id: "polish-layout",
-            label: "Polish hero layout",
+            label: "Write AuthService",
             description:
-              "Balance the mockup with the rest of the gallery page.",
+              "Create the service class, move token storage, and add the 401 refresh interceptor.",
             type: "Edit",
             status: "info",
             active: true,
             emphasized: true,
-            metadata: "section + container classes",
+            metadata: "src/services/auth-service.ts",
           },
           {
             id: "review-story",
-            label: "Review the story",
+            label: "Update call sites",
             description:
-              "Confirm the copy reads like a product preview, not a spec sheet.",
+              "Replace direct token access with AuthService across all affected files and verify types.",
             type: "Verify",
             status: "neutral",
             metadata: "final pass",
@@ -200,64 +191,66 @@ export default function Gallery() {
       runConsole: {
         window: {
           key: "runConsole",
-          title: "Editor",
-          subtitle: "Live mockup",
-          status: { label: "Updating", tone: "info" },
+          title: "Console",
+          subtitle: "Live output",
+          status: { label: "Writing", tone: "info" },
         },
-        title: "cli/kits/blocks/app/templates/gallery/page.tsx",
-        subtitle: "The mockup copy updates as the hero is composed.",
-        statusLabel: "Applying gallery hero",
-        progressLabel: "12 lines changed",
+        title: "src/services/auth-service.ts",
+        subtitle:
+          "New file — token logic extracted from session.ts and api/client.ts.",
+        statusLabel: "Writing AuthService",
+        progressLabel: "74 lines added",
         progressPercent: 64,
         activeEntryId: "gallery-diff-3",
-        editorTabLabel: "page.tsx",
+        editorTabLabel: "auth-service.ts",
         editorLanguage: "TypeScript",
         editorSummary:
-          "Add a readable product demo hero above the rest of the gallery sections.",
+          "Create AuthService with token storage, silent refresh, and a fetch interceptor.",
         entries: [
           {
             id: "gallery-diff-1",
-            message: "Opened gallery page and reviewed hero slots",
+            message: "Read auth/session.ts and mapped token access patterns",
             timestamp: "10:48",
             source: "agent",
             status: "success",
           },
           {
             id: "gallery-diff-2",
-            message: "Drafted compact mockup copy for the demo hero",
+            message: "Identified 12 call sites that reference tokens directly",
             timestamp: "10:49",
             source: "analysis",
             status: "success",
-            detail: "Keeping the headline short preserves the layout balance.",
+            detail:
+              "Centralising access in AuthService will eliminate all direct imports.",
           },
           {
             id: "gallery-diff-3",
-            message: "Wiring HeroProductDemo into the gallery template",
+            message: "Created AuthService with refresh interceptor",
             timestamp: "10:49",
             source: "editor",
             status: "info",
             highlighted: true,
             lineNumber: "34",
             code: [
-              " const heroProductDemoScenarios = [",
-              "   {",
-              "     key: 'gallery-product-demo',",
-              "     label: 'Product demo',",
-              "     description: 'A full-width mockup that keeps the layered agent workspace readable at a glance.',",
-              "   },",
-              " ]",
+              " export class AuthService {",
+              "   private static token: string | null = null;",
               " ",
-              "+<HeroProductDemo",
-              "+  heading={{ text: 'Preview your product in motion.' }}",
-              "+  subheading={{ text: 'A layered mockup that stays readable inside the gallery.' }}",
-              "+  stage={{ scenarios: heroProductDemoScenarios }}",
-              "+  demoBelowText",
-              "+/>",
+              "+  static async getToken(): Promise<string | null> {",
+              "+    if (!this.token) this.token = await storage.get('auth_token');",
+              "+    return this.token;",
+              "+  }",
+              "+ ",
+              "+  static async refreshIfExpired(): Promise<void> {",
+              "+    const exp = parseExpiry(this.token);",
+              "+    if (exp && exp < Date.now() + 60_000) {",
+              "+      this.token = await api.post('/auth/refresh');",
+              "+    }",
+              "+  }",
             ],
           },
           {
             id: "gallery-diff-4",
-            message: "Validated the hero renders cleanly above the other demos",
+            message: "Queued call-site updates across 12 files",
             timestamp: "10:50",
             source: "preview",
             status: "neutral",
@@ -265,8 +258,8 @@ export default function Gallery() {
         ],
         metrics: [
           { id: "gm1", label: "Files", value: "1", tone: "success" },
-          { id: "gm2", label: "Edits", value: "12", tone: "info" },
-          { id: "gm3", label: "Readability", value: "High", tone: "success" },
+          { id: "gm2", label: "Lines added", value: "74", tone: "info" },
+          { id: "gm3", label: "Type errors", value: "0", tone: "success" },
         ],
         highlights: [],
       },
@@ -281,33 +274,33 @@ export default function Gallery() {
         window: {
           key: "knowledgePanel",
           title: "Knowledge",
-          subtitle: "Preview",
+          subtitle: "Context",
           status: { label: "Ready", tone: "success" },
         },
-        title: "Mockup copy",
-        subtitle: "The gallery hero stays concise and easy to scan.",
-        query: "HeroProductDemo",
+        title: "Auth codebase context",
+        subtitle: "Relevant files and patterns surfaced for this task.",
+        query: "AuthService token refresh",
         summary:
-          "A product demo hero with short positioning copy, a readable shell, and a gallery-friendly layout.",
+          "Token storage is currently split between session.ts and api/client.ts. Centralising in AuthService removes 3 duplicate patterns and enables a single refresh intercept point.",
         snippets: [
           {
             id: "gallery-snippet",
-            title: "Gallery hero copy",
-            excerptLabel: "Live preview",
-            confidence: "1 readable scenario",
+            title: "auth/session.ts — token storage",
+            excerptLabel: "Current implementation",
+            confidence: "12 call sites",
             highlighted: true,
             content:
-              "heading: 'Preview your product in motion.'\nsubheading: 'A layered mockup that stays readable inside the gallery.'\ncta: 'Explore the gallery'",
-            tags: ["hero", "mockup", "gallery"],
+              "getToken(): string | null { return localStorage.getItem('auth_token'); }\nsetToken(t: string): void { localStorage.setItem('auth_token', t); }\nclearToken(): void { localStorage.removeItem('auth_token'); }",
+            tags: ["auth", "token", "session"],
           },
         ],
         highlights: [
-          { id: "gallery-snippet", label: "Generated copy", tone: "success" },
+          { id: "gallery-snippet", label: "Token pattern", tone: "success" },
         ],
       },
       highlights: [
-        { id: "polish-layout", label: "Readable hero", tone: "accent" },
-        { id: "gallery-diff-3", label: "Mockup updates", tone: "info" },
+        { id: "polish-layout", label: "AuthService created", tone: "accent" },
+        { id: "gallery-diff-3", label: "Refresh interceptor", tone: "info" },
       ],
     },
   ];
@@ -363,17 +356,17 @@ export default function Gallery() {
           <HeroProductDemo
             className="bg-transparent"
             heading={{
-              text: "Preview your product in motion.",
+              text: "Ship faster with an agent that knows your codebase.",
               className:
                 "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
             }}
             subheading={{
-              text: "A layered mockup that stays readable inside the gallery, with the demo shell wide enough to scan at a glance.",
+              text: "Describe the change you need. The agent reads, plans, edits, and verifies — across every affected file, in one run.",
               className:
                 "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
             }}
             cta1={{
-              label: "Explore the gallery",
+              label: "Start for free",
               href: "#features",
               variant: "default",
               size: "lg",
@@ -385,7 +378,7 @@ export default function Gallery() {
                 "hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
             }}
             cta2={{
-              label: "View the other sections",
+              label: "See it in action",
               href: "#trust",
               variant: "outline",
               size: "lg",
