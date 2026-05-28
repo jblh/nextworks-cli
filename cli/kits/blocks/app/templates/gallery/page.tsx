@@ -406,7 +406,8 @@ export default function Gallery() {
             }}
             demoContainer={{
               className:
-                "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[2rem] border border-border/70 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
+                "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[0.5rem] border border-border/0 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
+              // "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[2rem] border border-border/70 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
             }}
             buttonsContainer={{
               className:
@@ -418,34 +419,6 @@ export default function Gallery() {
         </div>
         {/* Hero Sections */}
         <div id="hero-sections" className="scroll-mt-16">
-          <HeroMotion
-            actions={{
-              className:
-                "mt-8 flex items-center justify-center gap-3 [--btn-ring:var(--ring)]",
-            }}
-            primaryButtonStyle={{
-              size: "lg",
-              variant: "default",
-              className:
-                "[--btn-bg:var(--primary)] [--btn-fg:var(--primary-foreground)] " +
-                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_88%,black)] " +
-                "hover:[--btn-hover-fg:var(--primary-foreground)]",
-            }}
-            secondaryButtonStyle={{
-              size: "lg",
-              variant: "outline",
-              className:
-                "border [&:where(button)]:border " +
-                "[--btn-bg:transparent] dark:[--btn-bg:transparent] " +
-                "[--btn-fg:var(--primary)] dark:[--btn-fg:var(--primary)] " +
-                "[--btn-border:var(--primary)] dark:[--btn-border:var(--primary)] " +
-                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_15%,transparent)] " +
-                "dark:hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_18%,transparent)] " +
-                "hover:[--btn-hover-fg:var(--primary)] dark:hover:[--btn-hover-fg:var(--primary)]",
-            }}
-            primaryCta={{ label: "Get Started", href: "#hero-sections" }}
-            secondaryCta={{ label: "See Demo", href: "#hero-sections" }}
-          />
           <HeroOverlay
             heading="Forecast The Next Move"
             subheading="Predict demand, personalize journeys, and scale impact with AI-guided insights your team can use today."
@@ -478,6 +451,35 @@ export default function Gallery() {
               src: "/placeholders/gallery/hero-pexels-broken-9945014.avif",
             }}
           />
+          <HeroMotion
+            actions={{
+              className:
+                "mt-8 flex items-center justify-center gap-3 [--btn-ring:var(--ring)]",
+            }}
+            primaryButtonStyle={{
+              size: "lg",
+              variant: "default",
+              className:
+                "[--btn-bg:var(--primary)] [--btn-fg:var(--primary-foreground)] " +
+                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_88%,black)] " +
+                "hover:[--btn-hover-fg:var(--primary-foreground)]",
+            }}
+            secondaryButtonStyle={{
+              size: "lg",
+              variant: "outline",
+              className:
+                "border [&:where(button)]:border " +
+                "[--btn-bg:transparent] dark:[--btn-bg:transparent] " +
+                "[--btn-fg:var(--primary)] dark:[--btn-fg:var(--primary)] " +
+                "[--btn-border:var(--primary)] dark:[--btn-border:var(--primary)] " +
+                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_15%,transparent)] " +
+                "dark:hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_18%,transparent)] " +
+                "hover:[--btn-hover-fg:var(--primary)] dark:hover:[--btn-hover-fg:var(--primary)]",
+            }}
+            primaryCta={{ label: "Get Started", href: "#hero-sections" }}
+            secondaryCta={{ label: "See Demo", href: "#hero-sections" }}
+          />
+
           <HeroSplit
             heading="Confident Decisions, On Demand"
             subheading="Reliable data when you need it."
