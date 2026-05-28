@@ -481,6 +481,7 @@ export default function Gallery() {
           />
 
           <HeroSplit
+            section={{ className: "bg-muted" }}
             heading="Confident Decisions, On Demand"
             subheading="Reliable data when you need it."
             cta1={{
@@ -516,8 +517,14 @@ export default function Gallery() {
         </div>
         {/* Trust & Social Proof */}
         <div id="trust" className="scroll-mt-16">
-          <TrustBadges />
+          <TrustBadges
+            section={{
+              className:
+                "py-8 px-6 bg-[color-mix(in_oklab,var(--muted)_94%,black)] dark:bg-[color-mix(in_oklab,var(--muted)_90%,white)]",
+            }}
+          />
         </div>
+
         {/* Features & Services */}
         <div id="features" className="scroll-mt-16">
           <Features featuresData={defaultFeaturesData}></Features>
