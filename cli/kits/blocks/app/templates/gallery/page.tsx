@@ -6,6 +6,7 @@ import { CTA } from "@/components/sections/CTA";
 import { FAQ } from "@/components/sections/FAQ";
 import { Features } from "@/components/sections/Features";
 import { Footer } from "@/components/sections/Footer";
+import { HeroProductDemo } from "@/components/sections/HeroProductDemo";
 import { HeroMotion } from "@/components/sections/HeroMotion";
 import { HeroOverlay } from "@/components/sections/HeroOverlay";
 import { HeroSplit } from "@/components/sections/HeroSplit";
