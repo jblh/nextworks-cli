@@ -9,6 +9,7 @@ import { CTA } from "@nextworks/blocks-sections";
 import { FAQ } from "@nextworks/blocks-sections";
 import { Features } from "@nextworks/blocks-sections";
 import { Footer } from "@nextworks/blocks-sections";
+import { HeroProductDemo } from "@nextworks/blocks-sections";
 import { HeroMotion } from "@nextworks/blocks-sections";
 import { HeroOverlay } from "@nextworks/blocks-sections";
 import { HeroSplit } from "@nextworks/blocks-sections";
@@ -21,6 +22,7 @@ import { ServicesGrid } from "@nextworks/blocks-sections";
 import { Team } from "@nextworks/blocks-sections";
 import { Testimonials } from "@nextworks/blocks-sections";
 import { ThemeSelector } from "@nextworks/blocks-core";
+import type { HeroProductDemoProps } from "@nextworks/blocks-sections";
 import { TrustBadges } from "@nextworks/blocks-sections";
 import { PresetThemeVars } from "./PresetThemeVars";
 
@@ -56,6 +58,256 @@ export function Gallery() {
     },
   ];
 
+  const heroProductDemoScenarios: NonNullable<
+    HeroProductDemoProps["stage"]
+  >["scenarios"] = [
+    {
+      key: "gallery-product-demo",
+      label: "Workflow overview",
+      description:
+        "An AI-powered coding agent that plans, edits, and verifies changes across your entire codebase — without breaking your flow.",
+      activeWindow: "workflowStudio",
+      playback: {
+        workflowStudio: {
+          playbackStepDurationsMs: [820, 920, 1240, 1100, 960, 840, 1560],
+          playbackResetDelayMs: 2200,
+        },
+        runConsole: {
+          playbackStepDurationsMs: [1080, 1320, 920, 780, 700, 620, 1240],
+          playbackResetDelayMs: 2200,
+          playbackStepEntryIndices: [0, 0, 1, 1, 2, 2, 2, 3, 3],
+          playbackStepVisibleLineCounts: [2, 2, 3, 4, 6, 8, 10, 12, 12],
+        },
+      },
+      taskList: {
+        window: {
+          key: "taskList",
+          title: "Queues",
+          subtitle: "Active tasks",
+          status: { label: "Ready", tone: "info" },
+        },
+        title: "Task queues",
+        subtitle: "Switch between in-progress agent runs.",
+        activeItemId: "gallery-product-demo",
+        items: [
+          {
+            id: "gallery-product-demo",
+            title: "Refactor auth module",
+            description:
+              "Extract token logic into a dedicated service, add refresh handling, and update all call sites.",
+            meta: "in progress · 4 files",
+          },
+        ],
+      },
+      workflowStudio: {
+        window: {
+          key: "workflowStudio",
+          title: "Agent console",
+          subtitle: "Live run",
+          status: { label: "Running", tone: "info" },
+        },
+        title: "Refactoring auth module",
+        subtitle:
+          "The agent reads existing logic, plans the extraction, and applies changes across all affected files.",
+        activeNodeId: "polish-layout",
+        transcript: [
+          { id: "gallery-title", kind: "title", text: "Refactor auth module" },
+          {
+            id: "gallery-prompt",
+            kind: "prompt",
+            text: "Extract token handling into an AuthService class, add silent refresh on 401, and update every call site.",
+          },
+          {
+            id: "gallery-read-1",
+            kind: "activity",
+            text: "Read auth/session.ts and api/client.ts",
+          },
+          {
+            id: "gallery-read-2",
+            kind: "activity",
+            text: "Scan for token usage across 12 files",
+          },
+          {
+            id: "gallery-file-1",
+            kind: "file",
+            path: "src/services/auth-service.ts",
+            text: "src/services/auth-service.ts",
+            added: 74,
+            removed: 0,
+          },
+          {
+            id: "gallery-summary",
+            kind: "message",
+            text: "Done. Token logic is centralised in AuthService and silent refresh is active on every API call.",
+          },
+        ],
+        composer: {
+          placeholder: "Describe your next change...",
+          modeLabel: "Agent",
+          modelLabel: "Sonnet",
+        },
+        highlights: [
+          { id: "read-copy", label: "Read codebase", tone: "info" },
+          { id: "polish-layout", label: "Apply changes", tone: "accent" },
+        ],
+        nodes: [
+          {
+            id: "read-copy",
+            label: "Read existing auth logic",
+            description:
+              "Parse session handling and identify all token read/write paths.",
+            type: "Read",
+            status: "success",
+            metadata: "auth/session.ts · api/client.ts",
+          },
+          {
+            id: "layout-shell",
+            label: "Plan the extraction",
+            description:
+              "Decide class boundaries and map which call sites need updating.",
+            type: "Analyze",
+            status: "success",
+            metadata: "12 files affected",
+          },
+          {
+            id: "polish-layout",
+            label: "Write AuthService",
+            description:
+              "Create the service class, move token storage, and add the 401 refresh interceptor.",
+            type: "Edit",
+            status: "info",
+            active: true,
+            emphasized: true,
+            metadata: "src/services/auth-service.ts",
+          },
+          {
+            id: "review-story",
+            label: "Update call sites",
+            description:
+              "Replace direct token access with AuthService across all affected files and verify types.",
+            type: "Verify",
+            status: "neutral",
+            metadata: "final pass",
+          },
+        ],
+      },
+      runConsole: {
+        window: {
+          key: "runConsole",
+          title: "Console",
+          subtitle: "Live output",
+          status: { label: "Writing", tone: "info" },
+        },
+        title: "src/services/auth-service.ts",
+        subtitle:
+          "New file — token logic extracted from session.ts and api/client.ts.",
+        statusLabel: "Writing AuthService",
+        progressLabel: "74 lines added",
+        progressPercent: 64,
+        activeEntryId: "gallery-diff-3",
+        editorTabLabel: "auth-service.ts",
+        editorLanguage: "TypeScript",
+        editorSummary:
+          "Create AuthService with token storage, silent refresh, and a fetch interceptor.",
+        entries: [
+          {
+            id: "gallery-diff-1",
+            message: "Read auth/session.ts and mapped token access patterns",
+            timestamp: "10:48",
+            source: "agent",
+            status: "success",
+          },
+          {
+            id: "gallery-diff-2",
+            message: "Identified 12 call sites that reference tokens directly",
+            timestamp: "10:49",
+            source: "analysis",
+            status: "success",
+            detail:
+              "Centralising access in AuthService will eliminate all direct imports.",
+          },
+          {
+            id: "gallery-diff-3",
+            message: "Created AuthService with refresh interceptor",
+            timestamp: "10:49",
+            source: "editor",
+            status: "info",
+            highlighted: true,
+            lineNumber: "34",
+            code: [
+              " export class AuthService {",
+              "   private static token: string | null = null;",
+              " ",
+              "+  static async getToken(): Promise<string | null> {",
+              "+    if (!this.token) this.token = await storage.get('auth_token');",
+              "+    return this.token;",
+              "+  }",
+              "+ ",
+              "+  static async refreshIfExpired(): Promise<void> {",
+              "+    const exp = parseExpiry(this.token);",
+              "+    if (exp && exp < Date.now() + 60_000) {",
+              "+      this.token = await api.post('/auth/refresh');",
+              "+    }",
+              "+  }",
+            ],
+          },
+          {
+            id: "gallery-diff-4",
+            message: "Queued call-site updates across 12 files",
+            timestamp: "10:50",
+            source: "preview",
+            status: "neutral",
+          },
+        ],
+        metrics: [
+          { id: "gm1", label: "Files", value: "1", tone: "success" },
+          { id: "gm2", label: "Lines added", value: "74", tone: "info" },
+          { id: "gm3", label: "Type errors", value: "0", tone: "success" },
+        ],
+        highlights: [],
+      },
+      approvalInbox: {
+        window: {
+          key: "approvalInbox",
+          title: "Hidden",
+        },
+        items: [],
+      },
+      knowledgePanel: {
+        window: {
+          key: "knowledgePanel",
+          title: "Knowledge",
+          subtitle: "Context",
+          status: { label: "Ready", tone: "success" },
+        },
+        title: "Auth codebase context",
+        subtitle: "Relevant files and patterns surfaced for this task.",
+        query: "AuthService token refresh",
+        summary:
+          "Token storage is currently split between session.ts and api/client.ts. Centralising in AuthService removes 3 duplicate patterns and enables a single refresh intercept point.",
+        snippets: [
+          {
+            id: "gallery-snippet",
+            title: "auth/session.ts — token storage",
+            excerptLabel: "Current implementation",
+            confidence: "12 call sites",
+            highlighted: true,
+            content:
+              "getToken(): string | null { return localStorage.getItem('auth_token'); }\nsetToken(t: string): void { localStorage.setItem('auth_token', t); }\nclearToken(): void { localStorage.removeItem('auth_token'); }",
+            tags: ["auth", "token", "session"],
+          },
+        ],
+        highlights: [
+          { id: "gallery-snippet", label: "Token pattern", tone: "success" },
+        ],
+      },
+      highlights: [
+        { id: "polish-layout", label: "AuthService created", tone: "accent" },
+        { id: "gallery-diff-3", label: "Refresh interceptor", tone: "info" },
+      ],
+    },
+  ];
+
   const BrandNode = (
     <>
       <ThemeSelector ariaLabel="Demo: Color theme" label="" className="mr-2" />
@@ -84,7 +336,8 @@ export function Gallery() {
           brand="Nextworks"
           brandNode={BrandNode}
           menuItems={[
-            { label: "Hero", href: "#hero-sections" },
+            { label: "Hero", href: "#hero-product-demo" },
+
             { label: "Trust", href: "#trust" },
             { label: "Features", href: "#features" },
             { label: "About", href: "#about-process" },
@@ -101,8 +354,73 @@ export function Gallery() {
           }}
           ctaButton={null}
         />
+        {/* Hero Preview */}
+        <div id="hero-product-demo" className="scroll-mt-16">
+          <HeroProductDemo
+            className="bg-transparent"
+            heading={{
+              text: "Ship faster with an agent that knows your codebase.",
+              className:
+                "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
+            }}
+            subheading={{
+              text: "Describe the change you need. The agent reads, plans, edits, and verifies — across every affected file, in one run.",
+              className:
+                "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
+            }}
+            cta1={{
+              label: "Start for free",
+              href: "#features",
+              variant: "default",
+              size: "lg",
+              className:
+                "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
+                "[--btn-bg:var(--hero-cta-primary-bg)] " +
+                "hover:[--btn-hover-bg:var(--hero-cta-primary-hover-bg)] " +
+                "[--btn-fg:var(--hero-cta-primary-fg)] " +
+                "hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
+            }}
+            cta2={{
+              label: "See it in action",
+              href: "#trust",
+              variant: "outline",
+              size: "lg",
+              className:
+                "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20 " +
+                "[--btn-bg:var(--hero-cta-secondary-bg)] " +
+                "[--btn-fg:var(--hero-cta-secondary-fg)] " +
+                "[--btn-border:var(--hero-cta-secondary-border)] " +
+                "hover:[--btn-hover-bg:var(--hero-cta-secondary-hover-bg)] " +
+                "hover:[--btn-hover-fg:var(--hero-cta-secondary-hover-fg)]",
+            }}
+            stage={{
+              scenarios: heroProductDemoScenarios,
+              initialScenarioIndex: 0,
+              className: "mt-0",
+            }}
+            section={{
+              className: "px-6 pt-10 pb-6 sm:px-8 lg:px-10 lg:pt-12 lg:pb-8",
+            }}
+            container={{
+              className: "relative z-10 max-w-7xl gap-8",
+            }}
+            textContainer={{
+              className: "max-w-3xl pt-1 lg:pl-4 lg:pt-0",
+            }}
+            demoContainer={{
+              className:
+                "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[2rem] border border-border/70 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
+            }}
+            buttonsContainer={{
+              className:
+                "mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center [--btn-ring:var(--ring)]",
+            }}
+            demoBelowText
+            ariaLabel="Gallery product demo hero section"
+          />
+        </div>
         {/* Hero Sections */}
-        <div id="hero-sections">
+        <div id="hero-sections" className="scroll-mt-16">
           <HeroMotion
             actions={{
               className:

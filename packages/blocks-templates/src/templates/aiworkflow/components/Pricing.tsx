@@ -52,8 +52,7 @@ export function Pricing() {
         },
       ]}
       section={{
-        className:
-          "bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] pt-18 pb-16 dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
+        className: "bg-[var(--section-bg)] pt-18 pb-16",
       }}
       container={{ className: "max-w-7xl mx-auto px-6" }}
       heading={{
@@ -83,7 +82,7 @@ export function Pricing() {
         variant: "default",
         size: "lg",
         className:
-          "w-full font-inter font-semibold [--btn-bg:theme(colors.slate.950)] [--btn-fg:theme(colors.white)] [--btn-border:transparent] hover:[--btn-hover-bg:theme(colors.slate.800)] hover:[--btn-hover-fg:theme(colors.white)] dark:[--btn-bg:theme(colors.white)] dark:[--btn-fg:theme(colors.slate.950)] dark:hover:[--btn-hover-bg:theme(colors.slate.100)] dark:hover:[--btn-hover-fg:theme(colors.slate.950)]",
+          "w-full font-inter font-semibold [--btn-bg:var(--hero-cta-primary-bg)] [--btn-fg:var(--hero-cta-primary-fg)] [--btn-border:var(--hero-cta-primary-border)] hover:[--btn-hover-bg:var(--hero-cta-primary-hover-bg)] hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
       }}
       popularBadge={{
         className:

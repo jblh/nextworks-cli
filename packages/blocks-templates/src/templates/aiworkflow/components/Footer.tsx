@@ -72,7 +72,7 @@ export function Footer() {
       ]}
       section={{
         className:
-          "w-full border-t border-[var(--footer-border)] bg-[linear-gradient(180deg,rgba(255,255,255,0.42)_0%,rgba(255,255,255,0.14)_100%)] text-[var(--footer-fg)] dark:bg-[linear-gradient(180deg,rgba(0,0,0,0.22)_0%,rgba(0,0,0,0.04)_100%)] [--footer-link-hover-fg:theme(colors.slate.950)] dark:[--footer-link-hover-fg:theme(colors.white)] [--footer-link-hover-bg:rgba(15,23,42,0.04)] dark:[--footer-link-hover-bg:rgba(255,255,255,0.05)]",
+          "w-full border-t border-[var(--footer-border)] bg-[var(--footer-bg)] text-[var(--footer-fg)]",
       }}
       container={{ className: "max-w-7xl mx-auto px-6" }}
       brand={{

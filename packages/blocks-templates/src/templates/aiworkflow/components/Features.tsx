@@ -7,21 +7,21 @@ import { Features as SharedFeatures } from "@nextworks/blocks-sections";
 
 const featuresData = [
   {
-    imageSrc: "/placeholders/saas_dashboard/projectBoard.png",
+    imageSrc: "/placeholders/aiworkflow/task.svg",
     imageAlt: "Task navigator and repo context view",
     headingText: "Turn plain-language tasks into code changes",
     subheadingText:
       "The agent reads the repo, traces the issue, and shapes a safe patch with clear context.",
   },
   {
-    imageSrc: "/placeholders/saas_dashboard/analytics.png",
+    imageSrc: "/placeholders/aiworkflow/live.svg",
     imageAlt: "Transcript, live diff, and editor output",
     headingText: "Watch the transcript and diff move independently",
     subheadingText:
       "The agent can keep reading, edit the file, and land a result without forcing both panes to move in lockstep.",
   },
   {
-    imageSrc: "/placeholders/saas_dashboard/chat.png",
+    imageSrc: "/placeholders/aiworkflow/review.svg",
     imageAlt: "Review queue and patch summary panel",
     headingText: "Review only the changes that matter",
     subheadingText:
@@ -36,8 +36,7 @@ export function Features() {
       sectionSubheading="Turn a task into context, a patch, and a live result without losing the thread."
       featuresData={featuresData}
       section={{
-        className:
-          "bg-[linear-gradient(180deg,#eef3f8_0%,#f6f8fb_48%,#eef3f8_100%)] py-18 md:py-22 lg:py-24 dark:bg-[linear-gradient(180deg,#171717_0%,#121212_18%,#1d1d1d_46%,#131313_76%,#1b1b1b_100%)]",
+        className: "bg-[var(--section-bg)] py-18 md:py-22 lg:py-24",
       }}
       container={{ className: "max-w-7xl mx-auto px-6 md:px-8 lg:px-10" }}
       header={{ className: "mb-12 text-center md:mb-14" }}

@@ -422,40 +422,40 @@ export function DemoStage({
           })}
         </div>
 
-        <div className="hidden overflow-hidden rounded-[0.4rem] border border-black/[0.055] bg-[#f9fbfe] shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] ring-1 ring-black/[0.018] dark:border-white/[0.07] dark:bg-[#050505] dark:shadow-[0_30px_100px_-52px_rgba(0,0,0,0.82)] dark:ring-white/[0.03] lg:flex lg:h-full lg:min-h-0 lg:flex-col">
-          <div className="relative flex h-[3.2rem] items-center justify-between border-b border-black/[0.055] bg-[#eef3f8] px-4 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] dark:border-white/[0.065] dark:bg-[#060606] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:px-5">
+        <div className="hidden overflow-hidden rounded-[0.4rem] border border-[var(--demo-border)] bg-[var(--demo-shell-bg)] shadow-[var(--demo-shell-shadow)] ring-1 ring-[var(--demo-shell-ring)] lg:flex lg:h-full lg:min-h-0 lg:flex-col">
+          <div className="relative flex h-[3.2rem] items-center justify-between border-b border-[var(--demo-border)] bg-[var(--demo-shell-muted-bg)] px-4 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:px-5">
             <div className="flex min-w-0 items-center gap-3.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-[0.4rem] border border-black/[0.065] bg-[#ffffff] text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] dark:border-white/[0.07] dark:bg-white/[0.06] dark:text-white/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-[0.4rem] border border-[var(--demo-border)] bg-[var(--demo-shell-strong-bg)] text-[var(--demo-fg)] shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                 <span className="grid grid-cols-2 gap-[2px]">
-                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-900 dark:bg-white/90" />
-                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-500 dark:bg-white/55" />
-                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-500 dark:bg-white/55" />
-                  <span className="h-[3px] w-[3px] rounded-[1px] bg-slate-900 dark:bg-white/90" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-[var(--demo-fg)]" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-[var(--demo-muted-fg)]" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-[var(--demo-muted-fg)]" />
+                  <span className="h-[3px] w-[3px] rounded-[1px] bg-[var(--demo-fg)]" />
                 </span>
               </div>
               <div className="min-w-0 space-y-0.5">
                 <div className="flex min-w-0 items-center gap-2">
-                  <div className="truncate text-[12px] font-semibold tracking-[-0.02em] text-slate-900 dark:text-white/94">
+                  <div className="truncate text-[12px] font-semibold tracking-[-0.02em] text-[var(--demo-fg)]">
                     Agent workspace
                   </div>
-                  <span className="hidden rounded-full border border-black/[0.055] bg-white/72 px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.14em] text-slate-500 dark:border-white/[0.07] dark:bg-white/[0.04] dark:text-white/42 xl:inline-flex">
+                  <span className="hidden rounded-full border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.14em] text-[var(--demo-subtle-fg)] xl:inline-flex">
                     session 03
                   </span>
                 </div>
-                <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-white/40">
+                <div className="text-[10px] uppercase tracking-[0.18em] text-[var(--demo-subtle-fg)]">
                   Session · live repo
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2.5 text-[10px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/42">
-              <div className="hidden items-center gap-2 text-[10px] text-slate-500 dark:text-white/38 xl:flex">
+            <div className="flex items-center gap-2.5 text-[10px] uppercase tracking-[0.16em] text-[var(--demo-subtle-fg)]">
+              <div className="hidden items-center gap-2 text-[10px] text-[var(--demo-subtle-fg)] xl:flex">
                 <span>repo</span>
-                <span className="font-mono text-slate-600 dark:text-white/52">
+                <span className="font-mono text-[var(--demo-muted-fg)]">
                   apps/web
                 </span>
               </div>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.055] bg-white/82 px-2.5 py-1 text-slate-600 dark:border-white/[0.07] dark:bg-white/[0.04] dark:text-white/58">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] px-2.5 py-1 text-[var(--demo-muted-fg)]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--demo-success)]" />
                 Active
               </span>
             </div>
@@ -500,9 +500,10 @@ export function DemoStage({
                     className={cn(
                       "h-full min-h-0 border-0 shadow-none",
                       windowData.key === "taskList" &&
-                        "rounded-none border-r border-black/[0.055] dark:border-white/[0.06]",
+                        "rounded-none border-r border-[var(--demo-border)]",
                       windowData.key === "workflowStudio" &&
-                        "rounded-none border-r border-black/[0.055] dark:border-white/[0.06]",
+                        "rounded-none border-r border-[var(--demo-border)]",
+
                       windowData.key === "runConsole" && "rounded-none",
                     )}
                     bodyClassName="px-0 py-0 sm:px-0 sm:py-0"
