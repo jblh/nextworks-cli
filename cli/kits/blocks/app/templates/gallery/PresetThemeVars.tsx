@@ -50,7 +50,9 @@ export function PresetThemeVars({ className, children }: Props) {
         "[--hero-cta-primary-bg:var(--primary)]",
         "[--hero-cta-primary-hover-bg:color-mix(in oklab, var(--primary) 88%, black)]",
         "[--hero-cta-primary-fg:var(--primary-foreground)]",
-        "[--hero-cta-primary-hover-fg:var(--primary-foreground)]",
+        "[--hero-cta-primary-hover-fg:var(--primary)]",
+        // "[--hero-cta-primary-hover-fg:var(--primary-foreground)]",
+
         "[--hero-cta-primary-border:var(--primary)]",
         "[--hero-cta-secondary-bg:transparent]",
         "[--hero-cta-secondary-fg:var(--primary)]",
