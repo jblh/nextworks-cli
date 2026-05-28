@@ -19,6 +19,7 @@ import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { Team } from "@/components/sections/Team";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { ThemeSelector } from "@/components/ui/theme-selector";
+import type { HeroProductDemoProps } from "@/components/sections/HeroProductDemo";
 import { TrustBadges } from "@/components/sections/TrustBadges";
 import { PresetThemeVars } from "./PresetThemeVars";
 
@@ -54,6 +55,263 @@ export default function Gallery() {
     },
   ];
 
+  const heroProductDemoScenarios: NonNullable<
+    HeroProductDemoProps["stage"]
+  >["scenarios"] = [
+    {
+      key: "gallery-product-demo",
+      label: "Product demo",
+      description:
+        "A full-width mockup that keeps the layered agent workspace readable at a glance.",
+      activeWindow: "workflowStudio",
+      playback: {
+        workflowStudio: {
+          playbackStepDurationsMs: [820, 920, 1240, 1100, 960, 840, 1560],
+          playbackResetDelayMs: 2200,
+        },
+        runConsole: {
+          playbackStepDurationsMs: [1080, 1320, 920, 780, 700, 620, 1240],
+          playbackResetDelayMs: 2200,
+          playbackStepEntryIndices: [0, 0, 1, 1, 2, 2, 2, 3, 3],
+          playbackStepVisibleLineCounts: [2, 2, 3, 4, 6, 8, 10, 12, 12],
+        },
+      },
+      taskList: {
+        window: {
+          key: "taskList",
+          title: "Scenes",
+          subtitle: "Gallery preview",
+          status: { label: "Ready", tone: "info" },
+        },
+        title: "Demo scenes",
+        subtitle: "Pick a scenario to preview the product story.",
+        activeItemId: "gallery-product-demo",
+        items: [
+          {
+            id: "gallery-product-demo",
+            title: "Product demo hero",
+            description:
+              "Show a clean, layered overview with readable workflow windows.",
+            meta: "gallery · active",
+          },
+        ],
+      },
+      workflowStudio: {
+        window: {
+          key: "workflowStudio",
+          title: "Agent workspace",
+          subtitle: "Mockup flow",
+          status: { label: "Drafting", tone: "info" },
+        },
+        title: "Shaping the hero copy",
+        subtitle:
+          "The demo stays legible while still feeling like a live product workflow.",
+        activeNodeId: "polish-layout",
+        transcript: [
+          { id: "gallery-title", kind: "title", text: "Product demo hero" },
+          {
+            id: "gallery-prompt",
+            kind: "prompt",
+            text: "Create a readable gallery hero that highlights a layered product demo without overwhelming the layout.",
+          },
+          {
+            id: "gallery-read-1",
+            kind: "activity",
+            text: "Read gallery/page.tsx",
+          },
+          {
+            id: "gallery-read-2",
+            kind: "activity",
+            text: "Inspect HeroProductDemo window layout",
+          },
+          {
+            id: "gallery-thought",
+            kind: "thought",
+            text: "Keep the shell airy and the text compact for fast scanning",
+          },
+          {
+            id: "gallery-message",
+            kind: "message",
+            text: "I'll keep the hero copy concise, open up the demo shell, and use the gallery theme tokens so the panels remain easy to read.",
+          },
+          {
+            id: "gallery-file-1",
+            kind: "file",
+            path: "cli/kits/blocks/app/templates/gallery/page.tsx",
+            text: "cli/kits/blocks/app/templates/gallery/page.tsx",
+            added: 22,
+            removed: 4,
+          },
+          {
+            id: "gallery-summary",
+            kind: "message",
+            text: "Done. The hero now leads the gallery with a readable mockup and a clear product story.",
+          },
+        ],
+        composer: {
+          placeholder: "Plan the next gallery section...",
+          modeLabel: "Agent",
+          modelLabel: "Sonnet",
+        },
+        highlights: [
+          { id: "read-copy", label: "Read copy", tone: "info" },
+          { id: "polish-layout", label: "Polish layout", tone: "accent" },
+        ],
+        nodes: [
+          {
+            id: "read-copy",
+            label: "Draft concise copy",
+            description:
+              "Keep the headline short and the subheading scannable.",
+            type: "Read",
+            status: "success",
+            metadata: "headline + subheading",
+          },
+          {
+            id: "layout-shell",
+            label: "Open up the shell",
+            description: "Give the demo area enough space to stay readable.",
+            type: "Analyze",
+            status: "success",
+            metadata: "demoContainer spacing",
+          },
+          {
+            id: "polish-layout",
+            label: "Polish hero layout",
+            description:
+              "Balance the mockup with the rest of the gallery page.",
+            type: "Edit",
+            status: "info",
+            active: true,
+            emphasized: true,
+            metadata: "section + container classes",
+          },
+          {
+            id: "review-story",
+            label: "Review the story",
+            description:
+              "Confirm the copy reads like a product preview, not a spec sheet.",
+            type: "Verify",
+            status: "neutral",
+            metadata: "final pass",
+          },
+        ],
+      },
+      runConsole: {
+        window: {
+          key: "runConsole",
+          title: "Editor",
+          subtitle: "Live mockup",
+          status: { label: "Updating", tone: "info" },
+        },
+        title: "cli/kits/blocks/app/templates/gallery/page.tsx",
+        subtitle: "The mockup copy updates as the hero is composed.",
+        statusLabel: "Applying gallery hero",
+        progressLabel: "12 lines changed",
+        progressPercent: 64,
+        activeEntryId: "gallery-diff-3",
+        editorTabLabel: "page.tsx",
+        editorLanguage: "TypeScript",
+        editorSummary:
+          "Add a readable product demo hero above the rest of the gallery sections.",
+        entries: [
+          {
+            id: "gallery-diff-1",
+            message: "Opened gallery page and reviewed hero slots",
+            timestamp: "10:48",
+            source: "agent",
+            status: "success",
+          },
+          {
+            id: "gallery-diff-2",
+            message: "Drafted compact mockup copy for the demo hero",
+            timestamp: "10:49",
+            source: "analysis",
+            status: "success",
+            detail: "Keeping the headline short preserves the layout balance.",
+          },
+          {
+            id: "gallery-diff-3",
+            message: "Wiring HeroProductDemo into the gallery template",
+            timestamp: "10:49",
+            source: "editor",
+            status: "info",
+            highlighted: true,
+            lineNumber: "34",
+            code: [
+              " const heroProductDemoScenarios = [",
+              "   {",
+              "     key: 'gallery-product-demo',",
+              "     label: 'Product demo',",
+              "     description: 'A full-width mockup that keeps the layered agent workspace readable at a glance.',",
+              "   },",
+              " ]",
+              " ",
+              "+<HeroProductDemo",
+              "+  heading={{ text: 'Preview your product in motion.' }}",
+              "+  subheading={{ text: 'A layered mockup that stays readable inside the gallery.' }}",
+              "+  stage={{ scenarios: heroProductDemoScenarios }}",
+              "+  demoBelowText",
+              "+/>",
+            ],
+          },
+          {
+            id: "gallery-diff-4",
+            message: "Validated the hero renders cleanly above the other demos",
+            timestamp: "10:50",
+            source: "preview",
+            status: "neutral",
+          },
+        ],
+        metrics: [
+          { id: "gm1", label: "Files", value: "1", tone: "success" },
+          { id: "gm2", label: "Edits", value: "12", tone: "info" },
+          { id: "gm3", label: "Readability", value: "High", tone: "success" },
+        ],
+        highlights: [],
+      },
+      approvalInbox: {
+        window: {
+          key: "approvalInbox",
+          title: "Hidden",
+        },
+        items: [],
+      },
+      knowledgePanel: {
+        window: {
+          key: "knowledgePanel",
+          title: "Knowledge",
+          subtitle: "Preview",
+          status: { label: "Ready", tone: "success" },
+        },
+        title: "Mockup copy",
+        subtitle: "The gallery hero stays concise and easy to scan.",
+        query: "HeroProductDemo",
+        summary:
+          "A product demo hero with short positioning copy, a readable shell, and a gallery-friendly layout.",
+        snippets: [
+          {
+            id: "gallery-snippet",
+            title: "Gallery hero copy",
+            excerptLabel: "Live preview",
+            confidence: "1 readable scenario",
+            highlighted: true,
+            content:
+              "heading: 'Preview your product in motion.'\nsubheading: 'A layered mockup that stays readable inside the gallery.'\ncta: 'Explore the gallery'",
+            tags: ["hero", "mockup", "gallery"],
+          },
+        ],
+        highlights: [
+          { id: "gallery-snippet", label: "Generated copy", tone: "success" },
+        ],
+      },
+      highlights: [
+        { id: "polish-layout", label: "Readable hero", tone: "accent" },
+        { id: "gallery-diff-3", label: "Mockup updates", tone: "info" },
+      ],
+    },
+  ];
+
   const BrandNode = (
     <>
       <ThemeSelector ariaLabel="Demo: Color theme" label="" className="mr-2" />
@@ -82,7 +340,8 @@ export default function Gallery() {
           brand="Nextworks"
           brandNode={BrandNode}
           menuItems={[
-            { label: "Hero", href: "#hero-sections" },
+            { label: "Hero", href: "#hero-product-demo" },
+
             { label: "Trust", href: "#trust" },
             { label: "Features", href: "#features" },
             { label: "About", href: "#about-process" },
@@ -99,8 +358,73 @@ export default function Gallery() {
           }}
           ctaButton={null}
         />
+        {/* Hero Preview */}
+        <div id="hero-product-demo" className="scroll-mt-16">
+          <HeroProductDemo
+            className="bg-transparent"
+            heading={{
+              text: "Preview your product in motion.",
+              className:
+                "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
+            }}
+            subheading={{
+              text: "A layered mockup that stays readable inside the gallery, with the demo shell wide enough to scan at a glance.",
+              className:
+                "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
+            }}
+            cta1={{
+              label: "Explore the gallery",
+              href: "#features",
+              variant: "default",
+              size: "lg",
+              className:
+                "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
+                "[--btn-bg:var(--hero-cta-primary-bg)] " +
+                "hover:[--btn-hover-bg:var(--hero-cta-primary-hover-bg)] " +
+                "[--btn-fg:var(--hero-cta-primary-fg)] " +
+                "hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
+            }}
+            cta2={{
+              label: "View the other sections",
+              href: "#trust",
+              variant: "outline",
+              size: "lg",
+              className:
+                "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20 " +
+                "[--btn-bg:var(--hero-cta-secondary-bg)] " +
+                "[--btn-fg:var(--hero-cta-secondary-fg)] " +
+                "[--btn-border:var(--hero-cta-secondary-border)] " +
+                "hover:[--btn-hover-bg:var(--hero-cta-secondary-hover-bg)] " +
+                "hover:[--btn-hover-fg:var(--hero-cta-secondary-hover-fg)]",
+            }}
+            stage={{
+              scenarios: heroProductDemoScenarios,
+              initialScenarioIndex: 0,
+              className: "mt-0",
+            }}
+            section={{
+              className: "px-6 pt-10 pb-6 sm:px-8 lg:px-10 lg:pt-12 lg:pb-8",
+            }}
+            container={{
+              className: "relative z-10 max-w-7xl gap-8",
+            }}
+            textContainer={{
+              className: "max-w-3xl pt-1 lg:pl-4 lg:pt-0",
+            }}
+            demoContainer={{
+              className:
+                "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[2rem] border border-border/70 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
+            }}
+            buttonsContainer={{
+              className:
+                "mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center [--btn-ring:var(--ring)]",
+            }}
+            demoBelowText
+            ariaLabel="Gallery product demo hero section"
+          />
+        </div>
         {/* Hero Sections */}
-        <div id="hero-sections">
+        <div id="hero-sections" className="scroll-mt-16">
           <HeroMotion
             actions={{
               className:
