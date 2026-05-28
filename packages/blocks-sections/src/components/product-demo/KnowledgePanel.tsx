@@ -13,13 +13,15 @@ export interface KnowledgePanelProps {
 }
 
 const STATUS_TONE_CLASSES: Record<ProductDemoStatusTone, string> = {
-  neutral: "border-border/60 bg-muted/55 text-muted-foreground",
-  info: "border-sky-500/30 bg-sky-500/10 text-sky-600 dark:text-sky-300",
+  neutral:
+    "border-[var(--demo-border)] bg-[var(--demo-panel-bg)] text-[var(--demo-muted-fg)]",
+  info: "border-[var(--demo-info-border)] bg-[var(--demo-info-soft-bg)] text-[var(--demo-info)]",
   success:
-    "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300",
+    "border-[var(--demo-success-border)] bg-[var(--demo-success-soft-bg)] text-[var(--demo-success)]",
   warning:
-    "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
-  danger: "border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-300",
+    "border-[var(--demo-warning-border)] bg-[var(--demo-warning-soft-bg)] text-[var(--demo-warning)]",
+  danger:
+    "border-[var(--demo-danger-border)] bg-[var(--demo-danger-soft-bg)] text-[var(--demo-danger)]",
 };
 
 function getStatusClass(tone: ProductDemoStatusTone = "neutral") {
@@ -28,28 +30,28 @@ function getStatusClass(tone: ProductDemoStatusTone = "neutral") {
 
 export function KnowledgePanel({ state }: KnowledgePanelProps) {
   return (
-    <div className="flex h-full flex-col gap-4">
+    <div className="flex h-full flex-col gap-4 text-[var(--demo-fg)]">
       <div className="space-y-1.5">
         {state.title && (
-          <h4 className="text-sm font-semibold text-card-foreground">
+          <h4 className="text-sm font-semibold text-[var(--demo-fg)]">
             {state.title}
           </h4>
         )}
         {state.subtitle && (
-          <p className="text-xs leading-relaxed text-muted-foreground">
+          <p className="text-xs leading-relaxed text-[var(--demo-muted-fg)]">
             {state.subtitle}
           </p>
         )}
       </div>
 
       {state.query && (
-        <div className="rounded-xl border border-primary/25 bg-primary/8 px-3 py-2 text-xs text-primary">
+        <div className="rounded-xl border border-[var(--demo-info-border)] bg-[var(--demo-info-soft-bg)] px-3 py-2 text-xs text-[var(--demo-info)]">
           {state.query}
         </div>
       )}
 
       {state.summary && (
-        <p className="text-xs leading-relaxed text-muted-foreground">
+        <p className="text-xs leading-relaxed text-[var(--demo-muted-fg)]">
           {state.summary}
         </p>
       )}
@@ -83,17 +85,18 @@ export function KnowledgePanel({ state }: KnowledgePanelProps) {
             <div
               key={snippet.id}
               className={cn(
-                "rounded-2xl border border-border/60 bg-background/80 p-3",
-                isActive && "border-primary/45 bg-primary/6 shadow-sm",
+                "rounded-2xl border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] p-3",
+                isActive &&
+                  "border-[var(--demo-info-border)] bg-[var(--demo-info-soft-bg)] shadow-sm",
               )}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <div className="text-sm font-semibold text-card-foreground">
+                  <div className="text-sm font-semibold text-[var(--demo-fg)]">
                     {snippet.title}
                   </div>
                   {(snippet.excerptLabel || source?.label) && (
-                    <div className="mt-1 text-[11px] text-muted-foreground">
+                    <div className="mt-1 text-[11px] text-[var(--demo-muted-fg)]">
                       {[snippet.excerptLabel, source?.label]
                         .filter(Boolean)
                         .join(" • ")}
@@ -101,12 +104,12 @@ export function KnowledgePanel({ state }: KnowledgePanelProps) {
                   )}
                 </div>
                 {snippet.confidence && (
-                  <span className="rounded-full border border-border/60 bg-muted/60 px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                  <span className="rounded-full border border-[var(--demo-border)] bg-[var(--demo-panel-muted-bg)] px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--demo-muted-fg)]">
                     {snippet.confidence}
                   </span>
                 )}
               </div>
-              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              <p className="mt-2 text-xs leading-relaxed text-[var(--demo-muted-fg)]">
                 {snippet.content}
               </p>
               {snippet.tags?.length ? (
@@ -114,7 +117,7 @@ export function KnowledgePanel({ state }: KnowledgePanelProps) {
                   {snippet.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full border border-border/60 bg-background/70 px-2 py-0.5 text-[10px] text-muted-foreground"
+                      className="rounded-full border border-[var(--demo-border)] bg-[var(--demo-panel-bg)] px-2 py-0.5 text-[10px] text-[var(--demo-muted-fg)]"
                     >
                       {tag}
                     </span>

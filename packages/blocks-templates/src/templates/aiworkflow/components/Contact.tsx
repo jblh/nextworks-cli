@@ -69,7 +69,7 @@ export function Contact() {
       headerWrapper={{ className: "mb-8 text-center" }}
       headerText={{
         className:
-          "font-outfit text-3xl font-semibold text-[var(--heading-fg)] md:text-4xl",
+          "font-outfit text-3xl font-semibold !text-[var(--heading-fg)] md:text-4xl",
       }}
       subheaderText={{
         className:

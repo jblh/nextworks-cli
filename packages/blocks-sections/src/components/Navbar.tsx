@@ -258,6 +258,7 @@ export function Navbar({
                 "rounded-md px-2 py-2 transition-colors duration-200 lg:px-4",
                 "focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none",
                 "focus-visible:ring-[var(--navbar-ring)]",
+
                 links.className,
               )}
             >
@@ -315,6 +316,7 @@ export function Navbar({
                   mobileLinks.className,
                   "focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none",
                   "focus-visible:ring-[var(--navbar-ring)]",
+
                   links.className,
                 )}
                 onClick={() => setIsMobileMenuOpen(false)}

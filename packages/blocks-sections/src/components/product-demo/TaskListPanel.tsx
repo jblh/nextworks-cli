@@ -13,12 +13,12 @@ export interface TaskListPanelProps {
 
 export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
   return (
-    <div className="flex h-full min-h-0 flex-col bg-[#f1f2ee] text-slate-900 dark:bg-[#070707] dark:text-slate-100">
-      <div className="border-b border-black/[0.06] px-3 py-2.5 dark:border-white/[0.07]">
-        <div className="text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">
+    <div className="flex h-full min-h-0 flex-col bg-[var(--demo-panel-muted-bg)] text-[var(--demo-fg)]">
+      <div className="border-b border-[var(--demo-border)] px-3 py-2.5">
+        <div className="text-[10px] uppercase tracking-[0.18em] text-[var(--demo-subtle-fg)]">
           Task navigator
         </div>
-        <div className="mt-1 text-[11px] text-slate-600 dark:text-slate-400">
+        <div className="mt-1 text-[11px] text-[var(--demo-muted-fg)]">
           Choose a task to inspect and run.
         </div>
       </div>
@@ -34,15 +34,15 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
               onClick={() => onSelect?.(item.id)}
               className={cn(
                 "relative isolate w-full overflow-hidden rounded-none border-x-0 border-y border-b-0 px-3 py-3 text-left transition-colors duration-200 first:border-t-0",
-                "border-black/[0.05] bg-white/58 hover:border-black/[0.07] hover:bg-white/74 dark:border-white/[0.065] dark:bg-white/[0.016] dark:hover:border-white/[0.08] dark:hover:bg-white/[0.028]",
+                "border-[var(--demo-border)] bg-[var(--demo-panel-bg)] hover:border-[var(--demo-border-strong)] hover:bg-[var(--demo-shell-strong-bg)]",
                 isActive &&
-                  "border-black/[0.072] bg-white/84 dark:border-white/[0.085] dark:bg-white/[0.04]",
+                  "border-[var(--demo-border-strong)] bg-[var(--demo-shell-strong-bg)]",
               )}
             >
               {isActive ? (
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 left-0 w-px bg-slate-900/18 dark:bg-white/18"
+                  className="pointer-events-none absolute inset-y-0 left-0 w-px bg-[var(--demo-accent)]"
                 />
               ) : null}
 
@@ -51,8 +51,8 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
                   className={cn(
                     "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold",
                     isActive
-                      ? "border-black/[0.075] bg-[#f6f6f2] text-slate-900 dark:border-white/[0.14] dark:bg-white/[0.07] dark:text-white"
-                      : "border-black/[0.075] bg-[#e9ebe5] text-slate-500 dark:border-white/[0.08] dark:bg-white/[0.035] dark:text-slate-400",
+                      ? "border-[var(--demo-border-strong)] bg-[var(--demo-shell-strong-bg)] text-[var(--demo-fg)]"
+                      : "border-[var(--demo-border)] bg-[var(--demo-panel-subtle-bg)] text-[var(--demo-muted-fg)]",
                   )}
                 >
                   {index + 1}
@@ -61,7 +61,7 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      <div className="text-sm font-semibold text-[var(--demo-fg)]">
                         {item.title}
                       </div>
                     </div>
@@ -69,21 +69,21 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
                       className={cn(
                         "flex h-5 w-[4.5rem] shrink-0 items-center justify-end text-[9px] uppercase tracking-[0.14em]",
                         isActive
-                          ? "text-slate-500 dark:text-slate-400"
-                          : "text-slate-400/90 dark:text-slate-500/90",
+                          ? "text-[var(--demo-muted-fg)]"
+                          : "text-[var(--demo-subtle-fg)]",
                       )}
                     >
                       {isActive ? "Open" : "Queued"}
                     </div>
                   </div>
                   {item.description && (
-                    <p className="mt-1.5 max-w-[22ch] text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                    <p className="mt-1.5 max-w-[22ch] text-xs leading-relaxed text-[var(--demo-muted-fg)]">
                       {item.description}
                     </p>
                   )}
                   {item.meta && (
-                    <div className="mt-2.5 flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400/90">
-                      <span className="h-1 w-1 rounded-full bg-black/20 dark:bg-white/20" />
+                    <div className="mt-2.5 flex items-center gap-2 text-[11px] text-[var(--demo-muted-fg)]">
+                      <span className="h-1 w-1 rounded-full bg-[var(--demo-border-strong)]" />
                       <span>{item.meta}</span>
                     </div>
                   )}
