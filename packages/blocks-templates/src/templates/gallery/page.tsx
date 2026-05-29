@@ -24,6 +24,7 @@ import { Testimonials } from "@nextworks/blocks-sections";
 import { ThemeSelector } from "@nextworks/blocks-core";
 import type { HeroProductDemoProps } from "@nextworks/blocks-sections";
 import { TrustBadges } from "@nextworks/blocks-sections";
+
 import { PresetThemeVars } from "./PresetThemeVars";
 
 export function Gallery() {
@@ -354,266 +355,336 @@ export function Gallery() {
           }}
           ctaButton={null}
         />
-        {/* Hero Preview */}
-        <div id="hero-product-demo" className="scroll-mt-16">
-          <HeroProductDemo
-            className="bg-transparent"
-            heading={{
-              text: "Ship faster with an agent that knows your codebase.",
-              className:
-                "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
-            }}
-            subheading={{
-              text: "Describe the change you need. The agent reads, plans, edits, and verifies — across every affected file, in one run.",
-              className:
-                "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
-            }}
-            cta1={{
-              label: "Start for free",
-              href: "#features",
-              variant: "default",
-              size: "lg",
-              className:
-                "px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
-                "[--btn-bg:var(--hero-cta-primary-bg)] " +
-                "hover:[--btn-hover-bg:var(--hero-cta-primary-hover-bg)] " +
-                "[--btn-fg:var(--hero-cta-primary-fg)] " +
-                "hover:[--btn-hover-fg:var(--hero-cta-primary-hover-fg)]",
-            }}
-            cta2={{
-              label: "See it in action",
-              href: "#trust",
-              variant: "outline",
-              size: "lg",
-              className:
-                "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20 " +
-                "[--btn-bg:var(--hero-cta-secondary-bg)] " +
-                "[--btn-fg:var(--hero-cta-secondary-fg)] " +
-                "[--btn-border:var(--hero-cta-secondary-border)] " +
-                "hover:[--btn-hover-bg:var(--hero-cta-secondary-hover-bg)] " +
-                "hover:[--btn-hover-fg:var(--hero-cta-secondary-hover-fg)]",
-            }}
-            stage={{
-              scenarios: heroProductDemoScenarios,
-              initialScenarioIndex: 0,
-              className: "mt-0",
-            }}
-            section={{
-              className: "px-6 pt-10 pb-6 sm:px-8 lg:px-10 lg:pt-12 lg:pb-8",
-            }}
-            container={{
-              className: "relative z-10 max-w-7xl gap-8",
-            }}
-            textContainer={{
-              className: "max-w-3xl pt-1 lg:pl-4 lg:pt-0",
-            }}
-            demoContainer={{
-              className:
-                "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[2rem] border border-border/70 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
-            }}
-            buttonsContainer={{
-              className:
-                "mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center [--btn-ring:var(--ring)]",
-            }}
-            demoBelowText
-            ariaLabel="Gallery product demo hero section"
-          />
-        </div>
         {/* Hero Sections */}
         <div id="hero-sections" className="scroll-mt-16">
-          <HeroMotion
-            actions={{
-              className:
-                "mt-8 flex items-center justify-center gap-3 [--btn-ring:var(--ring)]",
-            }}
-            primaryButtonStyle={{
-              size: "lg",
-              variant: "default",
-              className:
-                "[--btn-bg:var(--primary)] [--btn-fg:var(--primary-foreground)] " +
-                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_88%,black)] " +
-                "hover:[--btn-hover-fg:var(--primary-foreground)]",
-            }}
-            secondaryButtonStyle={{
-              size: "lg",
-              variant: "outline",
-              className:
-                "border [&:where(button)]:border " +
-                "[--btn-bg:transparent] dark:[--btn-bg:transparent] " +
-                "[--btn-fg:var(--primary)] dark:[--btn-fg:var(--primary)] " +
-                "[--btn-border:var(--primary)] dark:[--btn-border:var(--primary)] " +
-                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_15%,transparent)] " +
-                "dark:hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_18%,transparent)] " +
-                "hover:[--btn-hover-fg:var(--primary)] dark:hover:[--btn-hover-fg:var(--primary)]",
-            }}
-            primaryCta={{ label: "Get Started", href: "#hero-sections" }}
-            secondaryCta={{ label: "See Demo", href: "#hero-sections" }}
-          />
-          <HeroOverlay
-            heading="Forecast The Next Move"
-            subheading="Predict demand, personalize journeys, and scale impact with AI-guided insights your team can use today."
-            cta1={{
-              label: "Try It Free",
-              href: "#hero-sections",
-              className:
-                "[--btn-bg:var(--primary)] [--btn-fg:var(--primary-foreground)] " +
-                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_88%,black)] " +
-                "hover:[--btn-hover-fg:var(--primary-foreground)]",
-            }}
-            cta2={{
-              label: "See Demo",
-              href: "#hero-sections",
-              className:
-                "border [&:where(button)]:border " +
-                "[--btn-bg:transparent] dark:[--btn-bg:transparent] " +
-                "[--btn-fg:var(--primary)] dark:[--btn-fg:var(--primary)] " +
-                "[--btn-border:var(--primary)] dark:[--btn-border:var(--primary)] " +
-                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_15%,transparent)] " +
-                "dark:hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_18%,transparent)] " +
-                "hover:[--btn-hover-fg:var(--primary)] dark:hover:[--btn-hover-fg:var(--primary)]",
-            }}
-            // Set ring color on the CTA container so both buttons share it
-            ctaContainer={{
-              className:
-                "flex flex-col sm:flex-row gap-4 mt-6 justify-center items-center [--btn-ring:var(--ring)]",
-            }}
-            image={{
-              src: "/placeholders/gallery/hero-pexels-broken-9945014.avif",
-            }}
-          />
-          <HeroSplit
-            heading="Confident Decisions, On Demand"
-            subheading="Reliable data when you need it."
-            cta1={{
-              label: "Start Free Trial",
-              href: "#hero-sections",
-              className:
-                "[--btn-bg:var(--primary)] [--btn-fg:var(--primary-foreground)] " +
-                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_88%,black)] " +
-                "hover:[--btn-hover-fg:var(--primary-foreground)]",
-            }}
-            cta2={{
-              label: "View Sample Report",
-              href: "#hero-sections",
-              className:
-                "border [&:where(button)]:border " +
-                "[--btn-bg:transparent] dark:[--btn-bg:transparent] " +
-                "[--btn-fg:var(--primary)] dark:[--btn-fg:var(--primary)] " +
-                "[--btn-border:var(--primary)] dark:[--btn-border:var(--primary)] " +
-                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_15%,transparent)] " +
-                "dark:hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_18%,transparent)] " +
-                "hover:[--btn-hover-fg:var(--primary)] dark:hover:[--btn-hover-fg:var(--primary)]",
-            }}
-            buttonsContainer={{
-              className:
-                "flex flex-col md:flex-row gap-4 mt-6 [--btn-ring:var(--ring)]",
-            }}
-            image={{
-              src: "/placeholders/gallery/hero-pexels-broken-9945014.avif",
-            }}
-            imageLayout="full-bleed"
-          />
+          <div id="hero-product-demo" className="scroll-mt-16">
+            <div className="relative pt-0">
+              <HeroProductDemo
+                className="bg-transparent"
+                heading={{
+                  text: "Ship faster with an agent that knows your codebase.",
+                  className:
+                    "max-w-4xl text-left font-outfit text-3xl font-semibold leading-none tracking-tight text-[var(--heading-fg)] sm:text-4xl lg:text-5xl",
+                }}
+                subheading={{
+                  text: "Describe the change you need. The agent reads, plans, edits, and verifies — across every affected file, in one run.",
+                  className:
+                    "mt-3 max-w-2xl text-left font-inter text-sm leading-6 text-[var(--subheading-fg)] sm:text-base",
+                }}
+                cta1={{
+                  label: "Start for free",
+                  href: "#features",
+                  variant: "default",
+                  size: "lg",
+                  className:
+                    // "ml-4 px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
+                    // "!bg-[var(--hero-cta-primary-bg)] !text-[var(--hero-cta-primary-fg)] " +
+                    // "hover:!bg-[var(--hero-cta-primary-hover-bg)] hover:!text-[var(--hero-cta-primary-hover-fg)] " +
+                    // "active:!bg-[var(--hero-cta-primary-bg)] active:!text-[var(--hero-cta-primary-fg)] " +
+                    // "visited:!bg-[var(--hero-cta-primary-bg)] visited:!text-[var(--hero-cta-primary-fg)] " +
+                    // "dark:!bg-[var(--hero-cta-primary-bg)] dark:!text-[var(--hero-cta-primary-fg)] " +
+                    // "dark:hover:!bg-[var(--hero-cta-secondary-hover-bg)] dark:hover:!text-[var(--hero-cta-primary-hover-fg)] " +
+                    // "dark:active:!bg-[var(--hero-cta-primary-bg)] dark:active:!text-[var(--hero-cta-primary-fg)] " +
+                    // "dark:visited:!bg-[var(--hero-cta-primary-bg)] dark:visited:!text-[var(--hero-cta-primary-fg)]",
+                    "ml-4 border border-transparent px-7 py-3 text-sm font-semibold shadow-lg shadow-black/10 dark:shadow-black/30 " +
+                    "!bg-[var(--hero-cta-primary-bg)] !text-[var(--hero-cta-primary-fg)] " +
+                    "hover:!bg-[var(--hero-cta-primary-hover-bg)] hover:!text-[var(--hero-cta-primary-hover-fg)] " +
+                    "active:!bg-[var(--hero-cta-primary-bg)] active:!text-[var(--hero-cta-primary-fg)] " +
+                    "visited:!bg-[var(--hero-cta-primary-bg)] visited:!text-[var(--hero-cta-primary-fg)] " +
+                    "dark:!bg-[var(--hero-cta-primary-bg)] dark:!text-[var(--hero-cta-primary-fg)] " +
+                    "dark:hover:!bg-[var(--hero-cta-secondary-hover-bg)] dark:hover:!text-[var(--hero-cta-primary-hover-fg)] " +
+                    "dark:hover:!border-white " +
+                    "dark:active:!bg-[var(--hero-cta-primary-bg)] dark:active:!text-[var(--hero-cta-primary-fg)] " +
+                    "dark:visited:!bg-[var(--hero-cta-primary-bg)] dark:visited:!text-[var(--hero-cta-primary-fg)]",
+                }}
+                cta2={{
+                  label: "See it in action",
+                  href: "#trust",
+                  variant: "outline",
+                  size: "lg",
+                  className:
+                    "border px-7 py-3 text-sm font-semibold shadow-sm dark:shadow-black/20 " +
+                    "[--btn-bg:var(--hero-cta-secondary-bg)] " +
+                    "[--btn-fg:var(--hero-cta-secondary-fg)] " +
+                    "[--btn-border:var(--hero-cta-secondary-border)] " +
+                    "hover:[--btn-hover-bg:var(--hero-cta-secondary-hover-bg)] " +
+                    "hover:[--btn-hover-fg:var(--hero-cta-secondary-hover-fg)]",
+                }}
+                stage={{
+                  scenarios: heroProductDemoScenarios,
+                  initialScenarioIndex: 0,
+                  className: "mt-0",
+                }}
+                section={{
+                  className:
+                    "px-6 pt-10 pb-6 sm:px-8 lg:px-10 lg:pt-12 lg:pb-8",
+                }}
+                container={{
+                  className: "relative z-10 max-w-7xl gap-8",
+                }}
+                textContainer={{
+                  className: "max-w-3xl pt-6 lg:pl-4 lg:pt-8",
+                }}
+                demoContainer={{
+                  className:
+                    "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[0.5rem] border border-border/0 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
+                  // "relative mt-2 min-h-[34rem] w-full max-w-full overflow-hidden rounded-[2rem] border border-border/70 bg-background/90 p-3 shadow-[0_24px_80px_-44px_rgba(15,23,42,0.24)] backdrop-blur-sm lg:h-[clamp(34rem,calc(100svh-8rem),46rem)] lg:min-h-0 lg:px-4",
+                }}
+                buttonsContainer={{
+                  className:
+                    "mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center [--btn-ring:var(--ring)]",
+                }}
+                demoBelowText
+                ariaLabel="Gallery product demo hero section"
+              />
+            </div>
+          </div>
+
+          <div className="relative pt-4 sm:pt-5 mb-10">
+            <HeroOverlay
+              heading="Forecast The Next Move"
+              subheading="Predict demand, personalize journeys, and scale impact with AI-guided insights your team can use today."
+              cta1={{
+                label: "Try It Free",
+                href: "#hero-sections",
+                className:
+                  "[--btn-bg:var(--primary)] [--btn-fg:var(--primary-foreground)] " +
+                  "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_88%,black)] " +
+                  "hover:[--btn-hover-fg:var(--primary-foreground)]",
+              }}
+              cta2={{
+                label: "See Demo",
+                href: "#hero-sections",
+                className:
+                  "border [&:where(button)]:border " +
+                  "[--btn-bg:transparent] dark:[--btn-bg:transparent] " +
+                  "[--btn-fg:var(--primary)] dark:[--btn-fg:var(--primary)] " +
+                  "[--btn-border:var(--primary)] dark:[--btn-border:var(--primary)] " +
+                  "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_15%,transparent)] " +
+                  "dark:hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_18%,transparent)] " +
+                  "hover:[--btn-hover-fg:var(--primary)] dark:hover:[--btn-hover-fg:var(--primary)]",
+              }}
+              // Set ring color on the CTA container so both buttons share it
+              ctaContainer={{
+                className:
+                  "flex flex-col sm:flex-row gap-4 mt-6 justify-center items-center [--btn-ring:var(--ring)]",
+              }}
+              image={{
+                src: "/placeholders/gallery/hero-pexels-broken-9945014.avif",
+              }}
+            />
+          </div>
+          <div className="relative pt-3 sm:pt-4 mb-10">
+            <HeroMotion
+              actions={{
+                className:
+                  "mt-8 flex items-center justify-center gap-3 [--btn-ring:var(--ring)]",
+              }}
+              primaryButtonStyle={{
+                size: "lg",
+                variant: "default",
+                className:
+                  "[--btn-bg:var(--primary)] [--btn-fg:var(--primary-foreground)] " +
+                  "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_88%,black)] " +
+                  "hover:[--btn-hover-fg:var(--primary-foreground)]",
+              }}
+              secondaryButtonStyle={{
+                size: "lg",
+                variant: "outline",
+                className:
+                  "border [&:where(button)]:border " +
+                  "[--btn-bg:transparent] dark:[--btn-bg:transparent] " +
+                  "[--btn-fg:var(--primary)] dark:[--btn-fg:var(--primary)] " +
+                  "[--btn-border:var(--primary)] dark:[--btn-border:var(--primary)] " +
+                  "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_15%,transparent)] " +
+                  "dark:hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_18%,transparent)] " +
+                  "hover:[--btn-hover-fg:var(--primary)] dark:hover:[--btn-hover-fg:var(--primary)]",
+              }}
+              primaryCta={{ label: "Get Started", href: "#hero-sections" }}
+              secondaryCta={{ label: "See Demo", href: "#hero-sections" }}
+            />
+          </div>
+
+          <div className="relative pt-4 sm:pt-5">
+            <HeroSplit
+              section={{ className: "bg-muted" }}
+              heading="Confident Decisions, On Demand"
+              subheading="Reliable data when you need it."
+              cta1={{
+                label: "Start Free Trial",
+                href: "#hero-sections",
+                className:
+                  "[--btn-bg:var(--primary)] [--btn-fg:var(--primary-foreground)] " +
+                  "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_88%,black)] " +
+                  "hover:[--btn-hover-fg:var(--primary-foreground)]",
+              }}
+              cta2={{
+                label: "View Sample Report",
+                href: "#hero-sections",
+                className:
+                  "border [&:where(button)]:border " +
+                  "[--btn-bg:transparent] dark:[--btn-bg:transparent] " +
+                  "[--btn-fg:var(--primary)] dark:[--btn-fg:var(--primary)] " +
+                  "[--btn-border:var(--primary)] dark:[--btn-border:var(--primary)] " +
+                  "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_15%,transparent)] " +
+                  "dark:hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_18%,transparent)] " +
+                  "hover:[--btn-hover-fg:var(--primary)] dark:hover:[--btn-hover-fg:var(--primary)]",
+              }}
+              buttonsContainer={{
+                className:
+                  "flex flex-col md:flex-row gap-4 mt-6 [--btn-ring:var(--ring)]",
+              }}
+              image={{
+                src: "/placeholders/gallery/hero-pexels-broken-9945014.avif",
+              }}
+              imageLayout="full-bleed"
+            />
+          </div>
           {/*  */}
         </div>
+
         {/* Trust & Social Proof */}
         <div id="trust" className="scroll-mt-16">
-          <TrustBadges />
+          <div className="relative pt-0">
+            <TrustBadges
+              section={{
+                className:
+                  "py-8 px-6 bg-[color-mix(in_oklab,var(--muted)_94%,black)] dark:bg-[color-mix(in_oklab,var(--muted)_90%,white)]",
+              }}
+            />
+          </div>
         </div>
+
         {/* Features & Services */}
         <div id="features" className="scroll-mt-16">
-          <Features featuresData={defaultFeaturesData}></Features>
-          <ServicesGrid />
+          <div className="relative pt-3 sm:pt-4">
+            <Features featuresData={defaultFeaturesData}></Features>
+          </div>
+          <div className="relative pt-4 sm:pt-5 mb-0">
+            <ServicesGrid />
+          </div>
         </div>
+
         {/* About & Process */}
         <div id="about-process" className="scroll-mt-16">
-          <About animateStats={false} />
-          <ProcessTimeline />
+          <div className="relative pt-0">
+            <About animateStats={false} />
+          </div>
+          <div className="relative pt-0 mb-0">
+            <ProcessTimeline />
+          </div>
         </div>
+
         {/* Portfolio & Team */}
         <div id="portfolio-team" className="scroll-mt-16">
-          <PortfolioSimple />
-          <Team />
+          <div className="relative pt-3 sm:pt-4">
+            <PortfolioSimple />
+          </div>
+          <div className="relative pt-4 sm:pt-5 mb-0">
+            <Team />
+          </div>
         </div>
+
         {/* Testimonials */}
         <div id="testimonials" className="scroll-mt-16">
-          <Testimonials />
+          <div className="relative pt-0 mb-0">
+            <Testimonials />
+          </div>
         </div>
+
         {/* Pricing */}
         <div id="pricing" className="scroll-mt-16">
-          <Pricing />
+          <div className="relative pt-3 sm:pt-4 mb-0">
+            <Pricing />
+          </div>
         </div>
+
         {/* FAQ */}
         <div id="faq" className="scroll-mt-16">
-          <FAQ
-            questionButton={{
-              className:
-                // Distinct, theme-driven gradient tile + brand ring/border
-                "bg-gradient-to-r " +
-                "from-[var(--primary)] to-[color-mix(in_oklab,var(--primary)_88%,black)] " +
-                "hover:from-[color-mix(in_oklab,var(--primary)_92%,black)] " +
-                "hover:to-[color-mix(in_oklab,var(--primary)_95%,black)] " +
-                "text-[var(--primary-foreground)] p-5 cursor-pointer rounded-lg " +
-                "transition-all duration-200 flex items-center justify-between " +
-                "shadow-lg hover:shadow-xl hover:-translate-y-0.5 " +
-                // define ring/border vars and ensure a visible border if tokens apply
-                "[--btn-ring:var(--ring)] [--btn-border:var(--primary)] border [&:where(button)]:border",
-            }}
-            answer={{
-              className:
-                "bg-gradient-to-r " +
-                "from-[var(--secondary)] to-[color-mix(in_oklab,var(--secondary)_90%,white)] ",
-            }}
-          />
+          <div className="relative pt-4 sm:pt-5 mb-0">
+            <FAQ
+              questionButton={{
+                className:
+                  // Distinct, theme-driven gradient tile + brand ring/border
+                  "bg-gradient-to-r " +
+                  "from-[var(--primary)] to-[color-mix(in_oklab,var(--primary)_88%,black)] " +
+                  "hover:from-[color-mix(in_oklab,var(--primary)_92%,black)] " +
+                  "hover:to-[color-mix(in_oklab,var(--primary)_95%,black)] " +
+                  "text-[var(--primary-foreground)] p-5 cursor-pointer rounded-lg " +
+                  "transition-all duration-200 flex items-center justify-between " +
+                  "shadow-lg hover:shadow-xl hover:-translate-y-0.5 " +
+                  // define ring/border vars and ensure a visible border if tokens apply
+                  "[--btn-ring:var(--ring)] [--btn-border:var(--primary)] border [&:where(button)]:border",
+              }}
+              answer={{
+                className:
+                  "bg-gradient-to-r " +
+                  "from-[var(--secondary)] to-[color-mix(in_oklab,var(--secondary)_90%,white)] ",
+              }}
+            />
+          </div>
         </div>
+
         {/* Call to Action */}
         <div id="cta" className="scroll-mt-16">
-          <CTA
-            ctaButton={{ label: "Sign Up Now", href: "#contact" }}
-            actionsWrapper={{
-              className:
-                "mt-6 flex flex-col items-center gap-3 sm:flex-row [--btn-ring:var(--ring)]",
-            }}
-            ctaButtonStyle={{
-              variant: "default",
-              size: "default",
-              className:
-                "shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 " +
-                "[--btn-bg:var(--primary)] [--btn-fg:var(--primary-foreground)] " +
-                "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_88%,black)] " +
-                "hover:[--btn-hover-fg:var(--primary-foreground)]",
-            }}
-          />
+          <div className="relative pt-3 sm:pt-4 mb-0">
+            <CTA
+              ctaButton={{ label: "Sign Up Now", href: "#contact" }}
+              actionsWrapper={{
+                className:
+                  "mt-6 flex flex-col items-center gap-3 sm:flex-row [--btn-ring:var(--ring)]",
+              }}
+              ctaButtonStyle={{
+                variant: "default",
+                size: "default",
+                className:
+                  "shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 " +
+                  "[--btn-bg:var(--primary)] [--btn-fg:var(--primary-foreground)] " +
+                  "hover:[--btn-hover-bg:color-mix(in_oklab,var(--primary)_88%,black)] " +
+                  "hover:[--btn-hover-fg:var(--primary-foreground)]",
+              }}
+            />
+          </div>
         </div>
+
         {/* Contact */}
         <div id="contact" className="scroll-mt-16">
-          <Contact
-            submitButtonStyle={{
-              variant: "default",
-              size: "lg",
-              className:
-                "w-full shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 " +
-                // Match FAQ question button gradient + brand ring/border
-                "bg-gradient-to-r " +
-                "from-[var(--primary)] to-[color-mix(in_oklab,var(--primary)_88%,black)] " +
-                "hover:from-[color-mix(in_oklab,var(--primary)_92%,black)] " +
-                "hover:to-[color-mix(in_oklab,var(--primary)_95%,black)] " +
-                "text-[var(--primary-foreground)] " +
-                "[--btn-ring:var(--ring)] [--btn-border:var(--primary)] border [&:where(button)]:border",
-            }}
-          />
+          <div className="relative pt-4 sm:pt-5 mb-0">
+            <Contact
+              submitButtonStyle={{
+                variant: "default",
+                size: "lg",
+                className:
+                  "w-full shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 " +
+                  // Match FAQ question button gradient + brand ring/border
+                  "bg-gradient-to-r " +
+                  "from-[var(--primary)] to-[color-mix(in_oklab,var(--primary)_88%,black)] " +
+                  "hover:from-[color-mix(in_oklab,var(--primary)_92%,black)] " +
+                  "hover:to-[color-mix(in_oklab,var(--primary)_95%,black)] " +
+                  "text-[var(--primary-foreground)] " +
+                  "[--btn-ring:var(--ring)] [--btn-border:var(--primary)] border [&:where(button)]:border",
+              }}
+            />
+          </div>
         </div>
+
         {/* Newsletter */}
         <div id="newsletter" className="scroll-mt-16">
-          <Newsletter
-            button={{
-              className:
-                "!bg-[var(--primary)] hover:!bg-[color-mix(in_oklab,var(--primary)_90%,transparent)] !text-[var(--primary-foreground)] hover:!text-[var(--primary-background)]",
-            }}
-          />
+          <div className="relative pt-3 sm:pt-4 mb-0">
+            <Newsletter
+              button={{
+                className:
+                  "!bg-[var(--primary)] hover:!bg-[color-mix(in_oklab,var(--primary)_90%,transparent)] !text-[var(--primary-foreground)] hover:!text-[var(--primary-background)]",
+              }}
+            />
+          </div>
         </div>
+
         {/* Footer */}
         <div id="footer">
-          <Footer />
+          <div className="relative pt-3 sm:pt-4 mb-0">
+            <Footer />
+          </div>
         </div>
       </div>
     </PresetThemeVars>

@@ -64,8 +64,7 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
         status: { label: "Thinking", tone: "info" },
       },
       title: "Investigating redirect bug",
-      subtitle:
-        "The agent reads the auth callback, checks navigation state, and prepares a safe patch.",
+      subtitle: "The agent inspects the callback and prepares a safe patch.",
       activeNodeId: "edit-callback",
       transcript: [
         { id: "auth-title", kind: "title", text: "Fix auth flow" },
@@ -78,21 +77,6 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           id: "auth-read-1",
           kind: "activity",
           text: "Read app/auth/callback/page.tsx",
-        },
-        {
-          id: "auth-read-2",
-          kind: "activity",
-          text: "Read lib/auth/normalize-return-to.ts",
-        },
-        {
-          id: "auth-thought",
-          kind: "thought",
-          text: "Reviewing redirect handling and fallback behavior",
-        },
-        {
-          id: "auth-message",
-          kind: "message",
-          text: "I'll patch the callback so it keeps a sanitized return destination and only falls back when the value is missing or invalid.",
         },
         {
           id: "auth-file-1",
@@ -111,9 +95,24 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           removed: 1,
         },
         {
-          id: "auth-summary",
+          id: "auth-run-1",
+          kind: "activity",
+          text: "Run redirect scenarios for nested routes and invalid returnTo values",
+        },
+        {
+          id: "auth-thought-1",
+          kind: "thought",
+          text: "Preserve same-origin destinations, drop empty values, and avoid redirecting twice after the callback completes.",
+        },
+        {
+          id: "auth-message-1",
           kind: "message",
-          text: "Done. Empty return paths now fall back safely, while valid destinations keep users on the route they intended to open.",
+          text: "Patch keeps /dashboard/settings intact, falls back only when sanitize returns null, and records the redirect source for debugging.",
+        },
+        {
+          id: "auth-run-2",
+          kind: "activity",
+          text: "Prepare regression notes for auth loop and malformed path checks",
         },
       ],
       composer: {
@@ -145,8 +144,6 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
         {
           id: "edit-callback",
           label: "Patch redirect handling",
-          description:
-            "Guard empty return paths and preserve intended destination.",
           type: "Edit",
           status: "info",
           active: true,
@@ -338,8 +335,7 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
         status: { label: "Planning", tone: "info" },
       },
       title: "Extracting pricing sections",
-      subtitle:
-        "The agent maps repeated UI, creates reusable blocks, and rewires the page composition.",
+      subtitle: "The agent maps repeated UI and rewires the page composition.",
       activeNodeId: "create-blocks",
       transcript: [
         { id: "pricing-title", kind: "title", text: "Refactor pricing page" },
@@ -352,21 +348,6 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           id: "pricing-read-1",
           kind: "activity",
           text: "Read app/(marketing)/pricing/page.tsx",
-        },
-        {
-          id: "pricing-read-2",
-          kind: "activity",
-          text: "Inspect repeated pricing tier markup",
-        },
-        {
-          id: "pricing-thought",
-          kind: "thought",
-          text: "Mapping repeated sections before extracting shared blocks",
-        },
-        {
-          id: "pricing-message",
-          kind: "message",
-          text: "I'll extract the repeated hero, tier, and FAQ sections into dedicated components so the page becomes a clean composition layer.",
         },
         {
           id: "pricing-file-1",
@@ -385,9 +366,24 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           removed: 34,
         },
         {
-          id: "pricing-summary",
+          id: "pricing-run-1",
+          kind: "activity",
+          text: "Move the tier grid wrapper into PricingTiers and normalize the plans prop shape",
+        },
+        {
+          id: "pricing-thought-1",
+          kind: "thought",
+          text: "Keep the visual output identical by preserving card order, CTA copy, and the existing spacing classes.",
+        },
+        {
+          id: "pricing-message-1",
           kind: "message",
-          text: "The pricing page is now split into reusable blocks, with the main entry focused on composition and shared data.",
+          text: "The page entry now composes extracted sections while shared pricing data stays centralized and easier to extend.",
+        },
+        {
+          id: "pricing-run-2",
+          kind: "activity",
+          text: "Compare extracted markup against the original layout before final cleanup",
         },
       ],
       composer: {
@@ -419,7 +415,6 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
         {
           id: "create-blocks",
           label: "Create reusable blocks",
-          description: "Move repeated JSX into pricing section components.",
           type: "Edit",
           status: "info",
           active: true,
@@ -603,8 +598,7 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
         status: { label: "Building", tone: "info" },
       },
       title: "Adding command palette",
-      subtitle:
-        "The agent wires shortcut handling, searchable actions, and quick navigation into one flow.",
+      subtitle: "The agent wires shortcuts and fast navigation into one flow.",
       activeNodeId: "wire-shortcuts",
       transcript: [
         { id: "cmd-title", kind: "title", text: "Ship command palette" },
@@ -617,21 +611,6 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           id: "cmd-read-1",
           kind: "activity",
           text: "Read app/dashboard/layout.tsx",
-        },
-        {
-          id: "cmd-read-2",
-          kind: "activity",
-          text: "Inspect dialog primitive and navigation state",
-        },
-        {
-          id: "cmd-thought",
-          kind: "thought",
-          text: "Tracing shortcut handling and command menu state",
-        },
-        {
-          id: "cmd-message",
-          kind: "message",
-          text: "I'll wire a global shortcut into the dashboard shell and route actions through a searchable command menu component.",
         },
         {
           id: "cmd-file-1",
@@ -650,9 +629,24 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
           removed: 1,
         },
         {
-          id: "cmd-summary",
+          id: "cmd-run-1",
+          kind: "activity",
+          text: "Index route actions and quick commands so grouped search stays responsive",
+        },
+        {
+          id: "cmd-thought-1",
+          kind: "thought",
+          text: "The global shortcut should ignore focused text inputs and always remove its keydown listener on unmount.",
+        },
+        {
+          id: "cmd-message-1",
           kind: "message",
-          text: "The palette now opens with the global shortcut, groups actions clearly, and lets users jump instantly across the dashboard.",
+          text: "Palette now opens globally, keeps grouped actions discoverable, and routes immediately after a selection.",
+        },
+        {
+          id: "cmd-run-2",
+          kind: "activity",
+          text: "Validate keyboard open-close flow, route jumps, and the empty search state",
         },
       ],
       composer: {
@@ -685,8 +679,6 @@ const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [
         {
           id: "wire-shortcuts",
           label: "Wire keyboard shortcuts",
-          description:
-            "Open palette with Cmd+K and route selected actions instantly.",
           type: "Edit",
           status: "info",
           active: true,
@@ -880,7 +872,7 @@ export function Hero() {
         }}
         demoContainer={{
           className:
-            "relative min-h-[36rem] w-full max-w-full lg:px-4 lg:h-[clamp(35rem,calc(100svh-7rem),48rem)] lg:min-h-0",
+            "relative min-h-[32rem] w-full max-w-full lg:px-4 lg:h-[clamp(30rem,calc(100svh-7rem),42rem)] lg:min-h-0",
         }}
         buttonsContainer={{
           className: "mt-4 flex-col items-start sm:flex-row sm:items-center",
