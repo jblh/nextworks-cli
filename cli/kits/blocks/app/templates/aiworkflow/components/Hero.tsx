@@ -62,8 +62,7 @@ const scenarios: ProductDemoScenario[] = [
         status: { label: "Thinking", tone: "info" },
       },
       title: "Investigating redirect bug",
-      subtitle:
-        "The agent reads the auth callback, checks navigation state, and prepares a safe patch.",
+      subtitle: "The agent inspects the callback and prepares a safe patch.",
       activeNodeId: "edit-callback",
       transcript: [
         { id: "auth-title", kind: "title", text: "Fix auth flow" },
@@ -76,21 +75,6 @@ const scenarios: ProductDemoScenario[] = [
           id: "auth-read-1",
           kind: "activity",
           text: "Read app/auth/callback/page.tsx",
-        },
-        {
-          id: "auth-read-2",
-          kind: "activity",
-          text: "Read lib/auth/normalize-return-to.ts",
-        },
-        {
-          id: "auth-thought",
-          kind: "thought",
-          text: "Reviewing redirect handling and fallback behavior",
-        },
-        {
-          id: "auth-message",
-          kind: "message",
-          text: "I'll patch the callback so it keeps a sanitized return destination and only falls back when the value is missing or invalid.",
         },
         {
           id: "auth-file-1",
@@ -107,11 +91,6 @@ const scenarios: ProductDemoScenario[] = [
           text: "lib/auth/normalize-return-to.ts",
           added: 6,
           removed: 1,
-        },
-        {
-          id: "auth-summary",
-          kind: "message",
-          text: "Done. Empty return paths now fall back safely, while valid destinations keep users on the route they intended to open.",
         },
       ],
       composer: {
@@ -143,8 +122,6 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "edit-callback",
           label: "Patch redirect handling",
-          description:
-            "Guard empty return paths and preserve intended destination.",
           type: "Edit",
           status: "info",
           active: true,
@@ -336,8 +313,7 @@ const scenarios: ProductDemoScenario[] = [
         status: { label: "Planning", tone: "info" },
       },
       title: "Extracting pricing sections",
-      subtitle:
-        "The agent maps repeated UI, creates reusable blocks, and rewires the page composition.",
+      subtitle: "The agent maps repeated UI and rewires the page composition.",
       activeNodeId: "create-blocks",
       transcript: [
         { id: "pricing-title", kind: "title", text: "Refactor pricing page" },
@@ -350,21 +326,6 @@ const scenarios: ProductDemoScenario[] = [
           id: "pricing-read-1",
           kind: "activity",
           text: "Read app/(marketing)/pricing/page.tsx",
-        },
-        {
-          id: "pricing-read-2",
-          kind: "activity",
-          text: "Inspect repeated pricing tier markup",
-        },
-        {
-          id: "pricing-thought",
-          kind: "thought",
-          text: "Mapping repeated sections before extracting shared blocks",
-        },
-        {
-          id: "pricing-message",
-          kind: "message",
-          text: "I'll extract the repeated hero, tier, and FAQ sections into dedicated components so the page becomes a clean composition layer.",
         },
         {
           id: "pricing-file-1",
@@ -381,11 +342,6 @@ const scenarios: ProductDemoScenario[] = [
           text: "app/(marketing)/pricing/page.tsx",
           added: 18,
           removed: 34,
-        },
-        {
-          id: "pricing-summary",
-          kind: "message",
-          text: "The pricing page is now split into reusable blocks, with the main entry focused on composition and shared data.",
         },
       ],
       composer: {
@@ -417,7 +373,6 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "create-blocks",
           label: "Create reusable blocks",
-          description: "Move repeated JSX into pricing section components.",
           type: "Edit",
           status: "info",
           active: true,
@@ -601,8 +556,7 @@ const scenarios: ProductDemoScenario[] = [
         status: { label: "Building", tone: "info" },
       },
       title: "Adding command palette",
-      subtitle:
-        "The agent wires shortcut handling, searchable actions, and quick navigation into one flow.",
+      subtitle: "The agent wires shortcuts and fast navigation into one flow.",
       activeNodeId: "wire-shortcuts",
       transcript: [
         { id: "cmd-title", kind: "title", text: "Ship command palette" },
@@ -615,21 +569,6 @@ const scenarios: ProductDemoScenario[] = [
           id: "cmd-read-1",
           kind: "activity",
           text: "Read app/dashboard/layout.tsx",
-        },
-        {
-          id: "cmd-read-2",
-          kind: "activity",
-          text: "Inspect dialog primitive and navigation state",
-        },
-        {
-          id: "cmd-thought",
-          kind: "thought",
-          text: "Tracing shortcut handling and command menu state",
-        },
-        {
-          id: "cmd-message",
-          kind: "message",
-          text: "I'll wire a global shortcut into the dashboard shell and route actions through a searchable command menu component.",
         },
         {
           id: "cmd-file-1",
@@ -646,11 +585,6 @@ const scenarios: ProductDemoScenario[] = [
           text: "app/dashboard/layout.tsx",
           added: 9,
           removed: 1,
-        },
-        {
-          id: "cmd-summary",
-          kind: "message",
-          text: "The palette now opens with the global shortcut, groups actions clearly, and lets users jump instantly across the dashboard.",
         },
       ],
       composer: {
@@ -683,8 +617,6 @@ const scenarios: ProductDemoScenario[] = [
         {
           id: "wire-shortcuts",
           label: "Wire keyboard shortcuts",
-          description:
-            "Open palette with Cmd+K and route selected actions instantly.",
           type: "Edit",
           status: "info",
           active: true,
@@ -878,7 +810,7 @@ export function Hero() {
         }}
         demoContainer={{
           className:
-            "relative min-h-[36rem] w-full max-w-full lg:px-4 lg:h-[clamp(35rem,calc(100svh-7rem),48rem)] lg:min-h-0",
+            "relative min-h-[32rem] w-full max-w-full lg:px-4 lg:h-[clamp(30rem,calc(100svh-7rem),42rem)] lg:min-h-0",
         }}
         buttonsContainer={{
           className: "mt-4 flex-col items-start sm:flex-row sm:items-center",
