@@ -92,6 +92,26 @@ const scenarios: ProductDemoScenario[] = [
           added: 6,
           removed: 1,
         },
+        {
+          id: "auth-run-1",
+          kind: "activity",
+          text: "Run redirect scenarios for nested routes and invalid returnTo values",
+        },
+        {
+          id: "auth-thought-1",
+          kind: "thought",
+          text: "Preserve same-origin destinations, drop empty values, and avoid redirecting twice after the callback completes.",
+        },
+        {
+          id: "auth-message-1",
+          kind: "message",
+          text: "Patch keeps /dashboard/settings intact, falls back only when sanitize returns null, and records the redirect source for debugging.",
+        },
+        {
+          id: "auth-run-2",
+          kind: "activity",
+          text: "Prepare regression notes for auth loop and malformed path checks",
+        },
       ],
       composer: {
         placeholder: "Plan, inspect, or patch the next issue...",
@@ -343,6 +363,26 @@ const scenarios: ProductDemoScenario[] = [
           added: 18,
           removed: 34,
         },
+        {
+          id: "pricing-run-1",
+          kind: "activity",
+          text: "Move the tier grid wrapper into PricingTiers and normalize the plans prop shape",
+        },
+        {
+          id: "pricing-thought-1",
+          kind: "thought",
+          text: "Keep the visual output identical by preserving card order, CTA copy, and the existing spacing classes.",
+        },
+        {
+          id: "pricing-message-1",
+          kind: "message",
+          text: "The page entry now composes extracted sections while shared pricing data stays centralized and easier to extend.",
+        },
+        {
+          id: "pricing-run-2",
+          kind: "activity",
+          text: "Compare extracted markup against the original layout before final cleanup",
+        },
       ],
       composer: {
         placeholder: "Plan, search, or restructure the page...",
@@ -585,6 +625,26 @@ const scenarios: ProductDemoScenario[] = [
           text: "app/dashboard/layout.tsx",
           added: 9,
           removed: 1,
+        },
+        {
+          id: "cmd-run-1",
+          kind: "activity",
+          text: "Index route actions and quick commands so grouped search stays responsive",
+        },
+        {
+          id: "cmd-thought-1",
+          kind: "thought",
+          text: "The global shortcut should ignore focused text inputs and always remove its keydown listener on unmount.",
+        },
+        {
+          id: "cmd-message-1",
+          kind: "message",
+          text: "Palette now opens globally, keeps grouped actions discoverable, and routes immediately after a selection.",
+        },
+        {
+          id: "cmd-run-2",
+          kind: "activity",
+          text: "Validate keyboard open-close flow, route jumps, and the empty search state",
         },
       ],
       composer: {
