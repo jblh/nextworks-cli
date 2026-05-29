@@ -7,7 +7,10 @@ Included templates (subject to change):
 - Product launch
 - SaaS dashboard
 - Digital agency
+- AI workflow
 - Gallery
+
+The current **AI Workflow** template ships with an **AI coding agent** story, but it is intended to be adapted for other AI workflow/product stories over time.
 
 ## Recommended: install via the nextworks CLI
 

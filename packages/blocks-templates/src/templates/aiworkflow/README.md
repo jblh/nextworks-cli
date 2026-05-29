@@ -2,6 +2,8 @@
 
 This template is preset-first. It wraps the page with `PresetThemeVars` and composes the route from template-local wrappers around shared Nextworks sections.
 
+The current shipped story is an **AI coding agent**, but the template structure is intended to be reusable for other AI workflow/product stories as more variants are added.
+
 ## Where it’s wired
 
 Template paths depend on your router:

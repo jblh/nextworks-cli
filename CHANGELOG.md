@@ -6,10 +6,15 @@ This project is currently **early-access alpha**; expect breaking changes.
 
 ## Unreleased
 
+- Added the **AI Workflow** template at `/templates/aiworkflow`.
+  - The current shipped story is an **AI coding agent**.
+  - The template is intended to be reusable for other AI workflow stories as more variants are added.
+
 - Doctor project sanity diagnostics now add blocking errors when:
   - `package.json` is missing
   - `next` is missing from `dependencies`/`devDependencies`
   - no supported App Router or Pages Router entrypoint is found
+
 - `nextworks doctor` now always outputs JSON, including `warnings` and `errors`.
 
 - Blocks install defaults/flags:

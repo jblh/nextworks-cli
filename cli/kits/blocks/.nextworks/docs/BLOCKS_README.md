@@ -57,6 +57,8 @@ Blocks supports these install shapes:
    - `/templates/aiworkflow`
    - `/templates/gallery`
 
+   The current **AI Workflow** template ships with an **AI coding agent** story, but the structure is intended to be reusable for other AI workflow/product stories too.
+
 ---
 
 ## Where templates live (App Router vs Pages Router)
