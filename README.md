@@ -140,6 +140,16 @@ Templates are installed in a router-native location:
   - route entry file: `pages/templates/<template>/index.tsx`
   - supporting template files: `components/templates/<template>/**` (installed outside `pages/` so Next doesn’t treat helpers as routable pages)
 
+Current template routes include:
+
+- `/templates/productlaunch`
+- `/templates/saasdashboard`
+- `/templates/digitalagency`
+- `/templates/aiworkflow`
+- `/templates/gallery`
+
+Note: the current **AI Workflow** template ships with an **AI coding agent** story. It can be adapted for other AI workflow/product stories as additional variants are added.
+
 See `docs/QUICKSTART.md` and the Blocks quickstarts/guides in `docs/` for more detail.
 
 ## Feedback & issues

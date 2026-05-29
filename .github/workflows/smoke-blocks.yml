@@ -6,7 +6,7 @@ on:
 jobs:
   blocks-smoke:
     env:
-      NEXTWORKS_VERSION: 0.2.0-alpha.13
+      NEXTWORKS_VERSION: 0.2.0-alpha.14
     name: blocks-smoke (node ${{ matrix.node }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
 
