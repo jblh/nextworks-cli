@@ -4,39 +4,37 @@ All notable changes to this project will be documented in this file.
 
 This project is currently **early-access alpha**; expect breaking changes.
 
-## Unreleased
+## v0.2.0-alpha.15 - 2026-05-29
 
 - Added the **AI Workflow** template at `/templates/aiworkflow`.
   - The current shipped story is an **AI coding agent**.
   - The template is intended to be reusable for other AI workflow stories as more variants are added.
 
-- Doctor project sanity diagnostics now add blocking errors when:
+- Doctor project sanity diagnostics add blocking errors when:
   - `package.json` is missing
   - `next` is missing from `dependencies`/`devDependencies`
   - no supported App Router or Pages Router entrypoint is found
 
-- `nextworks doctor` now always outputs JSON, including `warnings` and `errors`.
+- `nextworks doctor` outputs JSON, including `warnings` and `errors`.
 
 - Blocks install defaults/flags:
-  - `nextworks add blocks` now installs **core + sections** by default.
+  - `nextworks add blocks` installs **core + sections** by default.
   - `--templates` includes `sections` (so `--sections --templates` is redundant but still supported).
 
 - Pages Router templates install fix:
   - Only the template route entry file is installed under `pages/` (`pages/templates/<template>/index.tsx`).
-  - Supporting template files (components/helpers like `PresetThemeVars`) are installed under `components/templates/<template>/**` to avoid Next.js treating them as routable pages during `next build` type validation.
-  - Docs updated to reflect the new installed paths.
+  - Supporting template files are installed under `components/templates/<template>/**`.
 
-- Internal metadata updates (copyright notice). No functional change.
-
-- Fix: `@nextworks/blocks-core/server` now correctly type-exports `AppProviders` as a **named export** (matching runtime), so `import { AppProviders } from "@nextworks/blocks-core/server";` typechecks in Next.js production builds (Vercel/Turbopack).
-
+- Fix: `@nextworks/blocks-core/server` correctly type-exports `AppProviders` as a **named export**.
 - Turbopack-safe refactor for Blocks theme/font bootstrapping:
   - `@nextworks/blocks-core/server` `AppProviders` no longer imports `next/font/*`.
-  - Fonts are configured in the consuming app’s `app/layout.tsx` (the CLI patches this).
+  - Fonts are configured in the consuming app router entrypoint.
   - Server-side theme CSS variables are injected based on cookies.
+
 - CLI layout patcher hardening:
   - Merges existing `next/font/google` imports instead of duplicating them.
   - Handles semicolon-less and multi-line import styles.
   - Ensures font instances exist for Geist + Outfit + Inter + Poppins.
+
 - Acceptance testing:
   - Added a Turbopack canary check for `/templates/gallery`.
