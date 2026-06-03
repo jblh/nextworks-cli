@@ -133,7 +133,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     <div className="flex h-full min-h-0 flex-col text-[var(--demo-fg)] [font-synthesis:none] antialiased">
       <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-[var(--demo-border)] bg-[var(--demo-code-bg)] shadow-none">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] bg-[var(--demo-code-bg)]">
+          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] overflow-y-auto bg-[var(--demo-code-bg)] lg:overflow-hidden">
             <div className="border-r border-[var(--demo-border)] bg-[var(--demo-code-gutter-bg)] px-2 py-3 font-mono text-[11px] leading-7 text-[var(--demo-subtle-fg)]">
               {visibleCode.map((line, index) => {
                 const isAdded = line.trimStart().startsWith("+");
@@ -154,7 +154,7 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
               })}
             </div>
 
-            <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[var(--demo-code-bg)] px-3 py-3 font-mono text-[12px] leading-7 text-[var(--demo-fg)]">
+            <div className="relative min-h-full bg-[var(--demo-code-bg)] px-3 py-3 font-mono text-[12px] leading-7 text-[var(--demo-fg)]">
               <div>
                 {visibleCode.map((line, index) => {
                   const isAdded = line.trimStart().startsWith("+");
@@ -205,8 +205,6 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
                   </div>
                 ) : null}
               </div>
-
-              <div className="flex-1" />
             </div>
           </div>
         </div>
