@@ -25,8 +25,11 @@ for (const { src, dest } of MAPPINGS) {
 
     if (event === "add" || event === "change") {
       fs.mkdirSync(path.dirname(destPath), { recursive: true });
-      fs.copyFileSync(filePath, destPath);
-      console.log(`✓ [${event}] ${relative}`);
+      const contents = fs.readFileSync(filePath);
+      fs.writeFileSync(destPath, contents);
+      const now = new Date();
+      fs.utimesSync(destPath, now, now);
+      console.log(`✓ [${event}] ${relative} -> ${destPath}`);
     }
 
     if (event === "unlink") {

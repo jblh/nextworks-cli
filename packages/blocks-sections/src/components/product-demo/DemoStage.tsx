@@ -4,7 +4,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "motion/react";
 import { cn } from "@nextworks/blocks-core";
 import { DemoWindow } from "./DemoWindow";
 import { KnowledgePanel } from "./KnowledgePanel";
@@ -298,6 +297,19 @@ function getWindowShellClass(key: ProductDemoWindowKey) {
   }
 }
 
+function getMobileWindowClass(key: ProductDemoWindowKey) {
+  switch (key) {
+    case "taskList":
+      return "h-[15rem] sm:h-[16rem] lg:h-full";
+    case "workflowStudio":
+      return "h-[18rem] sm:h-[19rem] lg:h-full";
+    case "runConsole":
+      return "h-[18rem] sm:h-[19rem] lg:h-full";
+    default:
+      return "lg:h-full";
+  }
+}
+
 export function DemoStage({
   scenarios = [],
   initialScenarioIndex,
@@ -394,8 +406,8 @@ export function DemoStage({
       )}
       aria-label={ariaLabel}
     >
-      <div className="relative z-10 flex h-[36rem] min-h-[36rem] flex-col gap-0 lg:h-full lg:min-h-0">
-        <div className="grid gap-4 lg:hidden">
+      <div className="relative z-10 flex min-h-[36rem] flex-col gap-4 lg:h-full lg:min-h-0 lg:gap-0">
+        <div className="grid auto-rows-max gap-4 lg:hidden">
           {windows.map((windowData) => {
             if (getWindowShellClass(windowData.key) === "hidden") {
               return null;
@@ -415,6 +427,8 @@ export function DemoStage({
                 showControls={false}
                 showResizeHandle={false}
                 showHeader={false}
+                className={getMobileWindowClass(windowData.key)}
+                bodyClassName="px-0 py-0 sm:px-0 sm:py-0"
               >
                 {windowData.content}
               </DemoWindow>
@@ -475,20 +489,7 @@ export function DemoStage({
                   windowData.key === "workflowStudio");
 
               return (
-                <motion.div
-                  key={windowData.key}
-                  initial={enableMotion ? { opacity: 0 } : false}
-                  animate={{ opacity: 1 }}
-                  transition={
-                    enableMotion
-                      ? {
-                          type: "tween",
-                          duration: 0.24,
-                        }
-                      : { duration: 0 }
-                  }
-                  className={cn("min-h-0", shellClass)}
-                >
+                <div key={windowData.key} className={cn("min-h-0", shellClass)}>
                   <DemoWindow
                     window={windowData.meta}
                     active={activeWindow}
@@ -510,7 +511,7 @@ export function DemoStage({
                   >
                     {windowData.content}
                   </DemoWindow>
-                </motion.div>
+                </div>
               );
             })}
           </div>
