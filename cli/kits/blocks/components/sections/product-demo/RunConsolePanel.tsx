@@ -7,6 +7,15 @@ export interface RunConsolePanelProps {
 }
 
 export function RunConsolePanel({ state }: RunConsolePanelProps) {
+  const scrollViewportRef = React.useRef<HTMLDivElement | null>(null);
+  const scrollbarTrackRef = React.useRef<HTMLDivElement | null>(null);
+  const dragStateRef = React.useRef<{
+    pointerId: number;
+    startY: number;
+    startScrollTop: number;
+    scrollRatio: number;
+    pointerOffsetY: number;
+  } | null>(null);
   const playbackMs = state.playbackMs ?? 1800;
   const playbackStepEntryIndices = state.playbackStepEntryIndices ?? [];
   const playbackStepVisibleLineCounts =
@@ -74,6 +83,11 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
   const [visibleLineCount, setVisibleLineCount] = React.useState(
     Math.max(1, Math.min(2, activeCode.length || 1)),
   );
+  const [scrollMetrics, setScrollMetrics] = React.useState({
+    scrollTop: 0,
+    scrollHeight: 1,
+    clientHeight: 1,
+  });
 
   React.useEffect(() => {
     if (typeof state.playbackStep === "number") {
@@ -124,13 +138,179 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
     state.playbackStep,
   ]);
 
+  React.useEffect(() => {
+    const viewport = scrollViewportRef.current;
+
+    if (!viewport) {
+      return;
+    }
+
+    const updateScrollMetrics = () => {
+      setScrollMetrics({
+        scrollTop: viewport.scrollTop,
+        scrollHeight: viewport.scrollHeight,
+        clientHeight: viewport.clientHeight,
+      });
+    };
+
+    updateScrollMetrics();
+
+    viewport.addEventListener("scroll", updateScrollMetrics, {
+      passive: true,
+    });
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateScrollMetrics();
+    });
+
+    resizeObserver.observe(viewport);
+
+    if (viewport.firstElementChild instanceof HTMLElement) {
+      resizeObserver.observe(viewport.firstElementChild);
+    }
+
+    window.addEventListener("resize", updateScrollMetrics);
+
+    return () => {
+      viewport.removeEventListener("scroll", updateScrollMetrics);
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateScrollMetrics);
+    };
+  }, [visibleLineCount, activeEntry?.id, activeCode.length]);
+
   const visibleCode = activeCode.slice(0, visibleLineCount);
+  const hasOverflow =
+    scrollMetrics.scrollHeight > scrollMetrics.clientHeight + 1;
+  const thumbHeight = hasOverflow
+    ? Math.max(
+        36,
+        (scrollMetrics.clientHeight / scrollMetrics.scrollHeight) *
+          scrollMetrics.clientHeight,
+      )
+    : 0;
+  const maxThumbOffset = Math.max(scrollMetrics.clientHeight - thumbHeight, 0);
+  const maxScrollTop = Math.max(
+    scrollMetrics.scrollHeight - scrollMetrics.clientHeight,
+    1,
+  );
+  const thumbOffset = hasOverflow
+    ? (scrollMetrics.scrollTop / maxScrollTop) * maxThumbOffset
+    : 0;
+
+  const updateScrollTopFromPointer = React.useCallback(
+    (clientY: number) => {
+      const viewport = scrollViewportRef.current;
+      const track = scrollbarTrackRef.current;
+
+      if (!viewport || !track || !hasOverflow) {
+        return;
+      }
+
+      const trackRect = track.getBoundingClientRect();
+      const nextThumbTop = Math.min(
+        Math.max(
+          clientY - trackRect.top - dragStateRef.current!.pointerOffsetY,
+          0,
+        ),
+        maxThumbOffset,
+      );
+      const nextScrollTop =
+        maxThumbOffset > 0 ? (nextThumbTop / maxThumbOffset) * maxScrollTop : 0;
+
+      viewport.scrollTop = nextScrollTop;
+    },
+    [hasOverflow, maxScrollTop, maxThumbOffset],
+  );
+
+  const handleScrollbarPointerDown = React.useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      const viewport = scrollViewportRef.current;
+      const track = scrollbarTrackRef.current;
+
+      if (!viewport || !track || !hasOverflow) {
+        return;
+      }
+
+      const trackRect = track.getBoundingClientRect();
+      const targetElement = event.target as HTMLElement | null;
+      const clickedThumb = targetElement?.dataset.scrollbarThumb === "true";
+      const pointerOffsetY = clickedThumb
+        ? event.clientY - trackRect.top - thumbOffset
+        : thumbHeight / 2;
+
+      dragStateRef.current = {
+        pointerId: event.pointerId,
+        startY: event.clientY,
+        startScrollTop: viewport.scrollTop,
+        scrollRatio: maxThumbOffset > 0 ? maxScrollTop / maxThumbOffset : 0,
+        pointerOffsetY,
+      };
+
+      if (!clickedThumb) {
+        updateScrollTopFromPointer(event.clientY);
+      }
+
+      (event.currentTarget as HTMLDivElement).setPointerCapture(
+        event.pointerId,
+      );
+      event.preventDefault();
+    },
+    [
+      hasOverflow,
+      maxScrollTop,
+      maxThumbOffset,
+      thumbHeight,
+      thumbOffset,
+      updateScrollTopFromPointer,
+    ],
+  );
+
+  const handleScrollbarPointerMove = React.useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      const dragState = dragStateRef.current;
+
+      if (!dragState || dragState.pointerId !== event.pointerId) {
+        return;
+      }
+
+      const viewport = scrollViewportRef.current;
+      const track = scrollbarTrackRef.current;
+
+      if (!viewport || !track || !hasOverflow) {
+        return;
+      }
+
+      const deltaY = event.clientY - dragState.startY;
+      const nextScrollTop = Math.min(
+        Math.max(dragState.startScrollTop + deltaY * dragState.scrollRatio, 0),
+        maxScrollTop,
+      );
+
+      viewport.scrollTop = nextScrollTop;
+      event.preventDefault();
+    },
+    [hasOverflow, maxScrollTop],
+  );
+
+  const handleScrollbarPointerUp = React.useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      const dragState = dragStateRef.current;
+
+      if (dragState?.pointerId === event.pointerId) {
+        dragStateRef.current = null;
+      }
+    },
+    [],
+  );
 
   return (
     <div className="flex h-full min-h-0 flex-col text-[var(--demo-fg)] [font-synthesis:none] antialiased">
       <div className="flex min-h-0 flex-1 overflow-hidden rounded-none border border-[var(--demo-border)] bg-[var(--demo-code-bg)] shadow-none">
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] overflow-y-auto bg-[var(--demo-code-bg)] lg:overflow-hidden">
+        <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
+          <div
+            ref={scrollViewportRef}
+            className="grid min-h-0 flex-1 grid-cols-[3.5rem_minmax(0,1fr)] overflow-y-auto bg-[var(--demo-code-bg)] pr-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:overflow-hidden lg:pr-0"
+          >
             <div className="border-r border-[var(--demo-border)] bg-[var(--demo-code-gutter-bg)] px-2 py-3 font-mono text-[11px] leading-7 text-[var(--demo-subtle-fg)]">
               {visibleCode.map((line, index) => {
                 const isAdded = line.trimStart().startsWith("+");
@@ -204,6 +384,27 @@ export function RunConsolePanel({ state }: RunConsolePanelProps) {
               </div>
             </div>
           </div>
+
+          {hasOverflow ? (
+            <div
+              ref={scrollbarTrackRef}
+              aria-hidden="true"
+              onPointerDown={handleScrollbarPointerDown}
+              onPointerMove={handleScrollbarPointerMove}
+              onPointerUp={handleScrollbarPointerUp}
+              onPointerCancel={handleScrollbarPointerUp}
+              className="absolute inset-y-3 right-1.5 w-[10px] cursor-pointer overflow-hidden rounded-full bg-[var(--demo-scroll-track)] lg:hidden"
+            >
+              <div
+                data-scrollbar-thumb="true"
+                className="absolute inset-x-1 rounded-full bg-[var(--demo-scroll-thumb)] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] will-change-transform"
+                style={{
+                  height: `${thumbHeight}px`,
+                  transform: `translateY(${thumbOffset}px)`,
+                }}
+              />
+            </div>
+          ) : null}
         </div>
 
         {state.metrics?.length ? (

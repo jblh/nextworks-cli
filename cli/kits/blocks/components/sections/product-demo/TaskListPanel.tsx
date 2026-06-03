@@ -9,6 +9,185 @@ export interface TaskListPanelProps {
 }
 
 export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
+  const scrollViewportRef = React.useRef<HTMLDivElement | null>(null);
+  const scrollbarTrackRef = React.useRef<HTMLDivElement | null>(null);
+  const dragStateRef = React.useRef<{
+    pointerId: number;
+    startY: number;
+    startScrollTop: number;
+    scrollRatio: number;
+    pointerOffsetY: number;
+  } | null>(null);
+  const [scrollMetrics, setScrollMetrics] = React.useState({
+    scrollTop: 0,
+    scrollHeight: 1,
+    clientHeight: 1,
+  });
+
+  React.useEffect(() => {
+    const viewport = scrollViewportRef.current;
+
+    if (!viewport) {
+      return;
+    }
+
+    const updateScrollMetrics = () => {
+      setScrollMetrics({
+        scrollTop: viewport.scrollTop,
+        scrollHeight: viewport.scrollHeight,
+        clientHeight: viewport.clientHeight,
+      });
+    };
+
+    updateScrollMetrics();
+
+    viewport.addEventListener("scroll", updateScrollMetrics, {
+      passive: true,
+    });
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateScrollMetrics();
+    });
+
+    resizeObserver.observe(viewport);
+
+    if (viewport.firstElementChild instanceof HTMLElement) {
+      resizeObserver.observe(viewport.firstElementChild);
+    }
+
+    window.addEventListener("resize", updateScrollMetrics);
+
+    return () => {
+      viewport.removeEventListener("scroll", updateScrollMetrics);
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateScrollMetrics);
+    };
+  }, [state.items.length, state.activeItemId]);
+
+  const hasOverflow =
+    scrollMetrics.scrollHeight > scrollMetrics.clientHeight + 1;
+  const thumbHeight = hasOverflow
+    ? Math.max(
+        36,
+        (scrollMetrics.clientHeight / scrollMetrics.scrollHeight) *
+          scrollMetrics.clientHeight,
+      )
+    : 0;
+  const maxThumbOffset = Math.max(scrollMetrics.clientHeight - thumbHeight, 0);
+  const maxScrollTop = Math.max(
+    scrollMetrics.scrollHeight - scrollMetrics.clientHeight,
+    1,
+  );
+  const thumbOffset = hasOverflow
+    ? (scrollMetrics.scrollTop / maxScrollTop) * maxThumbOffset
+    : 0;
+
+  const updateScrollTopFromPointer = React.useCallback(
+    (clientY: number) => {
+      const viewport = scrollViewportRef.current;
+      const track = scrollbarTrackRef.current;
+
+      if (!viewport || !track || !hasOverflow) {
+        return;
+      }
+
+      const trackRect = track.getBoundingClientRect();
+      const nextThumbTop = Math.min(
+        Math.max(
+          clientY - trackRect.top - dragStateRef.current!.pointerOffsetY,
+          0,
+        ),
+        maxThumbOffset,
+      );
+      const nextScrollTop =
+        maxThumbOffset > 0 ? (nextThumbTop / maxThumbOffset) * maxScrollTop : 0;
+
+      viewport.scrollTop = nextScrollTop;
+    },
+    [hasOverflow, maxScrollTop, maxThumbOffset],
+  );
+
+  const handleScrollbarPointerDown = React.useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      const viewport = scrollViewportRef.current;
+      const track = scrollbarTrackRef.current;
+
+      if (!viewport || !track || !hasOverflow) {
+        return;
+      }
+
+      const trackRect = track.getBoundingClientRect();
+      const targetElement = event.target as HTMLElement | null;
+      const clickedThumb = targetElement?.dataset.scrollbarThumb === "true";
+      const pointerOffsetY = clickedThumb
+        ? event.clientY - trackRect.top - thumbOffset
+        : thumbHeight / 2;
+
+      dragStateRef.current = {
+        pointerId: event.pointerId,
+        startY: event.clientY,
+        startScrollTop: viewport.scrollTop,
+        scrollRatio: maxThumbOffset > 0 ? maxScrollTop / maxThumbOffset : 0,
+        pointerOffsetY,
+      };
+
+      if (!clickedThumb) {
+        updateScrollTopFromPointer(event.clientY);
+      }
+
+      (event.currentTarget as HTMLDivElement).setPointerCapture(
+        event.pointerId,
+      );
+      event.preventDefault();
+    },
+    [
+      hasOverflow,
+      maxScrollTop,
+      maxThumbOffset,
+      thumbHeight,
+      thumbOffset,
+      updateScrollTopFromPointer,
+    ],
+  );
+
+  const handleScrollbarPointerMove = React.useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      const dragState = dragStateRef.current;
+
+      if (!dragState || dragState.pointerId !== event.pointerId) {
+        return;
+      }
+
+      const viewport = scrollViewportRef.current;
+      const track = scrollbarTrackRef.current;
+
+      if (!viewport || !track || !hasOverflow) {
+        return;
+      }
+
+      const deltaY = event.clientY - dragState.startY;
+      const nextScrollTop = Math.min(
+        Math.max(dragState.startScrollTop + deltaY * dragState.scrollRatio, 0),
+        maxScrollTop,
+      );
+
+      viewport.scrollTop = nextScrollTop;
+      event.preventDefault();
+    },
+    [hasOverflow, maxScrollTop],
+  );
+
+  const handleScrollbarPointerUp = React.useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      const dragState = dragStateRef.current;
+
+      if (dragState?.pointerId === event.pointerId) {
+        dragStateRef.current = null;
+      }
+    },
+    [],
+  );
+
   return (
     <div className="flex h-full min-h-0 flex-col bg-[var(--demo-panel-muted-bg)] text-[var(--demo-fg)]">
       <div className="border-b border-[var(--demo-border)] px-3 py-2.5">
@@ -20,75 +199,103 @@ export function TaskListPanel({ state, onSelect }: TaskListPanelProps) {
         </div>
       </div>
 
-      <div className="space-y-0 overflow-hidden">
-        {state.items.map((item, index) => {
-          const isActive = item.id === state.activeItemId;
+      <div className="relative min-h-0 flex-1">
+        <div
+          ref={scrollViewportRef}
+          className="h-full overflow-y-auto pr-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <div className="space-y-0">
+            {state.items.map((item, index) => {
+              const isActive = item.id === state.activeItemId;
 
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => onSelect?.(item.id)}
-              className={cn(
-                "relative isolate w-full overflow-hidden rounded-none border-x-0 border-y border-b-0 px-3 py-3 text-left transition-colors duration-200 first:border-t-0",
-                "border-[var(--demo-border)] bg-[var(--demo-panel-bg)] hover:border-[var(--demo-border-strong)] hover:bg-[var(--demo-shell-strong-bg)]",
-                isActive &&
-                  "border-[var(--demo-border-strong)] bg-[var(--demo-shell-strong-bg)]",
-              )}
-            >
-              {isActive ? (
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 left-0 w-px bg-[var(--demo-accent)]"
-                />
-              ) : null}
-
-              <div className="relative z-10 flex items-start gap-3">
-                <span
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => onSelect?.(item.id)}
                   className={cn(
-                    "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold",
-                    isActive
-                      ? "border-[var(--demo-border-strong)] bg-[var(--demo-shell-strong-bg)] text-[var(--demo-fg)]"
-                      : "border-[var(--demo-border)] bg-[var(--demo-panel-subtle-bg)] text-[var(--demo-muted-fg)]",
+                    "relative isolate w-full overflow-hidden rounded-none border-x-0 border-y border-b-0 px-3 py-3 text-left transition-colors duration-200 first:border-t-0",
+                    "border-[var(--demo-border)] bg-[var(--demo-panel-bg)] hover:border-[var(--demo-border-strong)] hover:bg-[var(--demo-shell-strong-bg)]",
+                    isActive &&
+                      "border-[var(--demo-border-strong)] bg-[var(--demo-shell-strong-bg)]",
                   )}
                 >
-                  {index + 1}
-                </span>
+                  {isActive ? (
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-y-0 left-0 w-px bg-[var(--demo-accent)]"
+                    />
+                  ) : null}
 
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="text-sm font-semibold text-[var(--demo-fg)]">
-                        {item.title}
-                      </div>
-                    </div>
-                    <div
+                  <div className="relative z-10 flex items-start gap-3">
+                    <span
                       className={cn(
-                        "flex h-5 w-[4.5rem] shrink-0 items-center justify-end text-[9px] uppercase tracking-[0.14em]",
+                        "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold",
                         isActive
-                          ? "text-[var(--demo-muted-fg)]"
-                          : "text-[var(--demo-subtle-fg)]",
+                          ? "border-[var(--demo-border-strong)] bg-[var(--demo-shell-strong-bg)] text-[var(--demo-fg)]"
+                          : "border-[var(--demo-border)] bg-[var(--demo-panel-subtle-bg)] text-[var(--demo-muted-fg)]",
                       )}
                     >
-                      {isActive ? "Open" : "Queued"}
+                      {index + 1}
+                    </span>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-[var(--demo-fg)]">
+                            {item.title}
+                          </div>
+                        </div>
+                        <div
+                          className={cn(
+                            "flex h-5 w-[4.5rem] shrink-0 items-center justify-end text-[9px] uppercase tracking-[0.14em]",
+                            isActive
+                              ? "text-[var(--demo-muted-fg)]"
+                              : "text-[var(--demo-subtle-fg)]",
+                          )}
+                        >
+                          {isActive ? "Open" : "Queued"}
+                        </div>
+                      </div>
+                      {item.description && (
+                        <p className="mt-1.5 max-w-[22ch] text-xs leading-relaxed text-[var(--demo-muted-fg)]">
+                          {item.description}
+                        </p>
+                      )}
+                      {item.meta && (
+                        <div className="mt-2.5 flex items-center gap-2 text-[11px] text-[var(--demo-muted-fg)]">
+                          <span className="h-1 w-1 rounded-full bg-[var(--demo-border-strong)]" />
+                          <span>{item.meta}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  {item.description && (
-                    <p className="mt-1.5 max-w-[22ch] text-xs leading-relaxed text-[var(--demo-muted-fg)]">
-                      {item.description}
-                    </p>
-                  )}
-                  {item.meta && (
-                    <div className="mt-2.5 flex items-center gap-2 text-[11px] text-[var(--demo-muted-fg)]">
-                      <span className="h-1 w-1 rounded-full bg-[var(--demo-border-strong)]" />
-                      <span>{item.meta}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </button>
-          );
-        })}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {hasOverflow ? (
+          <div
+            ref={scrollbarTrackRef}
+            aria-hidden="true"
+            onPointerDown={handleScrollbarPointerDown}
+            onPointerMove={handleScrollbarPointerMove}
+            onPointerUp={handleScrollbarPointerUp}
+            onPointerCancel={handleScrollbarPointerUp}
+            className="absolute inset-y-3 right-1.5 w-[10px] cursor-pointer overflow-hidden rounded-full bg-[var(--demo-scroll-track)]"
+          >
+            <div
+              data-scrollbar-thumb="true"
+              className="absolute inset-x-1 rounded-full bg-[var(--demo-scroll-thumb)] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] will-change-transform"
+              style={{
+                height: `${thumbHeight}px`,
+                transform: `translateY(${thumbOffset}px)`,
+              }}
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );
