@@ -12,6 +12,8 @@ const DEFAULT_LOG_PATH = path.join(
   "tokensGenerated.jsonl",
 );
 const DAILY_RESET_HOUR = 2;
+const PROMPT_WARNING_THRESHOLD = 240_000;
+const PROMPT_DOUBLE_PRICING_THRESHOLD = 272_000;
 
 // Edit this map to apply custom token multipliers per exact model name.
 // Example: { "gpt-5.4-mini": 1.2 }
@@ -431,6 +433,23 @@ function printPerModelTotals(displayData) {
   }
 }
 
+function getPromptWarningText(promptTokens) {
+  if (promptTokens <= PROMPT_WARNING_THRESHOLD) {
+    return null;
+  }
+
+  const remainingTokens = Math.max(
+    0,
+    PROMPT_DOUBLE_PRICING_THRESHOLD - promptTokens,
+  );
+
+  if (remainingTokens === 0) {
+    return `Warning: prompt exceeds ${formatNumber(PROMPT_DOUBLE_PRICING_THRESHOLD)} tokens; OpenAI prompt pricing may be doubled.`;
+  }
+
+  return `Warning: prompt exceeds ${formatNumber(PROMPT_WARNING_THRESHOLD)} tokens and is ${formatNumber(remainingTokens)} tokens away from ${formatNumber(PROMPT_DOUBLE_PRICING_THRESHOLD)}.`;
+}
+
 function printTotals(reason) {
   const currentTotals = readCurrentTotals();
 
@@ -510,11 +529,18 @@ function printTotals(reason) {
         styleText("In prompt:".padEnd(promptLabelWidth), "dim"),
         styleText(
           formatNumber(latestEntryData.promptTokens).padStart(promptValueWidth),
-          "green",
+          latestEntryData.promptTokens > PROMPT_WARNING_THRESHOLD
+            ? "yellow"
+            : "green",
         ),
         styleText(latestEntryData.model, "magenta"),
       ].join(" ".repeat(MODEL_COLUMN_GAP)),
     );
+
+    const promptWarningText = getPromptWarningText(latestEntryData.promptTokens);
+    if (promptWarningText) {
+      console.log(styleText(promptWarningText, "yellow", "bold"));
+    }
   }
 }
 
