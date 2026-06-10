@@ -3,10 +3,15 @@ import chokidar from "chokidar";
 import fs from "fs";
 import path from "path";
 
+const shouldForceCopy =
+  process.argv.includes("--force") || process.env.npm_config_force === "true";
+
 const MAPPINGS = [
-  {
+
+    {
     src: "C:/Users/Jakob/Documents/WareHouse/nextworks/1_nextworks-cli/cli/kits/blocks/components",
     dest: "C:/Users/Jakob/Documents/WareHouse/nextworks/0_test_npm/components",
+
   },
   {
     src: "C:/Users/Jakob/Documents/WareHouse/nextworks/1_nextworks-cli/cli/kits/blocks/app/templates",
@@ -18,18 +23,41 @@ const MAPPINGS = [
   },
 ];
 
+function copyFile(srcPath, destPath, label) {
+  fs.mkdirSync(path.dirname(destPath), { recursive: true });
+  const contents = fs.readFileSync(srcPath);
+  fs.writeFileSync(destPath, contents);
+  const now = new Date();
+  fs.utimesSync(destPath, now, now);
+  console.log(`✓ [${label}] ${srcPath} -> ${destPath}`);
+}
+
+function copyDirectoryContents(srcDir, destDir, baseDir = srcDir) {
+  for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {
+    const srcPath = path.join(srcDir, entry.name);
+    const relative = path.relative(baseDir, srcPath);
+    const destPath = path.join(destDir, relative);
+
+    if (entry.isDirectory()) {
+      copyDirectoryContents(srcPath, destDir, baseDir);
+      continue;
+    }
+
+    copyFile(srcPath, destPath, "force");
+  }
+}
+
 for (const { src, dest } of MAPPINGS) {
+  if (shouldForceCopy) {
+    copyDirectoryContents(src, dest);
+  }
+
   chokidar.watch(src, { ignoreInitial: true }).on("all", (event, filePath) => {
     const relative = path.relative(src, filePath);
     const destPath = path.join(dest, relative);
 
     if (event === "add" || event === "change") {
-      fs.mkdirSync(path.dirname(destPath), { recursive: true });
-      const contents = fs.readFileSync(filePath);
-      fs.writeFileSync(destPath, contents);
-      const now = new Date();
-      fs.utimesSync(destPath, now, now);
-      console.log(`✓ [${event}] ${relative} -> ${destPath}`);
+      copyFile(filePath, destPath, event);
     }
 
     if (event === "unlink") {
@@ -39,5 +67,6 @@ for (const { src, dest } of MAPPINGS) {
   });
 
   // console.log(`Watching: ${src}`);
-  console.log(`      → : ${dest}\n`);
+  console.log(`      → : ${dest}${shouldForceCopy ? " [forced sync]" : ""}\n`);
 }
+
