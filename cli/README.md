@@ -114,10 +114,6 @@ If you’re reporting an install/runtime issue, please include OS, Node version,
 
 For reproducible bugs / errors (especially install/runtime issues), please open a GitHub Issue using the templates in `.github/ISSUE_TEMPLATE/`.
 
-### Private contact (optional)
-
-If you need to share something privately (e.g. security-related), email: nextjsworks@gmail.com
-
 ---
 
 ## Install and run the CLI
