@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 This project is currently **early-access alpha**; expect breaking changes.
 
-## v0.2.0-alpha.16 - 2026-05-29
+## v0.2.0-alpha.17 - 2026-05-29
 
 - Added the **AI Workflow** template at `/templates/aiworkflow`.
   - The current shipped story is an **AI coding agent**.
