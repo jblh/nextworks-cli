@@ -15,7 +15,7 @@ The repo contains:
 - parallel source packages in `packages/blocks-core`, `packages/blocks-sections`, and `packages/blocks-templates`
 - manifests and docs that describe what gets copied and how installs are patched
 
-The current product surface is intentionally narrow: one supported kit, `blocks`, focused on marketing/landing-page UI.
+The current product surface is intentionally narrow: one supported kit, `blocks`, focused on marketing/landing-page UI, including reusable product-story templates such as the current AI Workflow variant.
 
 ---
 
@@ -158,6 +158,7 @@ The kit currently includes these prebuilt page templates/routes:
 - Product Launch
 - SaaS Dashboard
 - Digital Agency
+- AI Workflow
 - Gallery
 
 Templates are installed in a router-native structure:
@@ -182,6 +183,7 @@ A few representative patterns:
   - Notably, `ProductLaunchPage` currently imports `PresetThemeVars` but does **not** wrap the page in it in the package source, suggesting an in-progress or partially disabled preset wrapper there.
 - **SaaSDashboard** leans into a product-demo layout with a dashboard mockup, floating cards, a `SmoothScroll` helper, and stronger blue/cyan preset styling.
 - **DigitalAgency** uses a bolder visual treatment with gradient branding, a custom `NetworkPattern` hero fallback, services/portfolio/process sections, and a stronger agency-style hierarchy.
+- **AIWorkflow** is a reusable AI workflow/product marketing template. The current shipped story is an **AI coding agent**, but the template is intended to support other AI workflow variants over time.
 - **Gallery** acts like a showcase/reference page, exposing many shared section variants and using `ThemeSelector` plus preset CSS variables as a live demonstration surface.
 
 ### E) Search / Discovery Surfaces
@@ -423,9 +425,16 @@ The repository is a CLI and component kit installer, so authentication would bel
 
 ## 🧠 AI Feature Flow
 
-There are no implemented AI flows in the current code shown.
+The repository now includes an **AI Workflow** page template in the Blocks kit.
 
-The repository does not yet include OpenAI integration or prompt/summary generation logic. Any future AI capability would likely live in the installed product, not in the installer itself.
+Important scope note:
+
+- this is currently a **template/story surface**, not an end-user AI runtime
+- the shipped variant is an **AI coding agent** marketing/product story
+- the template is intended to be reusable for additional AI workflow stories over time
+- the CLI itself still does **not** implement model orchestration, OpenAI integration, prompt execution, or agent backends
+
+So the repo does not currently provide live AI functionality in the installer; it provides an installable **AI-themed template** for Next.js apps.
 
 ---
 
@@ -473,6 +482,7 @@ Recommended authoring patterns:
 - Full page templates
 - App Router and Pages Router support
 - root-dir and `src/`-dir support
+- AI Workflow template support alongside the other template routes
 - dependency merging
 - provider, font, and CSS wiring
 - dry-run, list, doctor, remove commands
