@@ -10,8 +10,7 @@ The shared context files are:
 `.continue/context/project-overview-nextworks-cli.md`,
 `.continue/context/coding-standards.md`,
 `.continue/context/ai-interaction.md`,
-`.continue/context/current-feature.md`,
-`.continue/specs/heroproductdemo/heroproductdemo_context.md`.
+`.continue/context/current-feature.md`.
 
 When triggered by `- feature ...`, read these files once, keep them in working context, and use them as source of truth for the feature workflow.
 
