@@ -10,7 +10,9 @@ This command is one step in the feature workflow: `load`, `start`, `review`, `ex
 The workflow state lives in:
 `.continue/context/current-feature.md`
 
-This file is the source of truth for the active feature. Do not assume another workflow command was run in the same chat. Read and use `current-feature.md` directly.
+This file is the source of truth for the active feature workflow state. Do not assume another workflow command was run in the same chat. Read and use `current-feature.md` directly.
+
+For frontend kit work, remember that `cli/kits/blocks/**` is the source of truth. Package syncing is handled manually by the user; do not run package sync or edit/check `packages/blocks-*` unless explicitly asked.
 
 ## Current Feature File Structure
 
@@ -20,6 +22,8 @@ This file is the source of truth for the active feature. Do not assume another w
 - `## Status` - `Not Started` | `In Progress` | `Complete`
 - `## Goals` - Bullet points of what success looks like
 - `## Notes` - Additional context, constraints, or spec details
+- `## Release / Docs Checks` - Release/docs checklist for the active feature
+- `## Source of Truth Reminder` - Persistent repo workflow reminder; keep this section intact
 - `## History` - Completed features; append only
 
 ## Context
@@ -44,7 +48,8 @@ Load the requested feature into `current-feature.md`.
 2. Set `## Status` to `Not Started`
 3. Write goals as bullet points under `## Goals`
 4. Write any extra context under `## Notes`
-5. Keep `## History` append-only
+5. If the feature affects frontend kit files, include a note that implementation should happen in `cli/kits/blocks/**`; do not add package sync/check requirements unless the user explicitly asks
+6. Keep `## History` append-only
 
 ### Output
 

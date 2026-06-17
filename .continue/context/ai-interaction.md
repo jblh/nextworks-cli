@@ -17,7 +17,7 @@ This is the preferred workflow for feature/fix work in this repo:
 3. **Implement** - Implement the feature/fix described in @context/current-feature.md.
 4. **Verify** - Run the relevant checks for the affected area. Usually this means `npm run build`; for changes that affect CLI install behavior, manifests, copied kit files, or router patching, also run a relevant `nextworks add blocks --dry-run` check. This may include commands like `nextworks add blocks --sections --templates --dry-run` when validating that install path.
 
-5. **Sync** - If applicable, keep package source, copied kit files, manifests, docs, and `CHANGELOG.md` aligned.
+5. **Sync** - If applicable, keep source-of-truth kit files, manifests, docs, and `CHANGELOG.md` aligned. For frontend kit work, edit `cli/kits/blocks/**`; package syncing is handled manually by the user unless they explicitly ask otherwise.
 6. **Iterate** - Iterate and change things if needed.
 7. **Commit** - Only after the relevant checks pass and the change is in a good state.
 8. **Merge** - Merge to main.
@@ -53,8 +53,8 @@ Preferred workflow: create a new branch for each feature/fix when working in git
 When making changes, check whether the work also requires updates to:
 
 - `cli/src/**` CLI logic
-- `cli/kits/blocks/**` copied kit files
-- `packages/blocks-core/**`, `packages/blocks-sections/**`, or `packages/blocks-templates/**`
+- `cli/kits/blocks/**` source-of-truth copied kit files
+- `packages/blocks-core/**`, `packages/blocks-sections/**`, or `packages/blocks-templates/**` only when the user explicitly asks for package sync/package-output work
 - `cli_manifests/blocks_manifest.json`
 - `docs/**`, `README.md`, or `cli/README.md`
 - `CHANGELOG.md`
@@ -74,6 +74,6 @@ Review AI-generated code periodically, especially for:
 - Install safety (overwrites, destructive file edits, rollback clarity)
 - Router-specific logic (App Router, Pages Router, hybrid behavior)
 - Idempotency of patching/file operations
-- Manifest / copied-kit / package-source / docs consistency
+- Manifest / source-of-truth copied kit / docs consistency
 - Logic errors and edge cases
 - Patterns (matches existing codebase?)

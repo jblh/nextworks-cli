@@ -7,14 +7,16 @@ This repository is a **TypeScript monorepo for the nextworks CLI and Blocks kit*
 The main code surfaces are:
 
 - `cli/src/**` - CLI commands and install/remove/doctor logic
-- `cli/kits/blocks/**` - installable copy-in kit files
-- `packages/blocks-core/**` - shared UI primitives, providers, theme helpers
-- `packages/blocks-sections/**` - reusable marketing sections
-- `packages/blocks-templates/**` - template compositions built from shared sections
+- `cli/kits/blocks/**` - installable copy-in kit files and the source of truth for frontend kit work
+- `packages/blocks-core/**` - derived package output for shared UI primitives, providers, theme helpers
+- `packages/blocks-sections/**` - derived package output for reusable marketing sections
+- `packages/blocks-templates/**` - derived package output for template compositions built from shared sections
 - `cli_manifests/**` - manifest-driven install definitions
 - `docs/**` - product, install, and safety documentation
 
 Standards should reflect those surfaces. Do not assume normal app-only conventions.
+
+For frontend kit, section, provider, UI primitive, and template work, author changes in `cli/kits/blocks/**`. Package syncing is handled manually by the user; do not run package sync or edit/check `packages/blocks-*` unless explicitly asked.
 
 ## TypeScript
 
@@ -59,7 +61,7 @@ This repo targets **consumer Next.js projects** and must support both **App Rout
 - When patching consumer files (`app/layout.tsx`, `pages/_app.tsx`, `pages/_document.tsx`), use conservative string transforms and avoid destructive rewrites
 - Keep package-manager-specific behavior explicit and correct for npm, pnpm, and yarn
 - Keep install tracking in `.nextworks/config.json` accurate when adding/removing kit behavior
-- If a change affects copied files, verify the kit files, package source, manifest entries, and docs stay aligned
+- If a change affects copied files, verify the source-of-truth kit files, manifest entries, and docs stay aligned
 - In CLI code, preserve the existing ESM/CJS interop approach for ESM-only dependencies. Do not replace runtime dynamic imports (such as the `inquirer` loading pattern) with static imports unless the build/runtime target is updated intentionally.
 
 ## Tailwind CSS v4
@@ -88,19 +90,20 @@ Use repo-specific conventions:
 
 - CLI commands: `cli/src/commands/*.ts`
 - CLI utilities: `cli/src/utils/*.ts`
-- Kit assets copied into user projects: `cli/kits/blocks/**`
-- Shared package source:
+- Kit assets copied into user projects and frontend source of truth: `cli/kits/blocks/**`
+- Derived package outputs, only when explicitly requested by the user:
   - `packages/blocks-core/src/**`
   - `packages/blocks-sections/src/**`
   - `packages/blocks-templates/src/**`
+- Kit-to-package sync tooling, manually run by the user unless explicitly requested: `scripts/sync-kit-to-packages.mjs` and `scripts/sync-kit-to-packages.md`
 - Install manifests: `cli_manifests/*.json`
 - Documentation: `docs/**` and `cli/kits/blocks/.nextworks/docs/**`
 
 When adding features, place code according to whether it belongs to:
 
 - CLI orchestration
-- reusable source packages
-- copied kit output
+- source-of-truth copied kit output
+- derived package outputs only when explicitly requested by the user
 - manifests/docs
 
 ## Naming
@@ -154,8 +157,7 @@ When adding features, place code according to whether it belongs to:
 - Preserve idempotency where commands may be run multiple times
 - Avoid breaking copied-project stability for the sake of local refactors
 - When changing one layer of the system, check the adjacent layers too:
-  - package source
-  - copied kit files
+    - source-of-truth copied kit files
   - manifests
   - docs
   - smoke-test assumptions

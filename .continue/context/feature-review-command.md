@@ -12,6 +12,8 @@ The workflow state lives in:
 
 This command must be able to run independently. Do not assume prior workflow commands were run in the same chat. Read `current-feature.md` and use it as the source of truth for feature goals and scope.
 
+For frontend kit work, review `cli/kits/blocks/**` as the source-of-truth implementation. Do not require package sync or package-output checks; package syncing is handled manually by the user unless they explicitly ask otherwise.
+
 ## Current Feature File Structure
 
 `current-feature.md` uses this structure:
@@ -21,6 +23,8 @@ This command must be able to run independently. Do not assume prior workflow com
 - `## Status` - `Not Started` | `In Progress` | `Complete`
 - `## Goals` - Bullet points of what success looks like
 - `## Notes` - Additional context, constraints, or spec details
+- `## Release / Docs Checks` - Release/docs checklist for the active feature
+- `## Source of Truth Reminder` - Persistent repo workflow reminder; keep this section intact
 - `## History` - Completed features; append only
 
 ## Context
@@ -41,6 +45,8 @@ Review all code changes made for this feature.
    - ❌ Goals missing or incomplete
    - ⚠️ Code quality issues or bugs
    - 🚫 Scope creep (code beyond goals)
+   - 📦 Manifest/docs alignment when kit install output changed
+   - 🚫 No direct package-output edits/checks unless the user explicitly requested package sync work
 4. Give a final verdict: `Ready to complete` or `Needs changes`
 5. Update `## Status` in `current-feature.md` to match the result:
    - use `In Progress` if work still needs changes
