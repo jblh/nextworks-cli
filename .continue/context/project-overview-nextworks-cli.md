@@ -12,10 +12,24 @@ The repo contains:
 
 - the published CLI in `cli/`
 - the installable kit source in `cli/kits/blocks/`
-- parallel source packages in `packages/blocks-core`, `packages/blocks-sections`, and `packages/blocks-templates`
+- derived package outputs in `packages/blocks-core`, `packages/blocks-sections`, and `packages/blocks-templates`
 - manifests and docs that describe what gets copied and how installs are patched
 
 The current product surface is intentionally narrow: one supported kit, `blocks`, focused on marketing/landing-page UI, including reusable product-story templates such as the current AI Workflow variant.
+
+### Source of truth for frontend kit work
+
+The practical source of truth for Blocks frontend work is **`cli/kits/blocks/**`**, not `packages/**`.
+
+Day-to-day section, template, provider, and UI primitive changes should be authored in `cli/kits/blocks`. The `packages/blocks-*` trees are package/publish outputs derived from the kit by the one-way sync script documented in `scripts/sync-kit-to-packages.md` and implemented in `scripts/sync-kit-to-packages.mjs`.
+
+The intended AI-assisted workflow is:
+
+1. edit source files in `cli/kits/blocks/**`
+2. update `cli_manifests/blocks_manifest.json` and docs when install output changes
+3. do **not** run package sync or edit/check `packages/blocks-*` unless the user explicitly asks
+
+Package syncing is handled manually by the user by default. Do not treat hand edits in `packages/blocks-*` as source-of-truth frontend changes; the next kit-to-package sync may overwrite them.
 
 ---
 
@@ -100,7 +114,7 @@ These are designed to be copied directly into a consuming Next.js app and are bu
 
 ### Core UI implementation notes
 
-The core package is not just a collection of generic primitives; it is the styling and provider foundation that makes the template system work:
+The core kit source is not just a collection of generic primitives; it is the styling and provider foundation that makes the template system work:
 
 - `BlocksAppProviders` is the client-safe provider composition layer and currently wraps `EnhancedThemeProvider`.
 - `EnhancedThemeProvider` wraps `next-themes`, tracks a `ThemeVariant`, supports custom token overrides, persists custom colors in `localStorage`, and mirrors theme state into cookies.
@@ -114,7 +128,7 @@ The core package is not just a collection of generic primitives; it is the styli
 - `Button` also includes an `unstyled` escape hatch and opt-in CSS-variable hooks, which is central to how presets can partially or fully take over styling.
 - `CTAButton` bridges `next/link` with the shared `Button` API so sections/templates can compose CTA links with consistent behavior.
 
-This means the core package is doing two jobs at once: providing base UI primitives, and acting as the contract layer for theme/preset-driven customization.
+This means the core kit layer is doing two jobs at once: providing base UI primitives, and acting as the contract layer for theme/preset-driven customization.
 
 ### C) Shared Sections
 
@@ -122,6 +136,7 @@ Reusable section components include:
 
 - Navbar
 - Hero variants
+- Product-demo hero (`HeroProductDemo`) and internal product-demo panels
 - Features
 - Pricing
 - Testimonials
@@ -143,13 +158,14 @@ These sections are opinionated compositions over the core primitives.
 
 - `Navbar` composes `Button`, `ThemeToggle`, `Link`, and mobile menu state.
 - `HeroSplit` composes `Button` and `next/image` and supports text/image slots, CTA variants, and fallback content.
+- `HeroProductDemo` composes scenario-driven product-demo internals from `components/sections/product-demo/**`, including demo stage/window mechanics and panels for workflow studio, run console, approvals, knowledge, and task-list views.
 - `Features` composes `FeatureCard` and uses `motion/react` for staggered entrance animation.
 - Sections generally expose:
   - root `className` overrides
   - nested slot overrides like `section`, `container`, `heading`, `subheading`, `grid`, `card`, `image`, etc.
   - enable/disable motion flags
   - aria labels and semantic wrappers
-- The shared section package exports a focused public API from `src/components/index.ts`, which is also how templates import the building blocks.
+- Shared section work should be authored in `cli/kits/blocks/components/sections/**`; package exports are derived outputs rather than the primary editing surface and should not be checked/edited unless explicitly requested.
 
 ### D) Templates
 
@@ -180,7 +196,7 @@ The templates are full-page compositions built from the shared sections rather t
 A few representative patterns:
 
 - **ProductLaunch** uses a classic marketing funnel: Navbar → Hero → trust badges → about → features/process → testimonials → CTA → pricing → FAQ → contact → footer.
-  - Notably, `ProductLaunchPage` currently imports `PresetThemeVars` but does **not** wrap the page in it in the package source, suggesting an in-progress or partially disabled preset wrapper there.
+  - Notably, older package-source snapshots showed `ProductLaunchPage` importing `PresetThemeVars` without wrapping the page in it; check the current kit source before treating package output as canonical.
 - **SaaSDashboard** leans into a product-demo layout with a dashboard mockup, floating cards, a `SmoothScroll` helper, and stronger blue/cyan preset styling.
 - **DigitalAgency** uses a bolder visual treatment with gradient branding, a custom `NetworkPattern` hero fallback, services/portfolio/process sections, and a stronger agency-style hierarchy.
 - **AIWorkflow** is a reusable AI workflow/product marketing template. The current shipped story is an **AI coding agent**, but the template is intended to support other AI workflow variants over time.
@@ -287,9 +303,9 @@ nextworks-cli
 │  ├─ kits/blocks/           # files copied into user projects
 │  └─ README.md              # canonical CLI usage and safety docs
 ├─ packages/
-│  ├─ blocks-core/           # shared UI primitives and providers
-│  ├─ blocks-sections/       # reusable marketing sections
-│  └─ blocks-templates/      # preassembled landing page templates
+│  ├─ blocks-core/           # derived package output synced from cli/kits/blocks
+│  ├─ blocks-sections/       # derived package output synced from cli/kits/blocks
+│  └─ blocks-templates/      # derived package output synced from cli/kits/blocks
 ├─ cli_manifests/            # manifest describing what the CLI copies
 ├─ docs/                     # quickstarts and file-change guides
 └─ .continue/context/        # project overview and AI context files
@@ -303,6 +319,7 @@ nextworks-cli
 - **Provider shims**: app/provider entrypoints are generated or patched to match router mode.
 - **Theme vars and fonts**: central to how the kit is styled after installation.
 - **Installation tracking**: `.nextworks/config.json` records installed kits, dependencies, files, and timestamps.
+- **Kit-first package sync**: frontend kit work is authored in `cli/kits/blocks/**`; `scripts/sync-kit-to-packages.mjs` performs a one-way sync into `packages/blocks-*` for package build/publish use, but package syncing is manually handled by the user unless explicitly requested.
 
 ---
 
@@ -443,17 +460,18 @@ So the repo does not currently provide live AI functionality in the installer; i
 The repo is set up as a monorepo with a clear split between:
 
 - CLI orchestration (`cli/src/**`)
-- copy-in kit assets (`cli/kits/blocks/**`)
-- reusable package source (`packages/blocks-*/**`)
+- source-of-truth copy-in kit assets (`cli/kits/blocks/**`)
+- derived package outputs (`packages/blocks-*/**`) refreshed from the kit by `scripts/sync-kit-to-packages.mjs` when the user manually syncs them
 - docs/manifests/CI verification
 
 Typical development loop:
 
-1. update package/component/CLI source
+1. update CLI source in `cli/src/**` or frontend kit source in `cli/kits/blocks/**`
 2. keep `cli/kits/blocks/**` and `cli_manifests/blocks_manifest.json` aligned
-3. build workspaces
-4. run install smoke tests against fresh Next.js sandbox apps
-5. update docs if install behavior or generated file structure changed
+3. do not run package sync or package-output checks unless the user explicitly asks
+4. build/typecheck workspaces as needed for the changed source area
+5. run install smoke tests against fresh Next.js sandbox apps
+6. update docs if install behavior or generated file structure changed
 
 Repository workflow characteristics observed:
 
@@ -465,7 +483,9 @@ Repository workflow characteristics observed:
 
 Recommended authoring patterns:
 
-- change source in `cli/src/`, `packages/blocks-*`, or `cli/kits/blocks/`
+- change CLI behavior in `cli/src/**`
+- change frontend kit UI, sections, providers, and templates in `cli/kits/blocks/**`
+- do not make source-of-truth frontend edits directly in `packages/blocks-*`; package syncing is handled manually by the user unless explicitly requested
 - keep manifests aligned with copied kit files
 - keep the installed-app docs under `cli/kits/blocks/.nextworks/docs/` in sync with CLI behavior
 - use git-first safety guidance consistently in docs because installs are overwrite-capable
@@ -513,7 +533,7 @@ Potential future improvements may include:
 ## 📌 Status
 
 - Early-access alpha
-- the CLI, copied kit, and package source are all present and functional
+- the CLI, source-of-truth copied kit, and derived package outputs are all present and functional
 - the main focus is Blocks installation, router patching reliability, and documentation clarity
 - CI coverage is stronger than a typical prototype, especially around fresh-install verification
 - some surfaces are still in progress or unevenly polished (for example some docs phrasing and a few source/package inconsistencies like ProductLaunch preset wrapping)
