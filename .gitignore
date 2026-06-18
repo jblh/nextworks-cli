@@ -21,8 +21,8 @@ packages/**/*.tgz
 .idea/
 .vscode/
 
-# Diagrams
-..visualizing/
+# Continue
+.continue/
 
 # Playwright
 .playwright-mcp/
