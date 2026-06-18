@@ -10,9 +10,9 @@
     "clean": "npm --workspaces --if-present run clean",
     "sync": "node scripts/sync-kit-to-packages.mjs",
     "watch": "node scripts/watch-dev.mjs",
-    "continue:tokens": "node scripts/watch-continue-tokens.mjs",
-    "continue:tokens:new": "node scripts/watch-continue-tokens.mjs --since-start",
-    "continue:day": "node scripts/watch-continue-tokens.mjs --day"
+    "continue": "node .continue/scripts/continue.mjs",
+    "continue:new": "node .continue/scripts/continue.mjs --since-start",
+    "continue:day": "node .continue/scripts/continue.mjs --day"
   },
   "dependencies": {
     "chokidar": "^5.0.0"
