@@ -90,6 +90,7 @@ Supporting template components live alongside the template:
 - Customize a reusable section (Navbar/Hero/etc.):
   - edit `components/sections/<Section>.tsx`
   - use `components/sections/HeroWithVideo.tsx` for a centered dark hero with CTAs, command pill, and video preview
+  - use `components/sections/FeaturedProjectShowcase.tsx` for a flagship project block with tags, feature bullets, CTAs, and optional media
 
 - Customize theme/palette:
   - see `.nextworks/docs/THEME_GUIDE.md`
