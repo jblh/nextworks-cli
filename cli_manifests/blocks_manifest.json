@@ -48,6 +48,7 @@
         "components/sections/About.tsx",
         "components/sections/Contact.tsx",
         "components/sections/CTA.tsx",
+        "components/sections/CommandShowcase.tsx",
         "components/sections/FAQ.tsx",
         "components/sections/Features.tsx",
         "components/sections/Footer.tsx",
