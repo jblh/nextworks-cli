@@ -14,7 +14,7 @@ If you’re reading this inside your app repo, you’ll also find companion docs
 Depending on install flags, Blocks adds:
 
 - **UI primitives** under `components/ui/**` (Button, Input, Card, Select, Checkbox, Switch, Toaster, etc.)
-- **Reusable marketing sections** under `components/sections/**` (Navbar, Hero variants including `HeroWithVideo`, `FeaturedProjectShowcase`, Features, Pricing, Testimonials, FAQ, Contact, Footer, …)
+- **Reusable marketing sections** under `components/sections/**` (Navbar, Hero variants including `HeroWithVideo`, `FeaturedProjectShowcase`, `CommandShowcase`, Features, Pricing, Testimonials, FAQ, Contact, Footer, …)
 - **Full page templates** under a router-native path (see below)
 - **Theme + provider utilities** under `components/**` and `lib/**`
 - **Global styles**: `app/globals.css` and `app/tw-animate.css`
@@ -104,6 +104,7 @@ Notes:
   - edit files directly under `components/sections/**`
   - for a centered cinematic hero with a video preview, start with `components/sections/HeroWithVideo.tsx`
   - for a deeper flagship project block with tags, feature bullets, CTAs, and media, use `components/sections/FeaturedProjectShowcase.tsx`
+  - for a terminal-style command/setup flow, use `components/sections/CommandShowcase.tsx`
 
 - Want to customize a template page?
   - edit the template route file (see paths above) and its local components.
