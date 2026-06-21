@@ -202,7 +202,7 @@ const defaultArchitecture: ProjectDeepDiveSectionConfig = {
   ],
   ariaLabel: "Architecture notes",
 };
-
+ 
 const defaultMedia: ProjectDeepDiveMediaConfig = {
   type: "terminal",
   title: "Case study preview",
@@ -285,7 +285,8 @@ function renderSectionCard(
   return (
     <article
       className={cn(
-        "rounded-[1.75rem] border border-white/10 bg-white/[0.035] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.34)] backdrop-blur sm:p-6",
+                "rounded-[1.75rem] border border-border bg-card/80 p-5 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_18px_60px_rgba(0,0,0,0.34)] sm:p-6",
+
         motionClassName,
         classNames?.card,
         section.className,
@@ -295,8 +296,9 @@ function renderSectionCard(
       {section.label ? (
         <p
           className={cn(
-            "text-[0.7rem] font-medium uppercase tracking-[0.24em] text-white/42",
+                        "text-[0.7rem] font-medium uppercase tracking-[0.24em] text-muted-foreground",
             classNames?.cardLabel,
+
           )}
         >
           {section.label}
@@ -306,8 +308,9 @@ function renderSectionCard(
       {section.title ? (
         <h3
           className={cn(
-            "mt-4 text-balance text-xl font-medium tracking-[-0.04em] text-white sm:text-2xl",
+                        "mt-4 text-balance text-xl font-medium tracking-[-0.04em] text-foreground sm:text-2xl",
             classNames?.cardTitle,
+
           )}
         >
           {section.title}
@@ -317,8 +320,9 @@ function renderSectionCard(
       {section.description ? (
         <p
           className={cn(
-            "mt-3 text-sm leading-6 text-white/56 sm:text-[0.95rem]",
+                        "mt-3 text-sm leading-6 text-muted-foreground sm:text-[0.95rem]",
             classNames?.cardDescription,
+
           )}
         >
           {section.description}
@@ -334,8 +338,9 @@ function renderSectionCard(
             >
               <span
                 className={cn(
-                  "mt-2 size-1.5 shrink-0 rounded-full bg-white/42",
+                                    "mt-2 size-1.5 shrink-0 rounded-full bg-foreground/42",
                   classNames?.itemMarker,
+
                 )}
                 aria-hidden="true"
               />
@@ -343,8 +348,9 @@ function renderSectionCard(
                 {item.title ? (
                   <span
                     className={cn(
-                      "block text-sm font-medium text-white/82",
+                                            "block text-sm font-medium text-foreground",
                       classNames?.itemTitle,
+
                     )}
                   >
                     {item.title}
@@ -352,8 +358,9 @@ function renderSectionCard(
                 ) : null}
                 <span
                   className={cn(
-                    "block text-sm leading-6 text-white/52",
+                                        "block text-sm leading-6 text-muted-foreground",
                     classNames?.itemDescription,
+
                   )}
                 >
                   {item.description}
@@ -417,7 +424,8 @@ function renderMediaContent(
   return (
     <div
       className={cn(
-        "flex min-h-[24rem] flex-col justify-between bg-[#050505] p-5 font-mono text-xs text-white/62 sm:p-6",
+                "flex min-h-[24rem] flex-col justify-between bg-muted p-5 font-mono text-xs text-muted-foreground sm:p-6",
+
         media.className,
         classNames?.terminal,
       )}
@@ -427,7 +435,8 @@ function renderMediaContent(
       <div className="space-y-3">
         {(media.commands ?? defaultMedia.commands ?? []).map((command) => (
           <p key={command} className={cn("break-all", classNames?.terminalLine)}>
-            <span className="mr-2 text-white/28" aria-hidden="true">
+                        <span className="mr-2 text-muted-foreground/60" aria-hidden="true">
+
               $
             </span>
             <span>{command}</span>
@@ -435,9 +444,11 @@ function renderMediaContent(
         ))}
       </div>
 
-      <div className="mt-8 space-y-2 border-t border-white/10 pt-5">
+            <div className="mt-8 space-y-2 border-t border-border pt-5">
+
         {(media.output ?? defaultMedia.output ?? []).map((line) => (
-          <p key={line} className={cn("text-white/42", classNames?.terminalOutput)}>
+                    <p key={line} className={cn("text-muted-foreground", classNames?.terminalOutput)}>
+
             {line}
           </p>
         ))}
@@ -464,7 +475,8 @@ function renderMedia(
     <>
       {renderMediaContent(resolvedMedia, classNames)}
       {resolvedMedia.caption ? (
-        <p className={cn("px-5 py-4 text-sm text-white/42", classNames?.mediaCaption)}>
+                <p className={cn("px-5 py-4 text-sm text-muted-foreground", classNames?.mediaCaption)}>
+
           {resolvedMedia.caption}
         </p>
       ) : null}
@@ -541,7 +553,8 @@ export function ProjectDeepDive({
         unstyled: true,
         ...cta,
         className: cn(
-          "h-11 rounded-full border border-white/14 bg-white/[0.03] px-6 text-sm font-medium text-white/86 hover:border-white/28 hover:bg-white/[0.07]",
+                    "h-11 rounded-full border border-border bg-background/80 px-6 text-sm font-medium text-foreground hover:bg-muted",
+
           enableMotion && "transition-all duration-200 hover:-translate-y-0.5",
           !enableMotion && "transition-none hover:!translate-y-0",
           classNames?.cta,
@@ -554,7 +567,8 @@ export function ProjectDeepDive({
     <section
       id={id}
       className={cn(
-        "relative overflow-hidden bg-[#030303] px-4 py-20 text-white sm:px-6 lg:px-8 lg:py-24",
+                "relative overflow-hidden bg-background px-4 py-20 text-foreground sm:px-6 lg:px-8 lg:py-24",
+
         section?.className,
         classNames?.section,
         className,
@@ -564,7 +578,8 @@ export function ProjectDeepDive({
     >
       <div
         className={cn(
-          "pointer-events-none absolute right-[-16rem] top-28 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),rgba(255,255,255,0.04)_38%,transparent_72%)] blur-3xl",
+                    "pointer-events-none absolute right-[-16rem] top-28 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.08),rgba(0,0,0,0.03)_38%,transparent_72%)] blur-3xl dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),rgba(255,255,255,0.04)_38%,transparent_72%)]",
+
           classNames?.backgroundGlow,
         )}
         aria-hidden="true"
@@ -587,8 +602,9 @@ export function ProjectDeepDive({
           {eyebrow ? (
             <p
               className={cn(
-                "text-xs font-medium uppercase tracking-[0.28em] text-white/48",
+                                "text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground",
                 classNames?.eyebrow,
+
               )}
             >
               {eyebrow}
@@ -598,8 +614,9 @@ export function ProjectDeepDive({
           <h2
             id={titleId}
             className={cn(
-              "mt-5 text-balance text-4xl font-semibold tracking-[-0.055em] text-white sm:text-5xl lg:text-6xl",
+                            "mt-5 text-balance text-4xl font-semibold tracking-[-0.055em] text-foreground sm:text-5xl lg:text-6xl",
               classNames?.title,
+
             )}
           >
             {title}
@@ -608,8 +625,9 @@ export function ProjectDeepDive({
           {description ? (
             <p
               className={cn(
-                "mx-auto mt-5 max-w-2xl text-pretty text-base leading-7 text-white/60 sm:text-lg",
+                                "mx-auto mt-5 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg",
                 classNames?.description,
+
               )}
             >
               {description}
@@ -641,7 +659,8 @@ export function ProjectDeepDive({
             {mediaContent ? (
               <div
                 className={cn(
-                  "relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035] p-2 shadow-[0_24px_90px_rgba(0,0,0,0.58)] backdrop-blur",
+                                    "relative overflow-hidden rounded-[2rem] border border-border bg-card/80 p-2 shadow-[0_24px_90px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_24px_90px_rgba(0,0,0,0.58)]",
+
                   motionClasses,
                   mediaSlot?.className,
                   classNames?.mediaOuter,
@@ -649,20 +668,23 @@ export function ProjectDeepDive({
               >
                 <div
                   className={cn(
-                    "flex h-10 items-center gap-2 border-b border-white/10 px-4",
+                                        "flex h-10 items-center gap-2 border-b border-border px-4",
                     classNames?.mediaChrome,
+
                   )}
                   aria-hidden="true"
                 >
-                  <span className="size-2.5 rounded-full bg-white/24" />
-                  <span className="size-2.5 rounded-full bg-white/16" />
-                  <span className="size-2.5 rounded-full bg-white/10" />
-                  <span className="ml-3 h-2 w-28 rounded-full bg-white/8" />
+                                    <span className="size-2.5 rounded-full bg-foreground/24" />
+                  <span className="size-2.5 rounded-full bg-foreground/16" />
+                  <span className="size-2.5 rounded-full bg-foreground/10" />
+                  <span className="ml-3 h-2 w-28 rounded-full bg-foreground/8" />
+
                 </div>
                 <div
                   className={cn(
-                    "overflow-hidden rounded-[1.45rem] bg-black",
+                                        "overflow-hidden rounded-[1.45rem] bg-muted",
                     classNames?.mediaFrame,
+
                   )}
                 >
                   <div className={classNames?.mediaContent}>{mediaContent}</div>
@@ -675,7 +697,8 @@ export function ProjectDeepDive({
                 {resolvedArchitecture ? (
                   <article
                     className={cn(
-                      "rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur sm:p-8",
+                                            "rounded-[2rem] border border-border bg-card/80 p-6 shadow-[0_24px_90px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_24px_90px_rgba(0,0,0,0.42)] sm:p-8",
+
                       cardMotionClasses,
                       classNames?.architectureCard,
                     )}
@@ -684,8 +707,9 @@ export function ProjectDeepDive({
                     {resolvedArchitecture.label ? (
                       <p
                         className={cn(
-                          "text-[0.7rem] font-medium uppercase tracking-[0.24em] text-white/42",
+                                                    "text-[0.7rem] font-medium uppercase tracking-[0.24em] text-muted-foreground",
                           classNames?.architectureLabel,
+
                         )}
                       >
                         {resolvedArchitecture.label}
@@ -695,8 +719,9 @@ export function ProjectDeepDive({
                     {resolvedArchitecture.title ? (
                       <h3
                         className={cn(
-                          "mt-4 text-balance text-2xl font-medium tracking-[-0.04em] text-white sm:text-[1.75rem]",
+                                                    "mt-4 text-balance text-2xl font-medium tracking-[-0.04em] text-foreground sm:text-[1.75rem]",
                           classNames?.architectureTitle,
+
                         )}
                       >
                         {resolvedArchitecture.title}
@@ -706,8 +731,9 @@ export function ProjectDeepDive({
                     {resolvedArchitecture.description ? (
                       <p
                         className={cn(
-                          "mt-3 text-sm leading-6 text-white/56 sm:text-[0.95rem]",
+                                                    "mt-3 text-sm leading-6 text-muted-foreground sm:text-[0.95rem]",
                           classNames?.architectureDescription,
+
                         )}
                       >
                         {resolvedArchitecture.description}
@@ -730,8 +756,9 @@ export function ProjectDeepDive({
                             >
                               <span
                                 className={cn(
-                                  "mt-2 size-1.5 shrink-0 rounded-full bg-white/42",
+                                                                    "mt-2 size-1.5 shrink-0 rounded-full bg-foreground/42",
                                   classNames?.architectureItemMarker,
+
                                 )}
                                 aria-hidden="true"
                               />
@@ -739,8 +766,9 @@ export function ProjectDeepDive({
                                 {normalizedItem.title ? (
                                   <span
                                     className={cn(
-                                      "block text-sm font-medium text-white/82",
+                                                                            "block text-sm font-medium text-foreground",
                                       classNames?.architectureItemTitle,
+
                                     )}
                                   >
                                     {normalizedItem.title}
@@ -748,8 +776,9 @@ export function ProjectDeepDive({
                                 ) : null}
                                 <span
                                   className={cn(
-                                    "block text-sm leading-6 text-white/52",
+                                                                        "block text-sm leading-6 text-muted-foreground",
                                     classNames?.architectureItemDescription,
+
                                   )}
                                 >
                                   {normalizedItem.description}

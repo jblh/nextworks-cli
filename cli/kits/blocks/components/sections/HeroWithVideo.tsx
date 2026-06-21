@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
+ 
 type ButtonVariant =
   | "default"
   | "destructive"
@@ -85,7 +85,7 @@ export interface HeroWithVideoProps {
   secondaryCta?: HeroWithVideoCta;
   cta1?: HeroWithVideoCta;
   cta2?: HeroWithVideoCta;
-    video?: HeroWithVideoMedia;
+  video?: HeroWithVideoMedia;
   embed?: React.ReactNode;
   fallback?: React.ReactNode;
   previewId?: string;
@@ -139,7 +139,10 @@ function normalizeTitleContent(
     text: value?.text ?? defaults.text,
     className: cn(defaults.className, value?.className),
     highlight: value?.highlight ?? defaults.highlight,
-    highlightClassName: cn(defaults.highlightClassName, value?.highlightClassName),
+    highlightClassName: cn(
+      defaults.highlightClassName,
+      value?.highlightClassName,
+    ),
   };
 }
 
@@ -209,7 +212,7 @@ export function HeroWithVideo({
   cta1,
   cta2,
   video,
-    embed,
+  embed,
   fallback,
   previewId,
   ariaLabel = "Video hero section",
@@ -230,42 +233,43 @@ export function HeroWithVideo({
   videoChrome,
   videoSlot,
 }: HeroWithVideoProps) {
-    const normalizedEyebrow = normalizeTextContent(eyebrow, {
+  const normalizedEyebrow = normalizeTextContent(eyebrow, {
     text: "Product demo · Launch page · Video preview",
     className:
-      "hidden text-xs font-medium uppercase tracking-[0.28em] text-white/55 sm:block sm:text-sm",
+      "hidden text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground sm:block sm:text-sm",
   });
 
-    const normalizedTitle = normalizeTitleContent(heading ?? title, {
+  const normalizedTitle = normalizeTitleContent(heading ?? title, {
     text: "Show your product with a clear video-first hero.",
     className:
-      "mx-auto max-w-5xl text-balance text-4xl font-semibold tracking-[-0.055em] text-white sm:text-6xl lg:text-7xl",
+      "mx-auto max-w-5xl text-balance text-4xl font-semibold tracking-[-0.055em] text-foreground sm:text-6xl lg:text-7xl",
     highlight: "video-first",
-    highlightClassName: "text-white",
+    highlightClassName: "text-foreground",
   });
 
-    const normalizedDescription = normalizeTextContent(subheading ?? description, {
+  const normalizedDescription = normalizeTextContent(subheading ?? description, {
     text: "Introduce a product, service, or project with a focused headline, simple calls to action, and a large demo preview.",
     className:
-      "mx-auto mt-5 max-w-2xl text-pretty text-base leading-7 text-white/62 sm:text-lg lg:text-xl",
+      "mx-auto mt-5 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg lg:text-xl",
   });
 
-    const normalizedCredibility = normalizeTextContent(credibility, {
+  const normalizedCredibility = normalizeTextContent(credibility, {
     text: "Designed for landing pages, launches, and product walkthroughs.",
-    className: "mt-4 text-sm text-white/42",
+    className: "mt-4 text-sm text-muted-foreground",
   });
 
-    const normalizedCommand = normalizeTextContent(command, {
+  const normalizedCommand = normalizeTextContent(command, {
     text: "Add a short setup command or product note here.",
     className:
-      "mt-6 inline-flex max-w-full items-center rounded-full border border-white/12 bg-white/[0.04] px-4 py-2 font-mono text-xs text-white/58 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:text-sm",
+      "mt-6 inline-flex max-w-full items-center rounded-full border border-border bg-muted/60 px-4 py-2 font-mono text-xs text-muted-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:text-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]",
   });
 
   const buttonMotion = enableMotion
     ? "transition-all duration-200 hover:-translate-y-0.5"
     : "transition-none hover:!translate-y-0";
 
-    const resolvedPreviewId = previewId ?? (id ? `${id}-preview` : "video-preview");
+  const resolvedPreviewId =
+    previewId ?? (id ? `${id}-preview` : "video-preview");
 
   const resolvedPrimaryCta: HeroWithVideoCta = {
     label: "View demo",
@@ -275,7 +279,7 @@ export function HeroWithVideo({
     unstyled: true,
     ...(primaryCta ?? cta1 ?? {}),
     className: cn(
-      "h-11 rounded-full bg-white px-6 text-sm font-medium text-black shadow-[0_16px_45px_rgba(255,255,255,0.16)] hover:bg-white/90",
+      "h-11 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg hover:bg-primary/90",
       buttonMotion,
       classNames?.primaryCta,
       primaryCta?.className ?? cta1?.className,
@@ -283,7 +287,7 @@ export function HeroWithVideo({
   };
 
   const secondaryInput = secondaryCta ?? cta2;
-    const resolvedSecondaryCta: HeroWithVideoCta = {
+  const resolvedSecondaryCta: HeroWithVideoCta = {
     label: "Learn more",
     href: "#",
     variant: "outline",
@@ -291,7 +295,7 @@ export function HeroWithVideo({
     unstyled: true,
     ...(secondaryInput ?? {}),
     className: cn(
-      "h-11 rounded-full border border-white/16 bg-white/[0.03] px-6 text-sm font-medium text-white/86 hover:border-white/28 hover:bg-white/[0.07]",
+      "h-11 rounded-full border border-border bg-background/80 px-6 text-sm font-medium text-foreground hover:bg-muted",
       buttonMotion,
       classNames?.secondaryCta,
       secondaryInput?.className,
@@ -306,7 +310,7 @@ export function HeroWithVideo({
     <section
       id={id}
       className={cn(
-        "relative overflow-hidden bg-[#030303] px-4 py-20 text-white sm:px-6 lg:px-8 lg:py-24",
+        "relative overflow-hidden bg-background px-4 py-20 text-foreground sm:px-6 lg:px-8 lg:py-24",
         section?.className,
         classNames?.section,
         className,
@@ -316,15 +320,13 @@ export function HeroWithVideo({
     >
       <div
         className={cn(
-          "pointer-events-none absolute left-1/2 top-[34rem] h-[30rem] w-[72rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.08)_24%,transparent_68%)] blur-3xl",
+          "pointer-events-none absolute left-1/2 top-[34rem] h-[30rem] w-[72rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.03)_24%,transparent_68%)] blur-3xl dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.08)_24%,transparent_68%)]",
           classNames?.backgroundGlow,
         )}
         aria-hidden="true"
       />
       <div
-        className={cn(
-          "pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white/[0.04] to-transparent",
-        )}
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-foreground/5 to-transparent"
         aria-hidden="true"
       />
 
@@ -409,7 +411,7 @@ export function HeroWithVideo({
                 classNames?.command,
               )}
             >
-              <span className="mr-2 text-white/28" aria-hidden="true">
+              <span className="mr-2 text-muted-foreground/60" aria-hidden="true">
                 $
               </span>
               <span className="truncate">{normalizedCommand.text}</span>
@@ -417,7 +419,7 @@ export function HeroWithVideo({
           ) : null}
         </div>
 
-                <div
+        <div
           id={resolvedPreviewId}
           className={cn(
             "relative mt-12 w-full max-w-6xl sm:mt-14 lg:mt-16",
@@ -427,7 +429,7 @@ export function HeroWithVideo({
         >
           <div
             className={cn(
-              "relative overflow-hidden rounded-[1.75rem] border border-white/12 bg-white/[0.035] p-2 shadow-[0_28px_90px_rgba(0,0,0,0.72),0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur",
+              "relative overflow-hidden rounded-[1.75rem] border border-border bg-card/80 p-2 shadow-[0_28px_90px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_28px_90px_rgba(0,0,0,0.72),0_0_0_1px_rgba(255,255,255,0.04)]",
               videoMotion,
               videoFrame?.className,
               classNames?.videoFrame,
@@ -435,19 +437,19 @@ export function HeroWithVideo({
           >
             <div
               className={cn(
-                "flex h-10 items-center gap-2 border-b border-white/10 px-4",
+                "flex h-10 items-center gap-2 border-b border-border px-4",
                 videoChrome?.className,
                 classNames?.videoChrome,
               )}
               aria-hidden="true"
             >
-              <span className="size-2.5 rounded-full bg-white/24" />
-              <span className="size-2.5 rounded-full bg-white/16" />
-              <span className="size-2.5 rounded-full bg-white/10" />
-              <span className="ml-3 h-2 w-28 rounded-full bg-white/8" />
+              <span className="size-2.5 rounded-full bg-foreground/24" />
+              <span className="size-2.5 rounded-full bg-foreground/16" />
+              <span className="size-2.5 rounded-full bg-foreground/10" />
+              <span className="ml-3 h-2 w-28 rounded-full bg-foreground/8" />
             </div>
 
-            <div className="relative aspect-video overflow-hidden rounded-[1.25rem] bg-black">
+            <div className="relative aspect-video overflow-hidden rounded-[1.25rem] bg-muted">
               {embed ??
                 (video?.src ? (
                   <video
@@ -471,13 +473,13 @@ export function HeroWithVideo({
                 ) : (
                   <div
                     className={cn(
-                      "flex size-full items-center justify-center bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.11),rgba(255,255,255,0.035)_38%,rgba(0,0,0,1)_72%)] px-6 text-center",
+                      "flex size-full items-center justify-center bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.28),rgba(255,255,255,0.1)_38%,rgba(255,255,255,0)_72%)] px-6 text-center dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.11),rgba(255,255,255,0.035)_38%,rgba(0,0,0,1)_72%)]",
                       classNames?.videoFallback,
                     )}
                   >
                     {fallback ?? (
-                      <p className="max-w-md text-sm leading-6 text-white/45">
-                                                Add a demo video source to show a product walkthrough,
+                      <p className="max-w-md text-sm leading-6 text-muted-foreground">
+                        Add a demo video source to show a product walkthrough,
                         launch preview, or selected project here.
                       </p>
                     )}
@@ -490,3 +492,4 @@ export function HeroWithVideo({
     </section>
   );
 }
+

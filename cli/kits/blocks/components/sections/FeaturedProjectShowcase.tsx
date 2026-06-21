@@ -133,7 +133,7 @@ export interface FeaturedProjectShowcaseProps {
   content?: { className?: string };
   mediaSlot?: { className?: string };
 }
-
+ 
 const defaultTags = [
   "Product",
   "Frontend",
@@ -283,7 +283,8 @@ function renderMediaContent(
   return (
     <div
       className={cn(
-        "flex min-h-[24rem] flex-col justify-between bg-[#060606] p-5 font-mono text-xs text-white/62 sm:p-6",
+                "flex min-h-[24rem] flex-col justify-between bg-muted p-5 font-mono text-xs text-muted-foreground sm:p-6",
+
         media.className,
         classNames?.terminal,
       )}
@@ -293,7 +294,8 @@ function renderMediaContent(
       <div className="space-y-3">
         {(media.commands ?? defaultMedia.commands ?? []).map((command) => (
           <p key={command} className={cn("break-all", classNames?.terminalLine)}>
-            <span className="mr-2 text-white/28" aria-hidden="true">
+                        <span className="mr-2 text-muted-foreground/60" aria-hidden="true">
+
               $
             </span>
             <span>{command}</span>
@@ -301,9 +303,11 @@ function renderMediaContent(
         ))}
       </div>
 
-      <div className="mt-8 space-y-2 border-t border-white/10 pt-5">
+            <div className="mt-8 space-y-2 border-t border-border pt-5">
+
         {(media.output ?? defaultMedia.output ?? []).map((line) => (
-          <p key={line} className={cn("text-white/42", classNames?.terminalOutput)}>
+                    <p key={line} className={cn("text-muted-foreground", classNames?.terminalOutput)}>
+
             {line}
           </p>
         ))}
@@ -330,7 +334,8 @@ function renderMedia(
     <>
       {renderMediaContent(resolvedMedia, classNames)}
       {resolvedMedia.caption ? (
-        <p className={cn("px-5 py-4 text-sm text-white/42", classNames?.mediaCaption)}>
+                <p className={cn("px-5 py-4 text-sm text-muted-foreground", classNames?.mediaCaption)}>
+
           {resolvedMedia.caption}
         </p>
       ) : null}
@@ -378,7 +383,8 @@ export function FeaturedProjectShowcase({
     unstyled: true,
     ...(primaryCta ?? {}),
     className: cn(
-      "h-11 rounded-full bg-white px-6 text-sm font-medium text-black shadow-[0_16px_45px_rgba(255,255,255,0.12)] hover:bg-white/90",
+            "h-11 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg hover:bg-primary/90",
+
       motionClasses,
       classNames?.primaryCta,
       primaryCta?.className,
@@ -393,7 +399,8 @@ export function FeaturedProjectShowcase({
     unstyled: true,
     ...(secondaryCta ?? {}),
     className: cn(
-      "h-11 rounded-full border border-white/14 bg-white/[0.03] px-6 text-sm font-medium text-white/86 hover:border-white/28 hover:bg-white/[0.07]",
+            "h-11 rounded-full border border-border bg-background/80 px-6 text-sm font-medium text-foreground hover:bg-muted",
+
       motionClasses,
       classNames?.secondaryCta,
       secondaryCta?.className,
@@ -406,7 +413,8 @@ export function FeaturedProjectShowcase({
     <section
       id={id}
       className={cn(
-        "relative overflow-hidden bg-[#030303] px-4 py-20 text-white sm:px-6 lg:px-8 lg:py-24",
+                "relative overflow-hidden bg-background px-4 py-20 text-foreground sm:px-6 lg:px-8 lg:py-24",
+
         section?.className,
         classNames?.section,
         className,
@@ -416,7 +424,8 @@ export function FeaturedProjectShowcase({
     >
       <div
         className={cn(
-          "pointer-events-none absolute right-[-18rem] top-24 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),rgba(255,255,255,0.04)_36%,transparent_70%)] blur-3xl",
+                    "pointer-events-none absolute right-[-18rem] top-24 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.08),rgba(0,0,0,0.03)_36%,transparent_70%)] blur-3xl dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),rgba(255,255,255,0.04)_36%,transparent_70%)]",
+
           classNames?.backgroundGlow,
         )}
         aria-hidden="true"
@@ -437,7 +446,8 @@ export function FeaturedProjectShowcase({
         >
           <div
             className={cn(
-              "flex flex-col rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 shadow-[0_24px_90px_rgba(0,0,0,0.55)] backdrop-blur sm:p-8 lg:p-10",
+                            "flex flex-col rounded-[2rem] border border-border bg-card/80 p-6 shadow-[0_24px_90px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_24px_90px_rgba(0,0,0,0.55)] sm:p-8 lg:p-10",
+
               content?.className,
               classNames?.content,
             )}
@@ -445,7 +455,8 @@ export function FeaturedProjectShowcase({
             {eyebrow ? (
               <p
                 className={cn(
-                  "text-xs font-medium uppercase tracking-[0.28em] text-white/48",
+                                    "text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground",
+
                   classNames?.eyebrow,
                 )}
               >
@@ -456,7 +467,8 @@ export function FeaturedProjectShowcase({
             <h2
               id={titleId}
               className={cn(
-                "mt-5 text-balance text-4xl font-semibold tracking-[-0.055em] text-white sm:text-5xl lg:text-6xl",
+                                "mt-5 text-balance text-4xl font-semibold tracking-[-0.055em] text-foreground sm:text-5xl lg:text-6xl",
+
                 classNames?.title,
               )}
             >
@@ -466,7 +478,8 @@ export function FeaturedProjectShowcase({
             {description ? (
               <p
                 className={cn(
-                  "mt-5 max-w-2xl text-pretty text-base leading-7 text-white/60 sm:text-lg",
+                                    "mt-5 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg",
+
                   classNames?.description,
                 )}
               >
@@ -483,7 +496,8 @@ export function FeaturedProjectShowcase({
                     <span
                       key={normalizedTag.label}
                       className={cn(
-                        "rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-white/58",
+                                                "rounded-full border border-border bg-muted/60 px-3 py-1 text-xs font-medium text-muted-foreground",
+
                         classNames?.tag,
                         normalizedTag.className,
                       )}
@@ -504,14 +518,16 @@ export function FeaturedProjectShowcase({
                     <li
                       key={`${normalizedFeature.title ?? "feature"}-${index}`}
                       className={cn(
-                        "flex gap-3 text-sm leading-6 text-white/64",
+                                                "flex gap-3 text-sm leading-6 text-muted-foreground",
+
                         classNames?.feature,
                         normalizedFeature.className,
                       )}
                     >
                       <span
                         className={cn(
-                          "mt-2 size-1.5 shrink-0 rounded-full bg-white/50",
+                                                    "mt-2 size-1.5 shrink-0 rounded-full bg-foreground/50",
+
                           classNames?.featureMarker,
                         )}
                         aria-hidden="true"
@@ -520,7 +536,8 @@ export function FeaturedProjectShowcase({
                         {normalizedFeature.title ? (
                           <span
                             className={cn(
-                              "mr-1 font-medium text-white/86",
+                                                            "mr-1 font-medium text-foreground",
+
                               classNames?.featureTitle,
                             )}
                           >
@@ -541,7 +558,8 @@ export function FeaturedProjectShowcase({
                             <div
                 id={resolvedDetailsId}
                 className={cn(
-                  "mt-8 grid gap-3 border-t border-white/10 pt-6 sm:grid-cols-3",
+                                    "mt-8 grid gap-3 border-t border-border pt-6 sm:grid-cols-3",
+
                   classNames?.breakdown,
                 )}
               >
@@ -549,14 +567,16 @@ export function FeaturedProjectShowcase({
                   <div
                     key={item.label}
                     className={cn(
-                      "rounded-2xl border border-white/10 bg-black/20 p-4",
+                                            "rounded-2xl border border-border bg-muted/40 p-4",
+
                       classNames?.breakdownItem,
                       item.className,
                     )}
                   >
                     <p
                       className={cn(
-                        "text-sm font-medium text-white/82",
+                                                "text-sm font-medium text-foreground",
+
                         classNames?.breakdownLabel,
                       )}
                     >
@@ -564,7 +584,8 @@ export function FeaturedProjectShowcase({
                     </p>
                     <p
                       className={cn(
-                        "mt-2 text-sm leading-6 text-white/48",
+                                                "mt-2 text-sm leading-6 text-muted-foreground",
+
                         classNames?.breakdownDescription,
                       )}
                     >
@@ -588,7 +609,8 @@ export function FeaturedProjectShowcase({
             {meta.length > 0 ? (
               <dl
                 className={cn(
-                  "mt-auto grid gap-4 border-t border-white/10 pt-6 sm:grid-cols-3 lg:mt-10",
+                                    "mt-auto grid gap-4 border-t border-border pt-6 sm:grid-cols-3 lg:mt-10",
+
                   classNames?.meta,
                 )}
               >
@@ -599,7 +621,8 @@ export function FeaturedProjectShowcase({
                   >
                     <dt
                       className={cn(
-                        "text-xs uppercase tracking-[0.2em] text-white/34",
+                                                "text-xs uppercase tracking-[0.2em] text-muted-foreground",
+
                         classNames?.metaLabel,
                       )}
                     >
@@ -607,7 +630,8 @@ export function FeaturedProjectShowcase({
                     </dt>
                     <dd
                       className={cn(
-                        "mt-2 truncate text-sm font-medium text-white/74",
+                                                "mt-2 truncate text-sm font-medium text-foreground/80",
+
                         classNames?.metaValue,
                       )}
                     >
@@ -623,7 +647,8 @@ export function FeaturedProjectShowcase({
                         <div
               id={resolvedMediaId}
               className={cn(
-                "relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035] p-2 shadow-[0_24px_90px_rgba(0,0,0,0.62)] backdrop-blur",
+                                "relative overflow-hidden rounded-[2rem] border border-border bg-card/80 p-2 shadow-[0_24px_90px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_24px_90px_rgba(0,0,0,0.62)]",
+
                 enableMotion && "transition-transform duration-300 hover:-translate-y-1",
                 !enableMotion && "transition-none hover:!translate-y-0",
                 mediaSlot?.className,
@@ -632,19 +657,22 @@ export function FeaturedProjectShowcase({
             >
               <div
                 className={cn(
-                  "flex h-10 items-center gap-2 border-b border-white/10 px-4",
+                                    "flex h-10 items-center gap-2 border-b border-border px-4",
+
                   classNames?.mediaChrome,
                 )}
                 aria-hidden="true"
               >
-                <span className="size-2.5 rounded-full bg-white/24" />
-                <span className="size-2.5 rounded-full bg-white/16" />
-                <span className="size-2.5 rounded-full bg-white/10" />
-                <span className="ml-3 h-2 w-28 rounded-full bg-white/8" />
+                                <span className="size-2.5 rounded-full bg-foreground/24" />
+                <span className="size-2.5 rounded-full bg-foreground/16" />
+                <span className="size-2.5 rounded-full bg-foreground/10" />
+                <span className="ml-3 h-2 w-28 rounded-full bg-foreground/8" />
+
               </div>
               <div
                 className={cn(
-                  "overflow-hidden rounded-[1.45rem] bg-black",
+                                    "overflow-hidden rounded-[1.45rem] bg-muted",
+
                   classNames?.mediaFrame,
                 )}
               >

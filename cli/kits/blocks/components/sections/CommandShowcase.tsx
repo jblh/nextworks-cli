@@ -100,7 +100,7 @@ export interface CommandShowcaseProps {
   terminal?: { className?: string };
   notesSlot?: { className?: string };
 }
-
+ 
 const defaultCommands = [
   "npm create example-app@latest",
   "cd example-app",
@@ -246,8 +246,9 @@ export function CommandShowcase({
         size: "lg",
         unstyled: true,
         ...cta,
-        className: cn(
-          "h-11 rounded-full border border-white/14 bg-white/[0.03] px-6 text-sm font-medium text-white/86 hover:border-white/28 hover:bg-white/[0.07]",
+                className: cn(
+          "h-11 rounded-full border border-border bg-background/80 px-6 text-sm font-medium text-foreground hover:bg-muted",
+
           motionClasses,
           classNames?.cta,
           cta.className,
@@ -259,7 +260,8 @@ export function CommandShowcase({
     <section
       id={id}
       className={cn(
-        "relative overflow-hidden bg-[#030303] px-4 py-20 text-white sm:px-6 lg:px-8 lg:py-24",
+                "relative overflow-hidden bg-background px-4 py-20 text-foreground sm:px-6 lg:px-8 lg:py-24",
+
         section?.className,
         classNames?.section,
         className,
@@ -269,7 +271,8 @@ export function CommandShowcase({
     >
       <div
         className={cn(
-          "pointer-events-none absolute left-1/2 top-28 h-[34rem] w-[48rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.11),rgba(255,255,255,0.04)_38%,transparent_72%)] blur-3xl",
+                    "pointer-events-none absolute left-1/2 top-28 h-[34rem] w-[48rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.08),rgba(0,0,0,0.03)_38%,transparent_72%)] blur-3xl dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.11),rgba(255,255,255,0.04)_38%,transparent_72%)]",
+
           classNames?.backgroundGlow,
         )}
         aria-hidden="true"
@@ -292,7 +295,8 @@ export function CommandShowcase({
           {eyebrow ? (
             <p
               className={cn(
-                "text-xs font-medium uppercase tracking-[0.28em] text-white/48",
+                                "text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground",
+
                 classNames?.eyebrow,
               )}
             >
@@ -303,7 +307,8 @@ export function CommandShowcase({
           <h2
             id={titleId}
             className={cn(
-              "mt-5 text-balance text-4xl font-semibold tracking-[-0.055em] text-white sm:text-5xl lg:text-6xl",
+                            "mt-5 text-balance text-4xl font-semibold tracking-[-0.055em] text-foreground sm:text-5xl lg:text-6xl",
+
               classNames?.title,
             )}
           >
@@ -313,7 +318,8 @@ export function CommandShowcase({
           {description ? (
             <p
               className={cn(
-                "mx-auto mt-5 max-w-2xl text-pretty text-base leading-7 text-white/60 sm:text-lg",
+                                "mx-auto mt-5 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg",
+
                 classNames?.description,
               )}
             >
@@ -330,7 +336,8 @@ export function CommandShowcase({
         >
           <div
             className={cn(
-              "relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035] p-2 shadow-[0_24px_90px_rgba(0,0,0,0.62)] backdrop-blur",
+                            "relative overflow-hidden rounded-[2rem] border border-border bg-card/80 p-2 shadow-[0_24px_90px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_24px_90px_rgba(0,0,0,0.62)]",
+
               enableMotion && "transition-transform duration-300 hover:-translate-y-1",
               !enableMotion && "transition-none hover:!translate-y-0",
               terminal?.className,
@@ -339,7 +346,8 @@ export function CommandShowcase({
           >
             <div
               className={cn(
-                "overflow-hidden rounded-[1.55rem] border border-white/8 bg-[#050505]",
+                                "overflow-hidden rounded-[1.55rem] border border-border bg-card",
+
                 classNames?.terminalCard,
               )}
               role="region"
@@ -347,25 +355,30 @@ export function CommandShowcase({
             >
               <div
                 className={cn(
-                  "flex h-11 items-center gap-2 border-b border-white/10 px-4",
+                                    "flex h-11 items-center gap-2 border-b border-border px-4",
+
                   classNames?.terminalChrome,
                 )}
               >
                 <span
-                  className={cn("size-2.5 rounded-full bg-white/24", classNames?.terminalChromeDot)}
+                                    className={cn("size-2.5 rounded-full bg-foreground/24", classNames?.terminalChromeDot)}
+
                   aria-hidden="true"
                 />
                 <span
-                  className={cn("size-2.5 rounded-full bg-white/16", classNames?.terminalChromeDot)}
+                                    className={cn("size-2.5 rounded-full bg-foreground/16", classNames?.terminalChromeDot)}
+
                   aria-hidden="true"
                 />
                 <span
-                  className={cn("size-2.5 rounded-full bg-white/10", classNames?.terminalChromeDot)}
+                                    className={cn("size-2.5 rounded-full bg-foreground/10", classNames?.terminalChromeDot)}
+
                   aria-hidden="true"
                 />
                 <span
                   className={cn(
-                    "ml-3 min-w-0 flex-1 truncate font-mono text-xs text-white/34",
+                                        "ml-3 min-w-0 flex-1 truncate font-mono text-xs text-muted-foreground",
+
                     classNames?.terminalTitle,
                   )}
                 >
@@ -376,7 +389,8 @@ export function CommandShowcase({
                     type="button"
                     onClick={handleCopy}
                     className={cn(
-                      "rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-sans text-xs font-medium text-white/58 transition-colors hover:border-white/22 hover:bg-white/[0.08] hover:text-white/78 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30",
+                                            "rounded-full border border-border bg-muted/60 px-3 py-1 font-sans text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+
                       classNames?.copyButton,
                     )}
                     aria-label={copyStatus === "copied" ? copiedLabel : copyLabel}
@@ -392,13 +406,15 @@ export function CommandShowcase({
                     <p
                       key={`${getLineText(commands[index])}-${index}`}
                       className={cn(
-                        "flex gap-3 break-all leading-6 text-white/78",
+                                                "flex gap-3 break-all leading-6 text-foreground/80",
+
                         classNames?.commandLine,
                         line.className,
                       )}
                     >
                       <span
-                        className={cn("shrink-0 text-white/28", classNames?.prompt)}
+                                                className={cn("shrink-0 text-muted-foreground/60", classNames?.prompt)}
+
                         aria-hidden="true"
                       >
                         $
@@ -411,7 +427,8 @@ export function CommandShowcase({
                 {normalizedOutput.length > 0 ? (
                   <div
                     className={cn(
-                      "mt-7 space-y-2 border-t border-white/10 pt-5",
+                                            "mt-7 space-y-2 border-t border-border pt-5",
+
                       classNames?.outputList,
                     )}
                     aria-label="Command output"
@@ -420,7 +437,8 @@ export function CommandShowcase({
                       <p
                         key={`${String(line.text)}-${index}`}
                         className={cn(
-                          "break-all leading-6 text-white/42",
+                                                    "break-all leading-6 text-muted-foreground",
+
                           classNames?.outputLine,
                           line.className,
                         )}
@@ -437,7 +455,8 @@ export function CommandShowcase({
           {normalizedNotes.length > 0 || resolvedCta ? (
             <div
               className={cn(
-                "flex flex-col justify-between rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 shadow-[0_24px_90px_rgba(0,0,0,0.48)] backdrop-blur sm:p-8",
+                                "flex flex-col justify-between rounded-[2rem] border border-border bg-card/80 p-6 shadow-[0_24px_90px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_24px_90px_rgba(0,0,0,0.48)] sm:p-8",
+
                 notesSlot?.className,
                 classNames?.notes,
               )}
@@ -451,7 +470,8 @@ export function CommandShowcase({
                     >
                       <span
                         className={cn(
-                          "mt-2 size-1.5 shrink-0 rounded-full bg-white/50",
+                                                    "mt-2 size-1.5 shrink-0 rounded-full bg-foreground/50",
+
                           classNames?.noteMarker,
                         )}
                         aria-hidden="true"
@@ -460,7 +480,8 @@ export function CommandShowcase({
                         {note.title ? (
                           <span
                             className={cn(
-                              "block text-sm font-medium text-white/84",
+                                                            "block text-sm font-medium text-foreground",
+
                               classNames?.noteTitle,
                             )}
                           >
@@ -469,7 +490,8 @@ export function CommandShowcase({
                         ) : null}
                         <span
                           className={cn(
-                            "mt-1 block text-sm leading-6 text-white/52",
+                                                        "mt-1 block text-sm leading-6 text-muted-foreground",
+
                             classNames?.noteDescription,
                           )}
                         >
