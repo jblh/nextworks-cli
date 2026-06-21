@@ -88,7 +88,7 @@ export interface SelectedWorkRailProps {
   header?: { className?: string };
   railSlot?: { className?: string };
 }
-
+ 
 const defaultItems: SelectedWorkRailItem[] = [
   {
     title: "Product launch",
@@ -199,16 +199,19 @@ function renderVisual(
   return (
     <div
       className={cn(
-        "flex size-full flex-col justify-between bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),rgba(255,255,255,0.04)_32%,rgba(0,0,0,0.96)_72%)] p-5 sm:p-6",
+                "flex size-full flex-col justify-between bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.08),rgba(0,0,0,0.03)_32%,rgba(0,0,0,0)_72%)] p-5 sm:p-6 dark:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),rgba(255,255,255,0.04)_32%,rgba(0,0,0,0.96)_72%)]",
+
         classNames?.placeholder,
       )}
       aria-hidden="true"
     >
-      <div className="h-10 w-28 rounded-full border border-white/10 bg-white/[0.04]" />
+            <div className="h-10 w-28 rounded-full border border-border bg-muted/60" />
+
       <div className="space-y-2">
-        <div className="h-3 w-24 rounded-full bg-white/10" />
-        <div className="h-3 w-40 rounded-full bg-white/7" />
-        <div className="h-20 rounded-[1.25rem] border border-white/10 bg-white/[0.04]" />
+                <div className="h-3 w-24 rounded-full bg-foreground/10" />
+        <div className="h-3 w-40 rounded-full bg-foreground/7" />
+        <div className="h-20 rounded-[1.25rem] border border-border bg-muted/60" />
+
       </div>
     </div>
   );
@@ -223,7 +226,8 @@ function renderItemBody(
     <>
       <div
         className={cn(
-          "relative aspect-[16/11] overflow-hidden rounded-[1.4rem] border border-white/10 bg-black",
+                    "relative aspect-[16/11] overflow-hidden rounded-[1.4rem] border border-border bg-muted",
+
           isFeatured && "aspect-[16/9]",
           classNames?.media,
         )}
@@ -235,7 +239,8 @@ function renderItemBody(
         {item.label ? (
           <p
             className={cn(
-              "text-[0.7rem] font-medium uppercase tracking-[0.24em] text-white/42",
+                            "text-[0.7rem] font-medium uppercase tracking-[0.24em] text-muted-foreground",
+
               classNames?.label,
             )}
           >
@@ -246,7 +251,8 @@ function renderItemBody(
         <div>
           <h3
             className={cn(
-              "text-xl font-medium tracking-[-0.035em] text-white sm:text-2xl",
+                            "text-xl font-medium tracking-[-0.035em] text-foreground sm:text-2xl",
+
               classNames?.itemTitle,
             )}
           >
@@ -256,7 +262,8 @@ function renderItemBody(
           {item.description ? (
             <p
               className={cn(
-                "mt-2 max-w-2xl text-sm leading-6 text-white/52 sm:text-[0.95rem]",
+                                "mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-[0.95rem]",
+
                 classNames?.itemDescription,
               )}
             >
@@ -274,7 +281,8 @@ function renderItemBody(
                 <span
                   key={normalizedTag.label}
                   className={cn(
-                    "rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-white/58",
+                                        "rounded-full border border-border bg-muted/60 px-3 py-1 text-xs text-muted-foreground",
+
                     classNames?.tag,
                     normalizedTag.className,
                   )}
@@ -317,7 +325,8 @@ export function SelectedWorkRail({
     <section
       id={id}
       className={cn(
-        "relative overflow-hidden bg-[#030303] px-4 py-20 text-white sm:px-6 lg:px-8 lg:py-24",
+                "relative overflow-hidden bg-background px-4 py-20 text-foreground sm:px-6 lg:px-8 lg:py-24",
+
         section?.className,
         classNames?.section,
         className,
@@ -327,7 +336,8 @@ export function SelectedWorkRail({
     >
       <div
         className={cn(
-          "pointer-events-none absolute left-1/2 top-28 h-[36rem] w-[52rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.11),rgba(255,255,255,0.04)_38%,transparent_74%)] blur-3xl",
+                    "pointer-events-none absolute left-1/2 top-28 h-[36rem] w-[52rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.08),rgba(0,0,0,0.03)_38%,transparent_74%)] blur-3xl dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.11),rgba(255,255,255,0.04)_38%,transparent_74%)]",
+
           classNames?.backgroundGlow,
         )}
         aria-hidden="true"
@@ -350,7 +360,8 @@ export function SelectedWorkRail({
           {eyebrow ? (
             <p
               className={cn(
-                "text-xs font-medium uppercase tracking-[0.28em] text-white/48",
+                                "text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground",
+
                 classNames?.eyebrow,
               )}
             >
@@ -361,7 +372,8 @@ export function SelectedWorkRail({
           <h2
             id={titleId}
             className={cn(
-              "mt-5 text-balance text-4xl font-semibold tracking-[-0.055em] text-white sm:text-5xl lg:text-6xl",
+                            "mt-5 text-balance text-4xl font-semibold tracking-[-0.055em] text-foreground sm:text-5xl lg:text-6xl",
+
               classNames?.title,
             )}
           >
@@ -371,7 +383,8 @@ export function SelectedWorkRail({
           {description ? (
             <p
               className={cn(
-                "mx-auto mt-5 max-w-2xl text-pretty text-base leading-7 text-white/60 sm:text-lg",
+                                "mx-auto mt-5 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg",
+
                 classNames?.description,
               )}
             >
@@ -398,7 +411,8 @@ export function SelectedWorkRail({
                   href={item.href}
                   aria-label={item.ariaLabel ?? (typeof item.title === "string" ? item.title : "Selected work item")}
                   className={cn(
-                    "group min-w-[18rem] max-w-[26rem] flex-1 snap-start rounded-[2rem] border border-white/10 bg-white/[0.035] p-4 shadow-[0_20px_80px_rgba(0,0,0,0.46)] backdrop-blur sm:min-w-[22rem] sm:p-5",
+                                        "group min-w-[18rem] max-w-[26rem] flex-1 snap-start rounded-[2rem] border border-border bg-card/80 p-4 shadow-[0_20px_80px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_20px_80px_rgba(0,0,0,0.46)] sm:min-w-[22rem] sm:p-5",
+
                     isFeatured && "min-w-[22rem] max-w-[32rem]",
                     motionClasses,
                     classNames?.item,
@@ -413,7 +427,8 @@ export function SelectedWorkRail({
                 <div
                   key={item.id ?? `${String(item.title)}-${index}`}
                   className={cn(
-                    "min-w-[18rem] max-w-[26rem] flex-1 snap-start rounded-[2rem] border border-white/10 bg-white/[0.035] p-4 shadow-[0_20px_80px_rgba(0,0,0,0.46)] backdrop-blur sm:min-w-[22rem] sm:p-5",
+                                        "min-w-[18rem] max-w-[26rem] flex-1 snap-start rounded-[2rem] border border-border bg-card/80 p-4 shadow-[0_20px_80px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_20px_80px_rgba(0,0,0,0.46)] sm:min-w-[22rem] sm:p-5",
+
                     isFeatured && "min-w-[22rem] max-w-[32rem]",
                     motionClasses,
                     classNames?.item,
@@ -438,7 +453,8 @@ export function SelectedWorkRail({
               const isFeatured = index === featuredIndex;
               const itemBody = renderItemBody(item, isFeatured, classNames);
               const sharedClassName = cn(
-                "rounded-[2rem] border border-white/10 bg-white/[0.035] p-4 shadow-[0_20px_80px_rgba(0,0,0,0.46)] backdrop-blur sm:p-5",
+                                "rounded-[2rem] border border-border bg-card/80 p-4 shadow-[0_20px_80px_rgba(0,0,0,0.12)] backdrop-blur dark:shadow-[0_20px_80px_rgba(0,0,0,0.46)] sm:p-5",
+
                 isFeatured && "md:col-span-2 xl:col-span-2",
                 motionClasses,
                 classNames?.item,
