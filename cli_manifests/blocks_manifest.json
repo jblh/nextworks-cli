@@ -60,27 +60,27 @@
         "components/sections/HeroWithVideo.tsx",
         "components/sections/Navbar.tsx",
         "components/sections/product-demo/ApprovalInboxPanel.tsx",
-        "components/sections/product-demo/DemoStage.tsx",
+                "components/sections/product-demo/DemoStage.tsx",
         "components/sections/product-demo/DemoWindow.tsx",
-                "components/sections/product-demo/KnowledgePanel.tsx",
+        "components/sections/product-demo/KnowledgePanel.tsx",
+
         "components/sections/product-demo/RunConsolePanel.tsx",
         "components/sections/product-demo/types.ts",
-
         "components/sections/product-demo/TaskListPanel.tsx",
         "components/sections/product-demo/WorkflowStudioPanel.tsx",
         "components/sections/Newsletter.tsx",
         "components/sections/PortfolioSimple.tsx",
         "components/sections/Pricing.tsx",
         "components/sections/ProcessTimeline.tsx",
+        "components/sections/ProjectDeepDive.tsx",
         "components/sections/SelectedWorkRail.tsx",
         "components/sections/ServicesGrid.tsx",
-        "components/sections/Team.tsx",
+                "components/sections/Team.tsx",
         "components/sections/Testimonials.tsx",
         "components/sections/TrustBadges.tsx"
-
-
       ]
     },
+
 
     "templates": {
       "description": "Full page templates (Product Launch, SaaS Dashboard, Digital Agency, Gallery)",
