@@ -102,32 +102,31 @@ export interface CommandShowcaseProps {
 }
 
 const defaultCommands = [
-  "npx create-next-app@latest",
-  "cd my-app",
-  "npx nextworks@latest add blocks --templates",
+  "npm create example-app@latest",
+  "cd example-app",
+  "npm install",
   "npm run dev",
 ];
 
 const defaultOutput = [
-  "✓ Detected Next.js app",
-  "✓ Installing Blocks kit",
-  "✓ Added core UI primitives",
-  "✓ Added sections and templates",
-  "✓ Patched App Router layout",
+  "✓ Project created",
+  "✓ Dependencies installed",
+  "✓ Configuration checked",
+  "✓ Development server ready",
 ];
 
 const defaultNotes: CommandShowcaseNote[] = [
   {
-    title: "Copy-in workflow",
-    description: "Files are added to your project so you can edit them locally.",
+    title: "Step-by-step",
+    description: "Show the exact commands someone can follow from start to finish.",
   },
   {
-    title: "Router-aware setup",
-    description: "The CLI handles App Router and Pages Router project shapes.",
+    title: "Copy-friendly",
+    description: "Keep setup details close to the product story without running anything live.",
   },
   {
-    title: "Dry-run friendly",
-    description: "Preview install changes before writing files when you need to check paths.",
+    title: "Developer-focused",
+    description: "Useful for CLIs, SDKs, starter kits, integration guides, and internal tools.",
   },
 ];
 
@@ -186,10 +185,10 @@ function renderCta(cta: CommandShowcaseCta | undefined) {
 export function CommandShowcase({
   id,
   className,
-  eyebrow = "CLI workflow",
-  title = "Install a landing page kit from your terminal.",
+    eyebrow = "Command showcase",
+  title = "Show a setup flow without leaving the page.",
   description =
-    "Show the setup flow clearly with commands, install output, and a few implementation notes.",
+    "Use a terminal-style section to explain commands, install steps, or developer workflow output.",
   commands = defaultCommands,
   output = defaultOutput,
   notes,

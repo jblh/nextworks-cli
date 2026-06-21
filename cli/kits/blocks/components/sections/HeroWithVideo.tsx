@@ -85,9 +85,10 @@ export interface HeroWithVideoProps {
   secondaryCta?: HeroWithVideoCta;
   cta1?: HeroWithVideoCta;
   cta2?: HeroWithVideoCta;
-  video?: HeroWithVideoMedia;
+    video?: HeroWithVideoMedia;
   embed?: React.ReactNode;
   fallback?: React.ReactNode;
+  previewId?: string;
   ariaLabel?: string;
   titleId?: string;
   enableMotion?: boolean;
@@ -208,8 +209,9 @@ export function HeroWithVideo({
   cta1,
   cta2,
   video,
-  embed,
+    embed,
   fallback,
+  previewId,
   ariaLabel = "Video hero section",
   titleId,
   enableMotion = true,
@@ -228,33 +230,33 @@ export function HeroWithVideo({
   videoChrome,
   videoSlot,
 }: HeroWithVideoProps) {
-  const normalizedEyebrow = normalizeTextContent(eyebrow, {
-    text: "Next.js landing pages · UI systems · developer tools",
+    const normalizedEyebrow = normalizeTextContent(eyebrow, {
+    text: "Product demo · Launch page · Video preview",
     className:
       "hidden text-xs font-medium uppercase tracking-[0.28em] text-white/55 sm:block sm:text-sm",
   });
 
-  const normalizedTitle = normalizeTitleContent(heading ?? title, {
-    text: "I build polished Next.js products, landing pages, and developer tools.",
+    const normalizedTitle = normalizeTitleContent(heading ?? title, {
+    text: "Show your product with a clear video-first hero.",
     className:
       "mx-auto max-w-5xl text-balance text-4xl font-semibold tracking-[-0.055em] text-white sm:text-6xl lg:text-7xl",
-    highlight: "Next.js",
+    highlight: "video-first",
     highlightClassName: "text-white",
   });
 
-  const normalizedDescription = normalizeTextContent(subheading ?? description, {
-    text: "Freelance Next.js developer building fast, modern product sites, reusable UI systems, and developer tooling with TypeScript.",
+    const normalizedDescription = normalizeTextContent(subheading ?? description, {
+    text: "Introduce a product, service, or project with a focused headline, simple calls to action, and a large demo preview.",
     className:
       "mx-auto mt-5 max-w-2xl text-pretty text-base leading-7 text-white/62 sm:text-lg lg:text-xl",
   });
 
-  const normalizedCredibility = normalizeTextContent(credibility, {
-    text: "Built with the same Blocks kit this page can install.",
+    const normalizedCredibility = normalizeTextContent(credibility, {
+    text: "Designed for landing pages, launches, and product walkthroughs.",
     className: "mt-4 text-sm text-white/42",
   });
 
-  const normalizedCommand = normalizeTextContent(command, {
-    text: "npx nextworks@latest add blocks --templates",
+    const normalizedCommand = normalizeTextContent(command, {
+    text: "Add a short setup command or product note here.",
     className:
       "mt-6 inline-flex max-w-full items-center rounded-full border border-white/12 bg-white/[0.04] px-4 py-2 font-mono text-xs text-white/58 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:text-sm",
   });
@@ -263,9 +265,11 @@ export function HeroWithVideo({
     ? "transition-all duration-200 hover:-translate-y-0.5"
     : "transition-none hover:!translate-y-0";
 
+    const resolvedPreviewId = previewId ?? (id ? `${id}-preview` : "video-preview");
+
   const resolvedPrimaryCta: HeroWithVideoCta = {
-    label: "Start a project",
-    href: "#contact",
+    label: "View demo",
+    href: `#${resolvedPreviewId}`,
     variant: "default",
     size: "lg",
     unstyled: true,
@@ -279,9 +283,9 @@ export function HeroWithVideo({
   };
 
   const secondaryInput = secondaryCta ?? cta2;
-  const resolvedSecondaryCta: HeroWithVideoCta = {
-    label: "Watch demo",
-    href: "#demo",
+    const resolvedSecondaryCta: HeroWithVideoCta = {
+    label: "Learn more",
+    href: "#",
     variant: "outline",
     size: "lg",
     unstyled: true,
@@ -413,8 +417,8 @@ export function HeroWithVideo({
           ) : null}
         </div>
 
-        <div
-          id="demo"
+                <div
+          id={resolvedPreviewId}
           className={cn(
             "relative mt-12 w-full max-w-6xl sm:mt-14 lg:mt-16",
             videoOuter?.className,
@@ -473,8 +477,8 @@ export function HeroWithVideo({
                   >
                     {fallback ?? (
                       <p className="max-w-md text-sm leading-6 text-white/45">
-                        Add your demo video source to show templates, CLI setup,
-                        or selected product work here.
+                                                Add a demo video source to show a product walkthrough,
+                        launch preview, or selected project here.
                       </p>
                     )}
                   </div>

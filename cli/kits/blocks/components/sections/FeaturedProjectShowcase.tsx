@@ -121,7 +121,9 @@ export interface FeaturedProjectShowcaseProps {
   meta?: FeaturedProjectShowcaseMetaItem[];
   primaryCta?: FeaturedProjectShowcaseCta;
   secondaryCta?: FeaturedProjectShowcaseCta;
-  media?: React.ReactNode | FeaturedProjectShowcaseMediaConfig | false;
+    media?: React.ReactNode | FeaturedProjectShowcaseMediaConfig | false;
+  mediaId?: string;
+  detailsId?: string;
   ariaLabel?: string;
   titleId?: string;
   enableMotion?: boolean;
@@ -133,57 +135,57 @@ export interface FeaturedProjectShowcaseProps {
 }
 
 const defaultTags = [
-  "Next.js",
-  "TypeScript",
-  "Tailwind CSS",
-  "CLI tooling",
-  "App Router",
-  "Pages Router",
+  "Product",
+  "Frontend",
+  "Launch",
+  "Case study",
+  "Design system",
+  "Workflow",
 ];
 
 const defaultFeatures: FeaturedProjectShowcaseFeature[] = [
-  { description: "Manifest-driven file copying for predictable installs." },
-  { description: "App Router and Pages Router support." },
-  { description: "Provider, font, theme, and route setup handled by the CLI." },
-  { description: "npm, pnpm, and yarn support with dry-run friendly workflows." },
+  { description: "Clear project positioning with room for technical details." },
+  { description: "Flexible media area for screenshots, video, terminal output, or custom content." },
+  { description: "Optional tags, metadata, and calls to action." },
+  { description: "Works for products, tools, portfolios, and case studies." },
 ];
 
 const defaultBreakdown: FeaturedProjectShowcaseBreakdownItem[] = [
   {
-    label: "CLI workflow",
-    description: "Commands for adding, listing, checking, and removing installed files.",
+    label: "What it is",
+    description: "A focused project highlight with enough context to understand the work.",
   },
   {
-    label: "Reusable UI",
-    description: "Copy-in components, sections, and templates that can be edited locally.",
+    label: "What it shows",
+    description: "Key features, implementation notes, supporting details, and proof points.",
   },
   {
-    label: "Install wiring",
-    description: "Router-aware setup for providers, theme files, routes, and dependencies.",
+    label: "How to use it",
+    description: "Wrap it with project-specific copy, links, media, and metadata.",
   },
 ];
 
 const defaultMeta: FeaturedProjectShowcaseMetaItem[] = [
-  { label: "Type", value: "Developer tool" },
-  { label: "Stack", value: "Next.js · TypeScript" },
-  { label: "Status", value: "Early access" },
+  { label: "Type", value: "Featured project" },
+  { label: "Focus", value: "Product story" },
+  { label: "Status", value: "Demo content" },
 ];
 
 const defaultMedia: FeaturedProjectShowcaseMediaConfig = {
   type: "terminal",
-  title: "Install preview",
-  ariaLabel: "Terminal preview showing a Blocks kit install command",
+  title: "Project preview",
+  ariaLabel: "Terminal-style preview showing example project notes",
   commands: [
-    "npx create-next-app@latest my-app",
-    "cd my-app",
-    "npx nextworks@latest add blocks --templates",
+    "open project-brief.md",
+    "review design-system-notes.md",
+    "ship polished-preview",
   ],
   output: [
-    "✔ copied core UI primitives",
-    "✔ added shared landing sections",
-    "✔ installed template routes",
+    "✔ summary, tags, and project metadata ready",
+    "✔ feature bullets and implementation notes added",
+    "✔ media area available for screenshots or video",
   ],
-  caption: "Example install flow shown as a reusable project media area.",
+  caption: "Use the media area for a screenshot, video, terminal preview, or custom visual.",
 };
 
 function isMediaConfig(
@@ -340,16 +342,18 @@ export function FeaturedProjectShowcase({
   id,
   className,
   eyebrow = "Featured project",
-  title = "Nextworks CLI",
+    title = "Featured project",
   description =
-    "A TypeScript CLI that installs reusable Next.js UI primitives, landing sections, and full-page templates into existing projects.",
+    "Highlight one project with a short summary, key features, supporting details, and an optional visual preview.",
   tags = defaultTags,
   features = defaultFeatures,
   breakdown = defaultBreakdown,
   meta = defaultMeta,
-  primaryCta,
+    primaryCta,
   secondaryCta,
   media,
+  mediaId,
+  detailsId,
   ariaLabel = "Featured project showcase section",
   titleId,
   enableMotion = true,
@@ -363,9 +367,12 @@ export function FeaturedProjectShowcase({
     ? "transition-all duration-200 hover:-translate-y-0.5"
     : "transition-none hover:!translate-y-0";
 
+    const resolvedMediaId = mediaId ?? (id ? `${id}-media` : "featured-project-media");
+  const resolvedDetailsId = detailsId ?? (id ? `${id}-details` : "featured-project-details");
+
   const resolvedPrimaryCta: FeaturedProjectShowcaseCta = {
     label: "View project",
-    href: "#project",
+    href: `#${resolvedMediaId}`,
     variant: "default",
     size: "lg",
     unstyled: true,
@@ -378,9 +385,9 @@ export function FeaturedProjectShowcase({
     ),
   };
 
-  const resolvedSecondaryCta: FeaturedProjectShowcaseCta = {
+    const resolvedSecondaryCta: FeaturedProjectShowcaseCta = {
     label: "Read notes",
-    href: "#project-details",
+    href: `#${resolvedDetailsId}`,
     variant: "outline",
     size: "lg",
     unstyled: true,
@@ -531,8 +538,8 @@ export function FeaturedProjectShowcase({
             ) : null}
 
             {breakdown.length > 0 ? (
-              <div
-                id="project-details"
+                            <div
+                id={resolvedDetailsId}
                 className={cn(
                   "mt-8 grid gap-3 border-t border-white/10 pt-6 sm:grid-cols-3",
                   classNames?.breakdown,
@@ -613,8 +620,8 @@ export function FeaturedProjectShowcase({
           </div>
 
           {mediaContent ? (
-            <div
-              id="project"
+                        <div
+              id={resolvedMediaId}
               className={cn(
                 "relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035] p-2 shadow-[0_24px_90px_rgba(0,0,0,0.62)] backdrop-blur",
                 enableMotion && "transition-transform duration-300 hover:-translate-y-1",

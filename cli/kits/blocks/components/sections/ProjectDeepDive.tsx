@@ -143,50 +143,49 @@ const defaultSections: Record<
   Exclude<ProjectDeepDiveSectionKey, "architecture">,
   ProjectDeepDiveSectionConfig
 > = {
-  problem: {
+    problem: {
     label: "Problem",
-    title: "Repeated setup work slows down new builds.",
+    title: "Important project details can be hard to scan.",
     description:
-      "Teams often rebuild the same landing sections, provider setup, theme wiring, and route structure from scratch.",
+      "A normal card or screenshot often does not explain the context, constraints, and decisions behind the work.",
     items: [
-      "Marketing UI gets copied between projects in inconsistent ways.",
-      "Theme, provider, and router setup is easy to miss or rework by hand.",
+      "Short summaries can miss the reason a project mattered.",
+      "Technical choices are easier to trust when they are shown clearly.",
     ],
     ariaLabel: "Problem overview",
   },
-  solution: {
+    solution: {
     label: "Solution",
-    title: "Use a CLI to install a reusable starting point.",
+    title: "Tell the story with a structured case-study layout.",
     description:
-      "Nextworks copies UI primitives, shared landing-page sections, and full templates into an existing Next.js app.",
+      "Use clear sections for the problem, approach, technical highlights, and outcome so visitors can understand the work quickly.",
     items: [
-      "Files live in the project after install, so teams can edit them directly.",
-      "The setup stays practical instead of locking the app into a remote design system.",
+      "Each block can be replaced with project-specific copy and evidence.",
+      "The layout works for products, services, internal tools, and client projects.",
     ],
     ariaLabel: "Solution overview",
   },
-  highlights: {
+    highlights: {
     label: "Technical highlights",
-    title: "A few implementation choices matter most.",
+    title: "Show the decisions that shaped the build.",
     description:
-      "The kit focuses on install reliability and predictable project output across different Next.js setups.",
+      "Use this area for architecture notes, workflow details, integration choices, or implementation tradeoffs.",
     items: [
-      "Router-aware file mapping for App Router and Pages Router projects.",
-      "Manifest-driven copying to keep install scope explicit.",
-      "Package manager detection and dependency merging.",
-      "Provider, font, and theme setup patched into the consuming app.",
-      "Install tracking for added files and dependencies.",
+      "Clear problem and solution framing.",
+      "Room for implementation details and constraints.",
+      "Optional architecture notes or media preview.",
+      "Useful for product work, tools, client projects, and launches.",
     ],
     ariaLabel: "Technical highlights overview",
   },
-  result: {
+    result: {
     label: "Result",
-    title: "A blank app becomes a working landing-page foundation faster.",
+    title: "Visitors get the context behind the finished work.",
     description:
-      "The outcome is a reusable Blocks kit that gives teams a solid starting point for product sites without rebuilding the same base layer every time.",
+      "The outcome is a concise project narrative that explains what was built, why it mattered, and how it came together.",
     items: [
-      "The installed output is local, editable, and easier to adapt to project needs.",
-      "The same kit can support simple sections or full templates depending on the install mode.",
+      "Good for portfolios, launch pages, case studies, and product breakdowns.",
+      "Can stay high-level for clients or become more technical for developer audiences.",
     ],
     ariaLabel: "Result overview",
   },
@@ -194,30 +193,29 @@ const defaultSections: Record<
 
 const defaultArchitecture: ProjectDeepDiveSectionConfig = {
   label: "Architecture notes",
-  title: "What sits underneath the install flow.",
+  title: "Add a simple diagram or implementation summary.",
   description:
-    "The CLI reads a manifest, maps kit files into the right project structure, patches router entry points, and records installed state for later checks or removal.",
+    "Use this optional block for system shape, data flow, component structure, delivery process, or other technical notes.",
   items: [
-    "CLI → manifest → kit files → consuming Next.js project",
-    "Dependency merge, provider wiring, and install tracking happen as part of the same workflow",
+    "Input → process → output",
+    "Planning, design, implementation, testing, and launch can be summarized here",
   ],
   ariaLabel: "Architecture notes",
 };
 
 const defaultMedia: ProjectDeepDiveMediaConfig = {
   type: "terminal",
-  title: "Install preview",
-  ariaLabel: "Terminal preview showing a Nextworks install flow",
+  title: "Case study preview",
+  ariaLabel: "Terminal-style preview showing example project milestones",
   commands: [
-    "npx create-next-app@latest my-app",
-    "cd my-app",
-    "npx nextworks@latest add blocks --templates",
+    "define project goals",
+    "map constraints and tradeoffs",
+    "document implementation notes",
   ],
   output: [
-    "✔ detected Next.js app",
-    "✔ copied reusable UI and sections",
-    "✔ installed template routes",
-    "✔ patched provider and theme wiring",
+    "✔ problem and audience clarified",
+    "✔ solution approach documented",
+    "✔ outcome and next steps summarized",
   ],
   caption: "Use the media area for a screenshot, diagram, or terminal walkthrough.",
 };
