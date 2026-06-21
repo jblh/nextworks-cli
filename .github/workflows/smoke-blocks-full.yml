@@ -18,7 +18,7 @@ jobs:
         pm: [npm, pnpm, yarn]
 
     env:
-      NEXTWORKS_VERSION: 0.2.0-alpha.17
+      NEXTWORKS_VERSION: 0.2.0-alpha.18
       # Pin Next.js for CI stability and security.
       # Keeping an explicit patched baseline (16.0.7) plus the latest stable line (16.1.4).
       # See: CVE-2025-66478 (React2Shell / RSC protocol).
