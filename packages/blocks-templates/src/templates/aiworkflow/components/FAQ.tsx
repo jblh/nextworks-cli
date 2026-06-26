@@ -4,7 +4,7 @@
 "use client";
 
 import { FAQ as SharedFAQ } from "@nextworks/blocks-sections";
-
+ 
 export function FAQ() {
   return (
     <SharedFAQ
@@ -13,7 +13,8 @@ export function FAQ() {
         {
           question: "What kinds of coding tasks can the agent handle?",
           answer:
-            "Teams use FlowPilot AI for bug fixes, refactors, routine maintenance, release prep, and other repeatable code changes.",
+                        "Teams use MergeBeacon AI for bug fixes, refactors, routine maintenance, release prep, and other repeatable code changes.",
+
         },
         {
           question: "How do reviews and approvals work?",
