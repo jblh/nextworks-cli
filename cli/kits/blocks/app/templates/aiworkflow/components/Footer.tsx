@@ -2,12 +2,13 @@
 
 import { Footer as SharedFooter } from "@/components/sections/Footer";
 import { Github, Linkedin, Mail, Twitter } from "lucide-react";
-
+ 
 export function Footer() {
   return (
     <SharedFooter
       id="footer"
-      footerBrandName="FlowPilot AI"
+            footerBrandName="MergeBeacon AI"
+
       footerNavLinks={[
         {
           heading: "Product",
@@ -41,30 +42,34 @@ export function Footer() {
         {
           name: "Twitter",
           icon: Twitter,
-          url: "https://twitter.com/flowpilotai",
+                    url: "https://twitter.com/",
           external: true,
-          label: "Follow FlowPilot AI on Twitter",
+          label: "Visit Twitter",
+
         },
         {
           name: "LinkedIn",
           icon: Linkedin,
-          url: "https://linkedin.com/company/flowpilotai",
+                    url: "https://www.linkedin.com/",
           external: true,
-          label: "Connect with FlowPilot AI on LinkedIn",
+          label: "Visit LinkedIn",
+
         },
         {
           name: "GitHub",
           icon: Github,
-          url: "https://github.com/flowpilotai",
+                    url: "https://github.com/",
           external: true,
-          label: "View FlowPilot AI on GitHub",
+          label: "Visit GitHub",
+
         },
         {
           name: "Email",
           icon: Mail,
-          url: "mailto:hello@flowpilot.ai",
-          external: true,
-          label: "Email FlowPilot AI",
+                    url: "#contact",
+          external: false,
+          label: "Go to contact section",
+
         },
       ]}
       section={{

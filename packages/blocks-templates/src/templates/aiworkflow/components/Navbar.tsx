@@ -8,9 +8,10 @@ import { Navbar as SharedNavbar } from "@nextworks/blocks-sections";
 
 type SharedNavbarProps = ComponentProps<typeof SharedNavbar>;
 type PresetOverrides = Partial<SharedNavbarProps>;
-
+ 
 const defaultProps: SharedNavbarProps = {
-  brand: "FlowPilot AI",
+    brand: "MergeBeacon AI",
+
   brandNode: (
     <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--navbar-border)] bg-[var(--navbar-accent)] text-[var(--navbar-toggle-bg)] shadow-sm ring-1 ring-white/20 dark:ring-white/10">
       <span className="grid grid-cols-2 gap-[2px]">
@@ -33,7 +34,8 @@ const defaultProps: SharedNavbarProps = {
   showColorModeToggle: true,
   navHeight: "h-16",
   sticky: true,
-  ariaLabel: "FlowPilot AI main navigation",
+    ariaLabel: "MergeBeacon AI main navigation",
+
   className: "",
   nav: {
     className:
