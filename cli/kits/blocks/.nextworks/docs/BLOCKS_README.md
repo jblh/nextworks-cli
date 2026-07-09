@@ -56,10 +56,8 @@ Blocks supports these install shapes:
    - `/templates/productlaunch`
    - `/templates/saasdashboard`
    - `/templates/digitalagency`
-   - `/templates/aiworkflow`
    - `/templates/gallery`
 
-   The current **AI Workflow** template ships with an **AI coding agent** story, but the structure is intended to be reusable for other AI workflow/product stories too.
 
 ---
 

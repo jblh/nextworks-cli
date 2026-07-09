@@ -71,7 +71,6 @@ function maybeRenamePageFilename(relativePath) {
 }
 
 const TEMPLATE_EXPORT_NAMES = {
-  aiworkflow: "AIWorkflow",
   digitalagency: "DigitalAgency",
   gallery: "Gallery",
   productlaunch: "ProductLaunch",
@@ -205,20 +204,6 @@ function transformTemplateImports(content, targetRelPath) {
     '} from "@/components/sections/PortfolioSimple";',
     '} from "@nextworks/blocks-sections";',
   );
-
-  if (
-    targetRelPath.endsWith("/components/Hero.tsx") &&
-    targetRelPath.includes("aiworkflow/")
-  ) {
-    transformed = transformed.replace(
-      /import \{ HeroProductDemo \} from "@nextworks\/blocks-sections";\s*import type \{ ProductDemoScenario \} from "@nextworks\/blocks-sections";/u,
-      'import { HeroProductDemo, type HeroProductDemoProps } from "@nextworks/blocks-sections";',
-    );
-    transformed = transformed.replace(
-      /const scenarios: ProductDemoScenario\[\] = \[/u,
-      'const scenarios: NonNullable<HeroProductDemoProps["stage"]>["scenarios"] = [',
-    );
-  }
 
   if (targetRelPath.endsWith("/Page.tsx")) {
     transformed = transformed.replace(

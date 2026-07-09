@@ -57,11 +57,8 @@ Try these routes:
 - `/templates/productlaunch`
 - `/templates/saasdashboard`
 - `/templates/digitalagency`
-- `/templates/aiworkflow`
 - `/templates/gallery`
 
-> Note: the current **AI Workflow** template ships with an **AI coding agent** story. It can be adapted for other AI workflow/product stories as more variants are added.
->
 > `nextworks` installs templates in a router-native location:
 >
 > - App Router projects: `app/templates/<template>/**`

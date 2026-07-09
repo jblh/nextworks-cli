@@ -4,11 +4,7 @@ All notable changes to this project will be documented in this file.
 
 This project is currently **early-access alpha**; expect breaking changes.
 
-## v0.2.0-alpha.19 - 2026-05-29
-
-- Added the **AI Workflow** template at `/templates/aiworkflow`.
-  - The current shipped story is an **AI coding agent**.
-  - The template is intended to be reusable for other AI workflow stories as more variants are added.
+## v0.2.0-alpha.22 - 2026-05-29
 
 - Doctor project sanity diagnostics add blocking errors when:
   - `package.json` is missing
